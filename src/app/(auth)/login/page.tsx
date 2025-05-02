@@ -1,6 +1,8 @@
 import { metadata as metadataHome } from '@/app/layout'
+import { GoogleIcon } from '@/components/svg/google'
 import { Text } from '@/components/Text'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -13,18 +15,35 @@ export default async function Login() {
   return (
     <div
       id="main"
-      className="from-primary to-tertiary flex flex-1 flex-col items-center justify-center gap-5 bg-gradient-to-b px-4 py-5"
+      className="from-primary to-tertiary flex flex-1 flex-col items-center justify-center bg-gradient-to-b px-4 py-5"
     >
-      <Text variant="headline-24-45-700" className="text-primary-foreground">
-        Tela de login
-      </Text>
+      {/* Card with login form */}
+      <Card className="bg-background w-full gap-10 border-none shadow-none md:max-w-md md:p-10 md:shadow-md">
+        <CardHeader className="p-0">
+          <Text as="h1" variant={'title-22-32-700'} className="text-center">
+            Acesse o sistema de Reserva de Salas BBZ
+          </Text>
+        </CardHeader>
+        <CardContent className="gap-5 space-y-5">
+          <Text className="text-center">
+            Para entrar, clique no botão abaixo e faça login com sua conta
+            Google.
+          </Text>
 
-      <Button variant="default">default button</Button>
-      <Button variant="destructive">destructive button</Button>
-      <Button variant="outline">outline button</Button>
-      <Button variant="secondary">secondary button</Button>
-      <Button variant="ghost">ghost button</Button>
-      <Button variant="link">link button</Button>
+          <Button variant="outline" className="w-full">
+            <GoogleIcon />
+            Entrar com Google
+          </Button>
+
+          <Text
+            variant={'label-14-14-400'}
+            className="text-muted-foreground text-center"
+          >
+            Importante: você precisa ter uma conta autorizada pela BBZ para
+            acessar o sistema.
+          </Text>
+        </CardContent>
+      </Card>
     </div>
   )
 }
