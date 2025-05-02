@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+@plugin 'tailwindcss-animate';
+
+@theme {
+  /* Person variables */
+  --font-manrope: Manrope, sans-serif;
+
+  /* Person colors */
+  --color-dark: #1d1d1b;
+  --color-darker: #181818;
+
+  --color-tertiary: #0664e4;
+  --color-tertiary-foreground: #ffffff;
+
+  --color-success: #22c55e;
+  --color-warning: #fde68a;
+
+  /* Shadcn colors */
+  --color-background: #ffffffff;
+  --color-foreground: #212529;
+  --color-card: #ffffff;
+  --color-card-foreground: #212529;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #212529;
+  --color-primary: #04193b;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #b0d4ff;
+  --color-secondary-foreground: #04193b;
+  --color-muted: #d9d9d9;
+  --color-muted-foreground: rgba(0, 0, 0, 0.6);
+  --color-accent: #8578ef;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #bf2604;
+  --color-destructive-foreground: #ffffff;
+  --color-border: rgba(27, 25, 24, 0.3);
+  --color-input: rgba(27, 25, 24, 0.3);
+  --color-ring: #04193b;
+  --color-chart-1: hsl(12 76% 61%);
+  --color-chart-2: hsl(173 58% 39%);
+  --color-chart-3: hsl(197 37% 24%);
+  --color-chart-4: hsl(43 74% 66%);
+  --color-chart-5: hsl(27 87% 67%);
+  --radius-sm: calc(0.6rem - 4px);
+  --radius-md: calc(0.6rem - 2px);
+  --radius-lg: 0.6rem;
+  --radius-xl: calc(0.6rem + 4px);
+
+  --animate-fade-in: fade-in 0.7s ease-out;
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
+@layer components {
+  .wrapper {
+    @apply mx-auto w-full max-w-7xl px-5 md:px-9;
+  }
+
+  .wrapper-full {
+    @apply mx-auto px-5 md:px-9;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

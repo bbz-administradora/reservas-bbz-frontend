@@ -1,0 +1,33 @@
+{
+  "globals": {
+    "RequestInit": "readonly",
+    "HeadersInit": "readonly"
+  },
+  "extends": [
+    "eslint:recommended",
+    "next/core-web-vitals",
+    "prettier",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "prettier",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "camelcase": "off",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-unused-vars": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "/src/api/endpoints/**"
+      ],
+      "rules": {
+        "eslint@typescript-eslint/no-unused-vars": "off"
+      }
+    }
+  ]
+}
