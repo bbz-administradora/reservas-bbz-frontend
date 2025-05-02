@@ -18,7 +18,7 @@
   --color-warning: #fde68a;
 
   /* Shadcn colors */
-  --color-background: #ffffffff;
+  --color-background: #ffffff;
   --color-foreground: #212529;
   --color-card: #ffffff;
   --color-card-foreground: #212529;
@@ -42,6 +42,14 @@
   --color-chart-3: hsl(197 37% 24%);
   --color-chart-4: hsl(43 74% 66%);
   --color-chart-5: hsl(27 87% 67%);
+  --sidebar: #ffffff;
+  --sidebar-foreground: #212529;
+  --sidebar-primary: #04193b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #8578ef;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(27, 25, 24, 0.3);
+  --sidebar-ring: #04193b;
   --radius-sm: calc(0.6rem - 4px);
   --radius-md: calc(0.6rem - 2px);
   --radius-lg: 0.6rem;
