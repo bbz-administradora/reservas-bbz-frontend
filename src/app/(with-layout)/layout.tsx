@@ -1,0 +1,123 @@
+import { LogoBbz } from '@/components/svg/logo-bbz'
+import { Text } from '@/components/Text'
+import { Button } from '@/components/ui/button'
+import { webserver } from '@/infra/webserver'
+import {
+  CalendarCheck2Icon,
+  DoorOpenIcon,
+  HomeIcon,
+  LogOutIcon,
+  Users2Icon,
+} from 'lucide-react'
+import Link from 'next/link'
+
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const currentYear = new Date().getFullYear()
+
+  return (
+    <div className="flex flex-1 flex-col">
+      {/* Header */}
+      <header className="bg-primary text-primary-foreground flex h-20 w-full">
+        <div className="wrapper-full relative flex w-full items-center justify-between">
+          {/* Logo  */}
+          <Link
+            href={`${webserver.host}/salas`}
+            title="Ir para a página de salas"
+            className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md p-1 focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            <LogoBbz invert className="w-[60px]" />
+          </Link>
+
+          {/* Title */}
+          <Text
+            variant="title-18-24-700"
+            className="absolute right-1/2 translate-x-1/2"
+          >
+            Reserva de Salas BBZ
+          </Text>
+
+          <div className="flex items-center justify-center gap-2.5">
+            <Link
+              href={`${webserver.host}/salas`}
+              title="Ir para a página de salas"
+              className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
+              <Button
+                tabIndex={-1}
+                variant="ghost"
+                size="icon"
+                className="lg:cursor-pointer"
+              >
+                <HomeIcon className="size-5" />
+              </Button>
+            </Link>
+
+            <Link
+              href={`${webserver.host}/salas/minhas-reservas`}
+              title="Ir para a página de minhas reservas"
+              className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
+              <Button
+                tabIndex={-1}
+                variant="ghost"
+                size="icon"
+                className="lg:cursor-pointer"
+              >
+                <CalendarCheck2Icon className="size-5" />
+              </Button>
+            </Link>
+
+            <Link
+              href={`${webserver.host}/admin/usuarios`}
+              title="Ir para a página administrativa de usuários"
+              className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
+              <Button
+                tabIndex={-1}
+                variant="ghost"
+                size="icon"
+                className="lg:cursor-pointer"
+              >
+                <Users2Icon className="size-5" />
+              </Button>
+            </Link>
+
+            <Link
+              href={`${webserver.host}/admin/salas`}
+              title="Ir para a página administrativa de salas"
+              className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
+              <Button
+                tabIndex={-1}
+                variant="ghost"
+                size="icon"
+                className="lg:cursor-pointer"
+              >
+                <DoorOpenIcon className="size-5" />
+              </Button>
+            </Link>
+
+            {/* Criar botão de logout */}
+            <Button variant="ghost" size="icon" className="lg:cursor-pointer">
+              <LogOutIcon className="size-5" />
+            </Button>
+          </div>
+        </div>
+      </header>
+      {children}
+
+      {/* Footer */}
+      <footer className="wrapper-full mb-10 flex w-full flex-col items-center justify-center">
+        <div className="bg-primary my-5 h-[1px] w-full" />
+        <Text className="text-muted-foreground">
+          {currentYear} © BBZ Administração de Condomínio Ltda. Todos os
+          direitos reservados.
+        </Text>
+      </footer>
+    </div>
+  )
+}
