@@ -1,3 +1,4 @@
+import { BottomTabButton } from '@/components/BottomTabButton'
 import { LogoBbz } from '@/components/svg/logo-bbz'
 import { Text } from '@/components/Text'
 import { Button } from '@/components/ui/button'
@@ -35,12 +36,12 @@ export default async function Layout({
           {/* Title */}
           <Text
             variant="title-18-24-700"
-            className="absolute right-1/2 translate-x-1/2"
+            className="lg:absolute lg:right-1/2 lg:translate-x-1/2"
           >
             Reserva de Salas BBZ
           </Text>
 
-          <div className="flex items-center justify-center gap-2.5">
+          <div className="hidden items-center justify-center gap-2.5 lg:flex">
             <Link
               href={`${webserver.host}/salas`}
               title="Ir para a página de salas"
@@ -110,13 +111,44 @@ export default async function Layout({
       </header>
       {children}
 
-      {/* Footer */}
-      <footer className="wrapper-full mb-10 flex w-full flex-col items-center justify-center">
+      {/* Footer desktop */}
+      <footer className="wrapper-full mb-10 hidden w-full flex-col items-center justify-center lg:flex">
         <div className="bg-primary my-5 h-[1px] w-full" />
-        <Text className="text-muted-foreground">
+        <Text className="text-muted-foreground text-center">
           {currentYear} © BBZ Administração de Condomínio Ltda. Todos os
           direitos reservados.
         </Text>
+      </footer>
+
+      {/* Footer / Bottom Tab / mobile - tablet */}
+      <footer className="fixed bottom-0 z-40 flex h-auto w-[100vw] items-center justify-center lg:hidden">
+        <div className="bg-secondary flex h-auto w-full items-center justify-around p-2 pb-3 opacity-100 transition-all">
+          <BottomTabButton label="Home" href={`${webserver.host}/salas`}>
+            <HomeIcon className="size-6" />
+          </BottomTabButton>
+
+          <BottomTabButton
+            label="Reservas"
+            href={`${webserver.host}/salas/minhas-reservas`}
+          >
+            <CalendarCheck2Icon className="size-6" />
+          </BottomTabButton>
+
+          <BottomTabButton
+            label="Usuários"
+            href={`${webserver.host}/admin/usuarios`}
+          >
+            <Users2Icon className="size-6" />
+          </BottomTabButton>
+
+          <BottomTabButton label="Salas" href={`${webserver.host}/admin/salas`}>
+            <DoorOpenIcon className="size-6" />
+          </BottomTabButton>
+
+          <BottomTabButton label="Sair" href={`${webserver.host}/logout`}>
+            <LogOutIcon className="size-6" />
+          </BottomTabButton>
+        </div>
       </footer>
     </div>
   )
