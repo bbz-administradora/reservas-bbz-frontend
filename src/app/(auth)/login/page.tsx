@@ -1,5 +1,6 @@
 import { metadata as metadataHome } from '@/app/layout'
 import { GoogleIcon } from '@/components/svg/google'
+import { LogoBbz } from '@/components/svg/logo-bbz'
 import { Text } from '@/components/Text'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -19,7 +20,8 @@ export default async function Login() {
     >
       {/* Card with login form */}
       <Card className="bg-background w-full gap-10 border-none shadow-none md:max-w-md md:p-10 md:shadow-md">
-        <CardHeader className="p-0">
+        <CardHeader className="gap-10 p-0">
+          <LogoBbz className="mx-auto" />
           <Text as="h1" variant={'title-22-32-700'} className="text-center">
             Acesse o sistema de Reserva de Salas BBZ
           </Text>
@@ -39,8 +41,8 @@ export default async function Login() {
             variant={'label-14-14-400'}
             className="text-muted-foreground text-center"
           >
-            Importante: você precisa ter uma conta autorizada pela BBZ para
-            acessar o sistema.
+            <strong>Importante</strong>: você precisa ter uma conta autorizada
+            pela BBZ para acessar o sistema.
           </Text>
         </CardContent>
       </Card>
