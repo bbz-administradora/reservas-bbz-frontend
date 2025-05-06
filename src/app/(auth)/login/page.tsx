@@ -1,8 +1,7 @@
 import { metadata as metadataHome } from '@/app/layout'
-import { GoogleIcon } from '@/components/svg/google'
+import { GoogleLoginButton } from '@/components/GoogleLoginButton'
 import { LogoBbz } from '@/components/svg/logo-bbz'
 import { Text } from '@/components/Text'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Metadata } from 'next'
 
@@ -32,10 +31,7 @@ export default async function Login() {
             Google.
           </Text>
 
-          <Button variant="outline" className="w-full">
-            <GoogleIcon />
-            Entrar com Google
-          </Button>
+          <GoogleLoginButton />
 
           <Text
             variant={'label-14-14-400'}
