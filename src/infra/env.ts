@@ -9,7 +9,6 @@ export const env = createEnv({
   isServer: typeof window === 'undefined',
   client: {
     NEXT_PUBLIC_ADM_WEB_HOST: z.string(),
-    NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
     NEXT_PUBLIC_BUCKET: z.string(),
     NEXT_PUBLIC_API_URL: z.string(),
     NEXT_PUBLIC_API_PORT: z.coerce.number().default(3333),
@@ -21,7 +20,6 @@ export const env = createEnv({
   },
   runtimeEnv: {
     NEXT_PUBLIC_ADM_WEB_HOST: process.env.NEXT_PUBLIC_ADM_WEB_HOST,
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_BUCKET: process.env.NEXT_PUBLIC_BUCKET,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_API_PORT: process.env.NEXT_PUBLIC_API_PORT,
