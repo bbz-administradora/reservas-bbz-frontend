@@ -19,12 +19,12 @@ import type {
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
 /**
- * This endpoint retrieves the authenticated user's data. The request must include a valid JWT token in the authorization header, which is verified by the 'verifyJWT' middleware.
+ * Este endpoint recupera os dados do usuário autenticado. A requisição deve incluir um token JWT válido no cabeçalho de autorização, que é verificado pelo middleware 'verifyJWT'.
 
-Upon successful authentication, the system uses the 'getAuthenticatedUser' helper function to extract the user's details from the token's context. The returned data includes the user's unique identifier (UUID), name, nickname, email address, avatar URL, role (adm, user, or dev), any associated licenses, a flag indicating whether a password reset is required, and the current account status.
+Após a autenticação bem-sucedida, o sistema extrai os detalhes do usuário a partir do contexto do token. Os dados retornados incluem o identificador único do usuário (UUID), nome, apelido, endereço de e-mail, URL do avatar, função (admin, user ou dev), indicador de necessidade de redefinição de senha, status da conta, telefone e autorização de calendário.
 
-If the request is malformed, the JWT is invalid, or access is forbidden, the endpoint responds with appropriate error codes (400, 401, 403, or 500).
- * @summary Get authenticated user data
+Se a requisição estiver mal formatada, o token JWT for inválido, ou o acesso for proibido, o endpoint responderá com códigos de erro apropriados (400, 401, 403 ou 500).
+ * @summary Obter dados do usuário autenticado
  */
 export type userMeResponse = {
   data: UserMe201
@@ -52,7 +52,7 @@ export type UserMeQueryResult = NonNullable<Awaited<ReturnType<typeof userMe>>>
 export type UserMeQueryError = UserMe400 | UserMe401 | UserMe403 | UserMe500
 
 /**
- * @summary Get authenticated user data
+ * @summary Obter dados do usuário autenticado
  */
 export const useUserMe = <
   TError = UserMe400 | UserMe401 | UserMe403 | UserMe500,

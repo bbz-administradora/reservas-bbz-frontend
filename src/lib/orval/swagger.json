@@ -354,14 +354,231 @@
         }
       }
     },
-    "/v1/private/user/me": {
-      "get": {
-        "operationId": "userMe",
-        "summary": "Get authenticated user data",
+    "/v1/private/auth/logout/user": {
+      "patch": {
+        "operationId": "logoutUser",
+        "summary": "Logout a user",
         "tags": [
-          "User"
+          "Auth"
         ],
-        "description": "This endpoint retrieves the authenticated user's data. The request must include a valid JWT token in the authorization header, which is verified by the 'verifyJWT' middleware.\n\nUpon successful authentication, the system uses the 'getAuthenticatedUser' helper function to extract the user's details from the token's context. The returned data includes the user's unique identifier (UUID), name, nickname, email address, avatar URL, role (adm, user, or dev), any associated licenses, a flag indicating whether a password reset is required, and the current account status.\n\nIf the request is malformed, the JWT is invalid, or access is forbidden, the endpoint responds with appropriate error codes (400, 401, 403, or 500).",
+        "description": "This endpoint logs out a user by deleting the session from the database and clearing the session and refresh tokens. The user's session is identified by the session ID, which is passed in the request body. The session is removed from the database, and the session and refresh tokens are cleared from the HttpOnly cookies. The user is successfully logged out and must reauthenticate to access protected resources.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully logged out",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "description": "User successfully logged out"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/private/auth/refresh/user/session": {
+      "patch": {
+        "operationId": "refreshUserSession",
+        "summary": "Refresh user session",
+        "tags": [
+          "Auth"
+        ],
+        "description": "This endpoint refreshes a user's session, updating tokens to maintain secure access without requiring re-login. It validates the current session, checks user identity and device, and then generates new session and refresh tokens, storing the updated session data in the database.\n\nKey features:\n\n - Session and User Validation: Confirms that the user ID in the request matches the session owner and that the session ID and refresh token are valid.\n\n - Device Security: Verifies that the request is from the same device as the original session, enforcing a higher level of security by ensuring tokens are only valid from the initiating device.\n\n - Token Generation: Issues a new sessionToken for immediate authentication and a refreshToken with a 7-day expiration to maintain login persistence.\n\n - Session Update: The database is updated with the new refresh token and session expiration for enhanced session tracking and user experience.\n\nIf successful, the response returns the updated session ID, user ID, and a success message. Any unauthorized requests or device mismatches return appropriate error messages.",
         "security": [
           {
             "bearerAuth": []
@@ -369,7 +586,289 @@
         ],
         "responses": {
           "201": {
-            "description": "User data successfully retrieved",
+            "description": "Session refreshed with success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "name": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "nickName": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "avatar": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "admin",
+                            "user",
+                            "dev"
+                          ]
+                        },
+                        "passwordResetRequired": {
+                          "type": "boolean"
+                        },
+                        "accountStatus": {
+                          "type": "boolean"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "calendarAuthorized": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "nickName",
+                        "email",
+                        "avatar",
+                        "role",
+                        "passwordResetRequired",
+                        "accountStatus",
+                        "phone",
+                        "calendarAuthorized"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "sessionId": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "user",
+                    "message",
+                    "sessionId"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Session refreshed with success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/private/user/me": {
+      "get": {
+        "operationId": "userMe",
+        "summary": "Obter dados do usuário autenticado",
+        "tags": [
+          "User"
+        ],
+        "description": "Este endpoint recupera os dados do usuário autenticado. A requisição deve incluir um token JWT válido no cabeçalho de autorização, que é verificado pelo middleware 'verifyJWT'.\n\nApós a autenticação bem-sucedida, o sistema extrai os detalhes do usuário a partir do contexto do token. Os dados retornados incluem o identificador único do usuário (UUID), nome, apelido, endereço de e-mail, URL do avatar, função (admin, user ou dev), indicador de necessidade de redefinição de senha, status da conta, telefone e autorização de calendário.\n\nSe a requisição estiver mal formatada, o token JWT for inválido, ou o acesso for proibido, o endpoint responderá com códigos de erro apropriados (400, 401, 403 ou 500).",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Dados do usuário recuperados com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -443,7 +942,7 @@
                     "message"
                   ],
                   "additionalProperties": false,
-                  "description": "User data successfully retrieved"
+                  "description": "Dados do usuário recuperados com sucesso"
                 }
               }
             }

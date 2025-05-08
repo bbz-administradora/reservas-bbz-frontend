@@ -5,8 +5,10 @@
  * API documentation for BBZ App Backend
  * OpenAPI spec version: 1.0.0
  */
-import type { Key, SWRConfiguration } from 'swr'
+import type { Arguments, Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
+import type { SWRMutationConfiguration } from 'swr/mutation'
+import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
   LoginUserGoogle302,
@@ -15,6 +17,16 @@ import type {
   LoginUserGoogleCallback422,
   LoginUserGoogleCallback500,
   LoginUserGoogleCallbackParams,
+  LogoutUser200,
+  LogoutUser400,
+  LogoutUser401,
+  LogoutUser403,
+  LogoutUser500,
+  RefreshUserSession201,
+  RefreshUserSession400,
+  RefreshUserSession401,
+  RefreshUserSession403,
+  RefreshUserSession500,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
@@ -175,6 +187,168 @@ export const useLoginUserGoogleCallback = <
     swrFn,
     swrOptions,
   )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * This endpoint logs out a user by deleting the session from the database and clearing the session and refresh tokens. The user's session is identified by the session ID, which is passed in the request body. The session is removed from the database, and the session and refresh tokens are cleared from the HttpOnly cookies. The user is successfully logged out and must reauthenticate to access protected resources.
+ * @summary Logout a user
+ */
+export type logoutUserResponse = {
+  data: LogoutUser200
+  status: number
+  headers: Headers
+}
+
+export const getLogoutUserUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/auth/logout/user`
+}
+
+export const logoutUser = async (
+  options?: RequestInit,
+): Promise<logoutUserResponse> => {
+  return customFetch<Promise<logoutUserResponse>>(getLogoutUserUrl(), {
+    ...options,
+    method: 'PATCH',
+  })
+}
+
+export const getLogoutUserMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (_: Key, __: { arg: Arguments }): Promise<logoutUserResponse> => {
+    return logoutUser(options)
+  }
+}
+export const getLogoutUserMutationKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/auth/logout/user`] as const
+
+export type LogoutUserMutationResult = NonNullable<
+  Awaited<ReturnType<typeof logoutUser>>
+>
+export type LogoutUserMutationError =
+  | LogoutUser400
+  | LogoutUser401
+  | LogoutUser403
+  | LogoutUser500
+
+/**
+ * @summary Logout a user
+ */
+export const useLogoutUser = <
+  TError = LogoutUser400 | LogoutUser401 | LogoutUser403 | LogoutUser500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof logoutUser>>,
+    TError,
+    Key,
+    Arguments,
+    Awaited<ReturnType<typeof logoutUser>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getLogoutUserMutationKey()
+  const swrFn = getLogoutUserMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * This endpoint refreshes a user's session, updating tokens to maintain secure access without requiring re-login. It validates the current session, checks user identity and device, and then generates new session and refresh tokens, storing the updated session data in the database.
+
+Key features:
+
+ - Session and User Validation: Confirms that the user ID in the request matches the session owner and that the session ID and refresh token are valid.
+
+ - Device Security: Verifies that the request is from the same device as the original session, enforcing a higher level of security by ensuring tokens are only valid from the initiating device.
+
+ - Token Generation: Issues a new sessionToken for immediate authentication and a refreshToken with a 7-day expiration to maintain login persistence.
+
+ - Session Update: The database is updated with the new refresh token and session expiration for enhanced session tracking and user experience.
+
+If successful, the response returns the updated session ID, user ID, and a success message. Any unauthorized requests or device mismatches return appropriate error messages.
+ * @summary Refresh user session
+ */
+export type refreshUserSessionResponse = {
+  data: RefreshUserSession201
+  status: number
+  headers: Headers
+}
+
+export const getRefreshUserSessionUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/auth/refresh/user/session`
+}
+
+export const refreshUserSession = async (
+  options?: RequestInit,
+): Promise<refreshUserSessionResponse> => {
+  return customFetch<Promise<refreshUserSessionResponse>>(
+    getRefreshUserSessionUrl(),
+    {
+      ...options,
+      method: 'PATCH',
+    },
+  )
+}
+
+export const getRefreshUserSessionMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    __: { arg: Arguments },
+  ): Promise<refreshUserSessionResponse> => {
+    return refreshUserSession(options)
+  }
+}
+export const getRefreshUserSessionMutationKey = () =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/auth/refresh/user/session`,
+  ] as const
+
+export type RefreshUserSessionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof refreshUserSession>>
+>
+export type RefreshUserSessionMutationError =
+  | RefreshUserSession400
+  | RefreshUserSession401
+  | RefreshUserSession403
+  | RefreshUserSession500
+
+/**
+ * @summary Refresh user session
+ */
+export const useRefreshUserSession = <
+  TError =
+    | RefreshUserSession400
+    | RefreshUserSession401
+    | RefreshUserSession403
+    | RefreshUserSession500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof refreshUserSession>>,
+    TError,
+    Key,
+    Arguments,
+    Awaited<ReturnType<typeof refreshUserSession>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getRefreshUserSessionMutationKey()
+  const swrFn = getRefreshUserSessionMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
   return {
     swrKey,

@@ -181,11 +181,358 @@ export type UserMe201User = {
 }
 
 /**
- * User data successfully retrieved
+ * Dados do usuário recuperados com sucesso
  */
 export type UserMe201 = {
   message: string
   user: UserMe201User
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type RefreshUserSession500StatusCode =
+  (typeof RefreshUserSession500StatusCode)[keyof typeof RefreshUserSession500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RefreshUserSession500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RefreshUserSession500Name =
+  (typeof RefreshUserSession500Name)[keyof typeof RefreshUserSession500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RefreshUserSession500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type RefreshUserSession500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RefreshUserSession500Name
+  /** Código de status HTTP 500. */
+  status_code: RefreshUserSession500StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type RefreshUserSession403StatusCode =
+  (typeof RefreshUserSession403StatusCode)[keyof typeof RefreshUserSession403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RefreshUserSession403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RefreshUserSession403Name =
+  (typeof RefreshUserSession403Name)[keyof typeof RefreshUserSession403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RefreshUserSession403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type RefreshUserSession403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RefreshUserSession403Name
+  /** Código de status HTTP 403. */
+  status_code: RefreshUserSession403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type RefreshUserSession401StatusCode =
+  (typeof RefreshUserSession401StatusCode)[keyof typeof RefreshUserSession401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RefreshUserSession401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RefreshUserSession401Name =
+  (typeof RefreshUserSession401Name)[keyof typeof RefreshUserSession401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RefreshUserSession401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type RefreshUserSession401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RefreshUserSession401Name
+  /** Código de status HTTP 401. */
+  status_code: RefreshUserSession401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type RefreshUserSession400StatusCode =
+  (typeof RefreshUserSession400StatusCode)[keyof typeof RefreshUserSession400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RefreshUserSession400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RefreshUserSession400Name =
+  (typeof RefreshUserSession400Name)[keyof typeof RefreshUserSession400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RefreshUserSession400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type RefreshUserSession400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RefreshUserSession400Name
+  /** Código de status HTTP 400. */
+  status_code: RefreshUserSession400StatusCode
+}
+
+export type RefreshUserSession201UserRole =
+  (typeof RefreshUserSession201UserRole)[keyof typeof RefreshUserSession201UserRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RefreshUserSession201UserRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type RefreshUserSession201User = {
+  accountStatus: boolean
+  /** @nullable */
+  avatar: string | null
+  calendarAuthorized: boolean
+  email: string
+  id: string
+  /** @nullable */
+  name: string | null
+  /** @nullable */
+  nickName: string | null
+  passwordResetRequired: boolean
+  /** @nullable */
+  phone: string | null
+  role: RefreshUserSession201UserRole
+}
+
+/**
+ * Session refreshed with success
+ */
+export type RefreshUserSession201 = {
+  message: string
+  sessionId: string
+  user: RefreshUserSession201User
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type LogoutUser500StatusCode =
+  (typeof LogoutUser500StatusCode)[keyof typeof LogoutUser500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LogoutUser500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type LogoutUser500Name =
+  (typeof LogoutUser500Name)[keyof typeof LogoutUser500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LogoutUser500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type LogoutUser500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: LogoutUser500Name
+  /** Código de status HTTP 500. */
+  status_code: LogoutUser500StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type LogoutUser403StatusCode =
+  (typeof LogoutUser403StatusCode)[keyof typeof LogoutUser403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LogoutUser403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type LogoutUser403Name =
+  (typeof LogoutUser403Name)[keyof typeof LogoutUser403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LogoutUser403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type LogoutUser403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: LogoutUser403Name
+  /** Código de status HTTP 403. */
+  status_code: LogoutUser403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type LogoutUser401StatusCode =
+  (typeof LogoutUser401StatusCode)[keyof typeof LogoutUser401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LogoutUser401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type LogoutUser401Name =
+  (typeof LogoutUser401Name)[keyof typeof LogoutUser401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LogoutUser401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type LogoutUser401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: LogoutUser401Name
+  /** Código de status HTTP 401. */
+  status_code: LogoutUser401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type LogoutUser400StatusCode =
+  (typeof LogoutUser400StatusCode)[keyof typeof LogoutUser400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LogoutUser400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type LogoutUser400Name =
+  (typeof LogoutUser400Name)[keyof typeof LogoutUser400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LogoutUser400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type LogoutUser400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: LogoutUser400Name
+  /** Código de status HTTP 400. */
+  status_code: LogoutUser400StatusCode
+}
+
+/**
+ * User successfully logged out
+ */
+export type LogoutUser200 = {
+  message: string
 }
 
 /**
