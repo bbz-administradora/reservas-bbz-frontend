@@ -2,7 +2,7 @@ import { metadata as metadataHome } from '@/app/layout'
 import { GoogleLoginButton } from '@/components/GoogleLoginButton'
 import { LogoBbz } from '@/components/svg/logo-bbz'
 import { Text } from '@/components/Text'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -41,6 +41,18 @@ export default async function Login() {
             pela BBZ para acessar o sistema.
           </Text>
         </CardContent>
+        <CardFooter className="flex-col gap-1">
+          <Text className="">Precisa de ajuda?</Text>
+          <a
+            href="https://wa.me/5511993458823"
+            title="WhatsApp Suporte"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary ring-offset-muted focus-visible:ring-ring/20 rounded-md font-bold transition-all hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            Fale com a gente no WhatsApp
+          </a>
+        </CardFooter>
       </Card>
     </div>
   )
