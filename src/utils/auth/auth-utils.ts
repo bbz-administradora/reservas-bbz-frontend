@@ -17,7 +17,7 @@ export async function authenticateUserServer(): Promise<{
 }> {
   try {
     // Obter o cookie CSRF
-    const csrfToken = await getCookie('garcom-server-auth-csrf-token')
+    const csrfToken = await getCookie('bbz-server-auth-csrf-token')
     if (!csrfToken) {
       console.warn('CSRF token not found')
       return { user: null, isAuthenticated: false }
@@ -43,14 +43,7 @@ export async function authenticateUserServer(): Promise<{
         method: 'GET',
         cache: 'force-cache',
         next: {
-          tags: [
-            'auth',
-            'update-user-profile',
-            'update-user-email',
-            'update-user-phone',
-            'update-user-avatar',
-            'reactivate-account',
-          ],
+          tags: ['auth'],
         },
       },
     )
