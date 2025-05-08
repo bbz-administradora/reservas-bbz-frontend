@@ -3,6 +3,7 @@ import { LogoBbz } from '@/components/svg/logo-bbz'
 import { Text } from '@/components/Text'
 import { Button } from '@/components/ui/button'
 import { webserver } from '@/infra/webserver'
+import { authenticateUserServer } from '@/utils/auth/auth-utils'
 import {
   CalendarCheck2Icon,
   DoorOpenIcon,
@@ -11,12 +12,19 @@ import {
   Users2Icon,
 } from 'lucide-react'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const { isAuthenticated, user } = await authenticateUserServer()
+
+  if (!isAuthenticated || !user) {
+    return redirect(`${webserver.host}/login`)
+  }
+
   const currentYear = new Date().getFullYear()
 
   return (
