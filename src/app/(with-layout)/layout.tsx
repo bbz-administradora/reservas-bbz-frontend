@@ -28,6 +28,9 @@ export default async function Layout({
   const email = user?.email || null
   const currentYear = new Date().getFullYear()
 
+  // Verifica se o usuário está autenticado e tem a função de admin
+  const isAdmin = ['admin', 'dev'].includes(user?.role ?? '')
+
   return (
     <div className="flex flex-1 flex-col">
       {/* Header */}
@@ -79,35 +82,40 @@ export default async function Layout({
               </Button>
             </Link>
 
-            <Link
-              href={`${webserver.host}/admin/usuarios`}
-              title="Ir para a página administrativa de usuários"
-              className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              <Button
-                tabIndex={-1}
-                variant="ghost"
-                size="icon"
-                className="lg:cursor-pointer"
-              >
-                <Users2Icon className="size-5" />
-              </Button>
-            </Link>
+            {/* Verifica se o usuário é admin */}
+            {isAdmin && (
+              <>
+                <Link
+                  href={`${webserver.host}/admin/usuarios`}
+                  title="Ir para a página administrativa de usuários"
+                  className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  <Button
+                    tabIndex={-1}
+                    variant="ghost"
+                    size="icon"
+                    className="lg:cursor-pointer"
+                  >
+                    <Users2Icon className="size-5" />
+                  </Button>
+                </Link>
 
-            <Link
-              href={`${webserver.host}/admin/salas`}
-              title="Ir para a página administrativa de salas"
-              className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              <Button
-                tabIndex={-1}
-                variant="ghost"
-                size="icon"
-                className="lg:cursor-pointer"
-              >
-                <DoorOpenIcon className="size-5" />
-              </Button>
-            </Link>
+                <Link
+                  href={`${webserver.host}/admin/salas`}
+                  title="Ir para a página administrativa de salas"
+                  className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  <Button
+                    tabIndex={-1}
+                    variant="ghost"
+                    size="icon"
+                    className="lg:cursor-pointer"
+                  >
+                    <DoorOpenIcon className="size-5" />
+                  </Button>
+                </Link>
+              </>
+            )}
 
             {/* Criar botão de logout */}
             <Button variant="ghost" size="icon" className="lg:cursor-pointer">
@@ -141,16 +149,24 @@ export default async function Layout({
             <CalendarCheck2Icon className="size-6" />
           </BottomTabButton>
 
-          <BottomTabButton
-            label="Usuários"
-            href={`${webserver.host}/admin/usuarios`}
-          >
-            <Users2Icon className="size-6" />
-          </BottomTabButton>
+          {/* Verifica se o usuário é admin */}
+          {isAdmin && (
+            <>
+              <BottomTabButton
+                label="Usuários"
+                href={`${webserver.host}/admin/usuarios`}
+              >
+                <Users2Icon className="size-6" />
+              </BottomTabButton>
 
-          <BottomTabButton label="Salas" href={`${webserver.host}/admin/salas`}>
-            <DoorOpenIcon className="size-6" />
-          </BottomTabButton>
+              <BottomTabButton
+                label="Salas"
+                href={`${webserver.host}/admin/salas`}
+              >
+                <DoorOpenIcon className="size-6" />
+              </BottomTabButton>
+            </>
+          )}
 
           <BottomTabButton label="Sair" href={`${webserver.host}/logout`}>
             <LogOutIcon className="size-6" />
