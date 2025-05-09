@@ -25,6 +25,7 @@ export default async function Layout({
     return redirect(`${webserver.host}/login`)
   }
 
+  const email = user?.email || null
   const currentYear = new Date().getFullYear()
 
   return (
@@ -41,13 +42,11 @@ export default async function Layout({
             <LogoBbz invert className="w-[60px]" />
           </Link>
 
-          {/* Title */}
-          <Text
-            variant="title-18-24-700"
-            className="lg:absolute lg:right-1/2 lg:translate-x-1/2"
-          >
-            Reserva de Salas BBZ
-          </Text>
+          <div className="flex flex-col items-center justify-center gap-1 lg:absolute lg:right-1/2 lg:translate-x-1/2">
+            {/* Title */}
+            <Text variant="title-18-24-700">Reserva de Salas BBZ</Text>
+            <Text variant="label-14-14-400">{email}</Text>
+          </div>
 
           <div className="hidden items-center justify-center gap-2.5 lg:flex">
             <Link
