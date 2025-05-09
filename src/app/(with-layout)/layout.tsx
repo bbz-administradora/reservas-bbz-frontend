@@ -1,4 +1,5 @@
 import { BottomTabButton } from '@/components/BottomTabButton'
+import { LogoutButton } from '@/components/LogoutButton'
 import { LogoBbz } from '@/components/svg/logo-bbz'
 import { Text } from '@/components/Text'
 import { Button } from '@/components/ui/button'
@@ -8,7 +9,6 @@ import {
   CalendarCheck2Icon,
   DoorOpenIcon,
   HomeIcon,
-  LogOutIcon,
   Users2Icon,
 } from 'lucide-react'
 import Link from 'next/link'
@@ -118,9 +118,7 @@ export default async function Layout({
             )}
 
             {/* Criar botão de logout */}
-            <Button variant="ghost" size="icon" className="lg:cursor-pointer">
-              <LogOutIcon className="size-5" />
-            </Button>
+            <LogoutButton />
           </div>
         </div>
       </header>
@@ -168,9 +166,7 @@ export default async function Layout({
             </>
           )}
 
-          <BottomTabButton label="Sair" href={`${webserver.host}/logout`}>
-            <LogOutIcon className="size-6" />
-          </BottomTabButton>
+          <LogoutButton variant="bottom-bar" />
         </div>
       </footer>
     </div>
