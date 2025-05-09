@@ -26,13 +26,13 @@ export const metadata: Metadata = {
     siteName: 'Reserva de Salas BBZ',
     images: [
       {
-        url: `${env.NEXT_PUBLIC_BUCKET}/og-800x600-reserva.png`,
+        url: `${env.NEXT_PUBLIC_BUCKET}/og-800x600-bbz.png`,
         width: 800,
         height: 600,
         alt: 'Reserva de Salas - Sistema Corporativo de Agendamento',
       },
       {
-        url: `${env.NEXT_PUBLIC_BUCKET}/og-1800x1600-reserva.png`,
+        url: `${env.NEXT_PUBLIC_BUCKET}/og-1800x1600-bbz.png`,
         width: 1800,
         height: 1600,
         alt: 'Reserva de Salas - Gestão de Ambientes e Acessos',
@@ -62,9 +62,9 @@ export const metadata: Metadata = {
   verification: {
     google: '', // Adicione o código de verificação do Google, se necessário
   },
-  metadataBase: new URL('https://app.bbz.com.br/'),
+  metadataBase: new URL('https://gestao.bbz.com.br/'),
   alternates: {
-    canonical: 'https://app.bbz.com.br/',
+    canonical: 'https://gestao.bbz.com.br/',
   },
   category: 'Sistema de Reserva de Salas Corporativas',
 }
