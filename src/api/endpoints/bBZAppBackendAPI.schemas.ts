@@ -368,7 +368,7 @@ export type RefreshUserSession201User = {
 }
 
 /**
- * Session refreshed with success
+ * Sessão atualizada com sucesso
  */
 export type RefreshUserSession201 = {
   message: string
@@ -529,7 +529,7 @@ export type LogoutUser400 = {
 }
 
 /**
- * User successfully logged out
+ * Usuário desconectado com sucesso
  */
 export type LogoutUser200 = {
   message: string

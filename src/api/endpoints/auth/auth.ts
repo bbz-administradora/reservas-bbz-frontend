@@ -194,8 +194,18 @@ export const useLoginUserGoogleCallback = <
   }
 }
 /**
- * This endpoint logs out a user by deleting the session from the database and clearing the session and refresh tokens. The user's session is identified by the session ID, which is passed in the request body. The session is removed from the database, and the session and refresh tokens are cleared from the HttpOnly cookies. The user is successfully logged out and must reauthenticate to access protected resources.
- * @summary Logout a user
+ * Este endpoint realiza o logout do usuário ao encerrar sua sessão atual. Quando acionado, o sistema identifica a sessão do usuário atual através do token de atualização (refresh token), remove esta sessão específica do banco de dados e limpa todos os cookies de autenticação no navegador do usuário.
+
+Processo de execução:
+
+ - Validação de Segurança: Confirma a identidade do usuário através do token JWT de atualização e verifica se o token CSRF está presente e é válido.
+
+ - Encerramento de Sessão: Remove apenas a sessão atual do banco de dados, mantendo outras sessões ativas do mesmo usuário em outros dispositivos.
+
+ - Limpeza de Cookies: Remove os cookies de autenticação (token de sessão, token de atualização e token CSRF) do navegador do usuário, definindo-os como expirados.
+
+Após o logout bem-sucedido, o usuário precisará se autenticar novamente para acessar recursos protegidos da aplicação. O endpoint retorna uma mensagem de confirmação quando o logout é concluído com sucesso.
+ * @summary Desconectar usuário
  */
 export type logoutUserResponse = {
   data: LogoutUser200
@@ -236,7 +246,7 @@ export type LogoutUserMutationError =
   | LogoutUser500
 
 /**
- * @summary Logout a user
+ * @summary Desconectar usuário
  */
 export const useLogoutUser = <
   TError = LogoutUser400 | LogoutUser401 | LogoutUser403 | LogoutUser500,
@@ -263,20 +273,22 @@ export const useLogoutUser = <
   }
 }
 /**
- * This endpoint refreshes a user's session, updating tokens to maintain secure access without requiring re-login. It validates the current session, checks user identity and device, and then generates new session and refresh tokens, storing the updated session data in the database.
+ * Este endpoint renova automaticamente a sessão de um usuário que já está autenticado, permitindo que ele permaneça conectado sem necessidade de fazer login novamente quando sua sessão atual estiver expirando.
 
-Key features:
+Funcionalidades principais:
 
- - Session and User Validation: Confirms that the user ID in the request matches the session owner and that the session ID and refresh token are valid.
+ - Validação de Sessão Atual: O sistema verifica se o token de atualização (refresh token) é válido e corresponde a uma sessão existente no banco de dados, além de confirmar a validade do token CSRF para proteção contra ataques CSRF.
 
- - Device Security: Verifies that the request is from the same device as the original session, enforcing a higher level of security by ensuring tokens are only valid from the initiating device.
+ - Segurança por Dispositivo: Garante que a renovação da sessão só pode ser feita no mesmo dispositivo onde a sessão foi iniciada, evitando que tokens roubados possam ser usados em outros dispositivos.
 
- - Token Generation: Issues a new sessionToken for immediate authentication and a refreshToken with a 7-day expiration to maintain login persistence.
+ - Geração de Novos Tokens: Cria um novo token de sessão para autenticação imediata (validade de 10 minutos) e um novo token de atualização com duração estendida - 7 dias para usuários que selecionaram "lembrar-me" ou 90 minutos para sessões padrão.
 
- - Session Update: The database is updated with the new refresh token and session expiration for enhanced session tracking and user experience.
+ - Persistência da Sessão: Atualiza a sessão existente no banco de dados com o novo token de atualização e nova data de expiração, mantendo o mesmo ID de sessão para rastreabilidade.
 
-If successful, the response returns the updated session ID, user ID, and a success message. Any unauthorized requests or device mismatches return appropriate error messages.
- * @summary Refresh user session
+ - Informações do Usuário: Retorna dados atualizados do usuário, incluindo permissão de calendário (quando aplicável), permitindo que a interface do usuário se atualize sem necessidade de consultas adicionais.
+
+A resposta bem-sucedida inclui o ID da sessão renovada, os dados do usuário e uma mensagem de confirmação. Em caso de falha na validação, são retornados códigos de erro apropriados (401 para problemas de autenticação, 403 para conta desativada).
+ * @summary Atualizar sessão do usuário
  */
 export type refreshUserSessionResponse = {
   data: RefreshUserSession201
@@ -325,7 +337,7 @@ export type RefreshUserSessionMutationError =
   | RefreshUserSession500
 
 /**
- * @summary Refresh user session
+ * @summary Atualizar sessão do usuário
  */
 export const useRefreshUserSession = <
   TError =
