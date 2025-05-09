@@ -1,7 +1,14 @@
+import { webserver } from '@/infra/webserver'
 import { authenticateUserServer } from '@/utils/auth/auth-utils'
+import { redirect } from 'next/navigation'
 
 export default async function AdminUser() {
   const { user } = await authenticateUserServer()
+
+  // Verifica se o usuário está autenticado e tem a função de admin
+  if (user?.role === 'user') {
+    redirect(`${webserver.host}/salas`)
+  }
 
   const name = user?.name || 'Usuário'
 
