@@ -8,6 +8,1403 @@
 /**
  * Código de status HTTP 500.
  */
+export type UpdateUser500StatusCode =
+  (typeof UpdateUser500StatusCode)[keyof typeof UpdateUser500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateUser500Name =
+  (typeof UpdateUser500Name)[keyof typeof UpdateUser500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type UpdateUser500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateUser500Name
+  /** Código de status HTTP 500. */
+  status_code: UpdateUser500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type UpdateUser422StatusCode =
+  (typeof UpdateUser422StatusCode)[keyof typeof UpdateUser422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateUser422Name =
+  (typeof UpdateUser422Name)[keyof typeof UpdateUser422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type UpdateUser422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type UpdateUser422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: UpdateUser422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateUser422Name
+  /** Código de status HTTP 422. */
+  status_code: UpdateUser422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type UpdateUser404StatusCode =
+  (typeof UpdateUser404StatusCode)[keyof typeof UpdateUser404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateUser404Name =
+  (typeof UpdateUser404Name)[keyof typeof UpdateUser404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type UpdateUser404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateUser404Name
+  /** Código de status HTTP 404. */
+  status_code: UpdateUser404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type UpdateUser403StatusCode =
+  (typeof UpdateUser403StatusCode)[keyof typeof UpdateUser403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateUser403Name =
+  (typeof UpdateUser403Name)[keyof typeof UpdateUser403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type UpdateUser403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateUser403Name
+  /** Código de status HTTP 403. */
+  status_code: UpdateUser403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type UpdateUser401StatusCode =
+  (typeof UpdateUser401StatusCode)[keyof typeof UpdateUser401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateUser401Name =
+  (typeof UpdateUser401Name)[keyof typeof UpdateUser401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type UpdateUser401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateUser401Name
+  /** Código de status HTTP 401. */
+  status_code: UpdateUser401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type UpdateUser400StatusCode =
+  (typeof UpdateUser400StatusCode)[keyof typeof UpdateUser400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateUser400Name =
+  (typeof UpdateUser400Name)[keyof typeof UpdateUser400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type UpdateUser400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateUser400Name
+  /** Código de status HTTP 400. */
+  status_code: UpdateUser400StatusCode
+}
+
+export type UpdateUser200UserRole =
+  (typeof UpdateUser200UserRole)[keyof typeof UpdateUser200UserRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser200UserRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type UpdateUser200User = {
+  accountStatus: boolean
+  /** @nullable */
+  avatar: string | null
+  email: string
+  id: string
+  /** @nullable */
+  name: string | null
+  /** @nullable */
+  nickName: string | null
+  passwordResetRequired: boolean
+  /** @nullable */
+  phone: string | null
+  role: UpdateUser200UserRole
+}
+
+/**
+ * Usuário atualizado com sucesso
+ */
+export type UpdateUser200 = {
+  message: string
+  user: UpdateUser200User
+}
+
+export type UpdateUserBodyRole =
+  (typeof UpdateUserBodyRole)[keyof typeof UpdateUserBodyRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUserBodyRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type UpdateUserBody = {
+  accountStatus?: boolean
+  /** @nullable */
+  avatar?: string | null
+  /**
+   * @minLength 3
+   * @maxLength 254
+   */
+  email?: string
+  /**
+   * @minLength 2
+   * @maxLength 100
+   * @pattern ^\S+\s+\S+
+   */
+  name?: string
+  /** @nullable */
+  nickName?: string | null
+  passwordResetRequired?: boolean
+  /** @nullable */
+  phone?: string | null
+  role?: UpdateUserBodyRole
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type GetUser500StatusCode =
+  (typeof GetUser500StatusCode)[keyof typeof GetUser500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetUser500Name =
+  (typeof GetUser500Name)[keyof typeof GetUser500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type GetUser500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetUser500Name
+  /** Código de status HTTP 500. */
+  status_code: GetUser500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type GetUser422StatusCode =
+  (typeof GetUser422StatusCode)[keyof typeof GetUser422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetUser422Name =
+  (typeof GetUser422Name)[keyof typeof GetUser422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type GetUser422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type GetUser422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: GetUser422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetUser422Name
+  /** Código de status HTTP 422. */
+  status_code: GetUser422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type GetUser404StatusCode =
+  (typeof GetUser404StatusCode)[keyof typeof GetUser404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetUser404Name =
+  (typeof GetUser404Name)[keyof typeof GetUser404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type GetUser404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetUser404Name
+  /** Código de status HTTP 404. */
+  status_code: GetUser404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type GetUser403StatusCode =
+  (typeof GetUser403StatusCode)[keyof typeof GetUser403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetUser403Name =
+  (typeof GetUser403Name)[keyof typeof GetUser403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type GetUser403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetUser403Name
+  /** Código de status HTTP 403. */
+  status_code: GetUser403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type GetUser401StatusCode =
+  (typeof GetUser401StatusCode)[keyof typeof GetUser401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetUser401Name =
+  (typeof GetUser401Name)[keyof typeof GetUser401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type GetUser401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetUser401Name
+  /** Código de status HTTP 401. */
+  status_code: GetUser401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type GetUser400StatusCode =
+  (typeof GetUser400StatusCode)[keyof typeof GetUser400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetUser400Name =
+  (typeof GetUser400Name)[keyof typeof GetUser400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type GetUser400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetUser400Name
+  /** Código de status HTTP 400. */
+  status_code: GetUser400StatusCode
+}
+
+export type GetUser200UserRole =
+  (typeof GetUser200UserRole)[keyof typeof GetUser200UserRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetUser200UserRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type GetUser200User = {
+  accountStatus: boolean
+  /** @nullable */
+  avatar: string | null
+  email: string
+  id: string
+  /** @nullable */
+  name: string | null
+  /** @nullable */
+  nickName: string | null
+  passwordResetRequired: boolean
+  /** @nullable */
+  phone: string | null
+  role: GetUser200UserRole
+}
+
+/**
+ * Dados do usuário recuperados com sucesso
+ */
+export type GetUser200 = {
+  message: string
+  user: GetUser200User
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type DeleteUser500StatusCode =
+  (typeof DeleteUser500StatusCode)[keyof typeof DeleteUser500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteUser500Name =
+  (typeof DeleteUser500Name)[keyof typeof DeleteUser500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type DeleteUser500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteUser500Name
+  /** Código de status HTTP 500. */
+  status_code: DeleteUser500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type DeleteUser422StatusCode =
+  (typeof DeleteUser422StatusCode)[keyof typeof DeleteUser422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteUser422Name =
+  (typeof DeleteUser422Name)[keyof typeof DeleteUser422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type DeleteUser422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type DeleteUser422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: DeleteUser422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteUser422Name
+  /** Código de status HTTP 422. */
+  status_code: DeleteUser422StatusCode
+}
+
+/**
+ * Código de status HTTP 409.
+ */
+export type DeleteUser409StatusCode =
+  (typeof DeleteUser409StatusCode)[keyof typeof DeleteUser409StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser409StatusCode = {
+  NUMBER_409: 409,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteUser409Name =
+  (typeof DeleteUser409Name)[keyof typeof DeleteUser409Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser409Name = {
+  ConflictError: 'ConflictError',
+} as const
+
+/**
+ * Schema to represent Conflict errors (HTTP 409)
+ */
+export type DeleteUser409 = {
+  /** Ação recomendada para resolver o conflito. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que houve um conflito. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteUser409Name
+  /** Código de status HTTP 409. */
+  status_code: DeleteUser409StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type DeleteUser404StatusCode =
+  (typeof DeleteUser404StatusCode)[keyof typeof DeleteUser404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteUser404Name =
+  (typeof DeleteUser404Name)[keyof typeof DeleteUser404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type DeleteUser404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteUser404Name
+  /** Código de status HTTP 404. */
+  status_code: DeleteUser404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type DeleteUser403StatusCode =
+  (typeof DeleteUser403StatusCode)[keyof typeof DeleteUser403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteUser403Name =
+  (typeof DeleteUser403Name)[keyof typeof DeleteUser403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type DeleteUser403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteUser403Name
+  /** Código de status HTTP 403. */
+  status_code: DeleteUser403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type DeleteUser401StatusCode =
+  (typeof DeleteUser401StatusCode)[keyof typeof DeleteUser401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteUser401Name =
+  (typeof DeleteUser401Name)[keyof typeof DeleteUser401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type DeleteUser401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteUser401Name
+  /** Código de status HTTP 401. */
+  status_code: DeleteUser401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type DeleteUser400StatusCode =
+  (typeof DeleteUser400StatusCode)[keyof typeof DeleteUser400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteUser400Name =
+  (typeof DeleteUser400Name)[keyof typeof DeleteUser400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteUser400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type DeleteUser400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteUser400Name
+  /** Código de status HTTP 400. */
+  status_code: DeleteUser400StatusCode
+}
+
+/**
+ * Usuário excluído com sucesso
+ */
+export type DeleteUser200 = {
+  message: string
+  userId: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type ListUsers500StatusCode =
+  (typeof ListUsers500StatusCode)[keyof typeof ListUsers500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListUsers500Name =
+  (typeof ListUsers500Name)[keyof typeof ListUsers500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type ListUsers500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListUsers500Name
+  /** Código de status HTTP 500. */
+  status_code: ListUsers500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type ListUsers422StatusCode =
+  (typeof ListUsers422StatusCode)[keyof typeof ListUsers422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListUsers422Name =
+  (typeof ListUsers422Name)[keyof typeof ListUsers422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type ListUsers422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type ListUsers422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: ListUsers422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListUsers422Name
+  /** Código de status HTTP 422. */
+  status_code: ListUsers422StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type ListUsers403StatusCode =
+  (typeof ListUsers403StatusCode)[keyof typeof ListUsers403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListUsers403Name =
+  (typeof ListUsers403Name)[keyof typeof ListUsers403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type ListUsers403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListUsers403Name
+  /** Código de status HTTP 403. */
+  status_code: ListUsers403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type ListUsers401StatusCode =
+  (typeof ListUsers401StatusCode)[keyof typeof ListUsers401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListUsers401Name =
+  (typeof ListUsers401Name)[keyof typeof ListUsers401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type ListUsers401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListUsers401Name
+  /** Código de status HTTP 401. */
+  status_code: ListUsers401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type ListUsers400StatusCode =
+  (typeof ListUsers400StatusCode)[keyof typeof ListUsers400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListUsers400Name =
+  (typeof ListUsers400Name)[keyof typeof ListUsers400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type ListUsers400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListUsers400Name
+  /** Código de status HTTP 400. */
+  status_code: ListUsers400StatusCode
+}
+
+export type ListUsers201UsersItemRole =
+  (typeof ListUsers201UsersItemRole)[keyof typeof ListUsers201UsersItemRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsers201UsersItemRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type ListUsers201UsersItem = {
+  accountStatus: boolean
+  /** @nullable */
+  avatar: string | null
+  createdAt: string
+  email: string
+  id: string
+  /** @nullable */
+  name: string | null
+  /** @nullable */
+  nickName: string | null
+  passwordResetRequired: boolean
+  /** @nullable */
+  phone: string | null
+  role: ListUsers201UsersItemRole
+}
+
+/**
+ * Lista de usuários recuperada com sucesso
+ */
+export type ListUsers201 = {
+  currentPage: number
+  message: string
+  totalPages: number
+  users: ListUsers201UsersItem[]
+}
+
+export type ListUsersRole = (typeof ListUsersRole)[keyof typeof ListUsersRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListUsersRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type ListUsersParams = {
+  page?: string
+  pageSize?: string
+  search?: string
+  role?: ListUsersRole
+  accountStatus?: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type CreateUser500StatusCode =
+  (typeof CreateUser500StatusCode)[keyof typeof CreateUser500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateUser500Name =
+  (typeof CreateUser500Name)[keyof typeof CreateUser500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type CreateUser500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateUser500Name
+  /** Código de status HTTP 500. */
+  status_code: CreateUser500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type CreateUser422StatusCode =
+  (typeof CreateUser422StatusCode)[keyof typeof CreateUser422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateUser422Name =
+  (typeof CreateUser422Name)[keyof typeof CreateUser422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type CreateUser422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type CreateUser422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: CreateUser422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateUser422Name
+  /** Código de status HTTP 422. */
+  status_code: CreateUser422StatusCode
+}
+
+/**
+ * Código de status HTTP 409.
+ */
+export type CreateUser409StatusCode =
+  (typeof CreateUser409StatusCode)[keyof typeof CreateUser409StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser409StatusCode = {
+  NUMBER_409: 409,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateUser409Name =
+  (typeof CreateUser409Name)[keyof typeof CreateUser409Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser409Name = {
+  ConflictError: 'ConflictError',
+} as const
+
+/**
+ * Schema to represent Conflict errors (HTTP 409)
+ */
+export type CreateUser409 = {
+  /** Ação recomendada para resolver o conflito. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que houve um conflito. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateUser409Name
+  /** Código de status HTTP 409. */
+  status_code: CreateUser409StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type CreateUser403StatusCode =
+  (typeof CreateUser403StatusCode)[keyof typeof CreateUser403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateUser403Name =
+  (typeof CreateUser403Name)[keyof typeof CreateUser403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type CreateUser403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateUser403Name
+  /** Código de status HTTP 403. */
+  status_code: CreateUser403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type CreateUser401StatusCode =
+  (typeof CreateUser401StatusCode)[keyof typeof CreateUser401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateUser401Name =
+  (typeof CreateUser401Name)[keyof typeof CreateUser401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type CreateUser401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateUser401Name
+  /** Código de status HTTP 401. */
+  status_code: CreateUser401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type CreateUser400StatusCode =
+  (typeof CreateUser400StatusCode)[keyof typeof CreateUser400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateUser400Name =
+  (typeof CreateUser400Name)[keyof typeof CreateUser400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type CreateUser400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateUser400Name
+  /** Código de status HTTP 400. */
+  status_code: CreateUser400StatusCode
+}
+
+export type CreateUser201UserRole =
+  (typeof CreateUser201UserRole)[keyof typeof CreateUser201UserRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUser201UserRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type CreateUser201User = {
+  accountStatus: boolean
+  /** @nullable */
+  avatar: string | null
+  email: string
+  id: string
+  /** @nullable */
+  name: string | null
+  /** @nullable */
+  nickName: string | null
+  passwordResetRequired: boolean
+  /** @nullable */
+  phone: string | null
+  role: CreateUser201UserRole
+}
+
+/**
+ * Usuário criado com sucesso
+ */
+export type CreateUser201 = {
+  message: string
+  user: CreateUser201User
+}
+
+export type CreateUserBodyRole =
+  (typeof CreateUserBodyRole)[keyof typeof CreateUserBodyRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateUserBodyRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type CreateUserBody = {
+  /**
+   * @minLength 3
+   * @maxLength 254
+   */
+  email: string
+  /**
+   * @minLength 2
+   * @maxLength 100
+   * @pattern ^\S+\s+\S+
+   */
+  name: string
+  role?: CreateUserBodyRole
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type UserMe500StatusCode =
   (typeof UserMe500StatusCode)[keyof typeof UserMe500StatusCode]
 

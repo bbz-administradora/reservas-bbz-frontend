@@ -5,10 +5,50 @@
  * API documentation for BBZ App Backend
  * OpenAPI spec version: 1.0.0
  */
-import type { Key, SWRConfiguration } from 'swr'
+import type { Arguments, Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
+import type { SWRMutationConfiguration } from 'swr/mutation'
+import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  CreateUser201,
+  CreateUser400,
+  CreateUser401,
+  CreateUser403,
+  CreateUser409,
+  CreateUser422,
+  CreateUser500,
+  CreateUserBody,
+  DeleteUser200,
+  DeleteUser400,
+  DeleteUser401,
+  DeleteUser403,
+  DeleteUser404,
+  DeleteUser409,
+  DeleteUser422,
+  DeleteUser500,
+  GetUser200,
+  GetUser400,
+  GetUser401,
+  GetUser403,
+  GetUser404,
+  GetUser422,
+  GetUser500,
+  ListUsers201,
+  ListUsers400,
+  ListUsers401,
+  ListUsers403,
+  ListUsers422,
+  ListUsers500,
+  ListUsersParams,
+  UpdateUser200,
+  UpdateUser400,
+  UpdateUser401,
+  UpdateUser403,
+  UpdateUser404,
+  UpdateUser422,
+  UpdateUser500,
+  UpdateUserBody,
   UserMe201,
   UserMe400,
   UserMe401,
@@ -75,6 +115,426 @@ export const useUserMe = <
     swrFn,
     swrOptions,
   )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite criar um novo usuário no sistema.
+ * @summary Criar um novo usuário
+ */
+export type createUserResponse = {
+  data: CreateUser201
+  status: number
+  headers: Headers
+}
+
+export const getCreateUserUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user`
+}
+
+export const createUser = async (
+  createUserBody: CreateUserBody,
+  options?: RequestInit,
+): Promise<createUserResponse> => {
+  return customFetch<Promise<createUserResponse>>(getCreateUserUrl(), {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createUserBody),
+  })
+}
+
+export const getCreateUserMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: CreateUserBody },
+  ): Promise<createUserResponse> => {
+    return createUser(arg, options)
+  }
+}
+export const getCreateUserMutationKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user`] as const
+
+export type CreateUserMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createUser>>
+>
+export type CreateUserMutationError =
+  | CreateUser400
+  | CreateUser401
+  | CreateUser403
+  | CreateUser409
+  | CreateUser422
+  | CreateUser500
+
+/**
+ * @summary Criar um novo usuário
+ */
+export const useCreateUser = <
+  TError =
+    | CreateUser400
+    | CreateUser401
+    | CreateUser403
+    | CreateUser409
+    | CreateUser422
+    | CreateUser500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof createUser>>,
+    TError,
+    Key,
+    CreateUserBody,
+    Awaited<ReturnType<typeof createUser>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getCreateUserMutationKey()
+  const swrFn = getCreateUserMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite listar os usuários do sistema com paginação e filtros
+ * @summary Listar todos os usuários
+ */
+export type listUsersResponse = {
+  data: ListUsers201
+  status: number
+  headers: Headers
+}
+
+export const getListUsersUrl = (params?: ListUsersParams) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  return normalizedParams.size
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user`
+}
+
+export const listUsers = async (
+  params?: ListUsersParams,
+  options?: RequestInit,
+): Promise<listUsersResponse> => {
+  return customFetch<Promise<listUsersResponse>>(getListUsersUrl(params), {
+    ...options,
+    method: 'GET',
+  })
+}
+
+export const getListUsersKey = (params?: ListUsersParams) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user`,
+    ...(params ? [params] : []),
+  ] as const
+
+export type ListUsersQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listUsers>>
+>
+export type ListUsersQueryError =
+  | ListUsers400
+  | ListUsers401
+  | ListUsers403
+  | ListUsers422
+  | ListUsers500
+
+/**
+ * @summary Listar todos os usuários
+ */
+export const useListUsers = <
+  TError =
+    | ListUsers400
+    | ListUsers401
+    | ListUsers403
+    | ListUsers422
+    | ListUsers500,
+>(
+  params?: ListUsersParams,
+  options?: {
+    swr?: SWRConfiguration<Awaited<ReturnType<typeof listUsers>>, TError> & {
+      swrKey?: Key
+      enabled?: boolean
+    }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ?? (() => (isEnabled ? getListUsersKey(params) : null))
+  const swrFn = () => listUsers(params, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite excluir um usuário específico do sistema. Apenas administradores e desenvolvedores podem excluir usuários. Um usuário não pode excluir sua própria conta.
+ * @summary Excluir um usuário
+ */
+export type deleteUserResponse = {
+  data: DeleteUser200
+  status: number
+  headers: Headers
+}
+
+export const getDeleteUserUrl = (id: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`
+}
+
+export const deleteUser = async (
+  id: string,
+  options?: RequestInit,
+): Promise<deleteUserResponse> => {
+  return customFetch<Promise<deleteUserResponse>>(getDeleteUserUrl(id), {
+    ...options,
+    method: 'DELETE',
+  })
+}
+
+export const getDeleteUserMutationFetcher = (
+  id: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (_: Key, __: { arg: Arguments }): Promise<deleteUserResponse> => {
+    return deleteUser(id, options)
+  }
+}
+export const getDeleteUserMutationKey = (id: string) =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`] as const
+
+export type DeleteUserMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteUser>>
+>
+export type DeleteUserMutationError =
+  | DeleteUser400
+  | DeleteUser401
+  | DeleteUser403
+  | DeleteUser404
+  | DeleteUser409
+  | DeleteUser422
+  | DeleteUser500
+
+/**
+ * @summary Excluir um usuário
+ */
+export const useDeleteUser = <
+  TError =
+    | DeleteUser400
+    | DeleteUser401
+    | DeleteUser403
+    | DeleteUser404
+    | DeleteUser409
+    | DeleteUser422
+    | DeleteUser500,
+>(
+  id: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof deleteUser>>,
+      TError,
+      Key,
+      Arguments,
+      Awaited<ReturnType<typeof deleteUser>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getDeleteUserMutationKey(id)
+  const swrFn = getDeleteUserMutationFetcher(id, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint retorna os detalhes de um usuário específico.
+ * @summary Obter detalhes de um usuário
+ */
+export type getUserResponse = {
+  data: GetUser200
+  status: number
+  headers: Headers
+}
+
+export const getGetUserUrl = (id: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`
+}
+
+export const getUser = async (
+  id: string,
+  options?: RequestInit,
+): Promise<getUserResponse> => {
+  return customFetch<Promise<getUserResponse>>(getGetUserUrl(id), {
+    ...options,
+    method: 'GET',
+  })
+}
+
+export const getGetUserKey = (id: string) =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`] as const
+
+export type GetUserQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getUser>>
+>
+export type GetUserQueryError =
+  | GetUser400
+  | GetUser401
+  | GetUser403
+  | GetUser404
+  | GetUser422
+  | GetUser500
+
+/**
+ * @summary Obter detalhes de um usuário
+ */
+export const useGetUser = <
+  TError =
+    | GetUser400
+    | GetUser401
+    | GetUser403
+    | GetUser404
+    | GetUser422
+    | GetUser500,
+>(
+  id: string,
+  options?: {
+    swr?: SWRConfiguration<Awaited<ReturnType<typeof getUser>>, TError> & {
+      swrKey?: Key
+      enabled?: boolean
+    }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false && !!id
+  const swrKey =
+    swrOptions?.swrKey ?? (() => (isEnabled ? getGetUserKey(id) : null))
+  const swrFn = () => getUser(id, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite atualizar parcialmente os dados de um usuário específico. Apenas administradores e desenvolvedores podem atualizar usuários. Somente os campos enviados na requisição serão atualizados.
+ * @summary Atualizar dados parciais de um usuário
+ */
+export type updateUserResponse = {
+  data: UpdateUser200
+  status: number
+  headers: Headers
+}
+
+export const getUpdateUserUrl = (id: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`
+}
+
+export const updateUser = async (
+  id: string,
+  updateUserBody: UpdateUserBody,
+  options?: RequestInit,
+): Promise<updateUserResponse> => {
+  return customFetch<Promise<updateUserResponse>>(getUpdateUserUrl(id), {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(updateUserBody),
+  })
+}
+
+export const getUpdateUserMutationFetcher = (
+  id: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: UpdateUserBody },
+  ): Promise<updateUserResponse> => {
+    return updateUser(id, arg, options)
+  }
+}
+export const getUpdateUserMutationKey = (id: string) =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`] as const
+
+export type UpdateUserMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateUser>>
+>
+export type UpdateUserMutationError =
+  | UpdateUser400
+  | UpdateUser401
+  | UpdateUser403
+  | UpdateUser404
+  | UpdateUser422
+  | UpdateUser500
+
+/**
+ * @summary Atualizar dados parciais de um usuário
+ */
+export const useUpdateUser = <
+  TError =
+    | UpdateUser400
+    | UpdateUser401
+    | UpdateUser403
+    | UpdateUser404
+    | UpdateUser422
+    | UpdateUser500,
+>(
+  id: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof updateUser>>,
+      TError,
+      Key,
+      UpdateUserBody,
+      Awaited<ReturnType<typeof updateUser>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getUpdateUserMutationKey(id)
+  const swrFn = getUpdateUserMutationFetcher(id, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
   return {
     swrKey,
