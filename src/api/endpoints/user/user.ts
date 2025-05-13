@@ -59,11 +59,31 @@ import type {
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
 /**
- * Este endpoint recupera os dados do usuário autenticado. A requisição deve incluir um token JWT válido no cabeçalho de autorização, que é verificado pelo middleware 'verifyJWT'.
+ * Este endpoint recupera os dados completos do usuário atualmente autenticado.
 
-Após a autenticação bem-sucedida, o sistema extrai os detalhes do usuário a partir do contexto do token. Os dados retornados incluem o identificador único do usuário (UUID), nome, apelido, endereço de e-mail, URL do avatar, função (admin, user ou dev), indicador de necessidade de redefinição de senha, status da conta, telefone e autorização de calendário.
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autenticação**: Requer token JWT válido no cabeçalho de autorização.
+* **Validação de conta**: Verifica se a conta do usuário está ativa e não requer reset de senha.
+* **Dados retornados**:
+  - Identificador único (UUID)
+  - Nome completo e apelido
+  - Endereço de e-mail
+  - URL do avatar
+  - Função no sistema (admin, user, dev)
+  - Status da conta
+  - Indicador de necessidade de redefinição de senha
+  - Telefone
+  - Status de autorização do calendário
 
-Se a requisição estiver mal formatada, o token JWT for inválido, ou o acesso for proibido, o endpoint responderá com códigos de erro apropriados (400, 401, 403 ou 500).
+* **Códigos de erro**:
+  - 401: Token JWT inválido ou expirado
+  - 403: Acesso proibido
+  - 400: Requisição mal formatada
+  - 500: Erro interno do servidor
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário está ativa
  * @summary Obter dados do usuário autenticado
  */
 export type userMeResponse = {
@@ -122,7 +142,21 @@ export const useUserMe = <
   }
 }
 /**
- * Este endpoint permite criar um novo usuário no sistema.
+ * Este endpoint permite criar um novo usuário no sistema com as seguintes características:
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Processo de criação**:
+  1. Verifica se já existe um usuário com o email fornecido
+  2. Cria o registro de usuário com nome, email e perfil definido
+  3. Configura uma conta Google associada ao usuário
+* **Resposta**: Retorna o usuário criado com seu ID e perfil, incluindo status da conta
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Criar um novo usuário
  */
 export type createUserResponse = {
@@ -205,7 +239,21 @@ export const useCreateUser = <
   }
 }
 /**
- * Este endpoint permite listar os usuários do sistema com paginação e filtros
+ * Este endpoint permite listar os usuários do sistema com recursos avançados de consulta.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Recursos de consulta**:
+  1. **Paginação**: Controle o número de resultados por página e a página atual
+  2. **Ordenação**: Ordene por diferentes campos (nome, email, data de criação)
+  3. **Filtragem**: Filtre usuários por papel, status da conta ou termos de busca
+  4. **Busca**: Pesquise por nome, email ou outros campos relevantes
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Listar todos os usuários
  */
 export type listUsersResponse = {
@@ -293,7 +341,24 @@ export const useListUsers = <
   }
 }
 /**
- * Este endpoint permite excluir um usuário específico do sistema. Apenas administradores e desenvolvedores podem excluir usuários. Um usuário não pode excluir sua própria conta.
+ * Este endpoint permite excluir permanentemente um usuário específico do sistema.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Restrições**:
+  1. Um usuário não pode excluir sua própria conta
+  2. Apenas usuários com perfil 'admin' ou 'dev' podem excluir usuários
+* **Processo de exclusão**:
+  1. Valida o ID do usuário a ser excluído
+  2. Exclui as sessões ativas do usuário
+  3. Remove contas vinculadas (Google, etc.)
+  4. Remove o registro do usuário do banco de dados
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Excluir um usuário
  */
 export type deleteUserResponse = {
@@ -377,7 +442,20 @@ export const useDeleteUser = <
   }
 }
 /**
- * Este endpoint retorna os detalhes de um usuário específico.
+ * Este endpoint retorna os detalhes completos de um usuário específico identificado pelo ID.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Processo**:
+  1. Valida o ID do usuário solicitado
+  2. Busca informações detalhadas do usuário no banco de dados
+  3. Retorna dados completos do perfil do usuário
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Obter detalhes de um usuário
  */
 export type getUserResponse = {
@@ -454,7 +532,22 @@ export const useGetUser = <
   }
 }
 /**
- * Este endpoint permite atualizar parcialmente os dados de um usuário específico. Apenas administradores e desenvolvedores podem atualizar usuários. Somente os campos enviados na requisição serão atualizados.
+ * Este endpoint permite atualizar parcialmente os dados de um usuário específico por meio de um PATCH.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Atualização parcial**: Implementa o conceito de PATCH, atualizando apenas os campos enviados na requisição.
+* **Processo**:
+  1. Valida o ID do usuário a ser atualizado
+  2. Verifica se o usuário existe no banco de dados
+  3. Aplica apenas as alterações enviadas no corpo da requisição
+  4. Retorna o usuário com os dados atualizados
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Atualizar dados parciais de um usuário
  */
 export type updateUserResponse = {
