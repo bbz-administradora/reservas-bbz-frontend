@@ -1,5 +1,11 @@
+import { DataTableUsers } from '@/components/data-table/users/table-users'
+import { Text } from '@/components/Text'
+import { Separator } from '@/components/ui/separator'
 import { webserver } from '@/infra/webserver'
-import { fetchCurrentUserInServer } from '@/services/userService'
+import {
+  fetchCurrentUserInServer,
+  fetchListUsersInServer,
+} from '@/services/userService'
 import { redirect } from 'next/navigation'
 
 export default async function AdminUser() {
@@ -10,20 +16,35 @@ export default async function AdminUser() {
     redirect(`${webserver.host}/salas`)
   }
 
-  const name = user?.name || 'Usuário'
+  const listUsers = await fetchListUsersInServer({
+    page: '1',
+    pageSize: '1000',
+  })
 
   return (
     <div
       id="main"
-      className="wrapper flex flex-1 flex-col items-center justify-center gap-5"
+      className="wrapper flex flex-1 flex-col items-center gap-5 pt-5 pb-10"
     >
-      <p className="text-7xl capitalize">{`Seja bem vindo ${name
-        .split(' ')
-        .shift()}!`}</p>
+      <Text variant={'title-22-32-700'} className="my-4">
+        Lista de Usuários
+      </Text>
 
-      <p className="text-2xl">
-        Aqui você pode visualizar e gerenciar os usuários do sistema.
-      </p>
+      <div className="container mx-auto py-10">
+        <DataTableUsers initialData={listUsers?.users} className="mb-5" />
+      </div>
+
+      <Separator className="bg-primary w-full" />
+
+      <Text variant={'title-22-32-700'} className="my-4">
+        Adicionar Usuário
+      </Text>
+
+      <Separator className="bg-primary w-full" />
+
+      <Text variant={'title-22-32-700'} className="my-4">
+        Editar Usuário
+      </Text>
     </div>
   )
 }
