@@ -1,7 +1,7 @@
-import { authenticateUserServer } from '@/utils/auth/auth-utils'
+import { fetchCurrentUserInServer } from '@/services/userService'
 
 export default async function RoomDetailsAndReservation() {
-  const { user } = await authenticateUserServer()
+  const { user } = await fetchCurrentUserInServer()
 
   const name = user?.name || 'Usuário'
 

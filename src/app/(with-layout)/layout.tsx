@@ -4,7 +4,7 @@ import { LogoBbz } from '@/components/svg/logo-bbz'
 import { Text } from '@/components/Text'
 import { Button } from '@/components/ui/button'
 import { webserver } from '@/infra/webserver'
-import { authenticateUserServer } from '@/utils/auth/auth-utils'
+import { fetchCurrentUserInServer } from '@/services/userService'
 import {
   CalendarCheck2Icon,
   DoorOpenIcon,
@@ -19,7 +19,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode
 }) {
-  const { isAuthenticated, user } = await authenticateUserServer()
+  const { isAuthenticated, user } = await fetchCurrentUserInServer()
 
   if (!isAuthenticated || !user) {
     return redirect(`${webserver.host}/login`)

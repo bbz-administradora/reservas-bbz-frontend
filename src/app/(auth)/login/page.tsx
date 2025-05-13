@@ -5,7 +5,7 @@ import { Text } from '@/components/Text'
 import { ToastOnLoad } from '@/components/ToastOnLoad'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { webserver } from '@/infra/webserver'
-import { authenticateUserServer } from '@/utils/auth/auth-utils'
+import { fetchCurrentUserInServer } from '@/services/userService'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -29,7 +29,7 @@ interface LoginPageProps {
 export default async function Login({ searchParams }: LoginPageProps) {
   const { statusCode } = await searchParams
 
-  const { isAuthenticated } = await authenticateUserServer()
+  const { isAuthenticated } = await fetchCurrentUserInServer()
 
   if (isAuthenticated) {
     return redirect(`${webserver.host}/salas`)

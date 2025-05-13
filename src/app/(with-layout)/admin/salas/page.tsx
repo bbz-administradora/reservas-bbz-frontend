@@ -1,9 +1,9 @@
 import { webserver } from '@/infra/webserver'
-import { authenticateUserServer } from '@/utils/auth/auth-utils'
+import { fetchCurrentUserInServer } from '@/services/userService'
 import { redirect } from 'next/navigation'
 
 export default async function AdminRooms() {
-  const { user } = await authenticateUserServer()
+  const { user } = await fetchCurrentUserInServer()
 
   // Verifica se o usuário está autenticado e tem a função de admin
   if (user?.role === 'user') {

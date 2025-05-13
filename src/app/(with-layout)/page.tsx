@@ -1,9 +1,9 @@
 import { webserver } from '@/infra/webserver'
-import { authenticateUserServer } from '@/utils/auth/auth-utils'
+import { fetchCurrentUserInServer } from '@/services/userService'
 import { redirect } from 'next/navigation'
 
 export default async function Home() {
-  const { user, isAuthenticated } = await authenticateUserServer()
+  const { user, isAuthenticated } = await fetchCurrentUserInServer()
 
   // ❗ Não estamos usando a home, então não queremos 404 aqui, então redirecionamos autenticados para a página de salas e não autenticados para a página de login
   if (!isAuthenticated) {
