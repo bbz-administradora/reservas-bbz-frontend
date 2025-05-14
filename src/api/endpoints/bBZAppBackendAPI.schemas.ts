@@ -89,6 +89,44 @@ export type UpdateRoom422 = {
 }
 
 /**
+ * Código de status HTTP 409.
+ */
+export type UpdateRoom409StatusCode =
+  (typeof UpdateRoom409StatusCode)[keyof typeof UpdateRoom409StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateRoom409StatusCode = {
+  NUMBER_409: 409,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateRoom409Name =
+  (typeof UpdateRoom409Name)[keyof typeof UpdateRoom409Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateRoom409Name = {
+  ConflictError: 'ConflictError',
+} as const
+
+/**
+ * Schema to represent Conflict errors (HTTP 409)
+ */
+export type UpdateRoom409 = {
+  /** Ação recomendada para resolver o conflito. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que houve um conflito. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateRoom409Name
+  /** Código de status HTTP 409. */
+  status_code: UpdateRoom409StatusCode
+}
+
+/**
  * Código de status HTTP 404.
  */
 export type UpdateRoom404StatusCode =
@@ -1498,8 +1536,12 @@ export type DeleteImage200 = {
   message: string
 }
 
+/**
+ * Payload to delete an image
+ */
 export type DeleteImageBody = {
-  file: Blob
+  /** @minLength 1 */
+  imagePath: string
 }
 
 /**
@@ -1807,6 +1849,44 @@ export type UpdateUser422 = {
   name: UpdateUser422Name
   /** Código de status HTTP 422. */
   status_code: UpdateUser422StatusCode
+}
+
+/**
+ * Código de status HTTP 409.
+ */
+export type UpdateUser409StatusCode =
+  (typeof UpdateUser409StatusCode)[keyof typeof UpdateUser409StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser409StatusCode = {
+  NUMBER_409: 409,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateUser409Name =
+  (typeof UpdateUser409Name)[keyof typeof UpdateUser409Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateUser409Name = {
+  ConflictError: 'ConflictError',
+} as const
+
+/**
+ * Schema to represent Conflict errors (HTTP 409)
+ */
+export type UpdateUser409 = {
+  /** Ação recomendada para resolver o conflito. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que houve um conflito. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateUser409Name
+  /** Código de status HTTP 409. */
+  status_code: UpdateUser409StatusCode
 }
 
 /**

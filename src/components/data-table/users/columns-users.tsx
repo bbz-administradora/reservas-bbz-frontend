@@ -29,7 +29,7 @@ export const columnsUsers: ColumnDef<ListUsers201UsersItem>[] = [
       <DataTableColumnHeader column={column} title={usersTitlesColumns.name} />
     ),
     cell: ({ row }) => (
-      <span>
+      <span className="break-words whitespace-normal">
         {transformTextIntoCapitalizedWords(row.original.name || 'N/A')}
       </span>
     ),

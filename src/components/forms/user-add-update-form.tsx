@@ -30,14 +30,14 @@ import {
 import { Input } from '../ui/input'
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group'
 
-const editUserFormSchema = z.object({
+const addUpdateUserFormSchema = z.object({
   name: fullNameSchema,
   email: emailSchema,
   role: z.enum(['user', 'admin', 'dev']),
   accountStatus: z.boolean(),
 })
 
-type UserAddUpdateFormSchemaProps = z.infer<typeof editUserFormSchema>
+type UserAddUpdateFormSchemaProps = z.infer<typeof addUpdateUserFormSchema>
 
 export interface UserAddUpdateFormProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -49,8 +49,8 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
   const [isDev, setIsDev] = useState(false)
 
   // React Hook Form
-  const formEditUser = useForm<UserAddUpdateFormSchemaProps>({
-    resolver: zodResolver(editUserFormSchema),
+  const form = useForm<UserAddUpdateFormSchemaProps>({
+    resolver: zodResolver(addUpdateUserFormSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -74,7 +74,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
         if (response.status === 200) {
           const { user } = response.data
 
-          formEditUser.reset({
+          form.reset({
             name: user.name ?? undefined,
             email: user.email,
             role: user.role as 'user' | 'admin' | 'dev',
@@ -94,7 +94,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
           setSelectedUserId(null)
           setIsDev(false)
 
-          formEditUser.reset({
+          form.reset({
             name: '',
             email: '',
             role: 'user',
@@ -113,7 +113,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
         setSelectedUserId(null)
         setIsDev(false)
 
-        formEditUser.reset({
+        form.reset({
           name: '',
           email: '',
           role: 'user',
@@ -131,7 +131,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
           if (response.status === 200) {
             const { user } = response.data
 
-            formEditUser.reset({
+            form.reset({
               name: '',
               email: '',
               role: 'user',
@@ -179,7 +179,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
         if (response.status === 201) {
           const { user } = response.data
 
-          formEditUser.reset({
+          form.reset({
             name: '',
             email: '',
             role: 'user',
@@ -254,7 +254,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
     setSelectedUserId(null)
     setIsDev(false)
 
-    formEditUser.reset({
+    form.reset({
       name: '',
       email: '',
       role: 'user',
@@ -309,7 +309,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
       </Text>
 
       {/* Formulário de adição e edição de usuário */}
-      <Form {...formEditUser}>
+      <Form {...form}>
         <div className="mx-auto w-full max-w-2xl">
           {/* Mensagem de erro somente se o usuário não for dev */}
           {isDev && (
@@ -327,12 +327,12 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
 
           <form
             id="form-edit-user"
-            onSubmit={formEditUser.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="grid w-full gap-5"
           >
             {/* Name */}
             <FormField
-              control={formEditUser.control}
+              control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem className="grid gap-2">
@@ -374,7 +374,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
 
             {/* Role */}
             <FormField
-              control={formEditUser.control}
+              control={form.control}
               name="role"
               render={({ field }) => (
                 <FormItem className="grid gap-2">
@@ -422,7 +422,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
 
             {/* Account Status */}
             <FormField
-              control={formEditUser.control}
+              control={form.control}
               name="accountStatus"
               render={({ field }) => (
                 <FormItem
@@ -464,9 +464,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
                 type="button"
                 variant="outline"
                 onClick={handleCancelEditUser}
-                disabled={
-                  formEditUser.formState.isSubmitting || loadingUpdateUser
-                }
+                disabled={form.formState.isSubmitting || loadingUpdateUser}
                 className={cn('sr-only', mode === 'edit' && 'not-sr-only')}
               >
                 Cancelar
@@ -474,14 +472,14 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
               <Button
                 type="submit"
                 disabled={
-                  formEditUser.formState.isSubmitting ||
+                  form.formState.isSubmitting ||
                   isDev ||
                   loadingUpdateUser ||
                   loadingGetUser ||
                   loadingCreateUser
                 }
               >
-                {(formEditUser.formState.isSubmitting ||
+                {(form.formState.isSubmitting ||
                   loadingGetUser ||
                   loadingCreateUser ||
                   loadingUpdateUser) && (

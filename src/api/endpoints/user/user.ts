@@ -46,6 +46,7 @@ import type {
   UpdateUser401,
   UpdateUser403,
   UpdateUser404,
+  UpdateUser409,
   UpdateUser422,
   UpdateUser500,
   UpdateUserBody,
@@ -595,6 +596,7 @@ export type UpdateUserMutationError =
   | UpdateUser401
   | UpdateUser403
   | UpdateUser404
+  | UpdateUser409
   | UpdateUser422
   | UpdateUser500
 
@@ -607,6 +609,7 @@ export const useUpdateUser = <
     | UpdateUser401
     | UpdateUser403
     | UpdateUser404
+    | UpdateUser409
     | UpdateUser422
     | UpdateUser500,
 >(

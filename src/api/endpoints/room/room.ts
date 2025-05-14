@@ -45,6 +45,7 @@ import type {
   UpdateRoom401,
   UpdateRoom403,
   UpdateRoom404,
+  UpdateRoom409,
   UpdateRoom422,
   UpdateRoom500,
   UpdateRoomBody,
@@ -501,6 +502,7 @@ export type UpdateRoomMutationError =
   | UpdateRoom401
   | UpdateRoom403
   | UpdateRoom404
+  | UpdateRoom409
   | UpdateRoom422
   | UpdateRoom500
 
@@ -513,6 +515,7 @@ export const useUpdateRoom = <
     | UpdateRoom401
     | UpdateRoom403
     | UpdateRoom404
+    | UpdateRoom409
     | UpdateRoom422
     | UpdateRoom500,
 >(

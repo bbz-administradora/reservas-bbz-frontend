@@ -159,6 +159,5 @@ export async function fetchListUsersInServer(
     return response.data
   }
 
-  console.error('Failed to list users. Status:', response.status)
   return null
 }
