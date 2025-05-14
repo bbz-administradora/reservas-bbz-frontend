@@ -4,6 +4,7 @@ import { revalidateTags } from '@/actions/revalidate-tags'
 import { ListUsers201UsersItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { useDeleteUser } from '@/api/endpoints/user/user'
 import { showToast } from '@/components/ShowToast'
+import { useUserFormMode } from '@/context/UserFormModeProvider'
 import { cn } from '@/utils/mergeClassNames'
 import { transformTextIntoCapitalizedWords } from '@/utils/textUtils'
 import { ColumnDef } from '@tanstack/react-table'
@@ -94,6 +95,9 @@ export const columnsUsers: ColumnDef<ListUsers201UsersItem>[] = [
   {
     id: 'actions', // Identificador único para a coluna
     cell: ({ row }) => {
+      const { setMode, mode, setSelectedUserId, selectedUserId } =
+        useUserFormMode()
+
       const userId = row.original.id
 
       const { isMutating, trigger: deleteUser } = useDeleteUser(userId, {
@@ -107,7 +111,9 @@ export const columnsUsers: ColumnDef<ListUsers201UsersItem>[] = [
                   variant: 'success',
                 })
 
-                revalidateTags(['users'])
+                revalidateTags(['delete-user'])
+                setMode('add')
+                setSelectedUserId(null)
 
                 break
               }
@@ -154,6 +160,22 @@ export const columnsUsers: ColumnDef<ListUsers201UsersItem>[] = [
         })
       }
 
+      const handleEditMode = () => {
+        if (mode === 'add') {
+          setMode('edit')
+        }
+
+        setSelectedUserId(userId)
+
+        // Aguarda próximo tick para garantir que o DOM já atualizou
+        setTimeout(() => {
+          const target = document.getElementById('form-edit-user')
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }, 100)
+      }
+
       return (
         <div className="flex justify-end gap-2">
           <Button
@@ -165,7 +187,11 @@ export const columnsUsers: ColumnDef<ListUsers201UsersItem>[] = [
           >
             <Trash />
           </Button>
-          <Button size="icon" onClick={() => {}}>
+          <Button
+            disabled={mode === 'edit' && userId === selectedUserId}
+            size="icon"
+            onClick={handleEditMode}
+          >
             <UserRoundPen />
           </Button>
         </div>
