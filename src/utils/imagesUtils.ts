@@ -1,25 +1,4 @@
 /**
- * Converte uma string para sua representação em base64.
- *
- * Esta função verifica o ambiente de execução para determinar o método apropriado
- * de codificação em base64, tratando tanto ambientes de servidor (Node.js) quanto de cliente (navegador).
- *
- * No ambiente do servidor (Node.js), utiliza `Buffer.from(str).toString('base64')` para converter
- * a string para base64, aproveitando a API de Buffer do Node.js para lidar com a codificação de strings.
- *
- * No ambiente do cliente (navegador), utiliza `window.btoa(str)` para realizar a codificação em base64,
- * utilizando a função nativa `btoa` disponível na maioria dos navegadores modernos para converter strings
- * contendo caracteres diretamente representáveis em ASCII para base64.
- *
- * @param {string} str - A string que será convertida para base64.
- * @returns {string} A representação em base64 da string fornecida.
- */
-export const toBase64 = (str: string) =>
-  typeof window === 'undefined'
-    ? Buffer.from(str).toString('base64')
-    : window.btoa(str)
-
-/**
  * Gera uma string codificada em base64 de um SVG que simula um efeito shimmer para ser utilizado como placeholder de imagens.
  *
  * Este utilitário cria um SVG que apresenta um efeito de carregamento ("shimmer") com um ícone centralizado de imagem,
@@ -66,201 +45,103 @@ export const ImageShimmerPlaceholder = (): `data:image/${string}` => {
 }
 
 /**
- * Redimensiona uma imagem para manter um tamanho máximo, preservando a proporção e convertendo para WebP.
+ * Redimensiona uma imagem mantendo sua proporção e converte para o formato WebP.
  *
- * A imagem será automaticamente ajustada com base na sua orientação:
- * - Se for mais larga que alta (paisagem), limita a largura (`maxWidth`).
- * - Se for mais alta que larga (retrato), limita a altura (`maxHeight`).
- * - Mantém a proporção original para evitar distorções.
+ * Esta função realiza os seguintes passos:
+ *   1. Lê o arquivo de imagem (File) como Data URL.
+ *   2. Carrega a imagem em um elemento Image para obter largura e altura originais.
+ *   3. Ajusta as dimensões conforme maxWidth e maxHeight, mantendo a proporção original.
+ *   4. Desenha a imagem redimensionada em um canvas com alta qualidade de suavização.
+ *   5. Converte o conteúdo do canvas para Blob no formato 'image/webp' e retorna um novo File.
  *
- * @param {File} file - Arquivo de imagem a ser redimensionado.
- * @param {number} maxSize - Tamanho máximo para largura ou altura (padrão: 1920).
- * @returns {Promise<File>} Retorna um novo arquivo `.webp` redimensionado.
+ * @param {File} file        — Arquivo de imagem original a ser processado.
+ * @param {number} maxWidth  — Largura máxima permitida no resultado (padrão = 1920).
+ * @param {number} maxHeight — Altura máxima permitida no resultado (padrão = 1920).
+ * @returns {Promise<File>}  — Promise que resolve com um novo File em WebP e
+ *                             dimensões ajustadas.
  *
- * @example
- * const file = document.querySelector('input[type="file"]').files[0];
- * const resizedFile = await resizeImageToWebp(file);
- * console.log('Nova imagem:', resizedFile);
+ * Exemplos usando maxWidth = 1024 e maxHeight = 576:
+ * | Exemplo | Dimensão Original | Orientação       | Dimensão Final |
+ * | ------- | ----------------- | ---------------- | -------------- |
+ * | 1       | 4000 × 3000       | Paisagem 4:3     | 768 × 576      |
+ * | 2       | 1600 × 900        | Paisagem 16:9    | 1024 × 576     |
+ * | 3       | 3000 × 4000       | Retrato 3:4      | 432 × 576      |
+ * | 4       | 900 × 1600        | Retrato 9:16     | 324 × 576      |
+ * | 5       | 2000 × 2000       | Quadrada         | 576 × 576      |
+ * | 6       | 3000 × 1000       | Panorâmica       | 1024 × 341     |
+ * | 7       | 1000 × 3000       | Retrato estreito | 192 × 576      |
+ * | 8       | 800 × 400         | Paisagem pequena | 800 × 400 (inalterada) |
  */
 export const resizeImageToWebp = (
   file: File,
-  maxSize: number = 1920,
+  maxWidth: number = 1920,
+  maxHeight: number = 1920,
 ): Promise<File> => {
   return new Promise((resolve, reject) => {
+    // Cria um FileReader para ler o conteúdo do arquivo como Data URL
     const reader = new FileReader()
+    reader.readAsDataURL(file)
 
-    reader.onload = (event) => {
+    // Ao terminar de ler o arquivo:
+    reader.onload = (evt) => {
+      // Cria elemento Image para carregar a imagem no navegador
       const img = new Image()
+      img.src = evt.target?.result as string
+
       img.onload = () => {
+        // Cria um canvas para desenhar e redimensionar a imagem
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
-
-        if (ctx) {
-          let { width, height } = img
-
-          // Verifica qual é a maior dimensão para definir o redimensionamento
-          if (width > height && width > maxSize) {
-            height = Math.round((maxSize / width) * height)
-            width = maxSize
-          } else if (height > width && height > maxSize) {
-            width = Math.round((maxSize / height) * width)
-            height = maxSize
-          }
-
-          canvas.width = width
-          canvas.height = height
-
-          // Melhor qualidade na renderização
-          ctx.imageSmoothingEnabled = true
-          ctx.imageSmoothingQuality = 'high'
-
-          ctx.drawImage(img, 0, 0, width, height)
-
-          canvas.toBlob((blob) => {
-            if (blob) {
-              resolve(
-                new File([blob], `${file.name.split('.')[0]}.webp`, {
-                  type: 'image/webp',
-                }),
-              )
-            } else {
-              reject(new Error('Falha ao processar a imagem'))
-            }
-          }, 'image/webp')
-        } else {
-          reject(new Error('Falha ao obter contexto do canvas'))
+        if (!ctx) {
+          return reject(new Error('Falha ao obter contexto do canvas'))
         }
-      }
-      img.src = event.target?.result as string
-    }
-    reader.onerror = (error) => reject(error)
-    reader.readAsDataURL(file)
-  })
-}
 
-export function getRadianAngle(degreeValue: number): number {
-  return (degreeValue * Math.PI) / 180
-}
+        // Largura e altura originais da imagem
+        let { width, height } = img
+        // Calcula proporção original
+        const aspectRatio = width / height
 
-/**
- * Retorna a nova área delimitadora de um retângulo rotacionado.
- */
-export function rotateSize(width: number, height: number, rotation: number) {
-  const rotRad = getRadianAngle(rotation)
+        // Se a largura exceder maxWidth, redimensiona mantendo proporção
+        if (width > maxWidth) {
+          width = maxWidth
+          height = Math.round(maxWidth / aspectRatio)
+        }
+        // Se a altura exceder maxHeight, redimensiona mantendo proporção
+        if (height > maxHeight) {
+          height = maxHeight
+          width = Math.round(maxHeight * aspectRatio)
+        }
 
-  return {
-    width:
-      Math.abs(Math.cos(rotRad) * width) + Math.abs(Math.sin(rotRad) * height),
-    height:
-      Math.abs(Math.sin(rotRad) * width) + Math.abs(Math.cos(rotRad) * height),
-  }
-}
+        // Ajusta tamanho do canvas para as novas dimensões
+        canvas.width = width
+        canvas.height = height
 
-/**
- * Função para criar uma imagem com suporte a CORS.
- */
-export const createImage = (url: string): Promise<HTMLImageElement> =>
-  new Promise((resolve, reject) => {
-    const image = new Image()
-    image.addEventListener('load', () => resolve(image))
-    image.addEventListener('error', (error) => reject(error))
-    image.setAttribute('crossOrigin', 'anonymous') // Evita problemas de CORS
-    image.src = url
-  })
+        // Configura suavização para alta qualidade de redimensionamento
+        ctx.imageSmoothingEnabled = true
+        ctx.imageSmoothingQuality = 'high'
 
-/**
- * Retorna a imagem cortada com rotação aplicada no formato WebP.
- */
-export const getCroppedImgWebp = async (
-  imageSrc: string,
-  croppedAreaPixels: {
-    x: number
-    y: number
-    width: number
-    height: number
-  },
-  rotation = 0,
-  targetSize = 500, // Redimensiona para 320x320 por padrão
-): Promise<string | Blob> => {
-  try {
-    const image = await createImage(imageSrc)
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
+        // Desenha a imagem redimensionada no canvas
+        ctx.drawImage(img, 0, 0, width, height)
 
-    if (!ctx) {
-      throw new Error('Falha ao criar contexto 2D')
-    }
-
-    // Melhor qualidade na renderização
-    ctx.imageSmoothingEnabled = true
-    ctx.imageSmoothingQuality = 'high'
-
-    // Calcula a área delimitadora após a rotação
-    const { width: rotatedWidth, height: rotatedHeight } = rotateSize(
-      image.width,
-      image.height,
-      rotation,
-    )
-
-    // Configura o tamanho do canvas para a área delimitadora rotacionada
-    canvas.width = rotatedWidth
-    canvas.height = rotatedHeight
-
-    // Move o contexto para o centro do canvas
-    ctx.translate(rotatedWidth / 2, rotatedHeight / 2)
-    // Rotaciona o contexto
-    ctx.rotate(getRadianAngle(rotation))
-    // Desenha a imagem centralizada
-    ctx.drawImage(image, -image.width / 2, -image.height / 2)
-
-    // Cria um canvas para o recorte
-    const croppedCanvas = document.createElement('canvas')
-    const croppedCtx = croppedCanvas.getContext('2d')
-
-    if (!croppedCtx) {
-      throw new Error('Falha ao criar contexto 2D para o recorte')
-    }
-
-    // Define o tamanho do canvas de recorte para o tamanho alvo
-    croppedCanvas.width = targetSize
-    croppedCanvas.height = targetSize
-
-    // Calcula a escala para redimensionar a área cortada para o tamanho alvo
-    const scaleX = targetSize / croppedAreaPixels.width
-    const scaleY = targetSize / croppedAreaPixels.height
-    const scale = Math.min(scaleX, scaleY)
-
-    const scaledWidth = croppedAreaPixels.width * scale
-    const scaledHeight = croppedAreaPixels.height * scale
-
-    // Desenha a área cortada do canvas rotacionado no canvas de recorte
-    croppedCtx.drawImage(
-      canvas,
-      croppedAreaPixels.x,
-      croppedAreaPixels.y,
-      croppedAreaPixels.width,
-      croppedAreaPixels.height,
-      (targetSize - scaledWidth) / 2,
-      (targetSize - scaledHeight) / 2,
-      scaledWidth,
-      scaledHeight,
-    )
-
-    // Converte o canvas de recorte para Blob no formato WebP com alta qualidade (90%)
-    return new Promise((resolve, reject) => {
-      croppedCanvas.toBlob(
-        (blob) => {
+        // Converte o conteúdo do canvas em Blob no formato WebP
+        canvas.toBlob((blob) => {
           if (!blob) {
-            reject(new Error('Falha ao criar Blob'))
-            return
+            return reject(new Error('Falha ao processar a imagem'))
           }
-          resolve(blob) // Retorna Blob diretamente
-        },
-        'image/webp',
-        0.9,
-      )
-    })
-  } catch (error) {
-    return Promise.reject(error)
-  }
+          // Resolve com um novo File usando extensão .webp
+          resolve(
+            new File([blob], `${file.name.split('.')[0]}.webp`, {
+              type: 'image/webp',
+            }),
+          )
+        }, 'image/webp')
+      }
+
+      // Rejeita se falhar ao carregar a imagem
+      img.onerror = reject
+    }
+
+    // Rejeita se falhar ao ler o arquivo
+    reader.onerror = reject
+  })
 }
