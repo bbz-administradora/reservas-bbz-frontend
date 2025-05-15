@@ -76,7 +76,7 @@ export async function fetchListRoomsInServer(
     credentials: 'include',
     cache: 'force-cache',
     headers,
-    next: { tags: ['delete-room, update-room, create-room'] },
+    next: { tags: ['delete-room', 'update-room', 'create-room'] },
   })
 
   if (response.status === 200) {

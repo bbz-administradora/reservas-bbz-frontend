@@ -152,7 +152,7 @@ export async function fetchListUsersInServer(
     credentials: 'include',
     cache: 'force-cache',
     headers,
-    next: { tags: ['delete-user, update-user, create-user'] },
+    next: { tags: ['delete-user', 'update-user', 'create-user'] },
   })
 
   if (response.status === 201) {

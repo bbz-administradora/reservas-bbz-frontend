@@ -77,3 +77,22 @@ export function getInitials(name: string | null | undefined): string {
 
   return `${firstInitial}${lastInitial}`
 }
+
+/**
+ * Retorna true se dois arrays de string são iguais,
+ * ignorando case e ordem dos itens.
+ */
+export function areStringArraysEqual(a: string[] = [], b: string[] = []) {
+  const normalize = (arr: string[]) =>
+    arr
+      .map((s) => s.toLowerCase().trim())
+      .filter(Boolean)
+      .sort()
+
+  const na = normalize(a)
+  const nb = normalize(b)
+  if (na.length !== nb.length) {
+    return false
+  }
+  return na.every((item, i) => item === nb[i])
+}
