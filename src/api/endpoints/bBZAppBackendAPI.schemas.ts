@@ -1049,7 +1049,6 @@ export type ListRoomsParams = {
   searchTerm?: string
   isActive?: string
   capacidade?: string
-  includeDeleted?: string
 }
 
 /**

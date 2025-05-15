@@ -253,7 +253,7 @@ export const useListRooms = <
   }
 }
 /**
- * Este endpoint permite excluir uma sala específica.
+ * Este endpoint permite excluir uma sala específica permanentemente.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
@@ -261,7 +261,7 @@ export const useListRooms = <
 * **Processo**:
   1. Valida o ID da sala a ser excluída
   2. Verifica se a sala existe no banco de dados
-  3. Exclui a sala
+  3. Exclui permanentemente a sala (hard delete)
   4. Retorna mensagem de confirmação
 
 **Middlewares aplicados**:
