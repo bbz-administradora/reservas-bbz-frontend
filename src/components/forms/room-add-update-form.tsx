@@ -31,10 +31,6 @@ import {
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 
-// largura e altura da imagem maxima da sala
-const TARGET_WIDTH_IMAGE = 1024
-const TARGET_HEIGHT_IMAGE = 576
-
 const addUpdateRoomFormSchema = z.object({
   name: z
     .string({ required_error: 'O preenchimento do nome é obrigatório.' })
@@ -330,8 +326,8 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
   return (
     <div
       className={cn(
-        'flex w-full flex-1 scale-100 flex-col items-center opacity-100 transition-all duration-1000',
-        mode === 'image' && 'scale-0 opacity-0',
+        'flex w-full flex-1 flex-col items-center',
+        mode === 'image' && 'sr-only',
         className,
       )}
     >

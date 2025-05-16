@@ -10,7 +10,7 @@ import { transformTextIntoCapitalizedWords } from '@/utils/textUtils'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { ImagePlusIcon, TrashIcon, UserRoundPen } from 'lucide-react'
+import { ImagePlusIcon, PencilIcon, TrashIcon } from 'lucide-react'
 import { Button } from '../../ui/button'
 import { DataTableColumnHeader } from '../data-table-column-header'
 
@@ -303,7 +303,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
             size="icon"
             onClick={handleEditMode}
           >
-            <UserRoundPen />
+            <PencilIcon />
           </Button>
           <Button
             disabled={isMutating}

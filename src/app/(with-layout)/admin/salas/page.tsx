@@ -1,5 +1,6 @@
 import { DataTableRooms } from '@/components/data-table/rooms/table-rooms'
 import { RoomAddUpdateForm } from '@/components/forms/room-add-update-form'
+import { RoomAddUpdateImageForm } from '@/components/forms/room-add-update-image-form'
 import { Text } from '@/components/Text'
 import { fetchListRoomsInServer } from '@/services/roomService'
 import { Separator } from '@radix-ui/react-select'
@@ -26,6 +27,8 @@ export default async function AdminRooms() {
       <Separator className="bg-primary w-full" />
 
       <RoomAddUpdateForm />
+
+      <RoomAddUpdateImageForm />
     </div>
   )
 }
