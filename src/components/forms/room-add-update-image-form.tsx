@@ -176,7 +176,7 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
         loadingDeleteImage:
         return 'Atualizando Sala...'
       default:
-        return 'Atualizar Imagens da Sala'
+        return `Atualizar Imagens da Sala - ${getRoomData?.data?.room?.name}`
     }
   }
 
@@ -412,7 +412,7 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
         className,
       )}
     >
-      <Text variant="title-22-32-700" className="my-4 text-center">
+      <Text variant="title-22-32-700" className="my-4 max-w-3xl text-center">
         {title}
       </Text>
 
