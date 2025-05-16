@@ -150,7 +150,7 @@ export async function fetchListUsersInServer(
   const response = await customFetch<ListUsers201>(url, {
     method: 'GET',
     credentials: 'include',
-    cache: 'force-cache',
+    cache: 'no-store',
     headers,
     next: { tags: ['delete-user', 'update-user', 'create-user'] },
   })

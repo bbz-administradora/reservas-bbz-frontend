@@ -189,8 +189,13 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
   {
     id: 'actions', // Identificador único para a coluna
     cell: ({ row }) => {
-      const { setMode, mode, setSelectedRoomId, selectedRoomId, setResetForm } =
-        useRoomFormMode()
+      const {
+        setMode,
+        mode,
+        setSelectedRoomId,
+        selectedRoomId,
+        toggleResetForm,
+      } = useRoomFormMode()
 
       const roomId = row.original.id
 
@@ -208,7 +213,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
                 revalidateTags(['delete-room'])
                 setMode('add')
                 setSelectedRoomId(null)
-                setResetForm(true)
+                toggleResetForm()
 
                 window.scrollTo({ top: 0, behavior: 'smooth' })
 
@@ -263,10 +268,10 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
 
         // Aguarda próximo tick para garantir que o DOM já atualizou
         setTimeout(() => {
-          const target = document.getElementById('form-edit-room')
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+          })
         }, 100)
       }
 
@@ -276,10 +281,10 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
 
         // Aguarda próximo tick para garantir que o DOM já atualizou
         setTimeout(() => {
-          const target = document.getElementById('form-image-room')
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth',
+          })
         }, 100)
       }
 

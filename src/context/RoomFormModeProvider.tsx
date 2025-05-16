@@ -10,7 +10,7 @@ interface RoomFormModeContextValue {
   selectedRoomId: string | null
   setSelectedRoomId: (id: string | null) => void
   resetForm: boolean
-  setResetForm: (reset: boolean) => void
+  toggleResetForm: () => void
 }
 
 const RoomFormModeContext = createContext<RoomFormModeContextValue | undefined>(
@@ -20,7 +20,12 @@ const RoomFormModeContext = createContext<RoomFormModeContextValue | undefined>(
 export function RoomFormModeProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<FormMode>('add')
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null)
-  const [resetForm, setResetForm] = useState(false)
+  const [resetForm, setResetForm] = useState<boolean>(false)
+
+  // Função para alternar resetForm
+  const toggleResetForm = () => {
+    setResetForm((prev) => !prev)
+  }
 
   return (
     <RoomFormModeContext.Provider
@@ -30,7 +35,7 @@ export function RoomFormModeProvider({ children }: { children: ReactNode }) {
         selectedRoomId,
         setSelectedRoomId,
         resetForm,
-        setResetForm,
+        toggleResetForm,
       }}
     >
       {children}

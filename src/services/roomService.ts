@@ -74,9 +74,11 @@ export async function fetchListRoomsInServer(
   const response = await customFetch<ListRooms200>(url, {
     method: 'GET',
     credentials: 'include',
-    cache: 'force-cache',
+    cache: 'no-store',
     headers,
-    next: { tags: ['delete-room', 'update-room', 'create-room'] },
+    next: {
+      tags: ['delete-room', 'update-room', 'create-room', 'update-room-image'],
+    },
   })
 
   if (response.status === 200) {
