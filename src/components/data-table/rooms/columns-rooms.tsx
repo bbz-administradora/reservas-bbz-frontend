@@ -2,6 +2,7 @@
 
 import { revalidateTags } from '@/actions/revalidate-tags'
 import { ListRooms200RoomsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { useDeleteImage } from '@/api/endpoints/image/image'
 import { useDeleteRoom } from '@/api/endpoints/room/room'
 import { showToast } from '@/components/ShowToast'
 import { useRoomFormMode } from '@/context/RoomFormModeProvider'
@@ -198,48 +199,106 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
       } = useRoomFormMode()
 
       const roomId = row.original.id
+      const roomImages = row.original.imagens || []
+      const hasImages = Array.isArray(roomImages) && roomImages.length > 0
 
-      const { isMutating, trigger: deleteRoom } = useDeleteRoom(roomId, {
-        swr: {
-          onSuccess: (response) => {
-            switch (response.status) {
-              case 200: {
-                showToast({
-                  message: 'Sala apagada com sucesso.',
-                  duration: 5000,
-                  variant: 'success',
-                })
-
-                revalidateTags(['delete-room'])
-                setMode('add')
-                setSelectedRoomId(null)
-                toggleResetForm()
-
-                window.scrollTo({ top: 0, behavior: 'smooth' })
-
-                break
+      // Hook para excluir imagens do S3
+      const { trigger: deleteImage, isMutating: isDeletingImage } =
+        useDeleteImage({
+          swr: {
+            onSuccess: (response) => {
+              if (response.status !== 200) {
+                console.error(
+                  '❗ Erro ao deletar imagem:',
+                  response.data.message,
+                )
               }
-              default: {
-                showToast({
-                  message: 'Ops... Falha ao apagar sala, tente novamente.',
-                  duration: 5000,
-                  variant: 'error',
-                })
-
-                break
-              }
-            }
+            },
+            onError: (error) => {
+              console.error('💥 Erro ao deletar imagem:', error)
+            },
           },
+        })
 
-          onError: () => {
-            showToast({
-              message: 'Ops... Falha ao apagar sala, tente novamente.',
-              duration: 5000,
-              variant: 'error',
-            })
+      const { isMutating: isDeletingRoom, trigger: deleteRoom } = useDeleteRoom(
+        roomId,
+        {
+          swr: {
+            onSuccess: (response) => {
+              switch (response.status) {
+                case 200: {
+                  showToast({
+                    message: 'Sala apagada com sucesso.',
+                    duration: 5000,
+                    variant: 'success',
+                  })
+
+                  revalidateTags(['delete-room'])
+                  setMode('add')
+                  setSelectedRoomId(null)
+                  toggleResetForm()
+
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+
+                  break
+                }
+                default: {
+                  showToast({
+                    message: 'Ops... Falha ao apagar sala, tente novamente.',
+                    duration: 5000,
+                    variant: 'error',
+                  })
+
+                  break
+                }
+              }
+            },
+
+            onError: () => {
+              showToast({
+                message: 'Ops... Falha ao apagar sala, tente novamente.',
+                duration: 5000,
+                variant: 'error',
+              })
+            },
           },
         },
-      })
+      )
+
+      // Função para lidar com a exclusão de imagens e da sala
+      const handleDelete = async () => {
+        try {
+          // Se a sala tem imagens, deleta cada uma delas primeiro
+          if (hasImages) {
+            // Feedback visual para o usuário
+            showToast({
+              message: 'Removendo imagens associadas à sala...',
+              duration: 3000,
+              variant: 'info',
+            })
+
+            // Deleta todas as imagens em sequência
+            for (const imagePath of roomImages) {
+              try {
+                await deleteImage({ imagePath })
+              } catch (error) {
+                console.error(`💥 Erro ao deletar imagem ${imagePath}:`, error)
+                // Continue mesmo se houver erro em uma imagem
+              }
+            }
+          }
+
+          // Após excluir todas as imagens (ou se não houver imagens), exclui a sala
+          deleteRoom()
+        } catch (error) {
+          console.error('💥 Erro ao processar exclusão:', error)
+          showToast({
+            message: 'Erro ao excluir sala. Tente novamente.',
+            duration: 5000,
+            variant: 'error',
+          })
+        }
+      }
 
       const handleWarningDelete = () => {
         showToast({
@@ -256,7 +315,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
             text: 'Apagar',
             variant: 'destructive',
             onClick: () => {
-              deleteRoom()
+              handleDelete()
             },
           },
         })
@@ -291,7 +350,11 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
       return (
         <div className="flex min-w-[80px] flex-wrap items-center justify-end gap-2">
           <Button
-            disabled={mode === 'image' && roomId === selectedRoomId}
+            disabled={
+              (mode === 'image' && roomId === selectedRoomId) ||
+              isDeletingImage ||
+              isDeletingRoom
+            }
             variant="outline"
             size="icon"
             onClick={handleImageMode}
@@ -299,14 +362,18 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
             <ImagePlusIcon />
           </Button>
           <Button
-            disabled={mode === 'edit' && roomId === selectedRoomId}
+            disabled={
+              (mode === 'edit' && roomId === selectedRoomId) ||
+              isDeletingImage ||
+              isDeletingRoom
+            }
             size="icon"
             onClick={handleEditMode}
           >
             <PencilIcon />
           </Button>
           <Button
-            disabled={isMutating}
+            disabled={isDeletingImage || isDeletingRoom}
             variant="ghost"
             size="icon"
             onClick={handleWarningDelete}
