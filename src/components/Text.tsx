@@ -44,6 +44,8 @@ export const text = tv({
         'font-manrope text-[18px] leading-[24px] font-medium tracking-[0.15px] md:text-[22px] md:leading-[28px] md:tracking-normal lg:text-[24px] lg:leading-[32px]',
       'title-18-24-400':
         'font-manrope text-[18px] leading-[24px] font-normal tracking-[0.15px] md:text-[22px] md:leading-[28px] md:tracking-normal lg:text-[24px] lg:leading-[32px]',
+      'title-16-18-700':
+        'font-manrope text-[16px] leading-[24px] font-bold tracking-[0.15px] lg:text-[18px]',
       'title-16-18-500':
         'font-manrope text-[16px] leading-[24px] font-medium tracking-[0.15px] lg:text-[18px]',
       'title-16-18-400':
