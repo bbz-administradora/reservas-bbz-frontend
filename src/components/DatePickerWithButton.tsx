@@ -59,9 +59,9 @@ export function DatePickerWithButton({
             mode="single"
             selected={date}
             onSelect={handleSelect}
-            initialFocus
+            autoFocus
             locale={ptBR}
-            fromDate={new Date()} // Desabilita dias anteriores à data atual
+            startMonth={new Date()} // Desabilita dias anteriores à data atual
             disabled={(date) =>
               date < new Date(new Date().setHours(0, 0, 0, 0))
             } // Garante que não seja possível selecionar datas passadas
