@@ -1,4 +1,4 @@
-import { prepositionsPTBR } from '../../schema/textValidations'
+import { prepositionsPTBR } from '../schema/textValidations'
 
 export function truncateText(text: string, maxLength: number): string {
   if (!text) {

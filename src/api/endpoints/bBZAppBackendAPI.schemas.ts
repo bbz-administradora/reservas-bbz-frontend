@@ -8,6 +8,256 @@
 /**
  * Código de status HTTP 500.
  */
+export type ListRoomSlots500StatusCode =
+  (typeof ListRoomSlots500StatusCode)[keyof typeof ListRoomSlots500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListRoomSlots500Name =
+  (typeof ListRoomSlots500Name)[keyof typeof ListRoomSlots500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type ListRoomSlots500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListRoomSlots500Name
+  /** Código de status HTTP 500. */
+  status_code: ListRoomSlots500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type ListRoomSlots422StatusCode =
+  (typeof ListRoomSlots422StatusCode)[keyof typeof ListRoomSlots422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListRoomSlots422Name =
+  (typeof ListRoomSlots422Name)[keyof typeof ListRoomSlots422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type ListRoomSlots422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type ListRoomSlots422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: ListRoomSlots422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListRoomSlots422Name
+  /** Código de status HTTP 422. */
+  status_code: ListRoomSlots422StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type ListRoomSlots403StatusCode =
+  (typeof ListRoomSlots403StatusCode)[keyof typeof ListRoomSlots403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListRoomSlots403Name =
+  (typeof ListRoomSlots403Name)[keyof typeof ListRoomSlots403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type ListRoomSlots403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListRoomSlots403Name
+  /** Código de status HTTP 403. */
+  status_code: ListRoomSlots403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type ListRoomSlots401StatusCode =
+  (typeof ListRoomSlots401StatusCode)[keyof typeof ListRoomSlots401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListRoomSlots401Name =
+  (typeof ListRoomSlots401Name)[keyof typeof ListRoomSlots401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type ListRoomSlots401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListRoomSlots401Name
+  /** Código de status HTTP 401. */
+  status_code: ListRoomSlots401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type ListRoomSlots400StatusCode =
+  (typeof ListRoomSlots400StatusCode)[keyof typeof ListRoomSlots400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListRoomSlots400Name =
+  (typeof ListRoomSlots400Name)[keyof typeof ListRoomSlots400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListRoomSlots400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type ListRoomSlots400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListRoomSlots400Name
+  /** Código de status HTTP 400. */
+  status_code: ListRoomSlots400StatusCode
+}
+
+export type ListRoomSlots200RoomsItem = {
+  /** Capacidade máxima de pessoas na sala */
+  capacidade: number
+  /**
+   * Descrição da sala (pode ser nulo)
+   * @nullable
+   */
+  description: string | null
+  /** Identificador único da sala */
+  id: string
+  /** URLs das imagens da sala */
+  imagens: string[]
+  /** Nome da sala */
+  name: string
+  /** Lista de recursos disponíveis na sala */
+  recursos: string[]
+}
+
+/**
+ * Lista paginada de salas disponíveis com metadados
+ */
+export type ListRoomSlots200 = {
+  /** Número da página atual sendo exibida */
+  currentPage: number
+  /** Mensagem informativa sobre o resultado da operação */
+  message: string
+  /** Array de salas disponíveis no período solicitado */
+  rooms: ListRoomSlots200RoomsItem[]
+  /** Número total de salas disponíveis para a consulta */
+  totalCount: number
+  /** Número total de páginas com base no tamanho de página */
+  totalPages: number
+}
+
+export type ListRoomSlotsParams = {
+  /**
+   * Data para verificação de disponibilidade no formato YYYY-MM-DD
+   */
+  date: string
+  /**
+   * Hora para verificação de disponibilidade no formato HH:MM (24h)
+   */
+  hour?: string
+  /**
+   * Número da página para paginação, começando em 1 (padrão: 1)
+   */
+  page?: string
+  /**
+   * Quantidade de resultados por página, entre 1 e 100 (padrão: 12)
+   */
+  pageSize?: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type UpdateRoom500StatusCode =
   (typeof UpdateRoom500StatusCode)[keyof typeof UpdateRoom500StatusCode]
 
