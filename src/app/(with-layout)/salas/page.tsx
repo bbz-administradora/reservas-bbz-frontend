@@ -20,6 +20,8 @@ export default async function RoomsHome() {
     date: today,
   })
 
+  // TODO: implementar mostUsedTimes e passar como prop para o RoomExplorer
+
   const { user } = await fetchCurrentUserInServer()
 
   return (
@@ -29,6 +31,7 @@ export default async function RoomsHome() {
     >
       {/* Card de informações */}
       <div className="mt-10 mb-5 grid w-full max-w-6xl grid-cols-2 gap-2.5 md:gap-4 lg:grid-cols-4">
+        {/* nome e email */}
         <div className="bg-muted flex flex-col items-center gap-2.5 rounded-lg p-5 shadow-xl">
           <div className="relative flex items-center justify-center">
             <CardDecoration className="text-accent absolute bottom-[-15px] left-[-15px]" />
@@ -48,6 +51,7 @@ export default async function RoomsHome() {
           </Text>
         </div>
 
+        {/* Salas disponíveis */}
         <div className="bg-secondary flex flex-col items-center gap-2.5 rounded-lg p-5 shadow-xl">
           <div className="relative flex items-center justify-center">
             <CardDecoration className="text-accent absolute bottom-[-15px] left-[-15px]" />
@@ -63,10 +67,11 @@ export default async function RoomsHome() {
             variant="title-18-24-700"
             className="text-primary text-center break-words"
           >
-            {listAvailableRooms?.totalCount}
+            {listAvailableRooms?.totalCount || 0}
           </Text>
         </div>
 
+        {/* Minhas Reservas Realizadas */}
         <div className="bg-secondary flex flex-col items-center gap-2.5 rounded-lg p-5 shadow-xl">
           <div className="relative flex items-center justify-center">
             <CardDecoration className="text-accent absolute bottom-[-15px] left-[-15px]" />
@@ -86,6 +91,7 @@ export default async function RoomsHome() {
           </Text>
         </div>
 
+        {/* Próxima Reserva */}
         <div className="bg-secondary flex flex-col items-center gap-2.5 rounded-lg p-5 shadow-xl">
           <div className="relative flex items-center justify-center">
             <CardDecoration className="text-accent absolute bottom-[-15px] left-[-15px]" />

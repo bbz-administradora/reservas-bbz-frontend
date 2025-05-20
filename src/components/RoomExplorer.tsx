@@ -180,7 +180,9 @@ export function RoomExplorer({
             ></div>
           ))
         ) : currentRooms.length > 0 ? (
-          currentRooms.map((room) => <RoomCard key={room.id} {...room} />)
+          currentRooms.map((room) => (
+            <RoomCard key={room.id} {...room} date={date} />
+          ))
         ) : (
           <div className="col-span-3 flex h-40 w-full items-center justify-center">
             <Text className="text-muted-foreground">

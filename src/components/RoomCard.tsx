@@ -1,17 +1,27 @@
 'use client'
 
-import { ListRoomSlots200RoomsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { env } from '@/infra/env'
 import { webserver } from '@/infra/webserver'
 import { ImageShimmerPlaceholder } from '@/utils/imagesUtils'
+import { addDays, format, subDays } from 'date-fns'
 import { ImageOffIcon, UserRoundIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Text } from './Text'
 import { AspectRatio } from './ui/aspect-ratio'
+
+type RoomCardProps = {
+  capacidade: number
+  description: string | null
+  id: string
+  imagens: string[]
+  name: string
+  recursos: string[]
+  date: Date | undefined
+}
 
 export function RoomCard({
   id,
@@ -19,7 +29,27 @@ export function RoomCard({
   capacidade,
   imagens,
   recursos,
-}: ListRoomSlots200RoomsItem) {
+  date,
+}: RoomCardProps) {
+  const baseDate = date ?? new Date()
+
+  // format to 'YYYY-MM-DD' for comparison
+  const baseDayStr = format(baseDate, 'yyyy-MM-dd')
+  const todayStr = format(new Date(), 'yyyy-MM-dd')
+
+  let startDate: string
+  let endDate: string
+
+  if (baseDayStr === todayStr) {
+    // if it's today, interval [today, today+2]
+    startDate = todayStr
+    endDate = format(addDays(baseDate, 2), 'yyyy-MM-dd')
+  } else {
+    // otherwise [yesterday, tomorrow]
+    startDate = format(subDays(baseDate, 1), 'yyyy-MM-dd')
+    endDate = format(addDays(baseDate, 1), 'yyyy-MM-dd')
+  }
+
   return (
     <Card className="gap-4 overflow-hidden border-none pt-0 shadow-2xl">
       <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-t-md">
@@ -62,7 +92,11 @@ export function RoomCard({
       </CardContent>
       <CardFooter className="">
         <Button className="w-full" asChild>
-          <Link href={`${webserver.host}/salas/${id}`}>Ver espaço</Link>
+          <Link
+            href={`${webserver.host}/salas/${id}?startDate=${startDate}&endDate=${endDate}`}
+          >
+            Ver espaço
+          </Link>
         </Button>
       </CardFooter>
     </Card>
