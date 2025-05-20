@@ -9,6 +9,14 @@ import type { Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  GetRoomSlotAvailability200,
+  GetRoomSlotAvailability400,
+  GetRoomSlotAvailability401,
+  GetRoomSlotAvailability403,
+  GetRoomSlotAvailability404,
+  GetRoomSlotAvailability422,
+  GetRoomSlotAvailability500,
+  GetRoomSlotAvailabilityParams,
   ListRoomSlots200,
   ListRoomSlots400,
   ListRoomSlots401,
@@ -133,6 +141,146 @@ export const useListRoomSlots = <
     swrOptions?.swrKey ??
     (() => (isEnabled ? getListRoomSlotsKey(params) : null))
   const swrFn = () => listRoomSlots(params, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite obter informações detalhadas sobre a disponibilidade de uma sala específica em um intervalo de datas, incluindo slots reservados e pré-reservados.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+
+* **Funcionalidade**:
+  1. Busca detalhes completos da sala solicitada (nome, descrição, recursos, etc.)
+  2. Retorna todos os slots já reservados ou pré-reservados para a sala no período solicitado
+  3. Para cada slot, fornece informações do usuário que fez a pré-reserva (se houver)
+  4. Permite visualização do status de cada horário ('reserved' ou 'pre_reserved')
+  5. Verifica automaticamente se a sala existe e está ativa antes de retornar resultados
+  6. Limita a consulta a um período máximo de 7 dias entre a data inicial e final
+
+* **Parâmetros**:
+  - roomId (obrigatório, path): Identificador UUID da sala
+  - startDate (obrigatório, query): Data inicial do período no formato YYYY-MM-DD (ex: 2023-08-15)
+  - endDate (obrigatório, query): Data final do período no formato YYYY-MM-DD (ex: 2023-08-20) (período máximo de 7 dias)
+
+* **Exemplo de uso**:
+  - Requisição básica: `GET /v1/private/room-slot/a1b2c3d4-e5f6-7890-abcd-1234567890ab/availability?startDate=2023-08-15&endDate=2023-08-20`
+  - Buscar slots para um dia: `GET /v1/private/room-slot/a1b2c3d4-e5f6-7890-abcd-1234567890ab/availability?startDate=2023-08-15&endDate=2023-08-15`
+
+* **Formato da resposta**:
+  - room: Objeto contendo todas as informações da sala solicitada (id, nome, recursos, capacidade, etc.)
+  - slots: Array de objetos representando os horários reservados ou pré-reservados no período, com:
+    - id: Identificador do slot
+    - date: Data do slot no formato YYYY-MM-DD
+    - time: Horário do slot no formato HH:MM (24h)
+    - status: Estado do slot ('reserved' ou 'pre_reserved')
+    - preReservedBy: Objeto com informações do usuário que fez a pré-reserva (id, nome, email)
+    - preReservedUntil: Data e hora até quando o slot está pré-reservado
+
+* **Notas**:
+  - O formato das datas deve ser estritamente YYYY-MM-DD (ano-mês-dia)
+  - A data inicial não pode ser posterior à data final
+  - A resposta inclui apenas slots que já existem (reservados ou pré-reservados)
+  - Um slot com status 'pre_reserved' pode se tornar disponível novamente após o tempo de pré-reserva expirar
+  - Apenas salas ativas podem ser consultadas neste endpoint
+ * @summary Visualizar disponibilidade detalhada de uma sala específica em um período
+ */
+export type getRoomSlotAvailabilityResponse = {
+  data: GetRoomSlotAvailability200
+  status: number
+  headers: Headers
+}
+
+export const getGetRoomSlotAvailabilityUrl = (
+  roomId: string,
+  params: GetRoomSlotAvailabilityParams,
+) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  return normalizedParams.size
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room-slot/${roomId}/availability?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room-slot/${roomId}/availability`
+}
+
+export const getRoomSlotAvailability = async (
+  roomId: string,
+  params: GetRoomSlotAvailabilityParams,
+  options?: RequestInit,
+): Promise<getRoomSlotAvailabilityResponse> => {
+  return customFetch<Promise<getRoomSlotAvailabilityResponse>>(
+    getGetRoomSlotAvailabilityUrl(roomId, params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getGetRoomSlotAvailabilityKey = (
+  roomId: string,
+  params: GetRoomSlotAvailabilityParams,
+) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room-slot/${roomId}/availability`,
+    ...(params ? [params] : []),
+  ] as const
+
+export type GetRoomSlotAvailabilityQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRoomSlotAvailability>>
+>
+export type GetRoomSlotAvailabilityQueryError =
+  | GetRoomSlotAvailability400
+  | GetRoomSlotAvailability401
+  | GetRoomSlotAvailability403
+  | GetRoomSlotAvailability404
+  | GetRoomSlotAvailability422
+  | GetRoomSlotAvailability500
+
+/**
+ * @summary Visualizar disponibilidade detalhada de uma sala específica em um período
+ */
+export const useGetRoomSlotAvailability = <
+  TError =
+    | GetRoomSlotAvailability400
+    | GetRoomSlotAvailability401
+    | GetRoomSlotAvailability403
+    | GetRoomSlotAvailability404
+    | GetRoomSlotAvailability422
+    | GetRoomSlotAvailability500,
+>(
+  roomId: string,
+  params: GetRoomSlotAvailabilityParams,
+  options?: {
+    swr?: SWRConfiguration<
+      Awaited<ReturnType<typeof getRoomSlotAvailability>>,
+      TError
+    > & { swrKey?: Key; enabled?: boolean }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false && !!roomId
+  const swrKey =
+    swrOptions?.swrKey ??
+    (() => (isEnabled ? getGetRoomSlotAvailabilityKey(roomId, params) : null))
+  const swrFn = () => getRoomSlotAvailability(roomId, params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
