@@ -7,8 +7,19 @@
  */
 import type { Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
+import type { SWRMutationConfiguration } from 'swr/mutation'
+import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  CreateRoomSlotPreReserve201,
+  CreateRoomSlotPreReserve400,
+  CreateRoomSlotPreReserve401,
+  CreateRoomSlotPreReserve403,
+  CreateRoomSlotPreReserve404,
+  CreateRoomSlotPreReserve409,
+  CreateRoomSlotPreReserve422,
+  CreateRoomSlotPreReserve500,
+  CreateRoomSlotPreReserveBody,
   GetRoomSlotAvailability200,
   GetRoomSlotAvailability400,
   GetRoomSlotAvailability401,
@@ -287,6 +298,142 @@ export const useGetRoomSlotAvailability = <
     swrFn,
     swrOptions,
   )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite que um usuário crie uma pré-reserva de um slot (horário) em uma sala específica.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+
+* **Funcionalidade**:
+  1. Cria uma pré-reserva para um slot (combinação de sala, data e horário)
+  2. Define o status como 'pre_reserved'
+  3. Associa o usuário atual à pré-reserva
+  4. Define um tempo limite de 5 minutos para confirmação da reserva
+  5. Verifica automaticamente se a sala existe e está ativa
+  6. Impede pré-reservas de slots já reservados ou pré-reservados
+  7. Impede pré-reservas para datas passadas
+
+* **Fluxo de reserva**:
+  1. O usuário faz uma pré-reserva (este endpoint)
+  2. O sistema reserva o slot por 5 minutos para o usuário
+  3. O usuário deve confirmar a reserva em até 5 minutos
+  4. Caso contrário, o slot fica disponível novamente após o tempo limite
+
+* **Parâmetros no corpo**:
+  - roomId (obrigatório): Identificador UUID da sala
+  - date (obrigatório): Data para reserva no formato YYYY-MM-DD (ex: 2023-08-15)
+  - time (obrigatório): Horário para reserva no formato HH:MM (ex: 14:30)
+
+* **Exemplo de uso**:
+  - Requisição básica: `POST /v1/private/room-slot/pre-reserve` com body:
+  ```json
+  {
+    "roomId": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+    "date": "2023-08-15",
+    "time": "14:30"
+  }
+  ```
+
+* **Formato da resposta**:
+  - slot: Objeto com todas as informações do slot pré-reservado
+  - message: Mensagem informativa de sucesso
+
+* **Notas**:
+  - O formato da data deve ser estritamente YYYY-MM-DD (ano-mês-dia)
+  - O formato da hora deve ser estritamente HH:MM (hora:minuto) no formato 24h
+  - Uma pré-reserva expira automaticamente após 5 minutos se não for confirmada
+  - Um usuário não pode pré-reservar um slot já reservado ou pré-reservado
+  - Não é possível pré-reservar slots para datas passadas
+  - O ID do usuário que faz a pré-reserva é automaticamente capturado do token JWT
+ * @summary Criar pré-reserva de slot em uma sala
+ */
+export type createRoomSlotPreReserveResponse = {
+  data: CreateRoomSlotPreReserve201
+  status: number
+  headers: Headers
+}
+
+export const getCreateRoomSlotPreReserveUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room-slot/pre-reserve`
+}
+
+export const createRoomSlotPreReserve = async (
+  createRoomSlotPreReserveBody: CreateRoomSlotPreReserveBody,
+  options?: RequestInit,
+): Promise<createRoomSlotPreReserveResponse> => {
+  return customFetch<Promise<createRoomSlotPreReserveResponse>>(
+    getCreateRoomSlotPreReserveUrl(),
+    {
+      ...options,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(createRoomSlotPreReserveBody),
+    },
+  )
+}
+
+export const getCreateRoomSlotPreReserveMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: CreateRoomSlotPreReserveBody },
+  ): Promise<createRoomSlotPreReserveResponse> => {
+    return createRoomSlotPreReserve(arg, options)
+  }
+}
+export const getCreateRoomSlotPreReserveMutationKey = () =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room-slot/pre-reserve`,
+  ] as const
+
+export type CreateRoomSlotPreReserveMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createRoomSlotPreReserve>>
+>
+export type CreateRoomSlotPreReserveMutationError =
+  | CreateRoomSlotPreReserve400
+  | CreateRoomSlotPreReserve401
+  | CreateRoomSlotPreReserve403
+  | CreateRoomSlotPreReserve404
+  | CreateRoomSlotPreReserve409
+  | CreateRoomSlotPreReserve422
+  | CreateRoomSlotPreReserve500
+
+/**
+ * @summary Criar pré-reserva de slot em uma sala
+ */
+export const useCreateRoomSlotPreReserve = <
+  TError =
+    | CreateRoomSlotPreReserve400
+    | CreateRoomSlotPreReserve401
+    | CreateRoomSlotPreReserve403
+    | CreateRoomSlotPreReserve404
+    | CreateRoomSlotPreReserve409
+    | CreateRoomSlotPreReserve422
+    | CreateRoomSlotPreReserve500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof createRoomSlotPreReserve>>,
+    TError,
+    Key,
+    CreateRoomSlotPreReserveBody,
+    Awaited<ReturnType<typeof createRoomSlotPreReserve>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getCreateRoomSlotPreReserveMutationKey()
+  const swrFn = getCreateRoomSlotPreReserveMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
   return {
     swrKey,
