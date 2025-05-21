@@ -33,7 +33,7 @@ export function RoomSlotsLegend({ user }: LegendProps) {
         </Text>
       </div>
 
-      <div className="bg-secondary flex h-10 items-center justify-center gap-2.5 rounded-lg px-2">
+      <div className="bg-secondary/30 flex h-10 items-center justify-center gap-2.5 rounded-lg px-2">
         <CalendarCheck2Icon className="text-secondary-foreground" />
         <Text variant="button-14-14-500" className="text-secondary-foreground">
           Sua reserva

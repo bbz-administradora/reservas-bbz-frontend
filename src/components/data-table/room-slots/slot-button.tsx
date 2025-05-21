@@ -49,7 +49,8 @@ const SLOT_CONFIGS = {
   'reserved-my': {
     icon: <CalendarCheck2Icon className="text-secondary-foreground size-6" />,
     description: 'Esta é sua reserva',
-    buttonClass: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+    buttonClass:
+      'bg-secondary/30 text-secondary-foreground hover:bg-secondary/50',
   },
   'reserved-adm': {
     icon: (
