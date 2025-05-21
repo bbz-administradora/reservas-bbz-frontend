@@ -2,7 +2,15 @@
 
 import { UserMe201User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { Button } from '@/components/ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { cn } from '@/utils/mergeClassNames'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import {
   CalendarCheck2Icon,
   CalendarClockIcon,
@@ -50,7 +58,6 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
     | 'reserved-my'
     | 'pre_reserved'
     | 'available' = 'available'
-  let tooltipText = 'Disponível'
 
   // Determinar ícone com base no status e no papel do usuário
   if (slot.status === 'reserved') {
@@ -59,47 +66,120 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
       // Reservado pelo usuário atual
       icon = <CalendarCheck2Icon className="text-secondary-foreground size-6" />
       variant = 'reserved-my'
-      tooltipText = 'Sua reserva'
     } else if (user && user.role !== 'user') {
       // Reservado por outra pessoa e usuário é admin
       icon = (
         <CalendarX2Icon className="text-destructive group-hover:text-destructive-foreground size-6 transition-colors" />
       )
       variant = 'reserved-adm'
-      tooltipText = 'Reservado (Cancelável) - adicionar dados do usuário'
     } else {
       // Reservado por outra pessoa e usuário é comum
       icon = <CalendarX2Icon className="text-muted size-6" />
       variant = 'reserved-user'
-      tooltipText = 'Indisponível - adicionar dados do usuário'
     }
   } else if (slot.status === 'pre_reserved') {
     // Slot pré-reservado
     icon = <CalendarClockIcon className="text-primary size-6" />
     variant = 'pre_reserved'
-    tooltipText = 'Pré-reservado - adicionar dados do usuário'
   }
 
   return (
-    <Button
-      size="icon"
-      variant="ghost"
-      title={tooltipText}
-      onClick={handleClick}
-      className={cn(
-        'group size-14',
-        variant === 'reserved-my' &&
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        variant === 'reserved-adm' &&
-          'hover:bg-destructive hover:text-destructive-foreground text-destructive',
-        variant === 'reserved-user' &&
-          'text-muted hover:bg-muted/40 hover:text-muted bg-transparent',
-        variant === 'pre_reserved' &&
-          'bg-warning/40 text-primary hover:bg-warning/80 hover:text-primary',
-        variant === 'available' && 'text-primary hover:bg-primary',
-      )}
-    >
-      {icon}
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={handleClick}
+            className={cn(
+              'group size-14',
+              variant === 'reserved-my' &&
+                'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+              variant === 'reserved-adm' &&
+                'hover:bg-destructive hover:text-destructive-foreground text-destructive',
+              variant === 'reserved-user' &&
+                'text-muted hover:bg-muted/40 hover:text-muted bg-transparent',
+              variant === 'pre_reserved' &&
+                'bg-warning/40 text-primary hover:bg-warning/80 hover:text-primary',
+              variant === 'available' && 'text-primary hover:bg-primary',
+            )}
+          >
+            {icon}
+          </Button>
+        </TooltipTrigger>
+        {variant !== 'available' ? (
+          <TooltipContent className="hidden lg:block">
+            <div className="space-y-1.5">
+              <p className="font-semibold">
+                {format(new Date(date + 'T' + time), 'dd/MM/yyyy - HH:mm', {
+                  locale: ptBR,
+                })}
+              </p>
+
+              {variant === 'reserved-my' && (
+                <>
+                  <p className="text-secondary">Sua reserva</p>
+                  {user && (
+                    <div className="text-xs">
+                      <p>Nome: {user.name}</p>
+                      <p>Email: {user.email}</p>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {variant === 'reserved-adm' && (
+                <>
+                  <p className="text-destructive">Reservado (cancelável)</p>
+                  {slot.preReservedBy && (
+                    <div className="text-xs">
+                      <p>Por: {slot.preReservedBy.name}</p>
+                      <p>Email: {slot.preReservedBy.email}</p>
+                      <p className="mt-2 text-xs italic">
+                        Como admin, você pode cancelar esta reserva
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {variant === 'reserved-user' && (
+                <>
+                  <p>Reservado</p>
+                  {slot.preReservedBy && (
+                    <div className="text-xs">
+                      <p>Por: {slot.preReservedBy.name}</p>
+                      <p>Email: {slot.preReservedBy.email}</p>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {variant === 'pre_reserved' && (
+                <>
+                  <p className="text-warning">Pré-reservado</p>
+                  {slot.preReservedBy && (
+                    <div className="text-xs">
+                      <p>Por: {slot.preReservedBy.name}</p>
+                      <p>Email: {slot.preReservedBy.email}</p>
+                    </div>
+                  )}
+                  {slot.preReservedUntil && (
+                    <p className="mt-2 text-xs">
+                      Até:{' '}
+                      {format(
+                        new Date(slot.preReservedUntil),
+                        'dd/MM/yyyy - HH:mm',
+                        { locale: ptBR },
+                      )}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          </TooltipContent>
+        ) : null}
+      </Tooltip>
+    </TooltipProvider>
   )
 }
