@@ -40,8 +40,8 @@ export function RoomSlotsLegend({ user }: LegendProps) {
         </Text>
       </div>
 
-      <div className="bg-warning/40 flex h-10 items-center justify-center gap-2.5 rounded-lg px-2">
-        <CalendarClockIcon className="text-secondary-foreground" />
+      <div className="bg-warning/20 flex h-10 items-center justify-center gap-2.5 rounded-lg px-2">
+        <CalendarClockIcon className="text-yellow-500" />
         <Text variant="button-14-14-500" className="text-secondary-foreground">
           Pré-reservado
         </Text>

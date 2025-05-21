@@ -36,61 +36,81 @@ interface SlotButtonProps {
   user: UserMe201User | null
 }
 
-export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
-  function handleClick() {
-    console.log(`Slot clicado: ${date} ${time}`)
-    console.log(`Status: ${slot.status}`)
+// Define os tipos de variantes de slot possíveis
+type SlotVariant =
+  | 'reserved-adm'
+  | 'reserved-user'
+  | 'reserved-my'
+  | 'pre_reserved'
+  | 'available'
 
-    if (slot.status === 'reserved') {
-      if (slot.preReservedBy?.id === user?.id) {
-        console.log('Esta é sua reserva')
-      } else if (user?.role !== 'user') {
-        console.log('Reservado por outro usuário (cancelável como admin)')
-      } else {
-        console.log('Indisponível - reservado por outro usuário')
-      }
-    } else if (slot.status === 'pre_reserved') {
-      console.log('Pré-reservado')
-      if (slot.preReservedUntil) {
-        console.log(`Até: ${slot.preReservedUntil}`)
-      }
-    } else {
-      console.log('Disponível para reserva')
+// Define configurações para cada variante de slot
+const SLOT_CONFIGS = {
+  'reserved-my': {
+    icon: <CalendarCheck2Icon className="text-secondary-foreground size-6" />,
+    description: 'Esta é sua reserva',
+    buttonClass: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+  },
+  'reserved-adm': {
+    icon: (
+      <CalendarX2Icon className="text-destructive size-6 transition-colors" />
+    ),
+    description: 'Reservado por outro usuário (cancelável como admin)',
+    buttonClass:
+      'hover:bg-destructive/20 text-destructive hover:text-destructive',
+  },
+  'reserved-user': {
+    icon: <CalendarX2Icon className="text-muted size-6" />,
+    description: 'Indisponível - reservado por outro usuário',
+    buttonClass: 'text-muted hover:bg-muted/40 hover:text-muted bg-transparent',
+  },
+  pre_reserved: {
+    icon: <CalendarClockIcon className="size-6 text-yellow-500" />,
+    description: 'Pré-reservado',
+    buttonClass:
+      'bg-warning/20 text-primary hover:bg-warning/40 hover:text-primary',
+  },
+  available: {
+    icon: (
+      <CalendarIcon className="text-primary group-hover:text-primary-foreground size-6 transition-colors" />
+    ),
+    description: 'Disponível para reserva',
+    buttonClass: 'text-primary hover:bg-primary',
+  },
+}
+
+export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
+  // Determina a variante do slot com base nas condições
+  const getSlotVariant = (): SlotVariant => {
+    switch (slot.status) {
+      case 'reserved':
+        if (user && slot.preReservedBy && slot.preReservedBy.id === user.id) {
+          return 'reserved-my'
+        } else if (user && user.role !== 'user') {
+          return 'reserved-adm'
+        } else {
+          return 'reserved-user'
+        }
+      case 'pre_reserved':
+        return 'pre_reserved'
+      default:
+        return 'available'
     }
   }
 
-  let icon = (
-    <CalendarIcon className="text-primary group-hover:text-primary-foreground size-6 transition-colors" />
-  )
-  let variant:
-    | 'reserved-adm'
-    | 'reserved-user'
-    | 'reserved-my'
-    | 'pre_reserved'
-    | 'available' = 'available'
+  // Obtém a variante atual do slot
+  const variant = getSlotVariant()
+  // Obtém o ícone associado a esta variante
+  const icon = SLOT_CONFIGS[variant].icon
 
-  // Determinar ícone com base no status e no papel do usuário
-  if (slot.status === 'reserved') {
-    // Slot reservado
-    if (user && slot.preReservedBy && slot.preReservedBy.id === user.id) {
-      // Reservado pelo usuário atual
-      icon = <CalendarCheck2Icon className="text-secondary-foreground size-6" />
-      variant = 'reserved-my'
-    } else if (user && user.role !== 'user') {
-      // Reservado por outra pessoa e usuário é admin
-      icon = (
-        <CalendarX2Icon className="text-destructive group-hover:text-destructive-foreground size-6 transition-colors" />
-      )
-      variant = 'reserved-adm'
-    } else {
-      // Reservado por outra pessoa e usuário é comum
-      icon = <CalendarX2Icon className="text-muted size-6" />
-      variant = 'reserved-user'
+  function handleClick() {
+    console.log(`Slot clicado: ${date} ${time}`)
+    console.log(`Status: ${slot.status}`)
+    console.log(SLOT_CONFIGS[variant].description)
+
+    if (variant === 'pre_reserved' && slot.preReservedUntil) {
+      console.log(`Até: ${slot.preReservedUntil}`)
     }
-  } else if (slot.status === 'pre_reserved') {
-    // Slot pré-reservado
-    icon = <CalendarClockIcon className="text-primary size-6" />
-    variant = 'pre_reserved'
   }
 
   function handleCancelReservation() {
@@ -98,73 +118,59 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
     console.log(`Dados da reserva:`, slot.preReservedBy)
   }
 
-  // Componente de conteúdo reutilizado tanto para tooltip quanto para sheet
-  const SlotContent = () => (
-    <div className="space-y-4 lg:space-y-2">
-      <p className="text-primary lg:text-primary-foreground text-xl font-semibold lg:text-xs">
-        {format(new Date(date + 'T' + time), 'dd/MM/yyyy - HH:mm', {
-          locale: ptBR,
-        })}
-      </p>
-
-      {variant === 'reserved-my' && (
+  // Definição dos conteúdos específicos para cada variante
+  const CONTENT_CONFIG = {
+    'reserved-my': {
+      title: 'Sua reserva',
+      titleClass: 'lg:text-secondary text-primary font-semibold lg:font-normal',
+      content: () =>
+        user && (
+          <div className="text-xs">
+            <p>
+              Nome: <strong>{user.name}</strong>
+            </p>
+            <p>
+              Email: <strong>{user.email}</strong>
+            </p>
+          </div>
+        ),
+    },
+    'reserved-adm': {
+      title: 'Reservado (cancelável)',
+      titleClass:
+        'text-primary lg:text-destructive font-semibold lg:font-normal',
+      content: () =>
+        slot.preReservedBy && (
+          <div className="text-xs">
+            <p>Por: {slot.preReservedBy.name}</p>
+            <p>Email: {slot.preReservedBy.email}</p>
+            <p className="mt-4 text-xs italic lg:mt-2">
+              Como admin, você pode cancelar esta reserva
+            </p>
+          </div>
+        ),
+    },
+    'reserved-user': {
+      title: 'Reservado',
+      titleClass:
+        'text-primary lg:text-foreground font-semibold lg:font-normal',
+      content: () =>
+        slot.preReservedBy && (
+          <div className="text-xs">
+            <p>
+              Por: <strong>{slot.preReservedBy.name}</strong>
+            </p>
+            <p>
+              Email: <strong>{slot.preReservedBy.email}</strong>
+            </p>
+          </div>
+        ),
+    },
+    pre_reserved: {
+      title: 'Pré-reservado',
+      titleClass: 'text-primary font-semibold lg:text-yellow-500',
+      content: () => (
         <>
-          <p className="lg:text-secondary text-primary font-semibold lg:font-normal">
-            Sua reserva
-          </p>
-          {user && (
-            <div className="text-xs">
-              <p>
-                Nome: <strong>{user.name}</strong>
-              </p>
-              <p>
-                Email: <strong>{user.email}</strong>
-              </p>
-            </div>
-          )}
-        </>
-      )}
-
-      {variant === 'reserved-adm' && (
-        <>
-          <p className="text-primary lg:text-destructive font-semibold lg:font-normal">
-            Reservado (cancelável)
-          </p>
-          {slot.preReservedBy && (
-            <div className="text-xs">
-              <p>Por: {slot.preReservedBy.name}</p>
-              <p>Email: {slot.preReservedBy.email}</p>
-              <p className="mt-2 text-xs italic">
-                Como admin, você pode cancelar esta reserva
-              </p>
-            </div>
-          )}
-        </>
-      )}
-
-      {variant === 'reserved-user' && (
-        <>
-          <p className="text-primary lg:text-foreground font-semibold lg:font-normal">
-            Reservado
-          </p>
-          {slot.preReservedBy && (
-            <div className="text-xs">
-              <p>
-                Por: <strong>{slot.preReservedBy.name}</strong>
-              </p>
-              <p>
-                Email: <strong>{slot.preReservedBy.email}</strong>
-              </p>
-            </div>
-          )}
-        </>
-      )}
-
-      {variant === 'pre_reserved' && (
-        <>
-          <p className="lg:text-warning text-primary font-semibold">
-            Pré-reservado
-          </p>
           {slot.preReservedBy && (
             <div className="text-xs">
               <p>
@@ -184,6 +190,31 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
             </p>
           )}
         </>
+      ),
+    },
+    available: {
+      title: '',
+      titleClass: '',
+      content: () => null,
+    },
+  }
+
+  // Componente de conteúdo reutilizado tanto para tooltip quanto para sheet
+  const SlotContent = () => (
+    <div className="space-y-4 lg:space-y-2">
+      <p className="text-primary lg:text-primary-foreground text-xl font-semibold lg:text-xs">
+        {format(new Date(date + 'T' + time), 'dd/MM/yyyy - HH:mm', {
+          locale: ptBR,
+        })}
+      </p>
+
+      {variant !== 'available' && (
+        <>
+          <p className={CONTENT_CONFIG[variant].titleClass}>
+            {CONTENT_CONFIG[variant].title}
+          </p>
+          {CONTENT_CONFIG[variant].content()}
+        </>
       )}
     </div>
   )
@@ -201,15 +232,7 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
                 onClick={handleClick}
                 className={cn(
                   'group size-14',
-                  variant === 'reserved-my' &&
-                    'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-                  variant === 'reserved-adm' &&
-                    'hover:bg-destructive hover:text-destructive-foreground text-destructive',
-                  variant === 'reserved-user' &&
-                    'text-muted hover:bg-muted/40 hover:text-muted bg-transparent',
-                  variant === 'pre_reserved' &&
-                    'bg-warning/40 text-primary hover:bg-warning/80 hover:text-primary',
-                  variant === 'available' && 'text-primary hover:bg-primary',
+                  SLOT_CONFIGS[variant].buttonClass,
                 )}
               >
                 {icon}
@@ -231,18 +254,7 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
             <Button
               size="icon"
               variant="ghost"
-              className={cn(
-                'group size-14',
-                variant === 'reserved-my' &&
-                  'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-                variant === 'reserved-adm' &&
-                  'hover:bg-destructive hover:text-destructive-foreground text-destructive',
-                variant === 'reserved-user' &&
-                  'text-muted hover:bg-muted/40 hover:text-muted bg-transparent',
-                variant === 'pre_reserved' &&
-                  'bg-warning/40 text-primary hover:bg-warning/80 hover:text-primary',
-                variant === 'available' && 'text-primary hover:bg-primary',
-              )}
+              className={cn('group size-14', SLOT_CONFIGS[variant].buttonClass)}
             >
               {icon}
             </Button>
