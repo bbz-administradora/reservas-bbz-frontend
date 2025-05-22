@@ -5,12 +5,19 @@
  * API documentation for BBZ App Backend
  * OpenAPI spec version: 1.0.0
  */
-import type { Key, SWRConfiguration } from 'swr'
+import type { Arguments, Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
 import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  CancelRoomSlotPreReserve200,
+  CancelRoomSlotPreReserve400,
+  CancelRoomSlotPreReserve401,
+  CancelRoomSlotPreReserve403,
+  CancelRoomSlotPreReserve404,
+  CancelRoomSlotPreReserve422,
+  CancelRoomSlotPreReserve500,
   CreateRoomSlotPreReserve201,
   CreateRoomSlotPreReserve400,
   CreateRoomSlotPreReserve401,
@@ -432,6 +439,132 @@ export const useCreateRoomSlotPreReserve = <
 
   const swrKey = swrOptions?.swrKey ?? getCreateRoomSlotPreReserveMutationKey()
   const swrFn = getCreateRoomSlotPreReserveMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite que um usuário cancele uma pré-reserva de um slot (horário) em uma sala específica.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Acessível a qualquer usuário autenticado, com restrições de propriedade.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+* **Funcionalidade**:
+  1. Cancela uma pré-reserva existente para um slot (horário em uma sala)
+  2. Remove completamente o registro do slot do banco de dados
+  3. Libera o horário para que outros usuários possam reservá-lo
+  4. Apenas o usuário que fez a pré-reserva ou administradores podem cancelá-la
+
+* **Fluxo de cancelamento**:
+  1. O usuário solicita o cancelamento de uma pré-reserva específica
+  2. O sistema verifica se o slot existe e está no estado 'pre_reserved'
+  3. O sistema verifica se o usuário tem permissão para cancelar
+  4. O sistema remove o registro da pré-reserva
+
+* **Parâmetros na rota**:
+  - slotId (obrigatório): Identificador UUID do slot pré-reservado
+
+* **Exemplo de uso**:
+  - Requisição básica: `DELETE /v1/private/room-slot/a1b2c3d4-e5f6-7890-abcd-1234567890ab/pre-reserve`
+
+* **Formato da resposta**:
+  - message: Mensagem informativa de sucesso
+  - canceledSlotId: UUID do slot que foi cancelado
+
+* **Notas**:
+  - O cancelamento é definitivo e não pode ser desfeito
+  - Apenas o proprietário da pré-reserva ou usuários com perfil 'admin' ou 'dev' podem cancelar
+  - Caso o slot já tenha sido completamente reservado (status 'reserved'), este endpoint não funcionará
+  - A operação é idempotente (chamar duas vezes não causa erro, mas retorna 404 na segunda vez)
+ * @summary Cancelar pré-reserva de slot em uma sala
+ */
+export type cancelRoomSlotPreReserveResponse = {
+  data: CancelRoomSlotPreReserve200
+  status: number
+  headers: Headers
+}
+
+export const getCancelRoomSlotPreReserveUrl = (slotId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room-slot/${slotId}/pre-reserve`
+}
+
+export const cancelRoomSlotPreReserve = async (
+  slotId: string,
+  options?: RequestInit,
+): Promise<cancelRoomSlotPreReserveResponse> => {
+  return customFetch<Promise<cancelRoomSlotPreReserveResponse>>(
+    getCancelRoomSlotPreReserveUrl(slotId),
+    {
+      ...options,
+      method: 'DELETE',
+    },
+  )
+}
+
+export const getCancelRoomSlotPreReserveMutationFetcher = (
+  slotId: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    __: { arg: Arguments },
+  ): Promise<cancelRoomSlotPreReserveResponse> => {
+    return cancelRoomSlotPreReserve(slotId, options)
+  }
+}
+export const getCancelRoomSlotPreReserveMutationKey = (slotId: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room-slot/${slotId}/pre-reserve`,
+  ] as const
+
+export type CancelRoomSlotPreReserveMutationResult = NonNullable<
+  Awaited<ReturnType<typeof cancelRoomSlotPreReserve>>
+>
+export type CancelRoomSlotPreReserveMutationError =
+  | CancelRoomSlotPreReserve400
+  | CancelRoomSlotPreReserve401
+  | CancelRoomSlotPreReserve403
+  | CancelRoomSlotPreReserve404
+  | CancelRoomSlotPreReserve422
+  | CancelRoomSlotPreReserve500
+
+/**
+ * @summary Cancelar pré-reserva de slot em uma sala
+ */
+export const useCancelRoomSlotPreReserve = <
+  TError =
+    | CancelRoomSlotPreReserve400
+    | CancelRoomSlotPreReserve401
+    | CancelRoomSlotPreReserve403
+    | CancelRoomSlotPreReserve404
+    | CancelRoomSlotPreReserve422
+    | CancelRoomSlotPreReserve500,
+>(
+  slotId: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof cancelRoomSlotPreReserve>>,
+      TError,
+      Key,
+      Arguments,
+      Awaited<ReturnType<typeof cancelRoomSlotPreReserve>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey =
+    swrOptions?.swrKey ?? getCancelRoomSlotPreReserveMutationKey(slotId)
+  const swrFn = getCancelRoomSlotPreReserveMutationFetcher(
+    slotId,
+    requestOptions,
+  )
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
