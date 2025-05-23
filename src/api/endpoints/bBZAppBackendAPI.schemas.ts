@@ -813,6 +813,15 @@ export type GetRoomSlotAvailability400 = {
   status_code: GetRoomSlotAvailability400StatusCode
 }
 
+/**
+ * Usuário que fez a pré-reserva (null quando não há pré-reserva)
+ */
+export type GetRoomSlotAvailability200SlotsItemUser = {
+  email: string
+  id: string
+  name: string
+}
+
 export type GetRoomSlotAvailability200SlotsItemStatus =
   (typeof GetRoomSlotAvailability200SlotsItemStatus)[keyof typeof GetRoomSlotAvailability200SlotsItemStatus]
 
@@ -822,40 +831,21 @@ export const GetRoomSlotAvailability200SlotsItemStatus = {
   pre_reserved: 'pre_reserved',
 } as const
 
-/**
- * Usuário que fez a pré-reserva (null quando não há pré-reserva)
- * @nullable
- */
-export type GetRoomSlotAvailability200SlotsItemPreReservedBy = {
-  email: string
-  id: string
-  name: string
-} | null
-
 export type GetRoomSlotAvailability200SlotsItem = {
-  /**
-   * Data do slot no formato YYYY-MM-DD
-   * @pattern ^\d{4}-\d{2}-\d{2}$
-   */
-  date: string
   /** Identificador único do slot */
   id: string
-  /**
-   * Usuário que fez a pré-reserva (null quando não há pré-reserva)
-   * @nullable
-   */
-  preReservedBy: GetRoomSlotAvailability200SlotsItemPreReservedBy
   /**
    * Data e hora da pré-reserva (null quando não há pré-reserva)
    * @nullable
    */
   preReservedUntil: string | null
+  /** Data e hora do slot no formato ISO (UTC) */
+  slotEnd: string
+  /** Data e hora do slot no formato ISO (UTC) */
+  slotStart: string
   status: GetRoomSlotAvailability200SlotsItemStatus
-  /**
-   * Hora do slot no formato HH:MM (24h)
-   * @pattern ^\d{2}:\d{2}$
-   */
-  time: string
+  /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
+  user: GetRoomSlotAvailability200SlotsItemUser
 }
 
 export type GetRoomSlotAvailability200Room = {
@@ -1127,7 +1117,7 @@ export type ListRoomSlots200 = {
 
 export type ListRoomSlotsParams = {
   /**
-   * Data/hora no formato ISO com timezone. Se enviar apenas a data com hora zerada (00:00:00), retorna salas com pelo menos um horário disponível nessa data. Se enviar data com uma hora específica, retorna salas disponíveis nesse horário específico. Exemplo para data: "2025-05-22T00:00:00-03:00", exemplo para hora específica: "2025-05-22T14:00:00-03:00"
+   * Data/hora no formato ISO com timezone (suporta formatos como -03:00, +00:00 ou Z). Se enviar apenas a data com hora zerada (00:00:00), retorna salas com pelo menos um horário disponível nessa data. Se enviar data com uma hora específica, retorna salas disponíveis nesse horário específico. Exemplo para data: "2025-05-22T00:00:00-03:00", exemplo para hora específica: "2025-05-22T14:00:00-03:00"
    */
   datetime: string
   /**

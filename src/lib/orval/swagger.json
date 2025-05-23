@@ -5946,7 +5946,7 @@
             "in": "query",
             "name": "datetime",
             "required": true,
-            "description": "Data/hora no formato ISO com timezone. Se enviar apenas a data com hora zerada (00:00:00), retorna salas com pelo menos um horário disponível nessa data. Se enviar data com uma hora específica, retorna salas disponíveis nesse horário específico. Exemplo para data: \"2025-05-22T00:00:00-03:00\", exemplo para hora específica: \"2025-05-22T14:00:00-03:00\""
+            "description": "Data/hora no formato ISO com timezone (suporta formatos como -03:00, +00:00 ou Z). Se enviar apenas a data com hora zerada (00:00:00), retorna salas com pelo menos um horário disponível nessa data. Se enviar data com uma hora específica, retorna salas disponíveis nesse horário específico. Exemplo para data: \"2025-05-22T00:00:00-03:00\", exemplo para hora específica: \"2025-05-22T14:00:00-03:00\""
           },
           {
             "schema": {
@@ -6317,7 +6317,7 @@
         "tags": [
           "Room Slot"
         ],
-        "description": "Este endpoint permite obter informações detalhadas sobre a disponibilidade de uma sala específica em um intervalo de datas, incluindo slots reservados e pré-reservados.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Busca detalhes completos da sala solicitada (nome, descrição, recursos, etc.)\n  2. Retorna todos os slots já reservados ou pré-reservados para a sala no período solicitado\n  3. Para cada slot, fornece informações do usuário que fez a pré-reserva (se houver)\n  4. Permite visualização do status de cada horário ('reserved' ou 'pre_reserved')\n  5. Verifica automaticamente se a sala existe e está ativa antes de retornar resultados\n  6. Limita a consulta a um período máximo de 7 dias entre a data inicial e final\n\n* **Parâmetros**:\n  - roomId (obrigatório, path): Identificador UUID da sala\n  - startDate (obrigatório, query): Data inicial do período no formato YYYY-MM-DD (ex: 2023-08-15)\n  - endDate (obrigatório, query): Data final do período no formato YYYY-MM-DD (ex: 2023-08-20) (período máximo de 7 dias)\n\n* **Exemplo de uso**:\n  - Requisição básica: `GET /v1/private/room-slot/a1b2c3d4-e5f6-7890-abcd-1234567890ab/availability?startDate=2023-08-15&endDate=2023-08-20`\n  - Buscar slots para um dia: `GET /v1/private/room-slot/a1b2c3d4-e5f6-7890-abcd-1234567890ab/availability?startDate=2023-08-15&endDate=2023-08-15`\n\n* **Formato da resposta**:\n  - room: Objeto contendo todas as informações da sala solicitada (id, nome, recursos, capacidade, etc.)\n  - slots: Array de objetos representando os horários reservados ou pré-reservados no período, com:\n    - id: Identificador do slot\n    - date: Data do slot no formato YYYY-MM-DD\n    - time: Horário do slot no formato HH:MM (24h)\n    - status: Estado do slot ('reserved' ou 'pre_reserved')\n    - preReservedBy: Objeto com informações do usuário que fez a pré-reserva (id, nome, email)\n    - preReservedUntil: Data e hora até quando o slot está pré-reservado\n\n* **Notas**:\n  - O formato das datas deve ser estritamente YYYY-MM-DD (ano-mês-dia)\n  - A data inicial não pode ser posterior à data final\n  - A resposta inclui apenas slots que já existem (reservados ou pré-reservados)\n  - Um slot com status 'pre_reserved' pode se tornar disponível novamente após o tempo de pré-reserva expirar\n  - Apenas salas ativas podem ser consultadas neste endpoint",
+        "description": "Este endpoint retorna informações detalhadas sobre a disponibilidade de uma sala específica em um intervalo de datas, mostrando slots ocupados (reservados ou pré-reservados).\n\n* **Segurança**: Requer autenticação via JWT.\n* **Autorização**: Acessível a usuários com conta ativa.\n\n* **Funcionalidade**:\n  1. Retorna detalhes completos da sala solicitada (ID, nome, descrição, recursos, etc.)\n  2. Lista todos os slots ocupados (reservados ou pré-reservados) no período informado\n  3. Para cada slot ocupado, fornece informações do usuário responsável pela reserva\n  4. Diferencia entre slots com status 'reserved' (confirmados) e 'pre_reserved' (temporários)\n\n* **Parâmetros**:\n  - roomId (obrigatório, path): Identificador UUID da sala\n  - startDate (obrigatório, query): Data inicial no formato YYYY-MM-DD\n  - endDate (obrigatório, query): Data final no formato YYYY-MM-DD\n\n* **Exemplo de uso**:\n  - Consultar período: `GET /v1/private/room-slot/a1b2c3d4-e5f6-7890-abcd-1234567890ab/availability?startDate=2023-08-15&endDate=2023-08-20`\n  - Consultar único dia: `GET /v1/private/room-slot/a1b2c3d4-e5f6-7890-abcd-1234567890ab/availability?startDate=2023-08-15&endDate=2023-08-15`\n\n* **Formato da resposta**:\n  - room: Objeto com informações da sala (id, nome, recursos, capacidade, etc.)\n  - slots: Array de slots ocupados no período, contendo:\n    - id: Identificador UUID do slot\n    - date: Data do slot (YYYY-MM-DD)\n    - time: Horário (HH:MM formato 24h)\n    - status: Estado ('reserved' ou 'pre_reserved')\n    - preReservedBy: Usuário que fez a reserva (id, nome, email)\n    - preReservedUntil: Data e hora de expiração da pré-reserva\n\n* **Informações adicionais**:\n  - As datas no formato YYYY-MM-DD são convertidas para o fuso horário adequado no processamento\n  - São retornados apenas os slots que já estão ocupados (não mostra horários disponíveis)\n  - Um slot em estado 'pre_reserved' tem prazo de expiração e pode se tornar disponível novamente se não for confirmado",
         "parameters": [
           {
             "schema": {
@@ -6423,15 +6423,13 @@
                             "format": "uuid",
                             "description": "Identificador único do slot"
                           },
-                          "date": {
+                          "slotStart": {
                             "type": "string",
-                            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                            "description": "Data do slot no formato YYYY-MM-DD"
+                            "description": "Data e hora do slot no formato ISO (UTC)"
                           },
-                          "time": {
+                          "slotEnd": {
                             "type": "string",
-                            "pattern": "^\\d{2}:\\d{2}$",
-                            "description": "Hora do slot no formato HH:MM (24h)"
+                            "description": "Data e hora do slot no formato ISO (UTC)"
                           },
                           "status": {
                             "type": "string",
@@ -6440,7 +6438,7 @@
                               "pre_reserved"
                             ]
                           },
-                          "preReservedBy": {
+                          "user": {
                             "type": "object",
                             "properties": {
                               "id": {
@@ -6461,7 +6459,6 @@
                               "email"
                             ],
                             "additionalProperties": false,
-                            "nullable": true,
                             "description": "Usuário que fez a pré-reserva (null quando não há pré-reserva)"
                           },
                           "preReservedUntil": {
@@ -6472,10 +6469,10 @@
                         },
                         "required": [
                           "id",
-                          "date",
-                          "time",
+                          "slotStart",
+                          "slotEnd",
                           "status",
-                          "preReservedBy",
+                          "user",
                           "preReservedUntil"
                         ],
                         "additionalProperties": false
