@@ -11,13 +11,6 @@ import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
-  CancelRoomSlotPreReserve200,
-  CancelRoomSlotPreReserve400,
-  CancelRoomSlotPreReserve401,
-  CancelRoomSlotPreReserve403,
-  CancelRoomSlotPreReserve404,
-  CancelRoomSlotPreReserve422,
-  CancelRoomSlotPreReserve500,
   CreateRoomSlotPreReserve201,
   CreateRoomSlotPreReserve400,
   CreateRoomSlotPreReserve401,
@@ -27,6 +20,13 @@ import type {
   CreateRoomSlotPreReserve422,
   CreateRoomSlotPreReserve500,
   CreateRoomSlotPreReserveBody,
+  DeleteRoomSlotPreReserve200,
+  DeleteRoomSlotPreReserve400,
+  DeleteRoomSlotPreReserve401,
+  DeleteRoomSlotPreReserve403,
+  DeleteRoomSlotPreReserve404,
+  DeleteRoomSlotPreReserve422,
+  DeleteRoomSlotPreReserve500,
   GetRoomSlotAvailability200,
   GetRoomSlotAvailability400,
   GetRoomSlotAvailability401,
@@ -53,21 +53,20 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 * **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 * **Regras de busca**:
-  1. Quando apenas a data é fornecida, retorna salas com pelo menos um horário livre entre 07:00 e 20:00
-  2. Quando data e hora são fornecidos, retorna salas disponíveis nesse horário específico
+  1. Quando a data é fornecida com hora zerada (00:00:00), retorna salas com pelo menos um horário livre entre 07:00 e 20:00
+  2. Quando data e hora específica são fornecidos, retorna salas disponíveis nesse horário específico
   3. Apenas salas ativas (is_active = true) são consideradas
   4. Salas pré-reservadas ou reservadas para o horário solicitado são excluídas dos resultados
 
 * **Parâmetros**:
-  - date (obrigatório): Data no formato YYYY-MM-DD (ex: 2023-08-15)
-  - hour (opcional): Hora no formato HH:MM (ex: 14:30)
+  - datetime (obrigatório): String ISO com timezone para data/hora
   - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)
   - pageSize (opcional): Quantidade de resultados por página, entre 1 e 100 (padrão: 12)
 
 * **Exemplo de uso**:
-  - Requisição básica: `GET /v1/private/room-slot/list?date=2023-08-15`
-  - Com hora específica: `GET /v1/private/room-slot/list?date=2023-08-15&hour=14:30`
-  - Com paginação: `GET /v1/private/room-slot/list?date=2023-08-15&page=2&pageSize=10`
+  - Consulta por data: `GET /v1/private/room-slot/list?datetime=2025-05-22T00:00:00-03:00`
+  - Consulta por horário específico: `GET /v1/private/room-slot/list?datetime=2025-05-22T14:30:00-03:00`
+  - Com paginação: `GET /v1/private/room-slot/list?datetime=2025-05-22T00:00:00-03:00&page=2&pageSize=10`
 
 * **Formato da resposta**:
   - rooms: Array de objetos representando as salas disponíveis com suas propriedades
@@ -77,11 +76,12 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   - message: Mensagem de sucesso ou informação adicional
 
 * **Notas**:
-  - O formato da data deve ser estritamente YYYY-MM-DD (ano-mês-dia)
-  - O formato da hora deve ser estritamente HH:MM (hora:minuto) no formato 24h
-  - O sistema valida automaticamente se a data e hora são válidas
+  - O parâmetro datetime deve ser uma string ISO com timezone (exemplo: "2025-05-22T00:00:00-03:00")
+  - Se a hora for 00:00:00, o sistema busca salas com pelo menos um horário livre no dia
+  - Se a hora for diferente de 00:00:00 (ex: 14:30:00), o sistema busca salas livres especificamente nesse horário
+  - A duração padrão de cada slot é de 1 hora
   - A capacidade máxima de uma sala pode afetar sua disponibilidade
- * @summary Listar salas disponíveis por data e hora
+ * @summary Listar salas disponíveis por data ou horário específico
  */
 export type listRoomSlotsResponse = {
   data: ListRoomSlots200
@@ -133,7 +133,7 @@ export type ListRoomSlotsQueryError =
   | ListRoomSlots500
 
 /**
- * @summary Listar salas disponíveis por data e hora
+ * @summary Listar salas disponíveis por data ou horário específico
  */
 export const useListRoomSlots = <
   TError =
@@ -319,7 +319,7 @@ export const useGetRoomSlotAvailability = <
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 
 * **Funcionalidade**:
-  1. Cria uma pré-reserva para um slot (combinação de sala, data e horário)
+  1. Cria uma pré-reserva para um slot (combinação de sala e horário específico)
   2. Define o status como 'pre_reserved'
   3. Associa o usuário atual à pré-reserva
   4. Define um tempo limite de 5 minutos para confirmação da reserva
@@ -335,16 +335,17 @@ export const useGetRoomSlotAvailability = <
 
 * **Parâmetros no corpo**:
   - roomId (obrigatório): Identificador UUID da sala
-  - date (obrigatório): Data para reserva no formato YYYY-MM-DD (ex: 2023-08-15)
-  - time (obrigatório): Horário para reserva no formato HH:MM (ex: 14:30)
+  - slotStart (obrigatório): Data e hora de início no formato ISO com timezone (ex: 2023-08-15T14:30:00-03:00)
+  - slotEnd (obrigatório): Data e hora de término no formato ISO com timezone (ex: 2023-08-15T15:30:00-03:00)
+  - status (opcional): Status da reserva, padrão 'pre_reserved'
 
 * **Exemplo de uso**:
   - Requisição básica: `POST /v1/private/room-slot/pre-reserve` com body:
   ```json
   {
     "roomId": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
-    "date": "2023-08-15",
-    "time": "14:30"
+    "slotStart": "2023-08-15T14:30:00-03:00",
+    "slotEnd": "2023-08-15T15:30:00-03:00"
   }
   ```
 
@@ -353,8 +354,8 @@ export const useGetRoomSlotAvailability = <
   - message: Mensagem informativa de sucesso
 
 * **Notas**:
-  - O formato da data deve ser estritamente YYYY-MM-DD (ano-mês-dia)
-  - O formato da hora deve ser estritamente HH:MM (hora:minuto) no formato 24h
+  - As datas devem estar no formato ISO com informação de timezone
+  - O slot reservado tem duração de 1 hora (entre slotStart e slotEnd)
   - Uma pré-reserva expira automaticamente após 5 minutos se não for confirmada
   - Um usuário não pode pré-reservar um slot já reservado ou pré-reservado
   - Não é possível pré-reservar slots para datas passadas
@@ -448,23 +449,24 @@ export const useCreateRoomSlotPreReserve = <
   }
 }
 /**
- * Este endpoint permite que um usuário cancele uma pré-reserva de um slot (horário) em uma sala específica.
+ * Este endpoint permite que um usuário delete uma pré-reserva de um slot (horário) em uma sala específica.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**: Acessível a qualquer usuário autenticado, com restrições de propriedade.
-* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+* **Autorização**: Acessível a qualquer usuário autenticado, com verificação de propriedade ou privilégio administrativo.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 
 * **Funcionalidade**:
-  1. Cancela uma pré-reserva existente para um slot (horário em uma sala)
+  1. Deleta uma pré-reserva existente para um slot (horário em uma sala)
   2. Remove completamente o registro do slot do banco de dados
   3. Libera o horário para que outros usuários possam reservá-lo
-  4. Apenas o usuário que fez a pré-reserva ou administradores podem cancelá-la
+  4. Apenas o usuário que fez a pré-reserva ou administradores podem deletá-la
 
-* **Fluxo de cancelamento**:
-  1. O usuário solicita o cancelamento de uma pré-reserva específica
-  2. O sistema verifica se o slot existe e está no estado 'pre_reserved'
-  3. O sistema verifica se o usuário tem permissão para cancelar
-  4. O sistema remove o registro da pré-reserva
+* **Fluxo de deleção**:
+  1. O usuário solicita a deleção de uma pré-reserva específica através do ID do slot
+  2. O sistema extrai automaticamente o ID e perfil do usuário do token JWT
+  3. O sistema verifica se o slot existe e está no estado 'pre_reserved'
+  4. O sistema verifica se o usuário tem permissão para deletar (é o dono da reserva ou tem perfil admin/dev)
+  5. O sistema remove o registro da pré-reserva e libera o horário
 
 * **Parâmetros na rota**:
   - slotId (obrigatório): Identificador UUID do slot pré-reservado
@@ -474,31 +476,32 @@ export const useCreateRoomSlotPreReserve = <
 
 * **Formato da resposta**:
   - message: Mensagem informativa de sucesso
-  - canceledSlotId: UUID do slot que foi cancelado
+  - deletedSlotId: UUID do slot que foi deletado
 
 * **Notas**:
-  - O cancelamento é definitivo e não pode ser desfeito
-  - Apenas o proprietário da pré-reserva ou usuários com perfil 'admin' ou 'dev' podem cancelar
+  - A deleção é definitiva e não pode ser desfeita
+  - Apenas o proprietário da pré-reserva ou usuários com perfil 'admin' ou 'dev' podem deletar
   - Caso o slot já tenha sido completamente reservado (status 'reserved'), este endpoint não funcionará
+  - Caso o slot não exista ou já tenha sido deletado, retorna erro 404 (não encontrado)
   - A operação é idempotente (chamar duas vezes não causa erro, mas retorna 404 na segunda vez)
- * @summary Cancelar pré-reserva de slot em uma sala
+ * @summary Deletar pré-reserva de slot em uma sala
  */
-export type cancelRoomSlotPreReserveResponse = {
-  data: CancelRoomSlotPreReserve200
+export type deleteRoomSlotPreReserveResponse = {
+  data: DeleteRoomSlotPreReserve200
   status: number
   headers: Headers
 }
 
-export const getCancelRoomSlotPreReserveUrl = (slotId: string) => {
+export const getDeleteRoomSlotPreReserveUrl = (slotId: string) => {
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room-slot/${slotId}/pre-reserve`
 }
 
-export const cancelRoomSlotPreReserve = async (
+export const deleteRoomSlotPreReserve = async (
   slotId: string,
   options?: RequestInit,
-): Promise<cancelRoomSlotPreReserveResponse> => {
-  return customFetch<Promise<cancelRoomSlotPreReserveResponse>>(
-    getCancelRoomSlotPreReserveUrl(slotId),
+): Promise<deleteRoomSlotPreReserveResponse> => {
+  return customFetch<Promise<deleteRoomSlotPreReserveResponse>>(
+    getDeleteRoomSlotPreReserveUrl(slotId),
     {
       ...options,
       method: 'DELETE',
@@ -506,53 +509,53 @@ export const cancelRoomSlotPreReserve = async (
   )
 }
 
-export const getCancelRoomSlotPreReserveMutationFetcher = (
+export const getDeleteRoomSlotPreReserveMutationFetcher = (
   slotId: string,
   options?: SecondParameter<typeof customFetch>,
 ) => {
   return (
     _: Key,
     __: { arg: Arguments },
-  ): Promise<cancelRoomSlotPreReserveResponse> => {
-    return cancelRoomSlotPreReserve(slotId, options)
+  ): Promise<deleteRoomSlotPreReserveResponse> => {
+    return deleteRoomSlotPreReserve(slotId, options)
   }
 }
-export const getCancelRoomSlotPreReserveMutationKey = (slotId: string) =>
+export const getDeleteRoomSlotPreReserveMutationKey = (slotId: string) =>
   [
     `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room-slot/${slotId}/pre-reserve`,
   ] as const
 
-export type CancelRoomSlotPreReserveMutationResult = NonNullable<
-  Awaited<ReturnType<typeof cancelRoomSlotPreReserve>>
+export type DeleteRoomSlotPreReserveMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteRoomSlotPreReserve>>
 >
-export type CancelRoomSlotPreReserveMutationError =
-  | CancelRoomSlotPreReserve400
-  | CancelRoomSlotPreReserve401
-  | CancelRoomSlotPreReserve403
-  | CancelRoomSlotPreReserve404
-  | CancelRoomSlotPreReserve422
-  | CancelRoomSlotPreReserve500
+export type DeleteRoomSlotPreReserveMutationError =
+  | DeleteRoomSlotPreReserve400
+  | DeleteRoomSlotPreReserve401
+  | DeleteRoomSlotPreReserve403
+  | DeleteRoomSlotPreReserve404
+  | DeleteRoomSlotPreReserve422
+  | DeleteRoomSlotPreReserve500
 
 /**
- * @summary Cancelar pré-reserva de slot em uma sala
+ * @summary Deletar pré-reserva de slot em uma sala
  */
-export const useCancelRoomSlotPreReserve = <
+export const useDeleteRoomSlotPreReserve = <
   TError =
-    | CancelRoomSlotPreReserve400
-    | CancelRoomSlotPreReserve401
-    | CancelRoomSlotPreReserve403
-    | CancelRoomSlotPreReserve404
-    | CancelRoomSlotPreReserve422
-    | CancelRoomSlotPreReserve500,
+    | DeleteRoomSlotPreReserve400
+    | DeleteRoomSlotPreReserve401
+    | DeleteRoomSlotPreReserve403
+    | DeleteRoomSlotPreReserve404
+    | DeleteRoomSlotPreReserve422
+    | DeleteRoomSlotPreReserve500,
 >(
   slotId: string,
   options?: {
     swr?: SWRMutationConfiguration<
-      Awaited<ReturnType<typeof cancelRoomSlotPreReserve>>,
+      Awaited<ReturnType<typeof deleteRoomSlotPreReserve>>,
       TError,
       Key,
       Arguments,
-      Awaited<ReturnType<typeof cancelRoomSlotPreReserve>>
+      Awaited<ReturnType<typeof deleteRoomSlotPreReserve>>
     > & { swrKey?: string }
     request?: SecondParameter<typeof customFetch>
   },
@@ -560,8 +563,8 @@ export const useCancelRoomSlotPreReserve = <
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
   const swrKey =
-    swrOptions?.swrKey ?? getCancelRoomSlotPreReserveMutationKey(slotId)
-  const swrFn = getCancelRoomSlotPreReserveMutationFetcher(
+    swrOptions?.swrKey ?? getDeleteRoomSlotPreReserveMutationKey(slotId)
+  const swrFn = getDeleteRoomSlotPreReserveMutationFetcher(
     slotId,
     requestOptions,
   )

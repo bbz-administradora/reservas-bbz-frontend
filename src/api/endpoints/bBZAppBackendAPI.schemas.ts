@@ -8,29 +8,29 @@
 /**
  * Código de status HTTP 500.
  */
-export type CancelRoomSlotPreReserve500StatusCode =
-  (typeof CancelRoomSlotPreReserve500StatusCode)[keyof typeof CancelRoomSlotPreReserve500StatusCode]
+export type DeleteRoomSlotPreReserve500StatusCode =
+  (typeof DeleteRoomSlotPreReserve500StatusCode)[keyof typeof DeleteRoomSlotPreReserve500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve500StatusCode = {
+export const DeleteRoomSlotPreReserve500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomSlotPreReserve500Name =
-  (typeof CancelRoomSlotPreReserve500Name)[keyof typeof CancelRoomSlotPreReserve500Name]
+export type DeleteRoomSlotPreReserve500Name =
+  (typeof DeleteRoomSlotPreReserve500Name)[keyof typeof DeleteRoomSlotPreReserve500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve500Name = {
+export const DeleteRoomSlotPreReserve500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type CancelRoomSlotPreReserve500 = {
+export type DeleteRoomSlotPreReserve500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -38,34 +38,34 @@ export type CancelRoomSlotPreReserve500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomSlotPreReserve500Name
+  name: DeleteRoomSlotPreReserve500Name
   /** Código de status HTTP 500. */
-  status_code: CancelRoomSlotPreReserve500StatusCode
+  status_code: DeleteRoomSlotPreReserve500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type CancelRoomSlotPreReserve422StatusCode =
-  (typeof CancelRoomSlotPreReserve422StatusCode)[keyof typeof CancelRoomSlotPreReserve422StatusCode]
+export type DeleteRoomSlotPreReserve422StatusCode =
+  (typeof DeleteRoomSlotPreReserve422StatusCode)[keyof typeof DeleteRoomSlotPreReserve422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve422StatusCode = {
+export const DeleteRoomSlotPreReserve422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomSlotPreReserve422Name =
-  (typeof CancelRoomSlotPreReserve422Name)[keyof typeof CancelRoomSlotPreReserve422Name]
+export type DeleteRoomSlotPreReserve422Name =
+  (typeof DeleteRoomSlotPreReserve422Name)[keyof typeof DeleteRoomSlotPreReserve422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve422Name = {
+export const DeleteRoomSlotPreReserve422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CancelRoomSlotPreReserve422DetailsItem = {
+export type DeleteRoomSlotPreReserve422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -75,45 +75,45 @@ export type CancelRoomSlotPreReserve422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type CancelRoomSlotPreReserve422 = {
+export type DeleteRoomSlotPreReserve422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: CancelRoomSlotPreReserve422DetailsItem[]
+  details?: DeleteRoomSlotPreReserve422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomSlotPreReserve422Name
+  name: DeleteRoomSlotPreReserve422Name
   /** Código de status HTTP 422. */
-  status_code: CancelRoomSlotPreReserve422StatusCode
+  status_code: DeleteRoomSlotPreReserve422StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type CancelRoomSlotPreReserve404StatusCode =
-  (typeof CancelRoomSlotPreReserve404StatusCode)[keyof typeof CancelRoomSlotPreReserve404StatusCode]
+export type DeleteRoomSlotPreReserve404StatusCode =
+  (typeof DeleteRoomSlotPreReserve404StatusCode)[keyof typeof DeleteRoomSlotPreReserve404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve404StatusCode = {
+export const DeleteRoomSlotPreReserve404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomSlotPreReserve404Name =
-  (typeof CancelRoomSlotPreReserve404Name)[keyof typeof CancelRoomSlotPreReserve404Name]
+export type DeleteRoomSlotPreReserve404Name =
+  (typeof DeleteRoomSlotPreReserve404Name)[keyof typeof DeleteRoomSlotPreReserve404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve404Name = {
+export const DeleteRoomSlotPreReserve404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type CancelRoomSlotPreReserve404 = {
+export type DeleteRoomSlotPreReserve404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -121,37 +121,37 @@ export type CancelRoomSlotPreReserve404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomSlotPreReserve404Name
+  name: DeleteRoomSlotPreReserve404Name
   /** Código de status HTTP 404. */
-  status_code: CancelRoomSlotPreReserve404StatusCode
+  status_code: DeleteRoomSlotPreReserve404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type CancelRoomSlotPreReserve403StatusCode =
-  (typeof CancelRoomSlotPreReserve403StatusCode)[keyof typeof CancelRoomSlotPreReserve403StatusCode]
+export type DeleteRoomSlotPreReserve403StatusCode =
+  (typeof DeleteRoomSlotPreReserve403StatusCode)[keyof typeof DeleteRoomSlotPreReserve403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve403StatusCode = {
+export const DeleteRoomSlotPreReserve403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomSlotPreReserve403Name =
-  (typeof CancelRoomSlotPreReserve403Name)[keyof typeof CancelRoomSlotPreReserve403Name]
+export type DeleteRoomSlotPreReserve403Name =
+  (typeof DeleteRoomSlotPreReserve403Name)[keyof typeof DeleteRoomSlotPreReserve403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve403Name = {
+export const DeleteRoomSlotPreReserve403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type CancelRoomSlotPreReserve403 = {
+export type DeleteRoomSlotPreReserve403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -159,37 +159,37 @@ export type CancelRoomSlotPreReserve403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomSlotPreReserve403Name
+  name: DeleteRoomSlotPreReserve403Name
   /** Código de status HTTP 403. */
-  status_code: CancelRoomSlotPreReserve403StatusCode
+  status_code: DeleteRoomSlotPreReserve403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type CancelRoomSlotPreReserve401StatusCode =
-  (typeof CancelRoomSlotPreReserve401StatusCode)[keyof typeof CancelRoomSlotPreReserve401StatusCode]
+export type DeleteRoomSlotPreReserve401StatusCode =
+  (typeof DeleteRoomSlotPreReserve401StatusCode)[keyof typeof DeleteRoomSlotPreReserve401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve401StatusCode = {
+export const DeleteRoomSlotPreReserve401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomSlotPreReserve401Name =
-  (typeof CancelRoomSlotPreReserve401Name)[keyof typeof CancelRoomSlotPreReserve401Name]
+export type DeleteRoomSlotPreReserve401Name =
+  (typeof DeleteRoomSlotPreReserve401Name)[keyof typeof DeleteRoomSlotPreReserve401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve401Name = {
+export const DeleteRoomSlotPreReserve401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type CancelRoomSlotPreReserve401 = {
+export type DeleteRoomSlotPreReserve401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -197,37 +197,37 @@ export type CancelRoomSlotPreReserve401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomSlotPreReserve401Name
+  name: DeleteRoomSlotPreReserve401Name
   /** Código de status HTTP 401. */
-  status_code: CancelRoomSlotPreReserve401StatusCode
+  status_code: DeleteRoomSlotPreReserve401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type CancelRoomSlotPreReserve400StatusCode =
-  (typeof CancelRoomSlotPreReserve400StatusCode)[keyof typeof CancelRoomSlotPreReserve400StatusCode]
+export type DeleteRoomSlotPreReserve400StatusCode =
+  (typeof DeleteRoomSlotPreReserve400StatusCode)[keyof typeof DeleteRoomSlotPreReserve400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve400StatusCode = {
+export const DeleteRoomSlotPreReserve400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomSlotPreReserve400Name =
-  (typeof CancelRoomSlotPreReserve400Name)[keyof typeof CancelRoomSlotPreReserve400Name]
+export type DeleteRoomSlotPreReserve400Name =
+  (typeof DeleteRoomSlotPreReserve400Name)[keyof typeof DeleteRoomSlotPreReserve400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomSlotPreReserve400Name = {
+export const DeleteRoomSlotPreReserve400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type CancelRoomSlotPreReserve400 = {
+export type DeleteRoomSlotPreReserve400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -235,16 +235,16 @@ export type CancelRoomSlotPreReserve400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomSlotPreReserve400Name
+  name: DeleteRoomSlotPreReserve400Name
   /** Código de status HTTP 400. */
-  status_code: CancelRoomSlotPreReserve400StatusCode
+  status_code: DeleteRoomSlotPreReserve400StatusCode
 }
 
-export type CancelRoomSlotPreReserve200 = {
-  /** Identificador do slot cancelado */
-  canceledSlotId: string
+export type DeleteRoomSlotPreReserve200 = {
   /** Mensagem de sucesso */
   message: string
+  /** Identificador do slot deletado */
+  slotId: string
 }
 
 /**
@@ -533,32 +533,20 @@ export const CreateRoomSlotPreReserve201SlotStatus = {
 } as const
 
 export type CreateRoomSlotPreReserve201Slot = {
-  /**
-   * Data do slot no formato YYYY-MM-DD
-   * @pattern ^\d{4}-\d{2}-\d{2}$
-   */
-  date: string
   /** Identificador único do slot */
   id: string
-  /**
-   * ID do usuário que fez a pré-reserva
-   * @nullable
-   */
-  preReservedBy: string | null
-  /**
-   * Data e hora até quando o slot está pré-reservado
-   * @nullable
-   */
-  preReservedUntil: string | null
+  /** Data e hora até quando o slot está pré-reservado */
+  preReservedUntil: string
   /** Identificador único da sala */
   roomId: string
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
   /** Status do slot - sempre pre_reserved para este endpoint */
   status: CreateRoomSlotPreReserve201SlotStatus
-  /**
-   * Hora do slot no formato HH:MM (24h)
-   * @pattern ^\d{2}:\d{2}$
-   */
-  time: string
+  /** ID do usuário que fez a pré-reserva */
+  userId: string
 }
 
 export type CreateRoomSlotPreReserve201 = {
@@ -567,18 +555,27 @@ export type CreateRoomSlotPreReserve201 = {
   slot: CreateRoomSlotPreReserve201Slot
 }
 
+/**
+ * Status da reserva - deve ser pre_reserved para pré-reservas
+ */
+export type CreateRoomSlotPreReserveBodyStatus =
+  (typeof CreateRoomSlotPreReserveBodyStatus)[keyof typeof CreateRoomSlotPreReserveBodyStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateRoomSlotPreReserveBodyStatus = {
+  pre_reserved: 'pre_reserved',
+  reserved: 'reserved',
+} as const
+
 export type CreateRoomSlotPreReserveBody = {
-  /**
-   * Data para pré-reserva no formato YYYY-MM-DD
-   * @pattern ^\d{4}-\d{2}-\d{2}$
-   */
-  date: string
   roomId: string
-  /**
-   * Horário para pré-reserva no formato HH:MM (24h)
-   * @pattern ^\d{2}:\d{2}$
-   */
-  time: string
+  /** Horário de término da reserva no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início da reserva no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Status da reserva - deve ser pre_reserved para pré-reservas */
+  status?: CreateRoomSlotPreReserveBodyStatus
+  userId: string
 }
 
 /**
@@ -1130,13 +1127,9 @@ export type ListRoomSlots200 = {
 
 export type ListRoomSlotsParams = {
   /**
-   * Data para verificação de disponibilidade no formato YYYY-MM-DD
+   * Data/hora no formato ISO com timezone. Se enviar apenas a data com hora zerada (00:00:00), retorna salas com pelo menos um horário disponível nessa data. Se enviar data com uma hora específica, retorna salas disponíveis nesse horário específico. Exemplo para data: "2025-05-22T00:00:00-03:00", exemplo para hora específica: "2025-05-22T14:00:00-03:00"
    */
-  date: string
-  /**
-   * Hora para verificação de disponibilidade no formato HH:MM (24h)
-   */
-  hour?: string
+  datetime: string
   /**
    * Número da página para paginação, começando em 1 (padrão: 1)
    */

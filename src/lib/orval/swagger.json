@@ -5932,31 +5932,21 @@
     "/v1/private/room-slot/list": {
       "get": {
         "operationId": "listRoomSlots",
-        "summary": "Listar salas disponíveis por data e hora",
+        "summary": "Listar salas disponíveis por data ou horário específico",
         "tags": [
           "Room Slot"
         ],
-        "description": "Este endpoint permite listar salas disponíveis para uma data e, opcionalmente, um horário específico, com suporte a paginação.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Regras de busca**:\n  1. Quando apenas a data é fornecida, retorna salas com pelo menos um horário livre entre 07:00 e 20:00\n  2. Quando data e hora são fornecidos, retorna salas disponíveis nesse horário específico\n  3. Apenas salas ativas (is_active = true) são consideradas\n  4. Salas pré-reservadas ou reservadas para o horário solicitado são excluídas dos resultados\n\n* **Parâmetros**:\n  - date (obrigatório): Data no formato YYYY-MM-DD (ex: 2023-08-15)\n  - hour (opcional): Hora no formato HH:MM (ex: 14:30)\n  - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)\n  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 100 (padrão: 12)\n\n* **Exemplo de uso**:\n  - Requisição básica: `GET /v1/private/room-slot/list?date=2023-08-15`\n  - Com hora específica: `GET /v1/private/room-slot/list?date=2023-08-15&hour=14:30`\n  - Com paginação: `GET /v1/private/room-slot/list?date=2023-08-15&page=2&pageSize=10`\n\n* **Formato da resposta**:\n  - rooms: Array de objetos representando as salas disponíveis com suas propriedades\n  - totalCount: Número total de salas disponíveis\n  - totalPages: Número total de páginas disponíveis\n  - currentPage: Página atual sendo exibida\n  - message: Mensagem de sucesso ou informação adicional\n\n* **Notas**:\n  - O formato da data deve ser estritamente YYYY-MM-DD (ano-mês-dia)\n  - O formato da hora deve ser estritamente HH:MM (hora:minuto) no formato 24h\n  - O sistema valida automaticamente se a data e hora são válidas\n  - A capacidade máxima de uma sala pode afetar sua disponibilidade",
+        "description": "Este endpoint permite listar salas disponíveis para uma data e, opcionalmente, um horário específico, com suporte a paginação.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Regras de busca**:\n  1. Quando a data é fornecida com hora zerada (00:00:00), retorna salas com pelo menos um horário livre entre 07:00 e 20:00\n  2. Quando data e hora específica são fornecidos, retorna salas disponíveis nesse horário específico\n  3. Apenas salas ativas (is_active = true) são consideradas\n  4. Salas pré-reservadas ou reservadas para o horário solicitado são excluídas dos resultados\n\n* **Parâmetros**:\n  - datetime (obrigatório): String ISO com timezone para data/hora\n  - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)\n  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 100 (padrão: 12)\n\n* **Exemplo de uso**:\n  - Consulta por data: `GET /v1/private/room-slot/list?datetime=2025-05-22T00:00:00-03:00`\n  - Consulta por horário específico: `GET /v1/private/room-slot/list?datetime=2025-05-22T14:30:00-03:00`\n  - Com paginação: `GET /v1/private/room-slot/list?datetime=2025-05-22T00:00:00-03:00&page=2&pageSize=10`\n\n* **Formato da resposta**:\n  - rooms: Array de objetos representando as salas disponíveis com suas propriedades\n  - totalCount: Número total de salas disponíveis\n  - totalPages: Número total de páginas disponíveis\n  - currentPage: Página atual sendo exibida\n  - message: Mensagem de sucesso ou informação adicional\n\n* **Notas**:\n  - O parâmetro datetime deve ser uma string ISO com timezone (exemplo: \"2025-05-22T00:00:00-03:00\")\n  - Se a hora for 00:00:00, o sistema busca salas com pelo menos um horário livre no dia\n  - Se a hora for diferente de 00:00:00 (ex: 14:30:00), o sistema busca salas livres especificamente nesse horário\n  - A duração padrão de cada slot é de 1 hora\n  - A capacidade máxima de uma sala pode afetar sua disponibilidade",
         "parameters": [
           {
             "schema": {
               "type": "string",
-              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              "format": "date-time"
             },
             "in": "query",
-            "name": "date",
+            "name": "datetime",
             "required": true,
-            "description": "Data para verificação de disponibilidade no formato YYYY-MM-DD"
-          },
-          {
-            "schema": {
-              "type": "string",
-              "pattern": "^\\d{2}:\\d{2}$"
-            },
-            "in": "query",
-            "name": "hour",
-            "required": false,
-            "description": "Hora para verificação de disponibilidade no formato HH:MM (24h)"
+            "description": "Data/hora no formato ISO com timezone. Se enviar apenas a data com hora zerada (00:00:00), retorna salas com pelo menos um horário disponível nessa data. Se enviar data com uma hora específica, retorna salas disponíveis nesse horário específico. Exemplo para data: \"2025-05-22T00:00:00-03:00\", exemplo para hora específica: \"2025-05-22T14:00:00-03:00\""
           },
           {
             "schema": {
@@ -6803,7 +6793,7 @@
         "tags": [
           "Room Slot"
         ],
-        "description": "Este endpoint permite que um usuário crie uma pré-reserva de um slot (horário) em uma sala específica.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Cria uma pré-reserva para um slot (combinação de sala, data e horário)\n  2. Define o status como 'pre_reserved'\n  3. Associa o usuário atual à pré-reserva\n  4. Define um tempo limite de 5 minutos para confirmação da reserva\n  5. Verifica automaticamente se a sala existe e está ativa\n  6. Impede pré-reservas de slots já reservados ou pré-reservados\n  7. Impede pré-reservas para datas passadas\n\n* **Fluxo de reserva**:\n  1. O usuário faz uma pré-reserva (este endpoint)\n  2. O sistema reserva o slot por 5 minutos para o usuário\n  3. O usuário deve confirmar a reserva em até 5 minutos\n  4. Caso contrário, o slot fica disponível novamente após o tempo limite\n\n* **Parâmetros no corpo**:\n  - roomId (obrigatório): Identificador UUID da sala\n  - date (obrigatório): Data para reserva no formato YYYY-MM-DD (ex: 2023-08-15)\n  - time (obrigatório): Horário para reserva no formato HH:MM (ex: 14:30)\n\n* **Exemplo de uso**:\n  - Requisição básica: `POST /v1/private/room-slot/pre-reserve` com body:\n  ```json\n  {\n    \"roomId\": \"a1b2c3d4-e5f6-7890-abcd-1234567890ab\",\n    \"date\": \"2023-08-15\",\n    \"time\": \"14:30\"\n  }\n  ```\n\n* **Formato da resposta**:\n  - slot: Objeto com todas as informações do slot pré-reservado\n  - message: Mensagem informativa de sucesso\n\n* **Notas**:\n  - O formato da data deve ser estritamente YYYY-MM-DD (ano-mês-dia)\n  - O formato da hora deve ser estritamente HH:MM (hora:minuto) no formato 24h\n  - Uma pré-reserva expira automaticamente após 5 minutos se não for confirmada\n  - Um usuário não pode pré-reservar um slot já reservado ou pré-reservado\n  - Não é possível pré-reservar slots para datas passadas\n  - O ID do usuário que faz a pré-reserva é automaticamente capturado do token JWT",
+        "description": "Este endpoint permite que um usuário crie uma pré-reserva de um slot (horário) em uma sala específica.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Cria uma pré-reserva para um slot (combinação de sala e horário específico)\n  2. Define o status como 'pre_reserved'\n  3. Associa o usuário atual à pré-reserva\n  4. Define um tempo limite de 5 minutos para confirmação da reserva\n  5. Verifica automaticamente se a sala existe e está ativa\n  6. Impede pré-reservas de slots já reservados ou pré-reservados\n  7. Impede pré-reservas para datas passadas\n\n* **Fluxo de reserva**:\n  1. O usuário faz uma pré-reserva (este endpoint)\n  2. O sistema reserva o slot por 5 minutos para o usuário\n  3. O usuário deve confirmar a reserva em até 5 minutos\n  4. Caso contrário, o slot fica disponível novamente após o tempo limite\n\n* **Parâmetros no corpo**:\n  - roomId (obrigatório): Identificador UUID da sala\n  - slotStart (obrigatório): Data e hora de início no formato ISO com timezone (ex: 2023-08-15T14:30:00-03:00)\n  - slotEnd (obrigatório): Data e hora de término no formato ISO com timezone (ex: 2023-08-15T15:30:00-03:00)\n  - status (opcional): Status da reserva, padrão 'pre_reserved'\n\n* **Exemplo de uso**:\n  - Requisição básica: `POST /v1/private/room-slot/pre-reserve` com body:\n  ```json\n  {\n    \"roomId\": \"a1b2c3d4-e5f6-7890-abcd-1234567890ab\",\n    \"slotStart\": \"2023-08-15T14:30:00-03:00\",\n    \"slotEnd\": \"2023-08-15T15:30:00-03:00\"\n  }\n  ```\n\n* **Formato da resposta**:\n  - slot: Objeto com todas as informações do slot pré-reservado\n  - message: Mensagem informativa de sucesso\n\n* **Notas**:\n  - As datas devem estar no formato ISO com informação de timezone\n  - O slot reservado tem duração de 1 hora (entre slotStart e slotEnd)\n  - Uma pré-reserva expira automaticamente após 5 minutos se não for confirmada\n  - Um usuário não pode pré-reservar um slot já reservado ou pré-reservado\n  - Não é possível pré-reservar slots para datas passadas\n  - O ID do usuário que faz a pré-reserva é automaticamente capturado do token JWT",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6814,21 +6804,35 @@
                     "type": "string",
                     "format": "uuid"
                   },
-                  "date": {
+                  "userId": {
                     "type": "string",
-                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                    "description": "Data para pré-reserva no formato YYYY-MM-DD"
+                    "format": "uuid"
                   },
-                  "time": {
+                  "slotStart": {
                     "type": "string",
-                    "pattern": "^\\d{2}:\\d{2}$",
-                    "description": "Horário para pré-reserva no formato HH:MM (24h)"
+                    "format": "date-time",
+                    "description": "Horário de início da reserva no formato ISO com timezone do usuário"
+                  },
+                  "slotEnd": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Horário de término da reserva no formato ISO com timezone do usuário"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pre_reserved",
+                      "reserved"
+                    ],
+                    "default": "pre_reserved",
+                    "description": "Status da reserva - deve ser pre_reserved para pré-reservas"
                   }
                 },
                 "required": [
                   "roomId",
-                  "date",
-                  "time"
+                  "userId",
+                  "slotStart",
+                  "slotEnd"
                 ],
                 "additionalProperties": false
               }
@@ -6862,15 +6866,15 @@
                           "format": "uuid",
                           "description": "Identificador único da sala"
                         },
-                        "date": {
+                        "slotStart": {
                           "type": "string",
-                          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                          "description": "Data do slot no formato YYYY-MM-DD"
+                          "format": "date-time",
+                          "description": "Horário de início do slot no formato ISO com timezone do usuário"
                         },
-                        "time": {
+                        "slotEnd": {
                           "type": "string",
-                          "pattern": "^\\d{2}:\\d{2}$",
-                          "description": "Hora do slot no formato HH:MM (24h)"
+                          "format": "date-time",
+                          "description": "Horário de término do slot no formato ISO com timezone do usuário"
                         },
                         "status": {
                           "type": "string",
@@ -6880,25 +6884,24 @@
                           ],
                           "description": "Status do slot - sempre pre_reserved para este endpoint"
                         },
-                        "preReservedBy": {
+                        "userId": {
                           "type": "string",
                           "format": "uuid",
-                          "nullable": true,
                           "description": "ID do usuário que fez a pré-reserva"
                         },
                         "preReservedUntil": {
                           "type": "string",
-                          "nullable": true,
+                          "format": "date-time",
                           "description": "Data e hora até quando o slot está pré-reservado"
                         }
                       },
                       "required": [
                         "id",
                         "roomId",
-                        "date",
-                        "time",
+                        "slotStart",
+                        "slotEnd",
                         "status",
-                        "preReservedBy",
+                        "userId",
                         "preReservedUntil"
                       ],
                       "additionalProperties": false
@@ -7259,12 +7262,12 @@
     },
     "/v1/private/room-slot/{slotId}/pre-reserve": {
       "delete": {
-        "operationId": "cancelRoomSlotPreReserve",
-        "summary": "Cancelar pré-reserva de slot em uma sala",
+        "operationId": "deleteRoomSlotPreReserve",
+        "summary": "Deletar pré-reserva de slot em uma sala",
         "tags": [
           "Room Slot"
         ],
-        "description": "Este endpoint permite que um usuário cancele uma pré-reserva de um slot (horário) em uma sala específica.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a qualquer usuário autenticado, com restrições de propriedade.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n* **Funcionalidade**:\n  1. Cancela uma pré-reserva existente para um slot (horário em uma sala)\n  2. Remove completamente o registro do slot do banco de dados\n  3. Libera o horário para que outros usuários possam reservá-lo\n  4. Apenas o usuário que fez a pré-reserva ou administradores podem cancelá-la\n\n* **Fluxo de cancelamento**:\n  1. O usuário solicita o cancelamento de uma pré-reserva específica\n  2. O sistema verifica se o slot existe e está no estado 'pre_reserved'\n  3. O sistema verifica se o usuário tem permissão para cancelar\n  4. O sistema remove o registro da pré-reserva\n\n* **Parâmetros na rota**:\n  - slotId (obrigatório): Identificador UUID do slot pré-reservado\n\n* **Exemplo de uso**:\n  - Requisição básica: `DELETE /v1/private/room-slot/a1b2c3d4-e5f6-7890-abcd-1234567890ab/pre-reserve`\n\n* **Formato da resposta**:\n  - message: Mensagem informativa de sucesso\n  - canceledSlotId: UUID do slot que foi cancelado\n\n* **Notas**:\n  - O cancelamento é definitivo e não pode ser desfeito\n  - Apenas o proprietário da pré-reserva ou usuários com perfil 'admin' ou 'dev' podem cancelar\n  - Caso o slot já tenha sido completamente reservado (status 'reserved'), este endpoint não funcionará\n  - A operação é idempotente (chamar duas vezes não causa erro, mas retorna 404 na segunda vez)",
+        "description": "Este endpoint permite que um usuário delete uma pré-reserva de um slot (horário) em uma sala específica.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a qualquer usuário autenticado, com verificação de propriedade ou privilégio administrativo.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Deleta uma pré-reserva existente para um slot (horário em uma sala)\n  2. Remove completamente o registro do slot do banco de dados\n  3. Libera o horário para que outros usuários possam reservá-lo\n  4. Apenas o usuário que fez a pré-reserva ou administradores podem deletá-la\n\n* **Fluxo de deleção**:\n  1. O usuário solicita a deleção de uma pré-reserva específica através do ID do slot\n  2. O sistema extrai automaticamente o ID e perfil do usuário do token JWT\n  3. O sistema verifica se o slot existe e está no estado 'pre_reserved'\n  4. O sistema verifica se o usuário tem permissão para deletar (é o dono da reserva ou tem perfil admin/dev)\n  5. O sistema remove o registro da pré-reserva e libera o horário\n\n* **Parâmetros na rota**:\n  - slotId (obrigatório): Identificador UUID do slot pré-reservado\n\n* **Exemplo de uso**:\n  - Requisição básica: `DELETE /v1/private/room-slot/a1b2c3d4-e5f6-7890-abcd-1234567890ab/pre-reserve`\n\n* **Formato da resposta**:\n  - message: Mensagem informativa de sucesso\n  - deletedSlotId: UUID do slot que foi deletado\n\n* **Notas**:\n  - A deleção é definitiva e não pode ser desfeita\n  - Apenas o proprietário da pré-reserva ou usuários com perfil 'admin' ou 'dev' podem deletar\n  - Caso o slot já tenha sido completamente reservado (status 'reserved'), este endpoint não funcionará\n  - Caso o slot não exista ou já tenha sido deletado, retorna erro 404 (não encontrado)\n  - A operação é idempotente (chamar duas vezes não causa erro, mas retorna 404 na segunda vez)",
         "parameters": [
           {
             "schema": {
@@ -7273,7 +7276,8 @@
             },
             "in": "path",
             "name": "slotId",
-            "required": true
+            "required": true,
+            "description": "Identificador único do slot a ser deletado"
           }
         ],
         "security": [
@@ -7293,15 +7297,15 @@
                       "type": "string",
                       "description": "Mensagem de sucesso"
                     },
-                    "canceledSlotId": {
+                    "slotId": {
                       "type": "string",
                       "format": "uuid",
-                      "description": "Identificador do slot cancelado"
+                      "description": "Identificador do slot deletado"
                     }
                   },
                   "required": [
                     "message",
-                    "canceledSlotId"
+                    "slotId"
                   ],
                   "additionalProperties": false
                 }
