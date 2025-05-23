@@ -114,14 +114,13 @@ export function SlotButton({
   // Obtém o ícone associado a esta variante
   const icon = SLOT_CONFIGS[variant].icon
 
-  // Hook para cancelar a pré-reserva
-  const { trigger: deletePreReserve } = useDeleteRoomSlotPreReserve(
-    slot.id || '',
-    {
+  // Hook para deletar a pré-reserva
+  const { trigger: deletePreReserve, isMutating: deletingPreReserve } =
+    useDeleteRoomSlotPreReserve(slot.id || '', {
       swr: {
         onSuccess: () => {
           showToast({
-            message: 'Pré-reserva cancelada com sucesso!',
+            message: 'Pré-reserva deletada com sucesso!',
             variant: 'success',
             duration: 3000,
           })
@@ -131,16 +130,15 @@ export function SlotButton({
           }
         },
         onError: (error) => {
-          console.error('💥 Erro ao cancelar pré-reserva:', error)
+          console.error('💥 Erro ao deletar pré-reserva:', error)
           showToast({
-            message: 'Erro ao cancelar a pré-reserva. Tente novamente.',
+            message: 'Erro ao deletar a pré-reserva. Tente novamente.',
             variant: 'error',
             duration: 3000,
           })
         },
       },
-    },
-  )
+    })
 
   function handleClick() {
     console.log(`Slot clicado: ${date} ${time}`)
@@ -159,7 +157,7 @@ export function SlotButton({
     console.log(`Dados da reserva:`, reservedBy)
   }
 
-  function handleCancelPreReservation() {
+  function handleDeletePreReservation() {
     if (slot.id) {
       deletePreReserve()
     } else {
@@ -365,11 +363,12 @@ export function SlotButton({
 
                 {variant === 'pre_reserved' && slot.user?.id === user?.id && (
                   <Button
-                    onClick={handleCancelPreReservation}
+                    onClick={handleDeletePreReservation}
                     variant="destructive"
                     className="w-full sm:w-auto"
+                    disabled={deletingPreReserve}
                   >
-                    Cancelar Pré-reserva
+                    Deletar Pré-reserva
                   </Button>
                 )}
               </SheetFooter>

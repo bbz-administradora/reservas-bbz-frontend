@@ -18,13 +18,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { cn } from '@/utils/mergeClassNames'
 import { addDays, format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { ChevronRightIcon, XIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { RoomSlotsLegend } from './room-slots-legend'
+import { SelectedPreReservation } from './SelectedPreReservations'
 import { SlotButton } from './slot-button'
 import {
   SlotCell,
@@ -74,12 +73,6 @@ export function DataTableRoomSlots({
       setRoomData(liveRoomData.data)
     }
   }, [liveRoomData])
-
-  // Função para lidar com a exclusão de um slot
-  const handleDeleteSlot = (slotId: string) => {
-    console.log('Deletar slot:', slotId)
-    // Implementação futura da lógica de exclusão
-  }
 
   // Se não houver dados, garantir que temos 7 dias de slots
   const startDateObj = parseISO(startDate)
@@ -201,37 +194,20 @@ export function DataTableRoomSlots({
               user &&
               slot.user.id === user.id,
           )
-          .map((slot: GetRoomSlotAvailability200SlotsItem) => {
-            const slotStartDate = parseISO(slot.slotStart)
-            const slotEndDate = parseISO(slot.slotEnd)
-            const formattedDate = format(slotStartDate, 'dd/MM/yyyy', {
-              locale: ptBR,
-            })
-            const startTime = format(slotStartDate, 'HH:mm')
-            const endTime = format(slotEndDate, 'HH:mm')
-
-            return (
-              <div
-                key={slot.id}
-                className="flex w-full items-center gap-2.5 lg:w-[320px]"
-              >
-                <ChevronRightIcon size={15} className="text-primary" />
-                <Text className="whitespace-nowrap">{formattedDate}: </Text>
-                <Text className="text-muted-foreground/60 whitespace-nowrap">
-                  de {startTime} às {endTime}
-                </Text>
-                {/* deletar horário */}
-                <div
-                  className={cn(
-                    'bg-destructive text-destructive-foreground border-destructive-foreground mr-2 ml-auto cursor-pointer justify-self-end rounded-full border-1 p-0.5 md:mr-0',
-                  )}
-                  onClick={() => handleDeleteSlot(slot.id)}
-                >
-                  <XIcon size={14} />
-                </div>
-              </div>
-            )
-          })}
+          .map((slot: GetRoomSlotAvailability200SlotsItem) => (
+            <SelectedPreReservation
+              key={slot.id}
+              slot={slot}
+              onDataChange={() => {
+                // Forçar revalidação dos dados quando houver alteração (cancelamento da pré-reserva)
+                const swrKey = getGetRoomSlotAvailabilityKey(roomId, {
+                  startDate,
+                  endDate,
+                })
+                mutate(swrKey)
+              }}
+            />
+          ))}
 
         {(!roomData?.slots ||
           roomData.slots.filter(
