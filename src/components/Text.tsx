@@ -50,6 +50,8 @@ export const text = tv({
         'font-manrope text-[16px] leading-[24px] font-medium tracking-[0.15px] lg:text-[18px]',
       'title-16-18-400':
         'font-manrope text-[16px] leading-[24px] font-normal tracking-[0.15px] lg:text-[18px]',
+      'title-16-16-700':
+        'font-manrope text-[16px] leading-[24px] font-bold tracking-[0.15px]',
       'title-16-16-500':
         'font-manrope text-[16px] leading-[24px] font-medium tracking-[0.15px]',
       'title-14-16-500':
