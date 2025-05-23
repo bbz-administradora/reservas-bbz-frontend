@@ -25,7 +25,7 @@ export default async function RoomsHome() {
     datetime: today,
   })
 
-  // TODO: implementar mostUsedTimes e passar como prop para o RoomExplorer
+  // TODO: implementar total geral de salas, minhas reservas e próxima reserva
 
   const { user } = await fetchCurrentUserInServer()
 

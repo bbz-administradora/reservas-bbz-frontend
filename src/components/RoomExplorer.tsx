@@ -108,29 +108,9 @@ export function RoomExplorer({
       })()
     : formattedDateTime
 
-  // ⚠️ IMPORTANTE: encodeURIComponent é OBRIGATÓRIO aqui
-  // ------------------------------------------------------
-  // O valor `datetimeWithTimeSlot` contém uma string no formato ISO8601 com timezone,
-  // como por exemplo: "2025-06-01T14:00:00+00:00" ou "2025-06-01T10:00:00-03:00".
-  // Quando esse valor é enviado na query string sem codificação,
-  // o caractere "+" (de `+00:00`) é interpretado como ESPAÇO (" ") na URL,
-  // o que invalida a data e causa erro 422 na API:
-  //
-  // Exemplo sem encodeURIComponent:
-  // ?datetime=2025-06-01T14:00:00+00:00
-  //      ↓ interpretado como ↓
-  // ?datetime=2025-06-01T14:00:00 00:00   ← ❌ inválido
-  //
-  // Exemplo correto com encodeURIComponent:
-  // ?datetime=2025-06-01T14%3A00%3A00%2B00%3A00
-  //      ↑ válido, chega corretamente como string ISO com timezone
-  //
-  // Por isso, é essencial usar `encodeURIComponent(datetimeWithTimeSlot)` aqui,
-  // antes de passar para a API como query string.
-
   // Create params object for API call
   const params: ListRoomSlotsParams = {
-    datetime: encodeURIComponent(datetimeWithTimeSlot),
+    datetime: datetimeWithTimeSlot,
     page: currentPage.toString(),
     pageSize: itemsPerPage.toString(),
   }
