@@ -2,6 +2,7 @@
 
 import {
   GetRoomSlotAvailability200,
+  GetRoomSlotAvailability200SlotsItem,
   UserMe201User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import {
@@ -20,7 +21,7 @@ import {
 import { cn } from '@/utils/mergeClassNames'
 import { addDays, format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { ChevronRightIcon, ClockAlertIcon, XIcon } from 'lucide-react'
+import { ChevronRightIcon, XIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { RoomSlotsLegend } from './room-slots-legend'
@@ -73,6 +74,12 @@ export function DataTableRoomSlots({
       setRoomData(liveRoomData.data)
     }
   }, [liveRoomData])
+
+  // Função para lidar com a exclusão de um slot
+  const handleDeleteSlot = (slotId: string) => {
+    console.log('Deletar slot:', slotId)
+    // Implementação futura da lógica de exclusão
+  }
 
   // Se não houver dados, garantir que temos 7 dias de slots
   const startDateObj = parseISO(startDate)
@@ -180,44 +187,63 @@ export function DataTableRoomSlots({
           Atualizando...
         </p>
       )}
+
       {/* Horários selecionados de pré-reserva */}
       <div className="mt-10 flex flex-col gap-2">
-        <Text variant="title-16-18-700">Horários selecionados:</Text>
-        <div className="flex w-full items-center gap-2.5 lg:w-min">
-          <ChevronRightIcon size={15} className="text-primary" />
-          <Text className="whitespace-nowrap">03/01/2025: </Text>
-          <Text className="text-muted-foreground/60 whitespace-nowrap">
-            de 10:00 às 11:00
-          </Text>
+        <Text variant="title-16-18-700" className="mb-2">
+          Horários selecionados:
+        </Text>
 
-          {/* deletar horário */}
-          <div
-            className={cn(
-              'bg-destructive text-destructive-foreground border-destructive-foreground mr-2 ml-auto cursor-pointer justify-self-end rounded-full border-1 p-0.5 md:mr-0 md:ml-2',
-              // (isProcessing ||
-              //   loadingUpdateRoom ||
-              //   loadingDeleteImage) &&
-              //   'cursor-not-allowed opacity-50',
-            )}
-            // onClick={() => handleRemoveImage(idx)}
-          >
-            <XIcon size={14} />
-          </div>
-        </div>
-        <div className="mt-5 flex flex-col gap-2.5 md:flex-row lg:mt-2">
-          <div className="flex items-center gap-2.5">
-            <ClockAlertIcon size={15} className="text-primary" />
-            <Text className="text-primary whitespace-nowrap italic">
-              Tempo restante para confirmar:
-            </Text>
-          </div>
-          <Text
-            variant="title-16-16-700"
-            className="text-destructive whitespace-nowrap italic"
-          >
-            4:30 minutos
+        {roomData?.slots
+          .filter(
+            (slot: GetRoomSlotAvailability200SlotsItem) =>
+              slot.status === 'pre_reserved' &&
+              user &&
+              slot.user.id === user.id,
+          )
+          .map((slot: GetRoomSlotAvailability200SlotsItem) => {
+            const slotStartDate = parseISO(slot.slotStart)
+            const slotEndDate = parseISO(slot.slotEnd)
+            const formattedDate = format(slotStartDate, 'dd/MM/yyyy', {
+              locale: ptBR,
+            })
+            const startTime = format(slotStartDate, 'HH:mm')
+            const endTime = format(slotEndDate, 'HH:mm')
+
+            return (
+              <div
+                key={slot.id}
+                className="flex w-full items-center gap-2.5 lg:w-[320px]"
+              >
+                <ChevronRightIcon size={15} className="text-primary" />
+                <Text className="whitespace-nowrap">{formattedDate}: </Text>
+                <Text className="text-muted-foreground/60 whitespace-nowrap">
+                  de {startTime} às {endTime}
+                </Text>
+                {/* deletar horário */}
+                <div
+                  className={cn(
+                    'bg-destructive text-destructive-foreground border-destructive-foreground mr-2 ml-auto cursor-pointer justify-self-end rounded-full border-1 p-0.5 md:mr-0',
+                  )}
+                  onClick={() => handleDeleteSlot(slot.id)}
+                >
+                  <XIcon size={14} />
+                </div>
+              </div>
+            )
+          })}
+
+        {(!roomData?.slots ||
+          roomData.slots.filter(
+            (slot: GetRoomSlotAvailability200SlotsItem) =>
+              slot.status === 'pre_reserved' &&
+              user &&
+              slot.user.id === user.id,
+          ).length === 0) && (
+          <Text className="text-muted-foreground italic">
+            Nenhuma pré-reserva encontrada
           </Text>
-        </div>
+        )}
       </div>
     </div>
   )
