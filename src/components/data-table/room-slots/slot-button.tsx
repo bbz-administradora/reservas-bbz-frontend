@@ -123,6 +123,13 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
     console.log(`Dados da reserva:`, reservedBy)
   }
 
+  function handleCancelPreReservation() {
+    console.log(`Cancelando pré-reserva: ${date} ${time}`)
+    const reservedBy = slot.user
+    console.log(`Dados da pré-reserva:`, reservedBy)
+    console.log(`Data limite da pré-reserva:`, slot.preReservedUntil)
+  }
+
   // Definição dos conteúdos específicos para cada variante
   const CONTENT_CONFIG = {
     'reserved-my': {
@@ -311,6 +318,16 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
                     className="w-full sm:w-auto"
                   >
                     Cancelar Reserva
+                  </Button>
+                )}
+
+                {variant === 'pre_reserved' && slot.user?.id === user?.id && (
+                  <Button
+                    onClick={handleCancelPreReservation}
+                    variant="destructive"
+                    className="w-full sm:w-auto"
+                  >
+                    Cancelar Pré-reserva
                   </Button>
                 )}
               </SheetFooter>
