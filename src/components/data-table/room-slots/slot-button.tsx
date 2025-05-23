@@ -85,7 +85,9 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
   const getSlotVariant = (): SlotVariant => {
     switch (slot.status) {
       case 'reserved':
-        if (user && slot.preReservedBy && slot.preReservedBy.id === user.id) {
+        // Verificar se o slot é do usuário atual: apenas o user agora
+        const slotUserId = slot.user?.id
+        if (user && slotUserId && slotUserId === user.id) {
           return 'reserved-my'
         } else if (user && user.role !== 'user') {
           return 'reserved-adm'
@@ -116,7 +118,9 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
 
   function handleCancelReservation() {
     console.log(`Cancelando reserva: ${date} ${time}`)
-    console.log(`Dados da reserva:`, slot.preReservedBy)
+    // Usar apenas user agora
+    const reservedBy = slot.user
+    console.log(`Dados da reserva:`, reservedBy)
   }
 
   // Definição dos conteúdos específicos para cada variante
@@ -124,74 +128,88 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
     'reserved-my': {
       title: 'Sua reserva',
       titleClass: 'lg:text-secondary text-primary font-semibold lg:font-normal',
-      content: () =>
-        user && (
-          <div className="text-xs">
-            <p>
-              Nome: <strong>{user.name}</strong>
-            </p>
-            <p>
-              Email: <strong>{user.email}</strong>
-            </p>
-          </div>
-        ),
+      content: () => {
+        // Para 'reserved-my', usamos o usuário atual
+        return (
+          user && (
+            <div className="text-xs">
+              <p>
+                Nome: <strong>{user.name}</strong>
+              </p>
+              <p>
+                Email: <strong>{user.email}</strong>
+              </p>
+            </div>
+          )
+        )
+      },
     },
     'reserved-adm': {
       title: 'Reservado (cancelável)',
       titleClass:
         'text-primary lg:text-destructive font-semibold lg:font-normal',
-      content: () =>
-        slot.preReservedBy && (
+      content: () => {
+        // Usar apenas user agora
+        const reservedBy = slot.user
+        return reservedBy ? (
           <div className="text-xs">
-            <p>Por: {slot.preReservedBy.name}</p>
-            <p>Email: {slot.preReservedBy.email}</p>
+            <p>Por: {reservedBy.name}</p>
+            <p>Email: {reservedBy.email}</p>
             <p className="mt-4 text-xs italic lg:mt-2">
               Como admin, você pode cancelar esta reserva
             </p>
           </div>
-        ),
+        ) : null
+      },
     },
     'reserved-user': {
       title: 'Reservado',
       titleClass:
         'text-primary lg:text-foreground font-semibold lg:font-normal',
-      content: () =>
-        slot.preReservedBy && (
+      content: () => {
+        // Usar apenas user agora
+        const reservedBy = slot.user
+        return reservedBy ? (
           <div className="text-xs">
             <p>
-              Por: <strong>{slot.preReservedBy.name}</strong>
+              Por: <strong>{reservedBy.name}</strong>
             </p>
             <p>
-              Email: <strong>{slot.preReservedBy.email}</strong>
+              Email: <strong>{reservedBy.email}</strong>
             </p>
           </div>
-        ),
+        ) : null
+      },
     },
     pre_reserved: {
       title: 'Pré-reservado',
       titleClass: 'text-primary font-semibold lg:text-yellow-500',
-      content: () => (
-        <>
-          {slot.preReservedBy && (
-            <div className="text-xs">
-              <p>
-                Por: <strong>{slot.preReservedBy.name}</strong>
+      content: () => {
+        // Usar apenas user agora
+        const reservedBy = slot.user
+        return (
+          <>
+            {reservedBy && (
+              <div className="text-xs">
+                <p>
+                  Por: <strong>{reservedBy.name}</strong>
+                </p>
+                <p>
+                  Email: <strong>{reservedBy.email}</strong>
+                </p>
+              </div>
+            )}
+            {slot.preReservedUntil && (
+              <p className="mt-2 text-xs">
+                Até:{' '}
+                {format(new Date(slot.preReservedUntil), 'dd/MM/yyyy - HH:mm', {
+                  locale: ptBR,
+                })}
               </p>
-              <p>
-                Email: <strong>{slot.preReservedBy.email}</strong>
-              </p>
-            </div>
-          )}
-          {slot.preReservedUntil && (
-            <p className="mt-2 text-xs">
-              Até:{' '}
-              {format(new Date(slot.preReservedUntil), 'dd/MM/yyyy - HH:mm', {
-                locale: ptBR,
-              })}
-            </p>
-          )}
-        </>
-      ),
+            )}
+          </>
+        )
+      },
     },
     available: {
       title: '',

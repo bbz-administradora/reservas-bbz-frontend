@@ -25,12 +25,12 @@ import {
 } from './slotTableDataUtils'
 
 interface DataTableRoomSlotsProps {
-  startDate: string // formato YYYY-MM-DD
-  endDate: string // formato YYYY-MM-DD
+  startDate: string
+  endDate: string
   className?: string
   user: UserMe201User | null
-  roomData: GetRoomSlotAvailability200 | null
-  roomId: string // ID da sala para busca de disponibilidade
+  roomData: GetRoomSlotAvailability200
+  roomId: string
 }
 
 export function DataTableRoomSlots({
@@ -42,9 +42,7 @@ export function DataTableRoomSlots({
   roomId,
 }: DataTableRoomSlotsProps) {
   // Estado para armazenar os dados mesclados (iniciais + atualizações do SWR)
-  const [roomData, setRoomData] = useState<GetRoomSlotAvailability200 | null>(
-    initialRoomData,
-  )
+  const [roomData, setRoomData] = useState<any | null>(initialRoomData)
 
   // Usar o hook SWR para buscar dados atualizados com revalidação a cada 30 segundos
   const { data: liveRoomData, isLoading } = useGetRoomSlotAvailability(

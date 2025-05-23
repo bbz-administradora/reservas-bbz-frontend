@@ -1,11 +1,16 @@
 // src/utils/slotTableData.ts
-import { GetRoomSlotAvailability200SlotsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 
+import { GetRoomSlotAvailability200SlotsItemUser } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+
+// Interface para células da tabela com informações de slots
 export interface SlotCell {
   id?: string
   status: 'reserved' | 'pre_reserved' | 'available'
-  preReservedBy?: { id: string; name: string; email: string } | null
   preReservedUntil?: string | null
+  // Campos da API
+  slotStart?: string
+  slotEnd?: string
+  user?: GetRoomSlotAvailability200SlotsItemUser | null
 }
 
 export interface SlotRow {
@@ -48,18 +53,31 @@ export function createEmptySlotRow(date: string): SlotRow {
 }
 
 /**
- * Agrupa e preenche “vazios” como disponíveis
+ * Agrupa e preenche "vazios" como disponíveis
+ * Compatível com o formato original vindo da API (usando slotStart e slotEnd)
  */
-export function prepareSlotTableData(
-  rawSlots: GetRoomSlotAvailability200SlotsItem[],
-): SlotRow[] {
-  // 1) Descobre todas as datas em rawSlots, ordena ascendente
-  const dates = Array.from(new Set(rawSlots.map((s) => s.date))).sort((a, b) =>
-    a.localeCompare(b),
-  )
+export function prepareSlotTableData(rawSlots: any[]): SlotRow[] {
+  // Extrair datas únicas dos slots
+  const uniqueDates = new Set<string>()
 
-  // 2) Para cada data, inicializa um objeto com todos os horários como “available”
+  // Processar cada slot para extrair a data do slotStart
+  rawSlots.forEach((slot) => {
+    if (slot.slotStart) {
+      // Extrair a data do formato ISO (YYYY-MM-DDT...)
+      const date = new Date(slot.slotStart).toISOString().split('T')[0]
+      uniqueDates.add(date)
+    } else if (slot.date) {
+      // Caso já tenha o campo date (compatibilidade com formato antigo)
+      uniqueDates.add(slot.date)
+    }
+  })
+
+  // Ordenar datas
+  const dates = Array.from(uniqueDates).sort((a, b) => a.localeCompare(b))
+
+  // Para cada data, criar uma linha na tabela
   return dates.map((date) => {
+    // Iniciar com todos os slots disponíveis
     const row: SlotRow = {
       date,
       slots: TIME_SLOTS.reduce(
@@ -71,17 +89,47 @@ export function prepareSlotTableData(
       ),
     }
 
-    // 3) Preenche cada slot que existe em rawSlots
-    rawSlots
-      .filter((s) => s.date === date)
-      .forEach((s) => {
-        row.slots[s.time] = {
-          id: s.id,
-          status: s.status === 'reserved' ? 'reserved' : 'pre_reserved',
-          preReservedBy: s.preReservedBy,
-          preReservedUntil: s.preReservedUntil,
+    // Filtrar slots para a data atual
+    const slotsForThisDate = rawSlots.filter((slot) => {
+      if (slot.date) return slot.date === date
+      if (slot.slotStart) {
+        return new Date(slot.slotStart).toISOString().split('T')[0] === date
+      }
+      return false
+    })
+
+    // Preencher slots com dados
+    slotsForThisDate.forEach((slot) => {
+      // Determinar o horário do slot
+      let time: string
+
+      if (slot.time) {
+        // Formato antigo já tem o campo time
+        time = slot.time
+      } else if (slot.slotStart) {
+        // Extrair hora:minuto do slotStart
+        const slotStartDate = new Date(slot.slotStart)
+        const hours = slotStartDate.getHours().toString().padStart(2, '0')
+        const minutes = slotStartDate.getMinutes().toString().padStart(2, '0')
+        time = `${hours}:${minutes}`
+      } else {
+        return // Skip se não tiver informação de horário
+      }
+
+      // Verificar se o horário está na lista de TIME_SLOTS
+      if (TIME_SLOTS.includes(time)) {
+        row.slots[time] = {
+          id: slot.id,
+          status: slot.status === 'reserved' ? 'reserved' : 'pre_reserved',
+          // Apenas o campo user (não existe mais preReservedBy)
+          user: slot.user,
+          preReservedUntil: slot.preReservedUntil,
+          // Preservar campos originais
+          slotStart: slot.slotStart,
+          slotEnd: slot.slotEnd,
         }
-      })
+      }
+    })
 
     return row
   })
