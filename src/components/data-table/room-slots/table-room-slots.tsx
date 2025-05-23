@@ -4,7 +4,10 @@ import {
   GetRoomSlotAvailability200,
   UserMe201User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
-import { useGetRoomSlotAvailability } from '@/api/endpoints/room-slot/room-slot'
+import {
+  getGetRoomSlotAvailabilityKey,
+  useGetRoomSlotAvailability,
+} from '@/api/endpoints/room-slot/room-slot'
 import {
   Table,
   TableBody,
@@ -16,6 +19,7 @@ import {
 import { addDays, format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useEffect, useState } from 'react'
+import { useSWRConfig } from 'swr'
 import { RoomSlotsLegend } from './room-slots-legend'
 import { SlotButton } from './slot-button'
 import {
@@ -41,6 +45,9 @@ export function DataTableRoomSlots({
   roomData: initialRoomData,
   roomId,
 }: DataTableRoomSlotsProps) {
+  // Obter a função mutate do SWR para força revalidação
+  const { mutate } = useSWRConfig()
+
   // Estado para armazenar os dados mesclados (iniciais + atualizações do SWR)
   const [roomData, setRoomData] = useState<any | null>(initialRoomData)
 
@@ -104,7 +111,22 @@ export function DataTableRoomSlots({
 
   // Função simplificada para renderizar o componente do cliente
   const renderSlot = (date: string, time: string, cell: SlotCell) => {
-    return <SlotButton date={date} time={time} slot={cell} user={user} />
+    return (
+      <SlotButton
+        date={date}
+        time={time}
+        slot={cell}
+        user={user}
+        onDataChange={() => {
+          // Forçar revalidação dos dados quando houver alteração (cancelamento da pré-reserva)
+          const swrKey = getGetRoomSlotAvailabilityKey(roomId, {
+            startDate,
+            endDate,
+          })
+          mutate(swrKey)
+        }}
+      />
+    )
   }
 
   return (

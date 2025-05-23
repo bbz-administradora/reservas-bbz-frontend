@@ -1,6 +1,8 @@
 'use client'
 
 import { UserMe201User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { useDeleteRoomSlotPreReserve } from '@/api/endpoints/room-slot/room-slot'
+import { showToast } from '@/components/ShowToast'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -34,9 +36,9 @@ interface SlotButtonProps {
   time: string
   slot: SlotCell
   user: UserMe201User | null
+  onDataChange?: () => void
 }
 
-// Define os tipos de variantes de slot possíveis
 type SlotVariant =
   | 'reserved-adm'
   | 'reserved-user'
@@ -80,7 +82,13 @@ const SLOT_CONFIGS = {
   },
 }
 
-export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
+export function SlotButton({
+  date,
+  time,
+  slot,
+  user,
+  onDataChange,
+}: SlotButtonProps) {
   // Determina a variante do slot com base nas condições
   const getSlotVariant = (): SlotVariant => {
     switch (slot.status) {
@@ -106,6 +114,34 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
   // Obtém o ícone associado a esta variante
   const icon = SLOT_CONFIGS[variant].icon
 
+  // Hook para cancelar a pré-reserva
+  const { trigger: deletePreReserve } = useDeleteRoomSlotPreReserve(
+    slot.id || '',
+    {
+      swr: {
+        onSuccess: () => {
+          showToast({
+            message: 'Pré-reserva cancelada com sucesso!',
+            variant: 'success',
+            duration: 3000,
+          })
+
+          if (onDataChange) {
+            onDataChange()
+          }
+        },
+        onError: (error) => {
+          console.error('💥 Erro ao cancelar pré-reserva:', error)
+          showToast({
+            message: 'Erro ao cancelar a pré-reserva. Tente novamente.',
+            variant: 'error',
+            duration: 3000,
+          })
+        },
+      },
+    },
+  )
+
   function handleClick() {
     console.log(`Slot clicado: ${date} ${time}`)
     console.log(`Status: ${slot.status}`)
@@ -124,10 +160,16 @@ export function SlotButton({ date, time, slot, user }: SlotButtonProps) {
   }
 
   function handleCancelPreReservation() {
-    console.log(`Cancelando pré-reserva: ${date} ${time}`)
-    const reservedBy = slot.user
-    console.log(`Dados da pré-reserva:`, reservedBy)
-    console.log(`Data limite da pré-reserva:`, slot.preReservedUntil)
+    if (slot.id) {
+      deletePreReserve()
+    } else {
+      console.error('💥 ID do slot não encontrado')
+      showToast({
+        message: 'Erro: Não foi possível identificar a pré-reserva',
+        variant: 'error',
+        duration: 3000,
+      })
+    }
   }
 
   // Definição dos conteúdos específicos para cada variante
