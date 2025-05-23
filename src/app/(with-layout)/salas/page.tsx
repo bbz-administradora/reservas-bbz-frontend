@@ -4,7 +4,7 @@ import { Text } from '@/components/Text'
 import { Separator } from '@/components/ui/separator'
 import { fetchAvailableRoomsInServer } from '@/services/roomSlotService'
 import { fetchCurrentUserInServer } from '@/services/userService'
-import { format } from 'date-fns'
+import { format, startOfDay } from 'date-fns'
 import {
   CalendarCheck2Icon,
   CalendarClockIcon,
@@ -13,11 +13,16 @@ import {
 } from 'lucide-react'
 
 export default async function RoomsHome() {
-  const today = format(new Date(), 'yyyy-MM-dd')
+  // criando a data de hoje com hora, minutos e segundos zerados para garantir que a consulta seja feita apenas com a data
+  const now = new Date()
+  const start = startOfDay(now)
+  // Formatando no padrão ISO 8601 com o 'T' separador entre data e hora (requerido pelo backend)
+  const today = format(start, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
+
   const listAvailableRooms = await fetchAvailableRoomsInServer({
     page: '1',
     pageSize: '9',
-    date: today,
+    datetime: today,
   })
 
   // TODO: implementar mostUsedTimes e passar como prop para o RoomExplorer

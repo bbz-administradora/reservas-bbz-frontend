@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/utils/mergeClassNames'
 import { format } from 'date-fns'
-import { ClockIcon } from 'lucide-react'
+import { ClockIcon, XIcon } from 'lucide-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Text } from './Text'
 
@@ -68,14 +68,69 @@ export function RoomExplorer({
   }
 
   // Prepare filter params
+  // Formato da data para exibição no UI
   const formattedDate = date
     ? format(date, 'yyyy-MM-dd')
     : format(new Date(), 'yyyy-MM-dd')
 
+  // Função para criar uma string ISO8601 consistente com timezone fixo -03:00
+  const createISODateString = (
+    baseDate: Date,
+    hour?: number,
+    minute?: number,
+  ): string => {
+    // Extraio os componentes da data
+    const year = baseDate.getFullYear()
+    const month = String(baseDate.getMonth() + 1).padStart(2, '0')
+    const day = String(baseDate.getDate()).padStart(2, '0')
+
+    // Determino a hora e minuto, com padrão para 00:00 se não especificados
+    const hourStr = hour !== undefined ? String(hour).padStart(2, '0') : '00'
+    const minuteStr =
+      minute !== undefined ? String(minute).padStart(2, '0') : '00'
+
+    // Monto a string ISO manualmente, sem depender de conversões automáticas
+    // que podem causar problemas com timezone
+    return `${year}-${month}-${day}T${hourStr}:${minuteStr}:00.000-03:00`
+  }
+
+  // Formato base ISO8601 para a data com horário 00:00:00
+  const formattedDateTime = date
+    ? createISODateString(date)
+    : createISODateString(new Date())
+
+  // Se tiver timeSlot selecionado (formato 'HH:MM'), extrai a hora e minutos
+  const datetimeWithTimeSlot = timeSlot
+    ? (() => {
+        const [hours, minutes] = timeSlot.split(':').map(Number)
+        const baseDate = date || new Date()
+        return createISODateString(baseDate, hours, minutes)
+      })()
+    : formattedDateTime
+
+  // ⚠️ IMPORTANTE: encodeURIComponent é OBRIGATÓRIO aqui
+  // ------------------------------------------------------
+  // O valor `datetimeWithTimeSlot` contém uma string no formato ISO8601 com timezone,
+  // como por exemplo: "2025-06-01T14:00:00+00:00" ou "2025-06-01T10:00:00-03:00".
+  // Quando esse valor é enviado na query string sem codificação,
+  // o caractere "+" (de `+00:00`) é interpretado como ESPAÇO (" ") na URL,
+  // o que invalida a data e causa erro 422 na API:
+  //
+  // Exemplo sem encodeURIComponent:
+  // ?datetime=2025-06-01T14:00:00+00:00
+  //      ↓ interpretado como ↓
+  // ?datetime=2025-06-01T14:00:00 00:00   ← ❌ inválido
+  //
+  // Exemplo correto com encodeURIComponent:
+  // ?datetime=2025-06-01T14%3A00%3A00%2B00%3A00
+  //      ↑ válido, chega corretamente como string ISO com timezone
+  //
+  // Por isso, é essencial usar `encodeURIComponent(datetimeWithTimeSlot)` aqui,
+  // antes de passar para a API como query string.
+
   // Create params object for API call
   const params: ListRoomSlotsParams = {
-    date: formattedDate,
-    hour: timeSlot || undefined,
+    datetime: encodeURIComponent(datetimeWithTimeSlot),
     page: currentPage.toString(),
     pageSize: itemsPerPage.toString(),
   }
@@ -130,18 +185,34 @@ export function RoomExplorer({
         />
 
         {/* Time slot selection */}
-        <Select value={timeSlot} onValueChange={setTimeSlot}>
-          <SelectTrigger className="bg-background hover:bg-accent data-[placeholder]:hover:text-accent-foreground hover:text-accent-foreground hover:[&_svg]:stroke-accent-foreground w-full transition-colors lg:w-min [&_svg]:stroke-3">
-            <SelectValue placeholder="Horário" />
-          </SelectTrigger>
-          <SelectContent>
-            {Array.from({ length: 14 }, (_, i) => i + 7).map((hour) => (
-              <SelectItem key={hour} value={`${hour}:00`}>
-                {`${hour}:00`}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex w-full gap-2 lg:w-min">
+          <Select value={timeSlot} onValueChange={setTimeSlot}>
+            <SelectTrigger className="bg-background hover:bg-accent data-[placeholder]:hover:text-accent-foreground hover:text-accent-foreground hover:[&_svg]:stroke-accent-foreground w-full transition-colors lg:w-min [&_svg]:stroke-3">
+              <SelectValue placeholder="Horário" />
+            </SelectTrigger>
+            <SelectContent>
+              {Array.from({ length: 14 }, (_, i) => i + 7)
+                .filter((hour) => hour <= 20)
+                .map((hour) => (
+                  <SelectItem key={hour} value={`${hour}:00`}>
+                    {`${hour}:00`}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+
+          {timeSlot && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setTimeSlot('')}
+              className="text-destructive h-9 px-2 lg:px-3"
+            >
+              Reset
+              <XIcon className="ml-2 h-4 w-4" />
+            </Button>
+          )}
+        </div>
 
         {/* Most used times section */}
         <div className="my-5 flex w-full flex-col items-center justify-center gap-2.5 md:flex-row md:justify-start lg:justify-end">
