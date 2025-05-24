@@ -1,4 +1,5 @@
 import { DataTableRoomSlots } from '@/components/data-table/room-slots/table-room-slots'
+import { InviteParticipantsForm } from '@/components/forms/invite-participants-form'
 import { ImageGallery } from '@/components/ImageGallery'
 import { Text } from '@/components/Text'
 import { Badge } from '@/components/ui/badge'
@@ -129,7 +130,7 @@ export default async function RoomDetailsAndReservation(props: {
         ))}
       </div>
 
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto pt-10">
         <DataTableRoomSlots
           startDate={startDate}
           endDate={endDate}
@@ -142,10 +143,12 @@ export default async function RoomDetailsAndReservation(props: {
 
       <Separator className="bg-primary my-5" />
 
-      {/* Componente principal da página */}
-      {/* <RoomReservation roomId={id} initialRoomData={roomData.room} /> */}
-
-      <Separator className="bg-primary my-5" />
+      <div className="flex flex-col gap-2">
+        <Text variant="title-16-18-700" className="mb-2">
+          Convidar participantes:
+        </Text>
+        <InviteParticipantsForm />
+      </div>
     </div>
   )
 }
