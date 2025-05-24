@@ -45,8 +45,21 @@ export function PreReservationCountdown({
       // Encontrar o slot com menor tempo restante (o que vence primeiro)
       const now = new Date()
 
-      // Ordenar por data de expiração (mais próxima primeiro)
-      const sortedSlots = [...userPreReservedSlots].sort((a, b) => {
+      // Filtrar slots que ainda não expiraram
+      const validSlots = userPreReservedSlots.filter((slot) => {
+        if (!slot.preReservedUntil) return false
+        const expirationTime = parseISO(slot.preReservedUntil)
+        return !isBefore(expirationTime, now)
+      })
+
+      // Se todos os slots expiraram, mostrar mensagem específica
+      if (validSlots.length === 0) {
+        setTimeRemaining('Expirado! Faça nova pré-reserva')
+        return
+      }
+
+      // Ordenar slots válidos por data de expiração (mais próxima primeiro)
+      const sortedSlots = [...validSlots].sort((a, b) => {
         // Usar parseISO para converter string para Date de forma segura
         const dateA = a.preReservedUntil
           ? parseISO(a.preReservedUntil)
@@ -57,19 +70,13 @@ export function PreReservationCountdown({
         return dateA.getTime() - dateB.getTime()
       })
 
-      // Pegar o primeiro slot (o que vence mais rápido)
+      // Pegar o primeiro slot válido (o que vence mais rápido)
       const earliestSlot = sortedSlots[0]
 
       // Usar parseISO para converter a string de data para um objeto Date
       const expirationTime = earliestSlot.preReservedUntil
         ? parseISO(earliestSlot.preReservedUntil)
         : new Date(0)
-
-      // Se já expirou, mostrar uma mensagem específica em vez de ocultar o componente
-      if (isBefore(expirationTime, now)) {
-        setTimeRemaining('Expirado! Faça nova pré-reserva')
-        return
-      }
 
       // Calcular diferença em milissegundos usando date-fns
       const diffMs = differenceInMilliseconds(expirationTime, now)
