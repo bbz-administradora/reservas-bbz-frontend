@@ -430,24 +430,39 @@ export function SlotButton({
   }
 
   // Componente de conteúdo reutilizado tanto para tooltip quanto para sheet
-  const SlotContent = () => (
-    <div className="space-y-4 lg:space-y-2">
-      <p className="text-primary lg:text-primary-foreground text-xl font-semibold lg:text-xs">
-        {format(new Date(date + 'T' + time), 'dd/MM/yyyy - HH:mm', {
-          locale: ptBR,
-        })}
-      </p>
+  const SlotContent = () => {
+    // Verificar se a pré-reserva está vencida
+    const isPreReserveExpired =
+      variant === 'pre_reserved' &&
+      slot.preReservedUntil &&
+      new Date(slot.preReservedUntil) < new Date()
 
-      {variant !== 'available' && (
-        <>
-          <p className={CONTENT_CONFIG[variant].titleClass}>
-            {CONTENT_CONFIG[variant].title}
-          </p>
-          {CONTENT_CONFIG[variant].content()}
-        </>
-      )}
-    </div>
-  )
+    return (
+      <div className="space-y-4 lg:space-y-2">
+        <p className="text-primary lg:text-primary-foreground text-xl font-semibold lg:text-xs">
+          {format(new Date(date + 'T' + time), 'dd/MM/yyyy - HH:mm', {
+            locale: ptBR,
+          })}
+        </p>
+
+        {variant !== 'available' && (
+          <>
+            <p className={CONTENT_CONFIG[variant].titleClass}>
+              {CONTENT_CONFIG[variant].title}
+            </p>
+            {CONTENT_CONFIG[variant].content()}
+
+            {/* Mostrar aviso de pré-reserva vencida */}
+            {isPreReserveExpired && (
+              <p className="text-destructive mt-4 max-w-[300px] text-xs font-medium italic">
+                Esta pré-reserva está vencida e será apagada no próximo reload.
+              </p>
+            )}
+          </>
+        )}
+      </div>
+    )
+  }
 
   return (
     <>
