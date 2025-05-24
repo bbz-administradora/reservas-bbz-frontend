@@ -189,13 +189,25 @@ export function DataTableRoomSlots({
           Horários selecionados:
         </Text>
 
-        {/* Exibir pré-reservas do usuário atual */}
+        {/* Exibir pré-reservas do usuário atual - ordenadas por data/hora do slot (mais antigo primeiro) */}
         {roomData?.slots
           .filter(
             (slot: GetRoomSlotAvailability200SlotsItem) =>
               slot.status === 'pre_reserved' &&
               user &&
               slot.user.id === user.id,
+          )
+          .sort(
+            (
+              a: GetRoomSlotAvailability200SlotsItem,
+              b: GetRoomSlotAvailability200SlotsItem,
+            ) => {
+              // Ordenar por data/hora de início do slot (mais antigo primeiro)
+              return (
+                new Date(a.slotStart).getTime() -
+                new Date(b.slotStart).getTime()
+              )
+            },
           )
           .map((slot: GetRoomSlotAvailability200SlotsItem) => (
             <SelectedPreReservation
