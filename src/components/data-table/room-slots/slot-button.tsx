@@ -105,8 +105,9 @@ export function SlotButton({
   onDataChange,
   roomId,
 }: SlotButtonProps) {
-  // Estado para controlar a abertura do Dialog
+  // Estado para controlar a abertura do Dialog e Sheet
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
 
   // Determina a variante do slot com base nas condições
   const getSlotVariant = (): SlotVariant => {
@@ -144,6 +145,8 @@ export function SlotButton({
             duration: 3000,
           })
 
+          setIsSheetOpen(false)
+
           if (onDataChange) {
             onDataChange()
           }
@@ -155,6 +158,9 @@ export function SlotButton({
             variant: 'error',
             duration: 3000,
           })
+
+          // Fechar o Sheet mesmo em caso de erro
+          setIsSheetOpen(false)
         },
       },
     })
@@ -171,6 +177,7 @@ export function SlotButton({
           })
 
           setIsDialogOpen(false)
+          setIsSheetOpen(false)
 
           if (onDataChange) {
             onDataChange()
@@ -183,6 +190,10 @@ export function SlotButton({
             variant: 'error',
             duration: 3000,
           })
+
+          // Fechar o Sheet e Dialog mesmo em caso de erro
+          setIsDialogOpen(false)
+          setIsSheetOpen(false)
         },
       },
     })
@@ -204,11 +215,15 @@ export function SlotButton({
     // Usar apenas user agora
     const reservedBy = slot.user
     console.log(`Dados da reserva:`, reservedBy)
+
+    // Fechar o Sheet após a ação
+    setIsSheetOpen(false)
   }
 
   function handleDeletePreReservation() {
     if (slot.id) {
       deletePreReserve()
+      // O Sheet será fechado no callback de sucesso
     } else {
       console.error('💥 ID do slot não encontrado')
       showToast({
@@ -216,6 +231,8 @@ export function SlotButton({
         variant: 'error',
         duration: 3000,
       })
+      // Fechar o Sheet mesmo em caso de erro
+      setIsSheetOpen(false)
     }
   }
 
@@ -446,66 +463,110 @@ export function SlotButton({
 
       {/* Sheet para mobile/tablet */}
       <div className="lg:hidden">
-        <Sheet>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
             <Button
               size="icon"
               variant="ghost"
-              onClick={handleClick}
+              onClick={() => {
+                handleClick()
+                setIsSheetOpen(true)
+              }}
               className={cn('group size-14', SLOT_CONFIGS[variant].buttonClass)}
             >
               {icon}
             </Button>
           </SheetTrigger>
-          {variant !== 'available' && (
-            <SheetContent
-              side="bottom"
-              className="h-auto max-h-[80vh] py-4 md:p-10"
-            >
-              <SheetHeader className="sr-only">
-                <SheetTitle className="text-center">
-                  Detalhes da reserva de sala
-                </SheetTitle>
-                <SheetDescription>
-                  Detalhes da reserva de sala para o horário selecionado e
-                  aplicação mobile.
-                </SheetDescription>
-              </SheetHeader>
+          <SheetContent
+            side="bottom"
+            className="h-auto max-h-[80vh] py-4 md:p-10"
+          >
+            <SheetHeader className="sr-only">
+              <SheetTitle className="text-center">
+                {variant === 'available'
+                  ? 'Criar pré-reserva de sala'
+                  : 'Detalhes da reserva de sala'}
+              </SheetTitle>
+              <SheetDescription>
+                {variant === 'available'
+                  ? 'Pré-reserve este horário disponível'
+                  : 'Detalhes da reserva de sala para o horário selecionado e aplicação mobile.'}
+              </SheetDescription>
+            </SheetHeader>
 
-              <div className="p-4">
+            <div className="p-4">
+              {variant === 'available' ? (
+                <div className="space-y-4">
+                  <Text variant="title-18-24-700" className="mb-4">
+                    Horário disponível para pré-reserva
+                  </Text>
+                  <Text variant="body-16-16-400">
+                    {format(parseISO(date), 'dd/MM/yyyy', { locale: ptBR })} de{' '}
+                    {time} às{' '}
+                    {format(
+                      new Date(
+                        new Date(`${date}T${time}:00`).setHours(
+                          new Date(`${date}T${time}:00`).getHours() + 1,
+                        ),
+                      ),
+                      'HH:mm',
+                      { locale: ptBR },
+                    )}
+                  </Text>
+                  <Text
+                    variant="body-16-16-400"
+                    className="text-muted-foreground text-sm"
+                  >
+                    Você terá 5 minutos para finalizar a reserva após confirmar.
+                  </Text>
+                </div>
+              ) : (
                 <SlotContent />
-              </div>
+              )}
+            </div>
 
-              <SheetFooter className="flex-col gap-3 sm:flex-row">
-                <SheetClose asChild>
-                  <Button variant="outline" className="w-full sm:w-auto">
-                    Fechar
-                  </Button>
-                </SheetClose>
+            <SheetFooter className="flex-col gap-3 sm:flex-row">
+              <SheetClose asChild>
+                <Button variant="outline" className="w-full sm:w-auto">
+                  Fechar
+                </Button>
+              </SheetClose>
 
-                {variant === 'reserved-adm' && (
-                  <Button
-                    onClick={handleCancelReservation}
-                    variant="destructive"
-                    className="w-full sm:w-auto"
-                  >
-                    Cancelar Reserva
-                  </Button>
-                )}
+              {variant === 'reserved-adm' && (
+                <Button
+                  onClick={handleCancelReservation}
+                  variant="destructive"
+                  className="w-full sm:w-auto"
+                >
+                  Cancelar Reserva
+                </Button>
+              )}
 
-                {variant === 'pre_reserved' && slot.user?.id === user?.id && (
-                  <Button
-                    onClick={handleDeletePreReservation}
-                    variant="destructive"
-                    className="w-full sm:w-auto"
-                    disabled={deletingPreReserve}
-                  >
-                    Deletar Pré-reserva
-                  </Button>
-                )}
-              </SheetFooter>
-            </SheetContent>
-          )}
+              {variant === 'pre_reserved' && slot.user?.id === user?.id && (
+                <Button
+                  onClick={handleDeletePreReservation}
+                  variant="destructive"
+                  className="w-full sm:w-auto"
+                  disabled={deletingPreReserve}
+                >
+                  Deletar Pré-reserva
+                </Button>
+              )}
+
+              {variant === 'available' && (
+                <Button
+                  onClick={() => {
+                    handleCreatePreReservation()
+                    // Não precisamos fechar o Sheet aqui, pois isso será feito no callback onSuccess
+                  }}
+                  disabled={isCreatingPreReserve}
+                  className="w-full sm:w-auto"
+                >
+                  {isCreatingPreReserve ? 'Criando...' : 'Criar pré-reserva'}
+                </Button>
+              )}
+            </SheetFooter>
+          </SheetContent>
         </Sheet>
       </div>
     </>
