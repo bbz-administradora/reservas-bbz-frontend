@@ -22,6 +22,7 @@ import { addDays, format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useEffect, useState } from 'react'
 import { useSWRConfig } from 'swr'
+import { PreReservationCountdown } from './PreReservationCountdown'
 import { RoomSlotsLegend } from './room-slots-legend'
 import { SelectedPreReservation } from './SelectedPreReservations'
 import { SlotButton } from './slot-button'
@@ -208,6 +209,11 @@ export function DataTableRoomSlots({
               }}
             />
           ))}
+
+        {/* Exibir contagem regressiva para o slot que vence primeiro */}
+        {roomData?.slots && (
+          <PreReservationCountdown slots={roomData.slots} user={user} />
+        )}
 
         {(!roomData?.slots ||
           roomData.slots.filter(
