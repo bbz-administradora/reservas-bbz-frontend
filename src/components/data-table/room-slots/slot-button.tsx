@@ -1,9 +1,22 @@
 'use client'
 
 import { UserMe201User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
-import { useDeleteRoomSlotPreReserve } from '@/api/endpoints/room-slot/room-slot'
+import {
+  useCreateRoomSlotPreReserve,
+  useDeleteRoomSlotPreReserve,
+} from '@/api/endpoints/room-slot/room-slot'
 import { showToast } from '@/components/ShowToast'
+import { Text } from '@/components/Text'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import {
   Sheet,
   SheetClose,
@@ -21,7 +34,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { cn } from '@/utils/mergeClassNames'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import {
   CalendarCheck2Icon,
@@ -29,6 +42,7 @@ import {
   CalendarIcon,
   CalendarX2Icon,
 } from 'lucide-react'
+import { useState } from 'react'
 import { SlotCell } from './slotTableDataUtils'
 
 interface SlotButtonProps {
@@ -37,6 +51,7 @@ interface SlotButtonProps {
   slot: SlotCell
   user: UserMe201User | null
   onDataChange?: () => void
+  roomId?: string
 }
 
 type SlotVariant =
@@ -88,7 +103,11 @@ export function SlotButton({
   slot,
   user,
   onDataChange,
+  roomId,
 }: SlotButtonProps) {
+  // Estado para controlar a abertura do Dialog
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   // Determina a variante do slot com base nas condições
   const getSlotVariant = (): SlotVariant => {
     switch (slot.status) {
@@ -140,6 +159,34 @@ export function SlotButton({
       },
     })
 
+  // Hook para criar uma pré-reserva
+  const { trigger: createPreReserve, isMutating: isCreatingPreReserve } =
+    useCreateRoomSlotPreReserve({
+      swr: {
+        onSuccess: () => {
+          showToast({
+            message: 'Pré-reserva criada com sucesso!',
+            variant: 'success',
+            duration: 3000,
+          })
+
+          setIsDialogOpen(false)
+
+          if (onDataChange) {
+            onDataChange()
+          }
+        },
+        onError: (error) => {
+          console.error('💥 Erro ao criar pré-reserva:', error)
+          showToast({
+            message: 'Erro ao criar a pré-reserva. Tente novamente.',
+            variant: 'error',
+            duration: 3000,
+          })
+        },
+      },
+    })
+
   function handleClick() {
     console.log(`Slot clicado: ${date} ${time}`)
     console.log(`Status: ${slot.status}`)
@@ -148,6 +195,8 @@ export function SlotButton({
     if (variant === 'pre_reserved' && slot.preReservedUntil) {
       console.log(`Até: ${slot.preReservedUntil}`)
     }
+
+    // Se for um slot disponível, o diálogo será aberto via Dialog.Root open state
   }
 
   function handleCancelReservation() {
@@ -168,6 +217,37 @@ export function SlotButton({
         duration: 3000,
       })
     }
+  }
+
+  function handleCreatePreReservation() {
+    if (!roomId) {
+      showToast({
+        message: 'ID da sala não disponível',
+        variant: 'error',
+        duration: 3000,
+      })
+      return
+    }
+
+    // A data está no formato 'YYYY-MM-DD' e o tempo no formato 'HH:MM'
+    const slotStart = `${date}T${time}:00-03:00` // Adiciona segundos e timezone
+
+    // Calcula o horário de término (1 hora depois)
+    const slotStartDate = parseISO(slotStart)
+    const slotEndDate = new Date(slotStartDate)
+    slotEndDate.setHours(slotEndDate.getHours() + 1)
+
+    // Formata o slotEnd com o mesmo padrão do slotStart (com timezone -03:00)
+    const slotEnd = `${date}T${format(slotEndDate, 'HH:mm:ss')}-03:00`
+
+    // Dados da pré-reserva
+    const preReserveData = {
+      roomId: roomId,
+      slotStart,
+      slotEnd,
+    }
+
+    createPreReserve(preReserveData)
   }
 
   // Definição dos conteúdos específicos para cada variante
@@ -287,6 +367,52 @@ export function SlotButton({
 
   return (
     <>
+      {/* Dialog para confirmar pré-reserva somente desktop */}
+      {variant === 'available' && (
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirmar pré-reserva</DialogTitle>
+              <DialogDescription>
+                Você está prestes a fazer uma pré-reserva. Após confirmar, você
+                terá 5 minutos para finalizar a reserva.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="my-4">
+              <Text variant="title-16-18-700" className="mb-2">
+                Detalhes do horário:
+              </Text>
+              <Text variant="body-16-16-400">
+                {format(parseISO(date), 'dd/MM/yyyy', { locale: ptBR })} de{' '}
+                {time} às{' '}
+                {format(
+                  new Date(
+                    new Date(`${date}T${time}:00`).setHours(
+                      new Date(`${date}T${time}:00`).getHours() + 1,
+                    ),
+                  ),
+                  'HH:mm',
+                  { locale: ptBR },
+                )}
+              </Text>
+            </div>
+
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancelar</Button>
+              </DialogClose>
+              <Button
+                onClick={handleCreatePreReservation}
+                disabled={isCreatingPreReserve}
+              >
+                {isCreatingPreReserve ? 'Criando...' : 'Confirmar pré-reserva'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+
       {/* Tooltip para desktop */}
       <div className="hidden lg:block">
         <TooltipProvider>
@@ -295,7 +421,12 @@ export function SlotButton({
               <Button
                 size="icon"
                 variant="ghost"
-                onClick={handleClick}
+                onClick={() => {
+                  handleClick()
+                  if (variant === 'available') {
+                    setIsDialogOpen(true) // Abre o diálogo para pré-reserva somente desktop
+                  }
+                }}
                 className={cn(
                   'group size-14',
                   SLOT_CONFIGS[variant].buttonClass,
@@ -320,6 +451,7 @@ export function SlotButton({
             <Button
               size="icon"
               variant="ghost"
+              onClick={handleClick}
               className={cn('group size-14', SLOT_CONFIGS[variant].buttonClass)}
             >
               {icon}

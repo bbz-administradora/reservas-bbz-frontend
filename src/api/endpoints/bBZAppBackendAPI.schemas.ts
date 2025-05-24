@@ -575,7 +575,6 @@ export type CreateRoomSlotPreReserveBody = {
   slotStart: string
   /** Status da reserva - deve ser pre_reserved para pré-reservas */
   status?: CreateRoomSlotPreReserveBodyStatus
-  userId: string
 }
 
 /**

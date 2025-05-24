@@ -6801,10 +6801,6 @@
                     "type": "string",
                     "format": "uuid"
                   },
-                  "userId": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
                   "slotStart": {
                     "type": "string",
                     "format": "date-time",
@@ -6827,7 +6823,6 @@
                 },
                 "required": [
                   "roomId",
-                  "userId",
                   "slotStart",
                   "slotEnd"
                 ],

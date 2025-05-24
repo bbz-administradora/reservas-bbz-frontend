@@ -121,6 +121,7 @@ export function DataTableRoomSlots({
         time={time}
         slot={cell}
         user={user}
+        roomId={roomId}
         onDataChange={() => {
           // Forçar revalidação dos dados quando houver alteração (cancelamento da pré-reserva)
           const swrKey = getGetRoomSlotAvailabilityKey(roomId, {
@@ -188,6 +189,7 @@ export function DataTableRoomSlots({
           Horários selecionados:
         </Text>
 
+        {/* Exibir pré-reservas do usuário atual */}
         {roomData?.slots
           .filter(
             (slot: GetRoomSlotAvailability200SlotsItem) =>
@@ -215,6 +217,7 @@ export function DataTableRoomSlots({
           <PreReservationCountdown slots={roomData.slots} user={user} />
         )}
 
+        {/* Mensagem quando não há pré-reservas */}
         {(!roomData?.slots ||
           roomData.slots.filter(
             (slot: GetRoomSlotAvailability200SlotsItem) =>
