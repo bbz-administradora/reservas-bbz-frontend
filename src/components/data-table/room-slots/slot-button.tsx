@@ -169,12 +169,78 @@ export function SlotButton({
   const { trigger: createPreReserve, isMutating: isCreatingPreReserve } =
     useCreateRoomSlotPreReserve({
       swr: {
-        onSuccess: () => {
-          showToast({
-            message: 'Pré-reserva criada com sucesso!',
-            variant: 'success',
-            duration: 3000,
-          })
+        onSuccess: (response) => {
+          // Verificar se a resposta contém um erro
+          // (API retorna erros como objeto com name, message, etc.)
+          if (
+            response &&
+            response.data &&
+            typeof response.data === 'object' &&
+            'name' in response.data
+          ) {
+            const errorData = response.data as any // Type assertion para o formato de erro
+
+            // Mensagens personalizadas com base no conteúdo do erro
+            if (
+              errorData.message &&
+              errorData.message.includes('já começaram')
+            ) {
+              // Erro de horário passado
+              showToast({
+                message: 'Não é possível reservar horários que já passaram',
+                variant: 'warning',
+                duration: 5000,
+              })
+            } else if (
+              errorData.message &&
+              errorData.message.includes('mais de')
+            ) {
+              // Erro de data muito no futuro
+              showToast({
+                message:
+                  'Não é possível fazer reservas para datas muito distantes',
+                variant: 'warning',
+                duration: 5000,
+              })
+            } else if (
+              errorData.message &&
+              errorData.message.includes('já reservado')
+            ) {
+              // Erro de conflito de horário
+              showToast({
+                message: 'Este horário já está reservado',
+                variant: 'warning',
+                duration: 4000,
+              })
+            } else {
+              // Outros erros específicos da API
+              showToast({
+                message:
+                  errorData.message || 'Não foi possível fazer a pré-reserva',
+                variant: 'warning',
+                duration: 4000,
+              })
+            }
+          } else if (
+            response &&
+            response.data &&
+            typeof response.data === 'object' &&
+            'message' in response.data
+          ) {
+            // Sucesso verdadeiro com mensagem da API
+            showToast({
+              message: response.data.message as string,
+              variant: 'success',
+              duration: 3000,
+            })
+          } else {
+            // Resposta desconhecida
+            showToast({
+              message: 'Pré-reserva criada com sucesso!',
+              variant: 'success',
+              duration: 3000,
+            })
+          }
 
           setIsDialogOpen(false)
           setIsSheetOpen(false)
@@ -185,6 +251,7 @@ export function SlotButton({
         },
         onError: (error) => {
           console.error('💥 Erro ao criar pré-reserva:', error)
+
           showToast({
             message: 'Erro ao criar a pré-reserva. Tente novamente.',
             variant: 'error',
