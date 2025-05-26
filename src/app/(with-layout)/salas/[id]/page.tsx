@@ -84,11 +84,11 @@ export default async function RoomDetailsAndReservation(props: {
     endDate,
   })
 
-  if (!roomData) {
+  const { user } = await fetchCurrentUserInServer()
+
+  if (!roomData || !user) {
     return redirect(`${webserver.host}/salas`)
   }
-
-  const { user } = await fetchCurrentUserInServer()
 
   return (
     <div
@@ -147,7 +147,12 @@ export default async function RoomDetailsAndReservation(props: {
         <Text variant="title-16-18-700" className="mb-2">
           Convidar participantes:
         </Text>
-        <InviteParticipantsForm />
+        <InviteParticipantsForm
+          roomId={id}
+          startDate={startDate}
+          endDate={endDate}
+          user={user}
+        />
       </div>
     </div>
   )
