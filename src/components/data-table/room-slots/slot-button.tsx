@@ -319,7 +319,7 @@ export function SlotButton({
       return
     }
 
-    closeReservation({ id: slot.id })
+    closeReservation({ roomSlotId: slot.id })
     // Dialog e Sheet serão fechados no callback de sucesso/erro
   }
 
