@@ -10,6 +10,14 @@ import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  CancelRoomReservation200,
+  CancelRoomReservation400,
+  CancelRoomReservation401,
+  CancelRoomReservation403,
+  CancelRoomReservation404,
+  CancelRoomReservation422,
+  CancelRoomReservation500,
+  CancelRoomReservationBody,
   CloseRoomReservation200,
   CloseRoomReservation400,
   CloseRoomReservation401,
@@ -275,6 +283,131 @@ export const useCloseRoomReservation = <
 
   const swrKey = swrOptions?.swrKey ?? getCloseRoomReservationMutationKey()
   const swrFn = getCloseRoomReservationMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite que um administrador ou desenvolvedor cancele uma reserva de sala.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Acessível APENAS a usuários com perfil 'admin' ou 'dev'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+
+* **Funcionalidade**:
+  1. Cancela uma reserva existente no status 'reserved'
+  2. Atualiza o status para 'cancelled'
+  3. Registra a data e hora de cancelamento
+  4. Armazena o motivo do cancelamento
+  5. Registra o usuário que realizou o cancelamento
+
+* **Regras de negócio**:
+  1. Apenas usuários administradores ou desenvolvedores podem cancelar reservas
+  2. A reserva deve estar no status 'reserved' (não pode estar já fechada ou cancelada)
+  3. Um motivo de cancelamento deve ser fornecido
+  4. O cancelamento é definitivo e não pode ser desfeito
+
+* **Corpo da requisição**:
+  - id (obrigatório): Identificador UUID da reserva a ser cancelada
+  - cancelReason (obrigatório): Motivo do cancelamento (3 a 500 caracteres)
+
+* **Exemplo de uso**:
+  - Requisição básica: `PATCH /v1/private/reservation/cancel` com corpo JSON:
+  ```json
+  {
+    "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+    "cancelReason": "Sala em manutenção emergencial"
+  }
+  ```
+
+* **Formato da resposta**:
+  - reservation: Objeto com todas as informações da reserva cancelada
+  - message: Mensagem informativa de sucesso
+
+* **Notas**:
+  - O ID do usuário que cancela a reserva é automaticamente capturado do token JWT
+  - O status da reserva será atualizado para 'cancelled'
+  - A data e hora de cancelamento (cancelledAt) serão registradas automaticamente
+ * @summary Cancelar uma reserva de sala
+ */
+export type cancelRoomReservationResponse = {
+  data: CancelRoomReservation200
+  status: number
+  headers: Headers
+}
+
+export const getCancelRoomReservationUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/cancel`
+}
+
+export const cancelRoomReservation = async (
+  cancelRoomReservationBody: CancelRoomReservationBody,
+  options?: RequestInit,
+): Promise<cancelRoomReservationResponse> => {
+  return customFetch<Promise<cancelRoomReservationResponse>>(
+    getCancelRoomReservationUrl(),
+    {
+      ...options,
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(cancelRoomReservationBody),
+    },
+  )
+}
+
+export const getCancelRoomReservationMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: CancelRoomReservationBody },
+  ): Promise<cancelRoomReservationResponse> => {
+    return cancelRoomReservation(arg, options)
+  }
+}
+export const getCancelRoomReservationMutationKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/cancel`] as const
+
+export type CancelRoomReservationMutationResult = NonNullable<
+  Awaited<ReturnType<typeof cancelRoomReservation>>
+>
+export type CancelRoomReservationMutationError =
+  | CancelRoomReservation400
+  | CancelRoomReservation401
+  | CancelRoomReservation403
+  | CancelRoomReservation404
+  | CancelRoomReservation422
+  | CancelRoomReservation500
+
+/**
+ * @summary Cancelar uma reserva de sala
+ */
+export const useCancelRoomReservation = <
+  TError =
+    | CancelRoomReservation400
+    | CancelRoomReservation401
+    | CancelRoomReservation403
+    | CancelRoomReservation404
+    | CancelRoomReservation422
+    | CancelRoomReservation500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof cancelRoomReservation>>,
+    TError,
+    Key,
+    CancelRoomReservationBody,
+    Awaited<ReturnType<typeof cancelRoomReservation>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getCancelRoomReservationMutationKey()
+  const swrFn = getCancelRoomReservationMutationFetcher(requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 

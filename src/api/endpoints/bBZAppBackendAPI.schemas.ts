@@ -8,6 +8,299 @@
 /**
  * Código de status HTTP 500.
  */
+export type CancelRoomReservation500StatusCode =
+  (typeof CancelRoomReservation500StatusCode)[keyof typeof CancelRoomReservation500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CancelRoomReservation500Name =
+  (typeof CancelRoomReservation500Name)[keyof typeof CancelRoomReservation500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type CancelRoomReservation500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CancelRoomReservation500Name
+  /** Código de status HTTP 500. */
+  status_code: CancelRoomReservation500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type CancelRoomReservation422StatusCode =
+  (typeof CancelRoomReservation422StatusCode)[keyof typeof CancelRoomReservation422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CancelRoomReservation422Name =
+  (typeof CancelRoomReservation422Name)[keyof typeof CancelRoomReservation422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type CancelRoomReservation422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type CancelRoomReservation422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: CancelRoomReservation422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CancelRoomReservation422Name
+  /** Código de status HTTP 422. */
+  status_code: CancelRoomReservation422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type CancelRoomReservation404StatusCode =
+  (typeof CancelRoomReservation404StatusCode)[keyof typeof CancelRoomReservation404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CancelRoomReservation404Name =
+  (typeof CancelRoomReservation404Name)[keyof typeof CancelRoomReservation404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type CancelRoomReservation404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CancelRoomReservation404Name
+  /** Código de status HTTP 404. */
+  status_code: CancelRoomReservation404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type CancelRoomReservation403StatusCode =
+  (typeof CancelRoomReservation403StatusCode)[keyof typeof CancelRoomReservation403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CancelRoomReservation403Name =
+  (typeof CancelRoomReservation403Name)[keyof typeof CancelRoomReservation403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type CancelRoomReservation403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CancelRoomReservation403Name
+  /** Código de status HTTP 403. */
+  status_code: CancelRoomReservation403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type CancelRoomReservation401StatusCode =
+  (typeof CancelRoomReservation401StatusCode)[keyof typeof CancelRoomReservation401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CancelRoomReservation401Name =
+  (typeof CancelRoomReservation401Name)[keyof typeof CancelRoomReservation401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type CancelRoomReservation401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CancelRoomReservation401Name
+  /** Código de status HTTP 401. */
+  status_code: CancelRoomReservation401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type CancelRoomReservation400StatusCode =
+  (typeof CancelRoomReservation400StatusCode)[keyof typeof CancelRoomReservation400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CancelRoomReservation400Name =
+  (typeof CancelRoomReservation400Name)[keyof typeof CancelRoomReservation400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type CancelRoomReservation400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CancelRoomReservation400Name
+  /** Código de status HTTP 400. */
+  status_code: CancelRoomReservation400StatusCode
+}
+
+/**
+ * Status atual da reserva
+ */
+export type CancelRoomReservation200ReservationStatus =
+  (typeof CancelRoomReservation200ReservationStatus)[keyof typeof CancelRoomReservation200ReservationStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CancelRoomReservation200ReservationStatus = {
+  reserved: 'reserved',
+  cancelled: 'cancelled',
+  closed: 'closed',
+} as const
+
+export type CancelRoomReservation200Reservation = {
+  /** Lista de colaboradores da BBZ */
+  bbzCollaborators: string[]
+  /** Data e hora do cancelamento da reserva */
+  cancelledAt: string
+  /** Identificador único do usuário que cancelou a reserva */
+  cancelledBy: string
+  /** Motivo do cancelamento */
+  cancelReason: string
+  /** Lista de convidados externos */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Identificador único da sala */
+  roomId: string
+  /** Identificador único do slot de tempo */
+  roomSlotId: string
+  /** Status atual da reserva */
+  status: CancelRoomReservation200ReservationStatus
+  /** Identificador único do usuário que fez a reserva */
+  userId: string
+}
+
+export type CancelRoomReservation200 = {
+  /** Mensagem de sucesso */
+  message: string
+  reservation: CancelRoomReservation200Reservation
+}
+
+/**
+ * Corpo da requisição para cancelar uma reserva
+ */
+export type CancelRoomReservationBody = {
+  /**
+   * Motivo do cancelamento da reserva
+   * @minLength 3
+   * @maxLength 500
+   */
+  cancelReason: string
+  /** Identificador único da reserva a ser cancelada */
+  id: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type CloseRoomReservation500StatusCode =
   (typeof CloseRoomReservation500StatusCode)[keyof typeof CloseRoomReservation500StatusCode]
 
