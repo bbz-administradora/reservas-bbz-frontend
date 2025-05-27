@@ -8526,6 +8526,11 @@
                     "format": "uuid",
                     "description": "Identificador único da reserva a ser cancelada"
                   },
+                  "roomSlotId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identificador único do slot de tempo associado à reserva"
+                  },
                   "cancelReason": {
                     "type": "string",
                     "minLength": 3,
@@ -8534,7 +8539,6 @@
                   }
                 },
                 "required": [
-                  "id",
                   "cancelReason"
                 ],
                 "additionalProperties": false,

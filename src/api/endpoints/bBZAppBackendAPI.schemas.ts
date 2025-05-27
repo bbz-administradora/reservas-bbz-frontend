@@ -295,7 +295,9 @@ export type CancelRoomReservationBody = {
    */
   cancelReason: string
   /** Identificador único da reserva a ser cancelada */
-  id: string
+  id?: string
+  /** Identificador único do slot de tempo associado à reserva */
+  roomSlotId?: string
 }
 
 /**
