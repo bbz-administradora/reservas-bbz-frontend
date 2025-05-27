@@ -8103,17 +8103,18 @@
                     "type": "string",
                     "format": "uuid",
                     "description": "Identificador único da reserva a ser fechada"
+                  },
+                  "roomSlotId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identificador único do slot de tempo associado à reserva"
                   }
                 },
-                "required": [
-                  "id"
-                ],
                 "additionalProperties": false,
                 "description": "Corpo da requisição para fechar uma reserva (atualmente vazio, mas requerido para o formato PATCH)"
               }
             }
           },
-          "required": true,
           "description": "Corpo da requisição para fechar uma reserva (atualmente vazio, mas requerido para o formato PATCH)"
         },
         "security": [

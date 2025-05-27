@@ -1,6 +1,7 @@
 'use client'
 
 import { UserMe201User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { useCloseRoomReservation } from '@/api/endpoints/reservation/reservation'
 import {
   useCreateRoomSlotPreReserve,
   useDeleteRoomSlotPreReserve,
@@ -170,90 +171,107 @@ export function SlotButton({
     useCreateRoomSlotPreReserve({
       swr: {
         onSuccess: (response) => {
-          // Verificar se a resposta contém um erro
-          // (API retorna erros como objeto com name, message, etc.)
-          if (
-            response &&
-            response.data &&
-            typeof response.data === 'object' &&
-            'name' in response.data
-          ) {
-            const errorData = response.data as any // Type assertion para o formato de erro
-
-            // Mensagens personalizadas com base no conteúdo do erro
-            if (
-              errorData.message &&
-              errorData.message.includes('já começaram')
-            ) {
-              // Erro de horário passado
-              showToast({
-                message: 'Não é possível reservar horários que já passaram',
-                variant: 'warning',
-                duration: 5000,
-              })
-            } else if (
-              errorData.message &&
-              errorData.message.includes('mais de')
-            ) {
-              // Erro de data muito no futuro
-              showToast({
-                message:
-                  'Não é possível fazer reservas para datas muito distantes',
-                variant: 'warning',
-                duration: 5000,
-              })
-            } else if (
-              errorData.message &&
-              errorData.message.includes('já reservado')
-            ) {
-              // Erro de conflito de horário
-              showToast({
-                message: 'Este horário já está reservado',
-                variant: 'warning',
-                duration: 4000,
-              })
-            } else {
-              // Outros erros específicos da API
-              showToast({
-                message:
-                  errorData.message || 'Não foi possível fazer a pré-reserva',
-                variant: 'warning',
-                duration: 4000,
-              })
-            }
-          } else if (
-            response &&
-            response.data &&
-            typeof response.data === 'object' &&
-            'message' in response.data
-          ) {
-            // Sucesso verdadeiro com mensagem da API
-            showToast({
-              message: response.data.message as string,
-              variant: 'success',
-              duration: 3000,
-            })
-          } else {
-            // Resposta desconhecida
+          if (response.status === 201) {
             showToast({
               message: 'Pré-reserva criada com sucesso!',
               variant: 'success',
               duration: 3000,
             })
+
+            if (onDataChange) {
+              onDataChange()
+            }
+          } else if (response.status === 409) {
+            // Erro de conflito, slot já reservado ou pré-reservado
+            showToast({
+              message: 'Este horário já está reservado ou pré-reservado',
+              variant: 'warning',
+              duration: 4000,
+            })
+          } else if (
+            response.status === 400 &&
+            response.data.message ===
+              'Não é possível pré-reservar para horários que já começaram'
+          ) {
+            // Erro de horário passado
+            showToast({
+              message: 'Não é possível reservar horários que já passaram',
+              variant: 'warning',
+              duration: 5000,
+            })
+          } else if (
+            response.status === 400 &&
+            response.data.message.includes(
+              'Não é possível fazer reservas para mais de',
+            )
+          ) {
+            // Erro de data muito no futuro
+            showToast({
+              message:
+                'Não é possível fazer reservas para datas muito distantes',
+              variant: 'warning',
+              duration: 5000,
+            })
+          } else {
+            // Outros erros específicos da API
+            showToast({
+              message: 'Não foi possível fazer a pré-reserva',
+              variant: 'warning',
+              duration: 4000,
+            })
           }
 
           setIsDialogOpen(false)
           setIsSheetOpen(false)
-
-          if (onDataChange) {
-            onDataChange()
-          }
         },
         onError: (error) => {
           console.error('💥 Erro ao criar pré-reserva:', error)
 
           showToast({
             message: 'Erro ao criar a pré-reserva. Tente novamente.',
+            variant: 'error',
+            duration: 3000,
+          })
+
+          // Fechar o Sheet e Dialog mesmo em caso de erro
+          setIsDialogOpen(false)
+          setIsSheetOpen(false)
+        },
+      },
+    })
+
+  // Hook para encerrar uma reserva
+  const { trigger: closeReservation, isMutating: isClosingReservation } =
+    useCloseRoomReservation({
+      swr: {
+        onSuccess: (response) => {
+          if (response.status === 200) {
+            showToast({
+              message: 'Reserva encerrada com sucesso!',
+              variant: 'success',
+              duration: 3000,
+            })
+
+            if (onDataChange) {
+              onDataChange()
+            }
+          } else {
+            // Outros erros específicos da API
+            showToast({
+              message: 'Não foi possível encerrar a reserva',
+              variant: 'warning',
+              duration: 4000,
+            })
+          }
+
+          setIsDialogOpen(false)
+          setIsSheetOpen(false)
+        },
+        onError: (error) => {
+          console.error('💥 Erro ao encerrar reserva:', error)
+
+          showToast({
+            message: 'Erro ao encerrar a reserva. Tente novamente.',
             variant: 'error',
             duration: 3000,
           })
@@ -274,7 +292,7 @@ export function SlotButton({
       console.log(`Até: ${slot.preReservedUntil}`)
     }
 
-    // Se for um slot disponível, o diálogo será aberto via Dialog.Root open state
+    // ❗ Não vamos mais abrir o Dialog aqui, isso será feito no handler do botão de acordo com o dispositivo (desktop/mobile)
   }
 
   function handleCancelReservation() {
@@ -285,6 +303,24 @@ export function SlotButton({
 
     // Fechar o Sheet após a ação
     setIsSheetOpen(false)
+  }
+
+  function handleEndReservation() {
+    if (!slot.id) {
+      console.error('💥 ID da reserva não encontrado')
+      showToast({
+        message: 'Erro: Não foi possível identificar a reserva',
+        variant: 'error',
+        duration: 3000,
+      })
+
+      setIsDialogOpen(false)
+      setIsSheetOpen(false)
+      return
+    }
+
+    closeReservation({ id: slot.id })
+    // Dialog e Sheet serão fechados no callback de sucesso/erro
   }
 
   function handleDeletePreReservation() {
@@ -512,6 +548,52 @@ export function SlotButton({
         </Dialog>
       )}
 
+      {/* Dialog para encerrar reserva do usuário somente desktop */}
+      {variant === 'reserved-my' && (
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Encerrar sua reserva</DialogTitle>
+              <DialogDescription>
+                Você está prestes a encerrar sua reserva. Deseja confirmar?
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="my-4">
+              <Text variant="title-16-18-700" className="mb-2">
+                Detalhes da sua reserva:
+              </Text>
+              <Text variant="body-16-16-400">
+                {format(parseISO(date), 'dd/MM/yyyy', { locale: ptBR })} de{' '}
+                {time} às{' '}
+                {format(
+                  new Date(
+                    new Date(`${date}T${time}:00`).setHours(
+                      new Date(`${date}T${time}:00`).getHours() + 1,
+                    ),
+                  ),
+                  'HH:mm',
+                  { locale: ptBR },
+                )}
+              </Text>
+            </div>
+
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancelar</Button>
+              </DialogClose>
+              <Button
+                disabled={isClosingReservation}
+                onClick={handleEndReservation}
+                variant="destructive"
+              >
+                {isClosingReservation ? 'Encerrando...' : 'Encerrar reserva'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+
       {/* Tooltip para desktop */}
       <div className="hidden lg:block">
         <TooltipProvider>
@@ -522,8 +604,9 @@ export function SlotButton({
                 variant="ghost"
                 onClick={() => {
                   handleClick()
-                  if (variant === 'available') {
-                    setIsDialogOpen(true) // Abre o diálogo para pré-reserva somente desktop
+                  // No desktop, abrir Dialog para slots 'available' ou 'reserved-my'
+                  if (variant === 'available' || variant === 'reserved-my') {
+                    setIsDialogOpen(true)
                   }
                 }}
                 className={cn(
@@ -552,6 +635,7 @@ export function SlotButton({
               variant="ghost"
               onClick={() => {
                 handleClick()
+                // No mobile, sempre usar o Sheet, nunca o Dialog
                 setIsSheetOpen(true)
               }}
               className={cn('group size-14', SLOT_CONFIGS[variant].buttonClass)}
@@ -624,6 +708,17 @@ export function SlotButton({
                 </Button>
               )}
 
+              {variant === 'reserved-my' && (
+                <Button
+                  onClick={handleEndReservation}
+                  variant="destructive"
+                  className="w-full sm:w-auto"
+                  disabled={isClosingReservation}
+                >
+                  {deletingPreReserve ? 'Encerrando...' : 'Encerrar Reserva'}
+                </Button>
+              )}
+
               {variant === 'pre_reserved' && slot.user?.id === user?.id && (
                 <Button
                   onClick={handleDeletePreReservation}
@@ -631,7 +726,7 @@ export function SlotButton({
                   className="w-full sm:w-auto"
                   disabled={deletingPreReserve}
                 >
-                  Deletar Pré-reserva
+                  {deletingPreReserve ? 'Deletando...' : 'Deletar Pré-reserva'}
                 </Button>
               )}
 

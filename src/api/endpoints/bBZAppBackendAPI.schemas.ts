@@ -578,7 +578,9 @@ export type CloseRoomReservation200 = {
  */
 export type CloseRoomReservationBody = {
   /** Identificador único da reserva a ser fechada */
-  id: string
+  id?: string
+  /** Identificador único do slot de tempo associado à reserva */
+  roomSlotId?: string
 }
 
 /**
