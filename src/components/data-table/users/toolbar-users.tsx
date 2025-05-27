@@ -67,7 +67,7 @@ export function DataTableUsersToolbar<TData>({
         }
         className="md:h-9"
       />
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         {table.getColumn('role') && (
           <DataTableFacetedFilter
             column={table.getColumn('role')}
