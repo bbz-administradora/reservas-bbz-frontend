@@ -1,7 +1,10 @@
 'use client'
 
 import { UserMe201User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
-import { useCloseRoomReservation } from '@/api/endpoints/reservation/reservation'
+import {
+  useCancelRoomReservation,
+  useCloseRoomReservation,
+} from '@/api/endpoints/reservation/reservation'
 import {
   useCreateRoomSlotPreReserve,
   useDeleteRoomSlotPreReserve,
@@ -28,6 +31,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
+import { Textarea } from '@/components/ui/textarea'
 import {
   Tooltip,
   TooltipContent,
@@ -109,6 +113,14 @@ export function SlotButton({
   // Estado para controlar a abertura do Dialog e Sheet
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+
+  // Estado para controlar o motivo do cancelamento
+  const [cancelReason, setCancelReason] = useState('')
+
+  // Função para verificar se o usuário é admin ou dev
+  const isAdminOrDev = () => {
+    return user?.role === 'admin' || user?.role === 'dev'
+  }
 
   // Determina a variante do slot com base nas condições
   const getSlotVariant = (): SlotVariant => {
@@ -240,6 +252,49 @@ export function SlotButton({
       },
     })
 
+  // Hook para cancelar uma reserva
+  const { trigger: cancelReservation, isMutating: isCancelingReservation } =
+    useCancelRoomReservation({
+      swr: {
+        onSuccess: (response) => {
+          if (response.status === 200) {
+            showToast({
+              message: 'Reserva cancelada com sucesso!',
+              variant: 'success',
+              duration: 3000,
+            })
+
+            if (onDataChange) {
+              onDataChange()
+            }
+          } else {
+            // Outros erros específicos da API
+            showToast({
+              message: 'Não foi possível cancelar a reserva',
+              variant: 'warning',
+              duration: 4000,
+            })
+          }
+
+          setIsDialogOpen(false)
+          setIsSheetOpen(false)
+        },
+        onError: (error) => {
+          console.error('💥 Erro ao cancelar reserva:', error)
+
+          showToast({
+            message: 'Erro ao cancelar a reserva. Tente novamente.',
+            variant: 'error',
+            duration: 3000,
+          })
+
+          // Fechar o Sheet e Dialog mesmo em caso de erro
+          setIsDialogOpen(false)
+          setIsSheetOpen(false)
+        },
+      },
+    })
+
   // Hook para encerrar uma reserva
   const { trigger: closeReservation, isMutating: isClosingReservation } =
     useCloseRoomReservation({
@@ -283,31 +338,26 @@ export function SlotButton({
       },
     })
 
-  function handleClick() {
-    console.log(`Slot clicado: ${date} ${time}`)
-    console.log(`Status: ${slot.status}`)
-    console.log(SLOT_CONFIGS[variant].description)
-
-    if (variant === 'pre_reserved' && slot.preReservedUntil) {
-      console.log(`Até: ${slot.preReservedUntil}`)
+  function handleCancelReservation() {
+    if (!cancelReason || cancelReason.trim().length < 3) {
+      showToast({
+        message:
+          'Informe um motivo válido para o cancelamento (mínimo 3 caracteres)',
+        variant: 'warning',
+        duration: 3000,
+      })
+      return
     }
 
-    // ❗ Não vamos mais abrir o Dialog aqui, isso será feito no handler do botão de acordo com o dispositivo (desktop/mobile)
-  }
-
-  function handleCancelReservation() {
-    console.log(`Cancelando reserva: ${date} ${time}`)
-    // Usar apenas user agora
-    const reservedBy = slot.user
-    console.log(`Dados da reserva:`, reservedBy)
-
-    // Fechar o Sheet após a ação
-    setIsSheetOpen(false)
+    cancelReservation({
+      roomSlotId: slot.id,
+      cancelReason: cancelReason.trim(),
+    })
+    // Dialog e Sheet serão fechados no callback de sucesso/erro
   }
 
   function handleEndReservation() {
     if (!slot.id) {
-      console.error('💥 ID da reserva não encontrado')
       showToast({
         message: 'Erro: Não foi possível identificar a reserva',
         variant: 'error',
@@ -328,7 +378,6 @@ export function SlotButton({
       deletePreReserve()
       // O Sheet será fechado no callback de sucesso
     } else {
-      console.error('💥 ID do slot não encontrado')
       showToast({
         message: 'Erro: Não foi possível identificar a pré-reserva',
         variant: 'error',
@@ -594,6 +643,79 @@ export function SlotButton({
         </Dialog>
       )}
 
+      {/* Dialog para cancelar reserva de outro usuário - apenas para visualização desktop e usuários admin/dev */}
+      {variant === 'reserved-adm' && isAdminOrDev() && (
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Cancelar reserva de outro usuário</DialogTitle>
+              <DialogDescription>
+                Como administrador, você pode cancelar a reserva de outro
+                usuário. Informe o motivo do cancelamento.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="my-4">
+              <Text variant="title-16-18-700" className="mb-2">
+                Detalhes da reserva:
+              </Text>
+              <Text variant="body-16-16-400">
+                {format(parseISO(date), 'dd/MM/yyyy', { locale: ptBR })} de{' '}
+                {time} às{' '}
+                {format(
+                  new Date(
+                    new Date(`${date}T${time}:00`).setHours(
+                      new Date(`${date}T${time}:00`).getHours() + 1,
+                    ),
+                  ),
+                  'HH:mm',
+                  { locale: ptBR },
+                )}
+              </Text>
+              <Text variant="body-16-16-400" className="mt-1">
+                Reservado por: {slot.user?.name || 'Usuário desconhecido'}
+              </Text>
+            </div>
+
+            <div className="my-4">
+              <Text variant="title-16-18-700" className="mb-2">
+                Motivo do cancelamento:
+              </Text>
+              <Textarea
+                placeholder="Informe o motivo do cancelamento (obrigatório, mínimo 3 e máximo 500 caracteres)"
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                maxLength={500}
+                className="resize-none"
+              />
+              <Text
+                variant="body-16-16-400"
+                className="text-muted-foreground mt-1"
+              >
+                {cancelReason.length}/500 caracteres
+              </Text>
+            </div>
+
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline" onClick={() => setCancelReason('')}>
+                  Cancelar
+                </Button>
+              </DialogClose>
+              <Button
+                disabled={
+                  isCancelingReservation || cancelReason.trim().length < 3
+                }
+                onClick={handleCancelReservation}
+                variant="destructive"
+              >
+                {isCancelingReservation ? 'Cancelando...' : 'Cancelar reserva'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+
       {/* Tooltip para desktop */}
       <div className="hidden lg:block">
         <TooltipProvider>
@@ -603,9 +725,16 @@ export function SlotButton({
                 size="icon"
                 variant="ghost"
                 onClick={() => {
-                  handleClick()
-                  // No desktop, abrir Dialog para slots 'available' ou 'reserved-my'
-                  if (variant === 'available' || variant === 'reserved-my') {
+                  // No desktop, abrir Dialog para slots 'available', 'reserved-my' ou 'reserved-adm' (para admin/dev)
+                  if (
+                    variant === 'available' ||
+                    variant === 'reserved-my' ||
+                    (variant === 'reserved-adm' && isAdminOrDev())
+                  ) {
+                    // Resetar o motivo do cancelamento ao abrir o dialog
+                    if (variant === 'reserved-adm') {
+                      setCancelReason('')
+                    }
                     setIsDialogOpen(true)
                   }
                 }}
@@ -634,8 +763,11 @@ export function SlotButton({
               size="icon"
               variant="ghost"
               onClick={() => {
-                handleClick()
                 // No mobile, sempre usar o Sheet, nunca o Dialog
+                // Resetar o motivo do cancelamento ao abrir o sheet para variante 'reserved-adm'
+                if (variant === 'reserved-adm') {
+                  setCancelReason('')
+                }
                 setIsSheetOpen(true)
               }}
               className={cn('group size-14', SLOT_CONFIGS[variant].buttonClass)}
@@ -693,19 +825,48 @@ export function SlotButton({
 
             <SheetFooter className="flex-col gap-3 sm:flex-row">
               <SheetClose asChild>
-                <Button variant="outline" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  className="w-full sm:w-auto"
+                  onClick={() => setCancelReason('')}
+                >
                   Fechar
                 </Button>
               </SheetClose>
 
-              {variant === 'reserved-adm' && (
-                <Button
-                  onClick={handleCancelReservation}
-                  variant="destructive"
-                  className="w-full sm:w-auto"
-                >
-                  Cancelar Reserva
-                </Button>
+              {variant === 'reserved-adm' && isAdminOrDev() && (
+                <>
+                  <div className="my-4">
+                    <Text variant="title-16-18-700" className="mb-2">
+                      Motivo do cancelamento:
+                    </Text>
+                    <Textarea
+                      placeholder="Informe o motivo do cancelamento (obrigatório, mínimo 3 e máximo 500 caracteres)"
+                      value={cancelReason}
+                      onChange={(e) => setCancelReason(e.target.value)}
+                      maxLength={500}
+                      className="resize-none"
+                    />
+                    <Text
+                      variant="body-16-16-400"
+                      className="text-muted-foreground mt-1"
+                    >
+                      {cancelReason.length}/500 caracteres
+                    </Text>
+                  </div>
+                  <Button
+                    onClick={handleCancelReservation}
+                    variant="destructive"
+                    className="w-full sm:w-auto"
+                    disabled={
+                      isCancelingReservation || cancelReason.trim().length < 3
+                    }
+                  >
+                    {isCancelingReservation
+                      ? 'Cancelando...'
+                      : 'Cancelar Reserva'}
+                  </Button>
+                </>
               )}
 
               {variant === 'reserved-my' && (
