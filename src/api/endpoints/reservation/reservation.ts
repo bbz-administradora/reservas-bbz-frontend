@@ -10,6 +10,14 @@ import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  CloseRoomReservation200,
+  CloseRoomReservation400,
+  CloseRoomReservation401,
+  CloseRoomReservation403,
+  CloseRoomReservation404,
+  CloseRoomReservation422,
+  CloseRoomReservation500,
+  CloseRoomReservationBody,
   CreateRoomReservation201,
   CreateRoomReservation400,
   CreateRoomReservation401,
@@ -149,6 +157,124 @@ export const useCreateRoomReservation = <
 
   const swrKey = swrOptions?.swrKey ?? getCreateRoomReservationMutationKey()
   const swrFn = getCreateRoomReservationMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite que um usuário feche uma reserva de sala que ele criou.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+
+* **Funcionalidade**:
+  1. Fecha uma reserva existente no status 'reserved'
+  2. Atualiza o status para 'closed'
+  3. Registra a data e hora de fechamento
+
+* **Regras de negócio**:
+  1. Apenas o criador da reserva pode fechá-la
+  2. A reserva deve estar no status 'reserved' (não pode estar já fechada ou cancelada)
+  3. O fechamento é definitivo e não pode ser desfeito
+
+* **Parâmetros da URL**:
+  - id (obrigatório): Identificador UUID da reserva a ser fechada
+
+* **Corpo da requisição**:
+  - Um objeto JSON vazio é necessário (seguindo o padrão REST para PATCH)
+
+* **Exemplo de uso**:
+  - Requisição básica: `PATCH /v1/private/reservation/close` com corpo JSON `{ "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ab" }`
+
+* **Formato da resposta**:
+  - reservation: Objeto com todas as informações da reserva fechada
+  - message: Mensagem informativa de sucesso
+
+* **Notas**:
+  - O ID do usuário que fecha a reserva é automaticamente capturado do token JWT
+  - O status da reserva será atualizado para 'closed'
+  - A data e hora de fechamento (closedAt) serão registradas automaticamente
+ * @summary Fechar uma reserva de sala
+ */
+export type closeRoomReservationResponse = {
+  data: CloseRoomReservation200
+  status: number
+  headers: Headers
+}
+
+export const getCloseRoomReservationUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/close`
+}
+
+export const closeRoomReservation = async (
+  closeRoomReservationBody: CloseRoomReservationBody,
+  options?: RequestInit,
+): Promise<closeRoomReservationResponse> => {
+  return customFetch<Promise<closeRoomReservationResponse>>(
+    getCloseRoomReservationUrl(),
+    {
+      ...options,
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(closeRoomReservationBody),
+    },
+  )
+}
+
+export const getCloseRoomReservationMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: CloseRoomReservationBody },
+  ): Promise<closeRoomReservationResponse> => {
+    return closeRoomReservation(arg, options)
+  }
+}
+export const getCloseRoomReservationMutationKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/close`] as const
+
+export type CloseRoomReservationMutationResult = NonNullable<
+  Awaited<ReturnType<typeof closeRoomReservation>>
+>
+export type CloseRoomReservationMutationError =
+  | CloseRoomReservation400
+  | CloseRoomReservation401
+  | CloseRoomReservation403
+  | CloseRoomReservation404
+  | CloseRoomReservation422
+  | CloseRoomReservation500
+
+/**
+ * @summary Fechar uma reserva de sala
+ */
+export const useCloseRoomReservation = <
+  TError =
+    | CloseRoomReservation400
+    | CloseRoomReservation401
+    | CloseRoomReservation403
+    | CloseRoomReservation404
+    | CloseRoomReservation422
+    | CloseRoomReservation500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof closeRoomReservation>>,
+    TError,
+    Key,
+    CloseRoomReservationBody,
+    Awaited<ReturnType<typeof closeRoomReservation>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getCloseRoomReservationMutationKey()
+  const swrFn = getCloseRoomReservationMutationFetcher(requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
