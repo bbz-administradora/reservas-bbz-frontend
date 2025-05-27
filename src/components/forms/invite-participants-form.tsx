@@ -10,7 +10,11 @@ import {
   GetRoomSlotAvailability200SlotsItem,
   UserMe201User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
-import { useGetRoomSlotAvailability } from '@/api/endpoints/room-slot/room-slot'
+import { useCreateRoomReservation } from '@/api/endpoints/reservation/reservation'
+import {
+  getGetRoomSlotAvailabilityKey,
+  useGetRoomSlotAvailability,
+} from '@/api/endpoints/room-slot/room-slot'
 import { showToast } from '@/components/ShowToast'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -27,6 +31,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { emailSchema } from '@/schema'
 import { cn } from '@/utils/mergeClassNames'
+import { useSWRConfig } from 'swr'
 
 // Schema de validação
 const participantsSchema = z.object({
@@ -52,6 +57,9 @@ export function InviteParticipantsForm({
   endDate,
   user = null,
 }: InviteParticipantsFormProps) {
+  // Obter a função mutate do SWR para força revalidação
+  const { mutate } = useSWRConfig()
+
   const [internalInput, setInternalInput] = useState<string>('')
   const [externalInput, setExternalInput] = useState<string>('')
   const [internalError, setInternalError] = useState<string | null>(null)
@@ -62,9 +70,48 @@ export function InviteParticipantsForm({
   const [internalParticipants, setInternalParticipants] = useState<string[]>([])
   const [externalParticipants, setExternalParticipants] = useState<string[]>([])
 
-  // Buscar dados dos slots da sala apenas se tiver roomId
+  // Hook para buscar disponibilidade de slots da sala
   const { data: roomSlotData, mutate: getRoomSlotData } =
     useGetRoomSlotAvailability(roomId, { startDate, endDate })
+
+  // Hook para criar reserva de sala a partir de pré-reserva
+  const { trigger: createRoomReservation, isMutating: isCreatingReservation } =
+    useCreateRoomReservation({
+      swr: {
+        onSuccess: (response) => {
+          // Verificar se a resposta contém mensagem de sucesso
+          if (response.status === 201) {
+            return
+          } else if (response.status === 409) {
+            showToast({
+              message:
+                'A pré-reserva já expirou, por favor, faça uma nova pré-reserva.',
+              variant: 'warning',
+              duration: 4000,
+            })
+          } else {
+            console.error(
+              '💥 Erro ao confirmar a reserva',
+              response.data.message,
+            )
+            showToast({
+              message: 'Erro ao confirmar a reserva. Tente novamente.',
+              variant: 'error',
+              duration: 4000,
+            })
+          }
+        },
+        onError: (error) => {
+          console.error('💥 Erro ao criar reserva:', error)
+
+          showToast({
+            message: 'Ops! Ocorreu um erro ao confirmar a reserva.',
+            variant: 'error',
+            duration: 4000,
+          })
+        },
+      },
+    })
 
   const form = useForm<FormData>({
     resolver: zodResolver(participantsSchema),
@@ -178,91 +225,117 @@ export function InviteParticipantsForm({
     form.setValue('participants', [...internalParticipants, ...newList])
   }
 
+  const resetFormState = () => {
+    // Limpar participantes
+    setInternalParticipants([])
+    setExternalParticipants([])
+    setInternalInput('')
+    setExternalInput('')
+    setInternalError(null)
+    setExternalError(null)
+
+    // Resetar formulário para valores iniciais
+    form.reset({
+      participants: [],
+      needsWaitress: false,
+    })
+  }
+
+  // Função para filtrar slots pré-reservados do usuário atual
+  const getUserPreReservedSlots = (roomSlotData: any, userId: string) => {
+    const userSlots = roomSlotData.data.slots.filter(
+      (slot: GetRoomSlotAvailability200SlotsItem) =>
+        slot.status === 'pre_reserved' && slot.user.id === userId,
+    )
+
+    return userSlots
+  }
+
+  // Função para criar uma reserva para um slot
+  const createReservationForSlot = async (
+    slot: GetRoomSlotAvailability200SlotsItem,
+    formData: FormData,
+  ) => {
+    const reservationData = {
+      roomId: roomId,
+      roomSlotId: slot.id,
+      bbzCollaborators: internalParticipants,
+      externalGuests: externalParticipants,
+      needsCopeira: formData.needsWaitress,
+    }
+
+    await createRoomReservation(reservationData)
+  }
+
   const onFormSubmit: SubmitHandler<FormData> = async (data) => {
-    // Ativar estado de loading
     setIsSubmitting(true)
 
-    console.log('😎 Email usuário logado', user?.email)
-    console.log('🌈Participantes convidados:', data.participants)
-    console.log('🍵Precisa de copeira?', data.needsWaitress)
+    try {
+      // Forçar revalidação dos dados dos slots
+      await getRoomSlotData()
 
-    await getRoomSlotData() // Forçar revalidação dos dados dos slots
+      // Verificar se temos os dados necessários
+      if (!roomId || !roomSlotData?.data || !user) {
+        showToast({
+          message:
+            'Não foi possível acessar os dados necessários. Tente novamente.',
+          variant: 'error',
+          duration: 5000,
+        })
+        setIsSubmitting(false)
+        return
+      }
 
-    // Verificar se temos dados de slots, roomId e o usuário está logado
-    if (roomId && roomSlotData?.data && user) {
-      // Filtrar apenas os slots que pertencem ao usuário atual e que estão em pré-reserva
-      const userPreReservedSlots = roomSlotData.data.slots.filter(
-        (slot: GetRoomSlotAvailability200SlotsItem) =>
-          slot.status === 'pre_reserved' && slot.user.id === user.id,
+      // Obter slots pré-reservados do usuário
+      const userPreReservedSlots = getUserPreReservedSlots(
+        roomSlotData,
+        user.id,
       )
 
-      // Mostrar quantos slots encontramos
-      console.log(
-        `🟢Encontrados ${userPreReservedSlots.length} slots pré-reservados para o usuário.`,
-      )
-
-      // Para cada slot pré-reservado, faríamos a chamada para confirmação
-      if (userPreReservedSlots.length > 0) {
-        try {
-          // Usar Promise.all para processar todas as confirmações em paralelo
-          await Promise.all(
-            userPreReservedSlots.map(async (slot) => {
-              console.log('🔄 Slot que seria confirmado:', {
-                id: slot.id,
-                start: slot.slotStart,
-                end: slot.slotEnd,
-                status: slot.status,
-                room: roomId,
-              })
-
-              // TODO: Implementar a chamada de API para converter pré-reserva em reserva
-              // Exemplo de como seria com async/await:
-              // await confirmRoomSlotReservation(slot.id);
-            }),
-          )
-
-          // Forçar revalidação dos dados APENAS APÓS todas as operações assíncronas serem concluídas
-          console.log(
-            '✅ Todas as operações foram concluídas, atualizando dados...',
-          )
-
-          showToast({
-            message:
-              'Pré-reservas encontradas e listadas no console (implementação parcial)',
-            variant: 'info',
-            duration: 5000,
-          })
-        } catch (error) {
-          console.error('❌ Erro ao processar as pré-reservas:', error)
-          showToast({
-            message: 'Ocorreu um erro ao processar suas pré-reservas.',
-            variant: 'error',
-            duration: 5000,
-          })
-        } finally {
-          // Desativar loading independente do resultado
-          setIsSubmitting(false)
-        }
-      } else {
+      // Verificar se há slots para confirmar
+      if (userPreReservedSlots.length === 0) {
         showToast({
           message: 'Nenhuma pré-reserva encontrada para confirmar',
           variant: 'warning',
           duration: 5000,
         })
-        // Desativar loading quando não há pré-reservas
         setIsSubmitting(false)
+        return
       }
-    } else {
-      console.log('Dados dos slots, roomId ou usuário não disponíveis', {
-        hasRoomId: !!roomId,
-        hasRoomData: !!roomSlotData,
-        hasUser: !!user,
+
+      // Processar todos os slots
+      await Promise.all(
+        userPreReservedSlots.map((slot: GetRoomSlotAvailability200SlotsItem) =>
+          createReservationForSlot(slot, data),
+        ),
+      )
+
+      // Forçar revalidação dos dados após o sucesso
+      const swrKey = getGetRoomSlotAvailabilityKey(roomId, {
+        startDate,
+        endDate,
       })
-      // Desativar loading quando não conseguimos acessar os dados necessários
+      mutate(swrKey)
+
+      // Limpar formulário após sucesso
+      resetFormState()
+
+      // Notificar o usuário do sucesso
+      showToast({
+        message: `Reserva${userPreReservedSlots.length > 1 ? 's' : ''} confirmada${userPreReservedSlots.length > 1 ? 's' : ''} com sucesso! Um e-mail será enviado com os detalhes.`,
+        variant: 'success',
+        duration: 5000,
+      })
+    } catch (error) {
+      console.error('❌ Erro ao processar as pré-reservas:', error)
+      showToast({
+        message: 'Ocorreu um erro ao processar suas pré-reservas.',
+        variant: 'error',
+        duration: 5000,
+      })
+    } finally {
       setIsSubmitting(false)
     }
-
-    // TODO: Aqui você pode enviar os dados para o servidor ou realizar outras ações
   }
 
   return (
