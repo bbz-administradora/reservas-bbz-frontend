@@ -861,17 +861,17 @@ export type CreateRoomReservation400 = {
 /**
  * Status atual da reserva
  */
-export type CreateRoomReservation201ReservationStatus =
-  (typeof CreateRoomReservation201ReservationStatus)[keyof typeof CreateRoomReservation201ReservationStatus]
+export type CreateRoomReservation201ReservationsItemStatus =
+  (typeof CreateRoomReservation201ReservationsItemStatus)[keyof typeof CreateRoomReservation201ReservationsItemStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation201ReservationStatus = {
+export const CreateRoomReservation201ReservationsItemStatus = {
   reserved: 'reserved',
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
 
-export type CreateRoomReservation201Reservation = {
+export type CreateRoomReservation201ReservationsItem = {
   /** Lista de colaboradores da BBZ */
   bbzCollaborators: string[]
   /** Lista de convidados externos */
@@ -885,7 +885,7 @@ export type CreateRoomReservation201Reservation = {
   /** Identificador único do slot de tempo */
   roomSlotId: string
   /** Status atual da reserva */
-  status: CreateRoomReservation201ReservationStatus
+  status: CreateRoomReservation201ReservationsItemStatus
   /** Identificador único do usuário que fez a reserva */
   userId: string
 }
@@ -893,7 +893,7 @@ export type CreateRoomReservation201Reservation = {
 export type CreateRoomReservation201 = {
   /** Mensagem de sucesso */
   message: string
-  reservation: CreateRoomReservation201Reservation
+  reservations: CreateRoomReservation201ReservationsItem[]
 }
 
 export type CreateRoomReservationBody = {
@@ -905,8 +905,11 @@ export type CreateRoomReservationBody = {
   needsCopeira?: boolean
   /** Identificador único da sala a ser reservada */
   roomId: string
-  /** Identificador único do slot de tempo pré-reservado */
-  roomSlotId: string
+  /**
+   * Lista de identificadores únicos dos slots de tempo pré-reservados
+   * @minItems 1
+   */
+  roomSlotIds: string[]
 }
 
 /**

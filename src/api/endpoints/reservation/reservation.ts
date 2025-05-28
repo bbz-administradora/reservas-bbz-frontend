@@ -40,28 +40,28 @@ import type {
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
 /**
- * Este endpoint permite que um usuário crie uma reserva de sala a partir de um slot pré-reservado.
+ * Este endpoint permite que um usuário crie uma ou mais reservas de sala a partir de slots pré-reservados.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 
 * **Funcionalidade**:
-  1. Converte uma pré-reserva (slot) em uma reserva confirmada
+  1. Converte uma ou mais pré-reservas (slots) em reservas confirmadas
   2. Registra os detalhes adicionais da reserva (colaboradores, convidados externos, etc.)
-  3. Associa o usuário atual à reserva
-  4. Verifica automaticamente se o slot existe e está pré-reservado pelo mesmo usuário
-  5. O slot deve estar dentro do período de pré-reserva (5 minutos)
+  3. Associa o usuário atual às reservas
+  4. Verifica automaticamente se cada slot existe e está pré-reservado pelo mesmo usuário
+  5. Cada slot deve estar dentro do período de pré-reserva (5 minutos)
 
 * **Fluxo de reserva**:
-  1. O usuário faz uma pré-reserva (via endpoint de pré-reserva)
-  2. O sistema reserva o slot por 5 minutos para o usuário
-  3. O usuário confirma a reserva com este endpoint, fornecendo detalhes adicionais
-  4. O sistema confirma a reserva e atualiza o status do slot para 'reserved'
+  1. O usuário faz uma ou mais pré-reservas (via endpoint de pré-reserva)
+  2. O sistema reserva os slots por 5 minutos para o usuário
+  3. O usuário confirma as reservas com este endpoint, fornecendo detalhes adicionais
+  4. O sistema confirma as reservas e atualiza o status dos slots para 'reserved'
 
 * **Parâmetros no corpo**:
   - roomId (obrigatório): Identificador UUID da sala
-  - roomSlotId (obrigatório): Identificador UUID do slot pré-reservado
+  - roomSlotId (obrigatório): Lista de identificadores UUID dos slots pré-reservados
   - bbzCollaborators (opcional): Lista de colaboradores da BBZ que participarão da reunião
   - externalGuests (opcional): Lista de convidados externos que participarão da reunião
   - needsCopeira (opcional): Indica se a reserva necessita de serviço de copeira (padrão: false)
@@ -71,7 +71,7 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   ```json
   {
     "roomId": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
-    "roomSlotId": "b2c3d4e5-f6a7-8901-bcde-2345678901cd",
+    "roomSlotId": ["b2c3d4e5-f6a7-8901-bcde-2345678901cd", "c3d4e5f6-a789-0123-cdef-3456789012de"],
     "bbzCollaborators": ["João Silva", "Maria Oliveira"],
     "externalGuests": ["Carlos Santos - Empresa XYZ"],
     "needsCopeira": true
@@ -79,14 +79,14 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   ```
 
 * **Formato da resposta**:
-  - reservation: Objeto com todas as informações da reserva criada
+  - reservations: Array de objetos com todas as informações das reservas criadas
   - message: Mensagem informativa de sucesso
 
 * **Notas**:
   - O ID do usuário que faz a reserva é automaticamente capturado do token JWT
-  - A reserva só pode ser criada a partir de um slot que já esteja pré-reservado pelo mesmo usuário
-  - A pré-reserva deve estar dentro do período válido de 5 minutos
-  - O status da reserva criada será definido como 'reserved'
+  - As reservas só podem ser criadas a partir de slots que já estejam pré-reservados pelo mesmo usuário
+  - Cada pré-reserva deve estar dentro do período válido de 5 minutos
+  - O status das reservas criadas será definido como 'reserved'
  * @summary Criar uma reserva de sala
  */
 export type createRoomReservationResponse = {
