@@ -556,7 +556,7 @@ export type ListRoomReservationsParams = {
    */
   page?: string
   /**
-   * Quantidade de resultados por página, entre 1 e 100 (padrão: 100)
+   * Quantidade de resultados por página, entre 1 e 1000 (padrão: 1000)
    */
   pageSize?: string
 }

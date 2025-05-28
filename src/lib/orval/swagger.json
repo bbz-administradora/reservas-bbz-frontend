@@ -8982,7 +8982,7 @@
             "in": "query",
             "name": "pageSize",
             "required": false,
-            "description": "Quantidade de resultados por página, entre 1 e 100 (padrão: 100)"
+            "description": "Quantidade de resultados por página, entre 1 e 1000 (padrão: 1000)"
           }
         ],
         "security": [
