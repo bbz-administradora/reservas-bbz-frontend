@@ -1,22 +1,34 @@
+import { Text } from '@/components/Text'
+import { webserver } from '@/infra/webserver'
+import { fetchListRoomReservationsInServer } from '@/services/reservationService'
 import { fetchCurrentUserInServer } from '@/services/userService'
+import { ChevronLeftIcon } from 'lucide-react'
+import Link from 'next/link'
 
 export default async function MyRoomReservations() {
   const { user } = await fetchCurrentUserInServer()
+
+  // Buscar reservas do usuário autenticado
+  const reservationsList = await fetchListRoomReservationsInServer({
+    page: '1',
+    pageSize: '1000',
+  })
 
   const name = user?.name || 'Usuário'
 
   return (
     <div
       id="main"
-      className="wrapper flex flex-1 flex-col items-center justify-center gap-5"
+      className="wrapper flex flex-1 flex-col gap-5 pt-5 pb-28 lg:pb-10"
     >
-      <p className="text-7xl capitalize">{`Seja bem vindo ${name
-        .split(' ')
-        .shift()}!`}</p>
-
-      <p className="text-2xl">
-        Aqui você pode visualizar suas reservas de salas e gerenciá-las.
-      </p>
+      <div className="relative my-4 flex w-full items-center justify-center">
+        <Link href={`${webserver.host}/salas`} className="absolute left-0">
+          <ChevronLeftIcon className="text-accent size-10" />
+        </Link>
+        <Text as="h1" variant={'title-22-32-700'}>
+          Meus Agendamentos
+        </Text>
+      </div>
     </div>
   )
 }
