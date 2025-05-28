@@ -8,6 +8,177 @@
 /**
  * Código de status HTTP 500.
  */
+export type GetRoomReservationStats500StatusCode =
+  (typeof GetRoomReservationStats500StatusCode)[keyof typeof GetRoomReservationStats500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetRoomReservationStats500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetRoomReservationStats500Name =
+  (typeof GetRoomReservationStats500Name)[keyof typeof GetRoomReservationStats500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetRoomReservationStats500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type GetRoomReservationStats500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetRoomReservationStats500Name
+  /** Código de status HTTP 500. */
+  status_code: GetRoomReservationStats500StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type GetRoomReservationStats403StatusCode =
+  (typeof GetRoomReservationStats403StatusCode)[keyof typeof GetRoomReservationStats403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetRoomReservationStats403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetRoomReservationStats403Name =
+  (typeof GetRoomReservationStats403Name)[keyof typeof GetRoomReservationStats403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetRoomReservationStats403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type GetRoomReservationStats403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetRoomReservationStats403Name
+  /** Código de status HTTP 403. */
+  status_code: GetRoomReservationStats403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type GetRoomReservationStats401StatusCode =
+  (typeof GetRoomReservationStats401StatusCode)[keyof typeof GetRoomReservationStats401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetRoomReservationStats401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetRoomReservationStats401Name =
+  (typeof GetRoomReservationStats401Name)[keyof typeof GetRoomReservationStats401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetRoomReservationStats401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type GetRoomReservationStats401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetRoomReservationStats401Name
+  /** Código de status HTTP 401. */
+  status_code: GetRoomReservationStats401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type GetRoomReservationStats400StatusCode =
+  (typeof GetRoomReservationStats400StatusCode)[keyof typeof GetRoomReservationStats400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetRoomReservationStats400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetRoomReservationStats400Name =
+  (typeof GetRoomReservationStats400Name)[keyof typeof GetRoomReservationStats400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetRoomReservationStats400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type GetRoomReservationStats400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetRoomReservationStats400Name
+  /** Código de status HTTP 400. */
+  status_code: GetRoomReservationStats400StatusCode
+}
+
+export type GetRoomReservationStats200 = {
+  /**
+   * Array with the three most used start times, from smallest to largest, format HH:mm
+   * @minItems 3
+   * @maxItems 3
+   */
+  mostUsedStartTimes: string[]
+  /**
+   * Start date and time of the next reservation in the format 'dd/MM/yyyy às HH:mm', or null if none
+   * @nullable
+   */
+  nextReservation: string | null
+  /**
+   * Total number of reservations for the user
+   * @minimum 0
+   */
+  total: number
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type CancelRoomReservation500StatusCode =
   (typeof CancelRoomReservation500StatusCode)[keyof typeof CancelRoomReservation500StatusCode]
 
