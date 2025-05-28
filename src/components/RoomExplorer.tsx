@@ -185,7 +185,10 @@ export function RoomExplorer({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setTimeSlot('')}
+              onClick={() => {
+                setTimeSlot('')
+                setDate(ensureDateIsNotPast(new Date()))
+              }}
               className="text-destructive h-9 px-2 lg:px-3"
             >
               Reset
