@@ -8957,6 +8957,556 @@
         }
       }
     },
+    "/v1/private/reservation/list": {
+      "get": {
+        "operationId": "listRoomReservations",
+        "summary": "Listar reservas de sala do usuário",
+        "tags": [
+          "Reservation"
+        ],
+        "description": "Este endpoint permite listar todas as reservas de sala do usuário autenticado.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários autenticados com conta ativa.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Retorna todas as reservas do usuário autenticado, com paginação\n  2. Permite definir parâmetros de paginação (page e pageSize)\n  3. Traz informações detalhadas de cada reserva, incluindo dados da sala e do slot de tempo\n\n* **Parâmetros de query**:\n  - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)\n  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 100 (padrão: 30)\n\n* **Exemplo de uso**:\n  - Requisição básica: `GET /v1/private/reservation/list`\n  - Com paginação: `GET /v1/private/reservation/list?page=2&pageSize=15`\n\n* **Formato da resposta**:\n  - reservations: Array com detalhes completos de cada reserva\n  - totalCount: Número total de reservas encontradas\n  - totalPages: Número total de páginas disponíveis\n  - currentPage: Número da página atual\n\n* **Notas**:\n  - O userId é automaticamente extraído do token JWT do usuário autenticado\n  - O endpoint sempre retorna apenas reservas do usuário autenticado, independente de outros filtros\n  - As reservas são ordenadas da mais recente para a mais antiga",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "Número da página para paginação, começando em 1 (padrão: 1)"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "description": "Quantidade de resultados por página, entre 1 e 100 (padrão: 100)"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resposta paginada contendo reservas de sala",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reservations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Identificador único da reserva"
+                          },
+                          "room": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "Identificador único da sala"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Nome da sala"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Informações básicas da sala"
+                          },
+                          "slot": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "Identificador único do slot de tempo"
+                              },
+                              "slotRange": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "description": "Intervalo de datas do slot no formato [início, fim]"
+                              },
+                              "status": {
+                                "type": "string",
+                                "enum": [
+                                  "pre_reserved",
+                                  "reserved"
+                                ],
+                                "description": "Status do slot"
+                              },
+                              "preReservedUntil": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "Data/hora até quando o slot está pré-reservado (ou null)"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "description": "Data/hora de criação do slot"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "slotRange",
+                              "status",
+                              "preReservedUntil",
+                              "createdAt"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Informações do slot de tempo reservado"
+                          },
+                          "user": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "Identificador único do usuário"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Nome do usuário"
+                              },
+                              "email": {
+                                "type": "string",
+                                "format": "email",
+                                "description": "E-mail do usuário"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "email"
+                            ],
+                            "additionalProperties": false,
+                            "description": "Informações do usuário que fez a reserva"
+                          },
+                          "bbzCollaborators": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Lista de colaboradores da BBZ participantes"
+                          },
+                          "externalGuests": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Lista de convidados externos participantes"
+                          },
+                          "needsCopeira": {
+                            "type": "boolean",
+                            "description": "Indica se a reserva necessita de serviço de copeira"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "reserved",
+                              "cancelled",
+                              "closed"
+                            ],
+                            "description": "Status atual da reserva"
+                          },
+                          "cancelledBy": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "ID do usuário que cancelou"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Nome do usuário que cancelou"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "additionalProperties": false,
+                            "nullable": true,
+                            "description": "Usuário que cancelou a reserva (ou null)"
+                          },
+                          "cancelReason": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Motivo do cancelamento (ou null)"
+                          },
+                          "cancelledAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Data/hora do cancelamento (ou null)"
+                          },
+                          "closedAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Data/hora do fechamento da reserva (ou null)"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "description": "Data/hora de criação da reserva"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "room",
+                          "slot",
+                          "user",
+                          "bbzCollaborators",
+                          "externalGuests",
+                          "needsCopeira",
+                          "status",
+                          "cancelledBy",
+                          "cancelReason",
+                          "cancelledAt",
+                          "closedAt",
+                          "createdAt"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Detalhes completos de uma reserva paginada"
+                      },
+                      "description": "Lista de reservas encontradas na página atual"
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "description": "Número total de reservas encontradas para o filtro"
+                    },
+                    "totalPages": {
+                      "type": "number",
+                      "description": "Número total de páginas disponíveis"
+                    },
+                    "currentPage": {
+                      "type": "number",
+                      "description": "Número da página atual"
+                    }
+                  },
+                  "required": [
+                    "reservations",
+                    "totalCount",
+                    "totalPages",
+                    "currentPage"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Resposta paginada contendo reservas de sala"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Schema to represent Not Found errors (HTTP 404)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "NotFoundError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o recurso não foi encontrado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para o recurso não encontrado."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        404
+                      ],
+                      "description": "Código de status HTTP 404."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Not Found errors (HTTP 404)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Caminho para o campo com erro."
+                          },
+                          "message": {
+                            "type": "string",
+                            "description": "Mensagem de validação para o campo."
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Detalhes adicionais sobre os erros de validação."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/private/reservation/stats": {
       "get": {
         "operationId": "getRoomReservationStats",

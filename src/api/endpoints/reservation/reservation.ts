@@ -41,6 +41,14 @@ import type {
   GetRoomReservationStats401,
   GetRoomReservationStats403,
   GetRoomReservationStats500,
+  ListRoomReservations200,
+  ListRoomReservations400,
+  ListRoomReservations401,
+  ListRoomReservations403,
+  ListRoomReservations404,
+  ListRoomReservations422,
+  ListRoomReservations500,
+  ListRoomReservationsParams,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
@@ -416,6 +424,132 @@ export const useCancelRoomReservation = <
   const swrFn = getCancelRoomReservationMutationFetcher(requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite listar todas as reservas de sala do usuário autenticado.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Acessível a usuários autenticados com conta ativa.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+
+* **Funcionalidade**:
+  1. Retorna todas as reservas do usuário autenticado, com paginação
+  2. Permite definir parâmetros de paginação (page e pageSize)
+  3. Traz informações detalhadas de cada reserva, incluindo dados da sala e do slot de tempo
+
+* **Parâmetros de query**:
+  - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)
+  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 100 (padrão: 30)
+
+* **Exemplo de uso**:
+  - Requisição básica: `GET /v1/private/reservation/list`
+  - Com paginação: `GET /v1/private/reservation/list?page=2&pageSize=15`
+
+* **Formato da resposta**:
+  - reservations: Array com detalhes completos de cada reserva
+  - totalCount: Número total de reservas encontradas
+  - totalPages: Número total de páginas disponíveis
+  - currentPage: Número da página atual
+
+* **Notas**:
+  - O userId é automaticamente extraído do token JWT do usuário autenticado
+  - O endpoint sempre retorna apenas reservas do usuário autenticado, independente de outros filtros
+  - As reservas são ordenadas da mais recente para a mais antiga
+ * @summary Listar reservas de sala do usuário
+ */
+export type listRoomReservationsResponse = {
+  data: ListRoomReservations200
+  status: number
+  headers: Headers
+}
+
+export const getListRoomReservationsUrl = (
+  params?: ListRoomReservationsParams,
+) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  return normalizedParams.size
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list`
+}
+
+export const listRoomReservations = async (
+  params?: ListRoomReservationsParams,
+  options?: RequestInit,
+): Promise<listRoomReservationsResponse> => {
+  return customFetch<Promise<listRoomReservationsResponse>>(
+    getListRoomReservationsUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getListRoomReservationsKey = (
+  params?: ListRoomReservationsParams,
+) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list`,
+    ...(params ? [params] : []),
+  ] as const
+
+export type ListRoomReservationsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listRoomReservations>>
+>
+export type ListRoomReservationsQueryError =
+  | ListRoomReservations400
+  | ListRoomReservations401
+  | ListRoomReservations403
+  | ListRoomReservations404
+  | ListRoomReservations422
+  | ListRoomReservations500
+
+/**
+ * @summary Listar reservas de sala do usuário
+ */
+export const useListRoomReservations = <
+  TError =
+    | ListRoomReservations400
+    | ListRoomReservations401
+    | ListRoomReservations403
+    | ListRoomReservations404
+    | ListRoomReservations422
+    | ListRoomReservations500,
+>(
+  params?: ListRoomReservationsParams,
+  options?: {
+    swr?: SWRConfiguration<
+      Awaited<ReturnType<typeof listRoomReservations>>,
+      TError
+    > & { swrKey?: Key; enabled?: boolean }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ??
+    (() => (isEnabled ? getListRoomReservationsKey(params) : null))
+  const swrFn = () => listRoomReservations(params, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
 
   return {
     swrKey,
