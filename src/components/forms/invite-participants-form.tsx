@@ -251,19 +251,18 @@ export function InviteParticipantsForm({
     return userSlots
   }
 
-  // Função para criar uma reserva para um slot
-  const createReservationForSlot = async (
-    slot: GetRoomSlotAvailability200SlotsItem,
+  // Função para criar reservas para todos os slots de uma vez
+  const createReservationsForSlots = async (
+    slots: GetRoomSlotAvailability200SlotsItem[],
     formData: FormData,
   ) => {
     const reservationData = {
       roomId: roomId,
-      roomSlotId: slot.id,
+      roomSlotIds: slots.map((slot) => slot.id),
       bbzCollaborators: internalParticipants,
       externalGuests: externalParticipants,
       needsCopeira: formData.needsWaitress,
     }
-
     await createRoomReservation(reservationData)
   }
 
@@ -303,12 +302,8 @@ export function InviteParticipantsForm({
         return
       }
 
-      // Processar todos os slots
-      await Promise.all(
-        userPreReservedSlots.map((slot: GetRoomSlotAvailability200SlotsItem) =>
-          createReservationForSlot(slot, data),
-        ),
-      )
+      // Enviar todos os slots em uma única chamada
+      await createReservationsForSlots(userPreReservedSlots, data)
 
       // Forçar revalidação dos dados após o sucesso
       const swrKey = getGetRoomSlotAvailabilityKey(roomId, {
