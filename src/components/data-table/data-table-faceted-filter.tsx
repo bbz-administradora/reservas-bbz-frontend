@@ -23,6 +23,7 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     label: string
     value: string | boolean
     icon?: React.ComponentType<{ className?: string }>
+    color?: string
   }[]
 }
 
@@ -112,6 +113,14 @@ export function DataTableFacetedFilter<TData, TValue>({
                     </div>
                     {option.icon && (
                       <option.icon className="text-muted-foreground mr-2 h-4 w-4" />
+                    )}
+                    {option.color && (
+                      <div
+                        className={cn(
+                          'mr-2 h-3 w-3 rounded-full',
+                          option.color,
+                        )}
+                      />
                     )}
                     <span>{option.label}</span>
                     {facets?.get(option.value) && (

@@ -1,20 +1,15 @@
+import { DataTableReservations } from '@/components/data-table/reservations/table-reservations'
 import { Text } from '@/components/Text'
 import { webserver } from '@/infra/webserver'
 import { fetchListRoomReservationsInServer } from '@/services/reservationService'
-import { fetchCurrentUserInServer } from '@/services/userService'
 import { ChevronLeftIcon } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function MyRoomReservations() {
-  const { user } = await fetchCurrentUserInServer()
-
-  // Buscar reservas do usuário autenticado
   const reservationsList = await fetchListRoomReservationsInServer({
     page: '1',
     pageSize: '1000',
   })
-
-  const name = user?.name || 'Usuário'
 
   return (
     <div
@@ -28,6 +23,13 @@ export default async function MyRoomReservations() {
         <Text as="h1" variant={'title-22-32-700'}>
           Meus Agendamentos
         </Text>
+      </div>
+
+      <div className="container mx-auto py-10">
+        <DataTableReservations
+          initialData={reservationsList?.reservations}
+          className="mb-5"
+        />
       </div>
     </div>
   )
