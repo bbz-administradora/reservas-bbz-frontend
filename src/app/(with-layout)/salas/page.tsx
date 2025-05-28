@@ -2,6 +2,7 @@ import { RoomExplorer } from '@/components/RoomExplorer'
 import { CardDecoration } from '@/components/svg/card-decoration'
 import { Text } from '@/components/Text'
 import { Separator } from '@/components/ui/separator'
+import { fetchRoomReservationStatsInServer } from '@/services/reservationService'
 import { fetchAvailableRoomsInServer } from '@/services/roomSlotService'
 import { fetchCurrentUserInServer } from '@/services/userService'
 import { format, startOfDay } from 'date-fns'
@@ -25,7 +26,8 @@ export default async function RoomsHome() {
     datetime: today,
   })
 
-  // TODO: implementar total geral de salas, minhas reservas e próxima reserva
+  // Buscar estatísticas de reservas do usuário
+  const roomReservationStats = await fetchRoomReservationStatsInServer()
 
   const { user } = await fetchCurrentUserInServer()
 
@@ -92,7 +94,7 @@ export default async function RoomsHome() {
             variant="title-18-24-700"
             className="text-primary text-center break-words"
           >
-            2
+            {roomReservationStats?.total || 0}
           </Text>
         </div>
 
@@ -112,7 +114,9 @@ export default async function RoomsHome() {
             variant="title-18-24-700"
             className="text-primary text-center break-words"
           >
-            01/05/2025 às 10:00
+            {roomReservationStats?.nextReservation
+              ? roomReservationStats.nextReservation
+              : 'Nenhuma reserva futura'}
           </Text>
         </div>
       </div>
@@ -125,7 +129,11 @@ export default async function RoomsHome() {
           abaixo e clique na sala desejada para reservar.
         </Text>
 
-        <RoomExplorer initialData={listAvailableRooms} className="pt-5" />
+        <RoomExplorer
+          initialData={listAvailableRooms}
+          mostUsedTimes={roomReservationStats?.mostUsedStartTimes || []}
+          className="pt-5"
+        />
       </div>
     </div>
   )

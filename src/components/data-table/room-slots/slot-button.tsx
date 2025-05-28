@@ -1,5 +1,6 @@
 'use client'
 
+import { revalidateTags } from '@/actions/revalidate-tags'
 import { UserMe201User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import {
   useCancelRoomReservation,
@@ -267,6 +268,8 @@ export function SlotButton({
             if (onDataChange) {
               onDataChange()
             }
+
+            revalidateTags(['cancel-reservation'])
           } else {
             // Outros erros específicos da API
             showToast({
@@ -310,6 +313,8 @@ export function SlotButton({
             if (onDataChange) {
               onDataChange()
             }
+
+            revalidateTags(['close-reservation'])
           } else {
             // Outros erros específicos da API
             showToast({

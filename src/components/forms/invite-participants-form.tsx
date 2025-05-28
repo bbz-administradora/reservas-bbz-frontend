@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { revalidateTags } from '@/actions/revalidate-tags'
 import {
   GetRoomSlotAvailability200SlotsItem,
   UserMe201User,
@@ -81,6 +82,8 @@ export function InviteParticipantsForm({
         onSuccess: (response) => {
           // Verificar se a resposta contém mensagem de sucesso
           if (response.status === 201) {
+            revalidateTags(['create-reservation'])
+
             return
           } else if (response.status === 409) {
             showToast({
