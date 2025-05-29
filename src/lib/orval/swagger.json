@@ -7692,6 +7692,16 @@
                             "format": "uuid",
                             "description": "Identificador único do usuário que fez a reserva"
                           },
+                          "slotStart": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Horário de início do slot no formato ISO com timezone do usuário"
+                          },
+                          "slotEnd": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Horário de término do slot no formato ISO com timezone do usuário"
+                          },
                           "roomSlotId": {
                             "type": "string",
                             "format": "uuid",
@@ -7729,6 +7739,8 @@
                           "id",
                           "roomId",
                           "userId",
+                          "slotStart",
+                          "slotEnd",
                           "roomSlotId",
                           "bbzCollaborators",
                           "externalGuests",
@@ -8155,6 +8167,16 @@
                           "format": "uuid",
                           "description": "Identificador único do usuário que fez a reserva"
                         },
+                        "slotStart": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Horário de início do slot no formato ISO com timezone do usuário"
+                        },
+                        "slotEnd": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Horário de término do slot no formato ISO com timezone do usuário"
+                        },
                         "roomSlotId": {
                           "type": "string",
                           "format": "uuid",
@@ -8196,6 +8218,8 @@
                         "id",
                         "roomId",
                         "userId",
+                        "slotStart",
+                        "slotEnd",
                         "roomSlotId",
                         "bbzCollaborators",
                         "externalGuests",
@@ -8587,6 +8611,16 @@
                           "format": "uuid",
                           "description": "Identificador único do usuário que fez a reserva"
                         },
+                        "slotStart": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Horário de início do slot no formato ISO com timezone do usuário"
+                        },
+                        "slotEnd": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Horário de término do slot no formato ISO com timezone do usuário"
+                        },
                         "roomSlotId": {
                           "type": "string",
                           "format": "uuid",
@@ -8637,6 +8671,8 @@
                         "id",
                         "roomId",
                         "userId",
+                        "slotStart",
+                        "slotEnd",
                         "roomSlotId",
                         "bbzCollaborators",
                         "externalGuests",
@@ -9071,7 +9107,8 @@
                               "createdAt"
                             ],
                             "additionalProperties": false,
-                            "description": "Informações do slot de tempo reservado"
+                            "nullable": true,
+                            "description": "Informações do slot de tempo reservado (ou null se não houver)"
                           },
                           "user": {
                             "type": "object",
@@ -9098,6 +9135,16 @@
                             ],
                             "additionalProperties": false,
                             "description": "Informações do usuário que fez a reserva"
+                          },
+                          "slotStart": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Horário de início do slot no formato ISO com timezone do usuário"
+                          },
+                          "slotEnd": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Horário de término do slot no formato ISO com timezone do usuário"
                           },
                           "bbzCollaborators": {
                             "type": "array",
@@ -9172,6 +9219,8 @@
                           "room",
                           "slot",
                           "user",
+                          "slotStart",
+                          "slotEnd",
                           "bbzCollaborators",
                           "externalGuests",
                           "needsCopeira",

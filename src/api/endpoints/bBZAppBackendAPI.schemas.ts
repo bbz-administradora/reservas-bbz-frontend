@@ -463,7 +463,8 @@ export const ListRoomReservations200ReservationsItemSlotStatus = {
 } as const
 
 /**
- * Informações do slot de tempo reservado
+ * Informações do slot de tempo reservado (ou null se não houver)
+ * @nullable
  */
 export type ListRoomReservations200ReservationsItemSlot = {
   /** Data/hora de criação do slot */
@@ -483,7 +484,7 @@ export type ListRoomReservations200ReservationsItemSlot = {
   slotRange: string[]
   /** Status do slot */
   status: ListRoomReservations200ReservationsItemSlotStatus
-}
+} | null
 
 /**
  * Informações básicas da sala
@@ -542,8 +543,15 @@ export type ListRoomReservations200ReservationsItem = {
   needsCopeira: boolean
   /** Informações básicas da sala */
   room: ListRoomReservations200ReservationsItemRoom
-  /** Informações do slot de tempo reservado */
+  /**
+   * Informações do slot de tempo reservado (ou null se não houver)
+   * @nullable
+   */
   slot: ListRoomReservations200ReservationsItemSlot
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
   /** Status atual da reserva */
   status: ListRoomReservations200ReservationsItemStatus
   /** Informações do usuário que fez a reserva */
@@ -828,6 +836,10 @@ export type CancelRoomReservation200Reservation = {
   roomId: string
   /** Identificador único do slot de tempo */
   roomSlotId: string
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
   /** Status atual da reserva */
   status: CancelRoomReservation200ReservationStatus
   /** Identificador único do usuário que fez a reserva */
@@ -1119,6 +1131,10 @@ export type CloseRoomReservation200Reservation = {
   roomId: string
   /** Identificador único do slot de tempo */
   roomSlotId: string
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
   /** Status atual da reserva */
   status: CloseRoomReservation200ReservationStatus
   /** Identificador único do usuário que fez a reserva */
@@ -1440,6 +1456,10 @@ export type CreateRoomReservation201ReservationsItem = {
   roomId: string
   /** Identificador único do slot de tempo */
   roomSlotId: string
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
   /** Status atual da reserva */
   status: CreateRoomReservation201ReservationsItemStatus
   /** Identificador único do usuário que fez a reserva */
