@@ -1,14 +1,19 @@
 'use client'
 
+import { revalidateTags } from '@/actions/revalidate-tags'
 import {
   ListRoomReservations200ReservationsItem,
   ListRoomReservations200ReservationsItemStatus,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { useCloseRoomReservation } from '@/api/endpoints/reservation/reservation'
+import { showToast } from '@/components/ShowToast'
 import { cn } from '@/utils/mergeClassNames'
 import { transformTextIntoCapitalizedWords } from '@/utils/textUtils'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { TrashIcon } from 'lucide-react'
+import { Button } from '../../ui/button'
 import { DataTableColumnHeader } from '../data-table-column-header'
 
 export const reservationsTitlesColumns = {
@@ -27,12 +32,12 @@ export const reservationsTitlesColumns = {
 }
 
 // Função para formatar o intervalo de tempo
-const formatTimeRange = (slotRange: string[]) => {
-  if (!slotRange || slotRange.length < 2) return 'N/A'
+const formatTimeRange = (slotStart: string, slotEnd: string) => {
+  if (!slotStart || !slotEnd) return 'N/A'
 
   try {
-    const startDate = new Date(slotRange[0])
-    const endDate = new Date(slotRange[1])
+    const startDate = new Date(slotStart)
+    const endDate = new Date(slotEnd)
 
     const dateFormatted = format(startDate, 'dd/MM/yyyy', { locale: ptBR })
     const startTime = format(startDate, 'HH:mm')
@@ -50,11 +55,11 @@ const formatTimeRange = (slotRange: string[]) => {
 }
 
 // Função para verificar se o horário já passou
-const isReservationPast = (slotRange: string[]) => {
-  if (!slotRange || slotRange.length < 2) return false
+const isReservationPast = (slotEnd: string) => {
+  if (!slotEnd) return false
 
   try {
-    const endDate = new Date(slotRange[1])
+    const endDate = new Date(slotEnd)
     return endDate < new Date()
   } catch {
     return false
@@ -64,9 +69,9 @@ const isReservationPast = (slotRange: string[]) => {
 // Função para determinar o status de exibição
 const getStatusDisplay = (
   status: ListRoomReservations200ReservationsItemStatus,
-  slotRange: string[],
+  slotEnd: string,
 ) => {
-  if (status === 'reserved' && isReservationPast(slotRange)) {
+  if (status === 'reserved' && isReservationPast(slotEnd)) {
     return {
       text: 'Realizado',
       color: 'text-foreground',
@@ -138,7 +143,12 @@ export const columnsReservations: ColumnDef<ListRoomReservations200ReservationsI
         />
       ),
       cell: ({ row }) => {
-        const timeRange = formatTimeRange(row.original.slot.slotRange)
+        if (!row.original.slotStart || !row.original.slotEnd)
+          return <span>-</span>
+        const timeRange = formatTimeRange(
+          row.original.slotStart,
+          row.original.slotEnd,
+        )
         if (typeof timeRange === 'string') {
           return <span className="whitespace-nowrap">{timeRange}</span>
         }
@@ -150,34 +160,21 @@ export const columnsReservations: ColumnDef<ListRoomReservations200ReservationsI
         )
       },
       sortingFn: (rowA, rowB) => {
-        // For sorting, we just use the original date string
-        const dateA = rowA.original.slot.slotRange[0] || ''
-        const dateB = rowB.original.slot.slotRange[0] || ''
+        const dateA = rowA.original.slotStart || ''
+        const dateB = rowB.original.slotStart || ''
         return new Date(dateA).getTime() - new Date(dateB).getTime()
       },
       filterFn: (row, id, value) => {
-        // Filtrar por data específica
-        if (!value || typeof value !== 'object') return true
-
-        const slotRange = row.original.slot.slotRange
-        if (!slotRange || slotRange.length < 2) return false
+        if (!value || !(value instanceof Date)) return true
+        if (!row.original.slotStart) return false
 
         try {
-          // Os componentes da data do filtro
-          const { year, month, day } = value as {
-            year: number
-            month: number
-            day: number
-          }
-
-          // Obter a data da reserva
-          const reservationDate = new Date(slotRange[0])
-
-          // Comparar apenas ano, mês e dia
+          const reservationDate = new Date(row.original.slotStart)
+          // Comparar apenas a data (dia, mês e ano), ignorando o horário
           return (
-            reservationDate.getFullYear() === year &&
-            reservationDate.getMonth() === month &&
-            reservationDate.getDate() === day
+            reservationDate.getFullYear() === value.getFullYear() &&
+            reservationDate.getMonth() === value.getMonth() &&
+            reservationDate.getDate() === value.getDate()
           )
         } catch (error) {
           console.error('Error filtering by date:', error)
@@ -196,7 +193,7 @@ export const columnsReservations: ColumnDef<ListRoomReservations200ReservationsI
       cell: ({ row }) => {
         const status = getStatusDisplay(
           row.original.status,
-          row.original.slot.slotRange,
+          row.original.slotEnd || '',
         )
         return (
           <div className="flex items-center gap-2">
@@ -206,20 +203,13 @@ export const columnsReservations: ColumnDef<ListRoomReservations200ReservationsI
         )
       },
       filterFn: (row, id, value) => {
-        // Handle the special case for "realized" status (completed reservations)
         if (value.includes('realized')) {
           const isRealized =
             row.original.status === 'reserved' &&
-            isReservationPast(row.original.slot.slotRange)
-
-          // If 'realized' is selected and this is a realized reservation, include it
+            isReservationPast(row.original.slotEnd || '')
           if (isRealized) return true
-
-          // If 'realized' is the only option and this isn't realized, exclude it
           if (value.length === 1) return false
         }
-
-        // Normal status filtering
         return value.includes(row.original.status)
       },
     },
@@ -355,7 +345,7 @@ export const columnsReservations: ColumnDef<ListRoomReservations200ReservationsI
       cell: ({ row }) => {
         if (!row.original.cancelReason) return <span>-</span>
         return (
-          <span className="break-words whitespace-normal">
+          <span className="line-clamp-6 w-[300px] break-words whitespace-normal lg:line-clamp-none">
             {row.original.cancelReason}
           </span>
         )
@@ -381,6 +371,87 @@ export const columnsReservations: ColumnDef<ListRoomReservations200ReservationsI
         } catch {
           return <span>Data inválida</span>
         }
+      },
+    },
+    {
+      id: 'actions',
+      cell: ({ row }) => {
+        const reservationId = row.original.id
+        const status = row.original.status
+        const isPast = isReservationPast(row.original.slotEnd || '')
+
+        const { isMutating, trigger: closeReservation } =
+          useCloseRoomReservation({
+            swr: {
+              onSuccess: (response) => {
+                switch (response.status) {
+                  case 200: {
+                    showToast({
+                      message: 'Reserva encerrada com sucesso.',
+                      duration: 5000,
+                      variant: 'success',
+                    })
+
+                    revalidateTags(['close-reservation'])
+                    break
+                  }
+                  default: {
+                    showToast({
+                      message:
+                        'Ops... Falha ao encerrar reserva, tente novamente.',
+                      duration: 5000,
+                      variant: 'error',
+                    })
+                    break
+                  }
+                }
+              },
+              onError: () => {
+                showToast({
+                  message: 'Ops... Falha ao encerrar reserva, tente novamente.',
+                  duration: 5000,
+                  variant: 'error',
+                })
+              },
+            },
+          })
+
+        const handleCloseReservation = () => {
+          showToast({
+            message:
+              'Você tem certeza que deseja encerrar esta reserva? Esta ação não pode ser desfeita e o horário ficará disponível para outros usuários.',
+            duration: Infinity,
+            variant: 'warning',
+            firstButton: {
+              text: 'Cancelar',
+              variant: 'ghost',
+              onClick: () => ({}),
+            },
+            secondButton: {
+              text: 'Encerrar',
+              variant: 'destructive',
+              onClick: () => {
+                closeReservation({
+                  id: reservationId,
+                })
+              },
+            },
+          })
+        }
+
+        return (
+          <div className="flex justify-end">
+            <Button
+              disabled={isMutating || status !== 'reserved' || isPast}
+              variant="ghost"
+              size="icon"
+              onClick={handleCloseReservation}
+              className="group hover:bg-destructive hover:text-destructive-foreground text-destructive"
+            >
+              <TrashIcon />
+            </Button>
+          </div>
+        )
       },
     },
   ]

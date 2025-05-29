@@ -48,7 +48,7 @@ export function DataTableReservationsToolbar<TData>({
   const [date, setDate] = useState<Date | undefined>(undefined)
 
   return (
-    <div className="grid grid-rows-2 gap-3 lg:grid-cols-[.4fr_.4fr_.4fr_1fr] lg:grid-rows-1">
+    <div className="grid grid-rows-2 gap-3 lg:grid-cols-[.3fr_.2fr_.5fr] lg:grid-rows-1">
       <Input
         placeholder="Filtrar por sala..."
         value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
@@ -101,34 +101,13 @@ export function DataTableReservationsToolbar<TData>({
             onSelect={(selectedDate) => {
               setDate(selectedDate)
 
-              // Filtrar a tabela pela data selecionada
+              // Aplicar ou remover o filtro com base na data selecionada
               if (selectedDate && table.getColumn('dateTime')) {
-                // Formatar para comparação, sem a parte de horas
-                const selectedYear = selectedDate.getFullYear()
-                const selectedMonth = selectedDate.getMonth()
-                const selectedDay = selectedDate.getDate()
-
-                table.setColumnFilters((prev) => {
-                  // Remover filtro de data existente
-                  const filtered = prev.filter((f) => f.id !== 'dateTime')
-
-                  // Adicionar novo filtro com os componentes da data para comparação correta
-                  filtered.push({
-                    id: 'dateTime',
-                    value: {
-                      year: selectedYear,
-                      month: selectedMonth,
-                      day: selectedDay,
-                    },
-                  })
-
-                  return filtered
-                })
+                // Adicionar filtro com a data selecionada
+                table.getColumn('dateTime')?.setFilterValue(selectedDate)
               } else if (table.getColumn('dateTime')) {
-                // Se a data for desmarcada, remover o filtro
-                table.setColumnFilters((prev) =>
-                  prev.filter((f) => f.id !== 'dateTime'),
-                )
+                // Remover filtro se a data for desmarcada
+                table.getColumn('dateTime')?.setFilterValue(undefined)
               }
             }}
             locale={ptBR}
@@ -137,7 +116,7 @@ export function DataTableReservationsToolbar<TData>({
         </PopoverContent>
       </Popover>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex w-full flex-wrap gap-3 lg:flex-nowrap">
         {table.getColumn('status') && (
           <DataTableFacetedFilter
             column={table.getColumn('status')}

@@ -36,6 +36,7 @@ interface DataTableProps<TData, TValue> {
   hiddenColumns?: string[]
   defaultPageSize?: number
   className?: string
+  initialSorting?: SortingState
 }
 
 export function DataTable<TData, TValue>({
@@ -46,6 +47,7 @@ export function DataTable<TData, TValue>({
   hiddenColumns = [],
   defaultPageSize = 10,
   className,
+  initialSorting = [],
 }: DataTableProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(
@@ -54,7 +56,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
   const [globalFilter, setGlobalFilter] = React.useState<string>('')
   const [pageIndex, setPageIndex] = React.useState(0)
   const [pageSize, setPageSize] = React.useState<number>(defaultPageSize)

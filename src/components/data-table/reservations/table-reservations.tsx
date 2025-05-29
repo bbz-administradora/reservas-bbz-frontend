@@ -42,6 +42,7 @@ export function DataTableReservations({
       Toolbar={DataTableReservationsToolbar}
       className={className}
       globalFilterFn={roomNameFilter}
+      initialSorting={[{ id: 'dateTime', desc: true }]} // Ordenar por data/hora, mais recente primeiro
     />
   )
 }
