@@ -6,13 +6,16 @@ import {
   ListRoomReservations200ReservationsItemStatus,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { useCloseRoomReservation } from '@/api/endpoints/reservation/reservation'
+import { useOpenDoor } from '@/api/endpoints/room/room'
+import { DoorCodeDialog } from '@/components/DoorCodeDialog'
 import { showToast } from '@/components/ShowToast'
 import { cn } from '@/utils/mergeClassNames'
 import { transformTextIntoCapitalizedWords } from '@/utils/textUtils'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { TrashIcon } from 'lucide-react'
+import { LockOpenIcon, TrashIcon } from 'lucide-react'
+import { useState } from 'react'
 import { Button } from '../../ui/button'
 import { DataTableColumnHeader } from '../data-table-column-header'
 
@@ -379,6 +382,98 @@ export const columnsReservations: ColumnDef<ListRoomReservations200ReservationsI
         const reservationId = row.original.id
         const status = row.original.status
         const isPast = isReservationPast(row.original.slotEnd || '')
+        const roomName = row.original.room.name || 'Sala'
+
+        // Estado para controlar o diálogo do código de abertura
+        const [isDoorCodeDialogOpen, setIsDoorCodeDialogOpen] = useState(false)
+        const [doorCodeInfo, setDoorCodeInfo] = useState<{
+          doorCode?: string
+          expiresAt?: string
+          isLoading: boolean
+        }>({
+          doorCode: undefined,
+          expiresAt: undefined,
+          isLoading: false,
+        })
+
+        // Hook para gerar código de abertura da porta
+        const { trigger: generateDoorCode, isMutating: isGeneratingCode } =
+          useOpenDoor(
+            { roomName },
+            {
+              swr: {
+                onSuccess: (response) => {
+                  if (response?.status === 200 && response?.data?.doorCode) {
+                    // Atualizar os dados do código e manter o diálogo aberto
+                    setDoorCodeInfo({
+                      doorCode: response.data.doorCode,
+                      expiresAt: response.data.expiresAt,
+                      isLoading: false,
+                    })
+                  } else {
+                    // Esconder o diálogo e mostrar toast de erro
+                    setIsDoorCodeDialogOpen(false)
+                    setDoorCodeInfo({
+                      doorCode: undefined,
+                      expiresAt: undefined,
+                      isLoading: false,
+                    })
+                    showToast({
+                      message:
+                        'Não foi possível gerar o código de abertura. Tente novamente.',
+                      duration: 5000,
+                      variant: 'error',
+                    })
+                  }
+                },
+                onError: (error) => {
+                  // Esconder o diálogo e mostrar toast de erro
+                  setIsDoorCodeDialogOpen(false)
+                  setDoorCodeInfo({
+                    doorCode: undefined,
+                    expiresAt: undefined,
+                    isLoading: false,
+                  })
+                  console.error('💥 Erro ao gerar código de abertura:', error)
+                  showToast({
+                    message:
+                      'Erro ao gerar código de abertura. Tente novamente.',
+                    duration: 5000,
+                    variant: 'error',
+                  })
+                },
+              },
+            },
+          )
+
+        const handleWarningOpenDoor = () => {
+          showToast({
+            message:
+              'Você pode gerar um código de abertura para esta sala baseado na sua reserva.',
+            duration: Infinity,
+            variant: 'warning',
+            firstButton: {
+              text: 'Cancelar',
+              variant: 'ghost',
+              onClick: () => ({}),
+            },
+            secondButton: {
+              text: 'Gerar Código',
+              variant: 'default',
+              onClick: () => {
+                // Mostrar diálogo imediatamente com estado de loading
+                setDoorCodeInfo({
+                  doorCode: undefined,
+                  expiresAt: undefined,
+                  isLoading: true,
+                })
+                setIsDoorCodeDialogOpen(true)
+
+                generateDoorCode()
+              },
+            },
+          })
+        }
 
         const { isMutating, trigger: closeReservation } =
           useCloseRoomReservation({
@@ -440,7 +535,22 @@ export const columnsReservations: ColumnDef<ListRoomReservations200ReservationsI
         }
 
         return (
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2">
+            <Button
+              disabled={
+                isGeneratingCode ||
+                isMutating ||
+                status !== 'reserved' ||
+                isPast
+              }
+              variant="ghost"
+              size="icon"
+              onClick={handleWarningOpenDoor}
+              // TODO: retirar hidden ao liberar quarta entrega de reservas
+              className="hidden"
+            >
+              <LockOpenIcon />
+            </Button>
             <Button
               disabled={isMutating || status !== 'reserved' || isPast}
               variant="ghost"
@@ -450,6 +560,14 @@ export const columnsReservations: ColumnDef<ListRoomReservations200ReservationsI
             >
               <TrashIcon />
             </Button>
+            <DoorCodeDialog
+              isOpen={isDoorCodeDialogOpen}
+              onOpenChange={setIsDoorCodeDialogOpen}
+              doorCode={doorCodeInfo?.doorCode}
+              expiresAt={doorCodeInfo?.expiresAt}
+              roomName={roomName}
+              isLoading={doorCodeInfo?.isLoading}
+            />
           </div>
         )
       },

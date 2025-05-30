@@ -40,6 +40,14 @@ import type {
   ListRooms422,
   ListRooms500,
   ListRoomsParams,
+  OpenDoor200,
+  OpenDoor400,
+  OpenDoor401,
+  OpenDoor403,
+  OpenDoor404,
+  OpenDoor422,
+  OpenDoor500,
+  OpenDoorParams,
   UpdateRoom200,
   UpdateRoom400,
   UpdateRoom401,
@@ -535,6 +543,115 @@ export const useUpdateRoom = <
 
   const swrKey = swrOptions?.swrKey ?? getUpdateRoomMutationKey(id)
   const swrFn = getUpdateRoomMutationFetcher(id, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite gerar um código temporário para abrir a porta de uma sala específica.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Processo**:
+  1. Valida o nome da sala a ser aberta
+  2. Verifica se a sala existe no banco de dados
+  3. Gera um código único temporário de 6 dígitos
+  4. Define uma expiração de 5 minutos para o código
+  5. Retorna o código e a data de expiração
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Gerar código para abertura de porta de uma sala
+ */
+export type openDoorResponse = {
+  data: OpenDoor200
+  status: number
+  headers: Headers
+}
+
+export const getOpenDoorUrl = (params: OpenDoorParams) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  return normalizedParams.size
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/open-door?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/open-door`
+}
+
+export const openDoor = async (
+  params: OpenDoorParams,
+  options?: RequestInit,
+): Promise<openDoorResponse> => {
+  return customFetch<Promise<openDoorResponse>>(getOpenDoorUrl(params), {
+    ...options,
+    method: 'POST',
+  })
+}
+
+export const getOpenDoorMutationFetcher = (
+  params: OpenDoorParams,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (_: Key, __: { arg: Arguments }): Promise<openDoorResponse> => {
+    return openDoor(params, options)
+  }
+}
+export const getOpenDoorMutationKey = (params: OpenDoorParams) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/open-door`,
+    ...(params ? [params] : []),
+  ] as const
+
+export type OpenDoorMutationResult = NonNullable<
+  Awaited<ReturnType<typeof openDoor>>
+>
+export type OpenDoorMutationError =
+  | OpenDoor400
+  | OpenDoor401
+  | OpenDoor403
+  | OpenDoor404
+  | OpenDoor422
+  | OpenDoor500
+
+/**
+ * @summary Gerar código para abertura de porta de uma sala
+ */
+export const useOpenDoor = <
+  TError =
+    | OpenDoor400
+    | OpenDoor401
+    | OpenDoor403
+    | OpenDoor404
+    | OpenDoor422
+    | OpenDoor500,
+>(
+  params: OpenDoorParams,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof openDoor>>,
+      TError,
+      Key,
+      Arguments,
+      Awaited<ReturnType<typeof openDoor>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getOpenDoorMutationKey(params)
+  const swrFn = getOpenDoorMutationFetcher(params, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 

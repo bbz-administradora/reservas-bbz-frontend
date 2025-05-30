@@ -3,7 +3,8 @@
 import { revalidateTags } from '@/actions/revalidate-tags'
 import { ListRooms200RoomsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { useDeleteImage } from '@/api/endpoints/image/image'
-import { useDeleteRoom } from '@/api/endpoints/room/room'
+import { useDeleteRoom, useOpenDoor } from '@/api/endpoints/room/room'
+import { DoorCodeDialog } from '@/components/DoorCodeDialog'
 import { showToast } from '@/components/ShowToast'
 import { useRoomFormMode } from '@/context/RoomFormModeProvider'
 import { cn } from '@/utils/mergeClassNames'
@@ -11,7 +12,13 @@ import { transformTextIntoCapitalizedWords } from '@/utils/textUtils'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { ImagePlusIcon, PencilIcon, TrashIcon } from 'lucide-react'
+import {
+  ImagePlusIcon,
+  LockOpenIcon,
+  PencilIcon,
+  TrashIcon,
+} from 'lucide-react'
+import { useState } from 'react'
 import { Button } from '../../ui/button'
 import { DataTableColumnHeader } from '../data-table-column-header'
 
@@ -202,6 +209,18 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
       const roomImages = row.original.imagens || []
       const hasImages = Array.isArray(roomImages) && roomImages.length > 0
 
+      // Estado para controlar o diálogo do código de abertura
+      const [isDoorCodeDialogOpen, setIsDoorCodeDialogOpen] = useState(false)
+      const [doorCodeInfo, setDoorCodeInfo] = useState<{
+        doorCode?: string
+        expiresAt?: string
+        isLoading: boolean
+      }>({
+        doorCode: undefined,
+        expiresAt: undefined,
+        isLoading: false,
+      })
+
       // Hook para excluir imagens do S3
       const { trigger: deleteImage, isMutating: isDeletingImage } =
         useDeleteImage({
@@ -220,6 +239,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
           },
         })
 
+      // Hook para excluir a sala
       const { isMutating: isDeletingRoom, trigger: deleteRoom } = useDeleteRoom(
         roomId,
         {
@@ -264,6 +284,55 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
           },
         },
       )
+
+      // Hook para gerar código de abertura da porta
+      const { trigger: generateDoorCode, isMutating: isGeneratingCode } =
+        useOpenDoor(
+          { roomName: row.original.name },
+          {
+            swr: {
+              onSuccess: (response) => {
+                if (response?.status === 200 && response?.data?.doorCode) {
+                  // Atualizar os dados do código e manter o diálogo aberto
+                  setDoorCodeInfo({
+                    doorCode: response.data.doorCode,
+                    expiresAt: response.data.expiresAt,
+                    isLoading: false,
+                  })
+                } else {
+                  // Esconder o diálogo e mostrar toast de erro
+                  setIsDoorCodeDialogOpen(false)
+                  setDoorCodeInfo({
+                    doorCode: undefined,
+                    expiresAt: undefined,
+                    isLoading: false,
+                  })
+                  showToast({
+                    message:
+                      'Não foi possível gerar o código de abertura. Tente novamente.',
+                    duration: 5000,
+                    variant: 'error',
+                  })
+                }
+              },
+              onError: (error) => {
+                // Esconder o diálogo e mostrar toast de erro
+                setIsDoorCodeDialogOpen(false)
+                setDoorCodeInfo({
+                  doorCode: undefined,
+                  expiresAt: undefined,
+                  isLoading: false,
+                })
+                console.error('💥 Erro ao gerar código de abertura:', error)
+                showToast({
+                  message: 'Erro ao gerar código de abertura. Tente novamente.',
+                  duration: 5000,
+                  variant: 'error',
+                })
+              },
+            },
+          },
+        )
 
       // Função para lidar com a exclusão de imagens e da sala
       const handleDelete = async () => {
@@ -347,6 +416,35 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
         }, 100)
       }
 
+      const handleWarningOpenDoor = () => {
+        showToast({
+          message:
+            'Como administrador, você pode gerar um código de abertura para esta sala sem necessidade de agendamento.',
+          duration: Infinity,
+          variant: 'warning',
+          firstButton: {
+            text: 'Cancelar',
+            variant: 'ghost',
+            onClick: () => ({}),
+          },
+          secondButton: {
+            text: 'Gerar Código',
+            variant: 'default',
+            onClick: () => {
+              // Mostrar diálogo imediatamente com estado de loading
+              setDoorCodeInfo({
+                doorCode: undefined,
+                expiresAt: undefined,
+                isLoading: true,
+              })
+              setIsDoorCodeDialogOpen(true)
+
+              generateDoorCode()
+            },
+          },
+        })
+      }
+
       return (
         <div className="flex min-w-[80px] flex-wrap items-center justify-end gap-2">
           <Button
@@ -373,6 +471,16 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
             <PencilIcon />
           </Button>
           <Button
+            disabled={isGeneratingCode || isDeletingImage || isDeletingRoom}
+            variant="ghost"
+            size="icon"
+            onClick={handleWarningOpenDoor}
+            // TODO: retirar hidden ao liberar quarta entrega de reservas
+            className="hidden"
+          >
+            <LockOpenIcon />
+          </Button>
+          <Button
             disabled={isDeletingImage || isDeletingRoom}
             variant="ghost"
             size="icon"
@@ -381,6 +489,16 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
           >
             <TrashIcon />
           </Button>
+
+          {/* Componente Dialog para exibir o código de abertura da porta */}
+          <DoorCodeDialog
+            isOpen={isDoorCodeDialogOpen}
+            onOpenChange={setIsDoorCodeDialogOpen}
+            doorCode={doorCodeInfo?.doorCode}
+            expiresAt={doorCodeInfo?.expiresAt}
+            roomName={row.original.name}
+            isLoading={doorCodeInfo?.isLoading}
+          />
         </div>
       )
     },

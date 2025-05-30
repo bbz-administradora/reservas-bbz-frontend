@@ -412,20 +412,6 @@ export type ListRoomReservations400 = {
 }
 
 /**
- * Resposta paginada contendo reservas de sala
- */
-export type ListRoomReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListRoomReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
-
-/**
  * Informações do usuário que fez a reserva
  */
 export type ListRoomReservations200ReservationsItemUser = {
@@ -556,6 +542,20 @@ export type ListRoomReservations200ReservationsItem = {
   status: ListRoomReservations200ReservationsItemStatus
   /** Informações do usuário que fez a reserva */
   user: ListRoomReservations200ReservationsItemUser
+}
+
+/**
+ * Resposta paginada contendo reservas de sala
+ */
+export type ListRoomReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListRoomReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
 }
 
 export type ListRoomReservationsParams = {
@@ -2610,6 +2610,264 @@ export type ListRoomSlotsParams = {
    * Quantidade de resultados por página, entre 1 e 100 (padrão: 12)
    */
   pageSize?: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type OpenDoor500StatusCode =
+  (typeof OpenDoor500StatusCode)[keyof typeof OpenDoor500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type OpenDoor500Name =
+  (typeof OpenDoor500Name)[keyof typeof OpenDoor500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type OpenDoor500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: OpenDoor500Name
+  /** Código de status HTTP 500. */
+  status_code: OpenDoor500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type OpenDoor422StatusCode =
+  (typeof OpenDoor422StatusCode)[keyof typeof OpenDoor422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type OpenDoor422Name =
+  (typeof OpenDoor422Name)[keyof typeof OpenDoor422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type OpenDoor422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type OpenDoor422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: OpenDoor422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: OpenDoor422Name
+  /** Código de status HTTP 422. */
+  status_code: OpenDoor422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type OpenDoor404StatusCode =
+  (typeof OpenDoor404StatusCode)[keyof typeof OpenDoor404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type OpenDoor404Name =
+  (typeof OpenDoor404Name)[keyof typeof OpenDoor404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type OpenDoor404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: OpenDoor404Name
+  /** Código de status HTTP 404. */
+  status_code: OpenDoor404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type OpenDoor403StatusCode =
+  (typeof OpenDoor403StatusCode)[keyof typeof OpenDoor403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type OpenDoor403Name =
+  (typeof OpenDoor403Name)[keyof typeof OpenDoor403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type OpenDoor403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: OpenDoor403Name
+  /** Código de status HTTP 403. */
+  status_code: OpenDoor403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type OpenDoor401StatusCode =
+  (typeof OpenDoor401StatusCode)[keyof typeof OpenDoor401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type OpenDoor401Name =
+  (typeof OpenDoor401Name)[keyof typeof OpenDoor401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type OpenDoor401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: OpenDoor401Name
+  /** Código de status HTTP 401. */
+  status_code: OpenDoor401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type OpenDoor400StatusCode =
+  (typeof OpenDoor400StatusCode)[keyof typeof OpenDoor400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type OpenDoor400Name =
+  (typeof OpenDoor400Name)[keyof typeof OpenDoor400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type OpenDoor400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: OpenDoor400Name
+  /** Código de status HTTP 400. */
+  status_code: OpenDoor400StatusCode
+}
+
+export type OpenDoor200Room = {
+  id: string
+  name: string
+}
+
+/**
+ * Código de abertura da porta gerado com sucesso
+ */
+export type OpenDoor200 = {
+  /**
+   * @minLength 6
+   * @maxLength 6
+   */
+  doorCode: string
+  expiresAt: string
+  message: string
+  room: OpenDoor200Room
+}
+
+export type OpenDoorParams = {
+  roomName: string
 }
 
 /**
