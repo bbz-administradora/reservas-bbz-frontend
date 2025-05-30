@@ -552,7 +552,7 @@ export const useUpdateRoom = <
   }
 }
 /**
- * Este endpoint permite gerar um código temporário para abrir a porta de uma sala específica.
+ * Este endpoint permite gerar um código temporário para abrir a porta de uma sala específica, utilizando integração com a API DLOCK.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
@@ -560,9 +560,20 @@ export const useUpdateRoom = <
 * **Processo**:
   1. Valida o nome da sala a ser aberta
   2. Verifica se a sala existe no banco de dados
-  3. Gera um código único temporário de 6 dígitos
-  4. Define uma expiração de 5 minutos para o código
-  5. Retorna o código e a data de expiração
+  3. Verifica se existe uma conta DLOCK cadastrada no sistema
+     - Caso não exista, cria uma nova conta usando as credenciais armazenadas no ambiente
+     - Verifica se o usuário com o email configurado para DLOCK existe no sistema
+  4. Gerencia o token de acesso à API DLOCK automaticamente:
+     - Verifica se o token está próximo de expirar (menos de 30 dias)
+     - Realiza refresh automático do token quando necessário
+     - Atualiza os dados da conta no banco de dados
+  5. Consulta a API DLOCK para obter a lista de fechaduras cadastradas
+  6. Identifica a fechadura correspondente à sala solicitada através do nome normalizado
+  7. Gera um código temporário de acesso através da API DLOCK:
+     - Se a solicitação ocorrer antes dos últimos 10 minutos da hora, gera um código válido por 1 hora
+     - Se a solicitação ocorrer nos últimos 10 minutos da hora, gera um código válido por 2 horas
+  8. Formata a data de expiração no fuso horário de São Paulo
+  9. Retorna o código de acesso temporário e informações de expiração
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado

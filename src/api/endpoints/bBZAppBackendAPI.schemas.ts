@@ -2856,10 +2856,6 @@ export type OpenDoor200Room = {
  * Código de abertura da porta gerado com sucesso
  */
 export type OpenDoor200 = {
-  /**
-   * @minLength 6
-   * @maxLength 6
-   */
   doorCode: string
   expiresAt: string
   message: string
