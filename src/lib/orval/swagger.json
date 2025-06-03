@@ -1148,13 +1148,15 @@
                     "type": "string",
                     "minLength": 2,
                     "maxLength": 100,
-                    "pattern": "^\\S+\\s+\\S+"
+                    "pattern": "^\\S+\\s+\\S+",
+                    "description": "Nome completo do usuário. String com nome e sobrenome. Campo obrigatório."
                   },
                   "email": {
                     "type": "string",
                     "minLength": 3,
                     "maxLength": 254,
-                    "format": "email"
+                    "format": "email",
+                    "description": "Email do usuário. Endereço de email válido. Campo obrigatório."
                   },
                   "role": {
                     "type": "string",
@@ -1163,7 +1165,8 @@
                       "user",
                       "dev"
                     ],
-                    "default": "user"
+                    "default": "user",
+                    "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Valor padrão: user. Campo obrigatório."
                   }
                 },
                 "required": [
@@ -1183,7 +1186,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Usuário criado com sucesso",
+            "description": "Detalhes do usuário criado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -1194,19 +1197,23 @@
                       "properties": {
                         "id": {
                           "type": "string",
-                          "format": "uuid"
+                          "format": "uuid",
+                          "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
                         },
                         "name": {
                           "type": "string",
-                          "nullable": true
+                          "nullable": true,
+                          "description": "Nome completo do usuário. Pode ser nulo. Campo obrigatório."
                         },
                         "nickName": {
                           "type": "string",
-                          "nullable": true
+                          "nullable": true,
+                          "description": "Apelido do usuário. Pode ser nulo. Campo obrigatório."
                         },
                         "email": {
                           "type": "string",
-                          "format": "email"
+                          "format": "email",
+                          "description": "Email do usuário. Endereço de email válido. Campo obrigatório."
                         },
                         "role": {
                           "type": "string",
@@ -1214,21 +1221,26 @@
                             "admin",
                             "user",
                             "dev"
-                          ]
+                          ],
+                          "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório."
                         },
                         "avatar": {
                           "type": "string",
-                          "nullable": true
+                          "nullable": true,
+                          "description": "URL da imagem de avatar do usuário. Pode ser nulo. Campo obrigatório."
                         },
                         "phone": {
                           "type": "string",
-                          "nullable": true
+                          "nullable": true,
+                          "description": "Número de telefone do usuário. Pode ser nulo. Campo obrigatório."
                         },
                         "accountStatus": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório."
                         },
                         "passwordResetRequired": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indica se o usuário precisa redefinir a senha no próximo login. Valor booleano. Campo obrigatório."
                         }
                       },
                       "required": [
@@ -1245,7 +1257,8 @@
                       "additionalProperties": false
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
                     }
                   },
                   "required": [
@@ -1253,7 +1266,7 @@
                     "message"
                   ],
                   "additionalProperties": false,
-                  "description": "Usuário criado com sucesso"
+                  "description": "Detalhes do usuário criado com sucesso"
                 }
               }
             }

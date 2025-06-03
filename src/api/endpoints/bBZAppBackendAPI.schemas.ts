@@ -6004,6 +6004,9 @@ export type CreateUser400 = {
   status_code: CreateUser400StatusCode
 }
 
+/**
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
+ */
 export type CreateUser201UserRole =
   (typeof CreateUser201UserRole)[keyof typeof CreateUser201UserRole]
 
@@ -6015,29 +6018,50 @@ export const CreateUser201UserRole = {
 } as const
 
 export type CreateUser201User = {
+  /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
-  /** @nullable */
+  /**
+   * URL da imagem de avatar do usuário. Pode ser nulo. Campo obrigatório.
+   * @nullable
+   */
   avatar: string | null
+  /** Email do usuário. Endereço de email válido. Campo obrigatório. */
   email: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
   id: string
-  /** @nullable */
+  /**
+   * Nome completo do usuário. Pode ser nulo. Campo obrigatório.
+   * @nullable
+   */
   name: string | null
-  /** @nullable */
+  /**
+   * Apelido do usuário. Pode ser nulo. Campo obrigatório.
+   * @nullable
+   */
   nickName: string | null
+  /** Indica se o usuário precisa redefinir a senha no próximo login. Valor booleano. Campo obrigatório. */
   passwordResetRequired: boolean
-  /** @nullable */
+  /**
+   * Número de telefone do usuário. Pode ser nulo. Campo obrigatório.
+   * @nullable
+   */
   phone: string | null
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
   role: CreateUser201UserRole
 }
 
 /**
- * Usuário criado com sucesso
+ * Detalhes do usuário criado com sucesso
  */
 export type CreateUser201 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
   message: string
   user: CreateUser201User
 }
 
+/**
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Valor padrão: user. Campo obrigatório.
+ */
 export type CreateUserBodyRole =
   (typeof CreateUserBodyRole)[keyof typeof CreateUserBodyRole]
 
@@ -6050,16 +6074,19 @@ export const CreateUserBodyRole = {
 
 export type CreateUserBody = {
   /**
+   * Email do usuário. Endereço de email válido. Campo obrigatório.
    * @minLength 3
    * @maxLength 254
    */
   email: string
   /**
+   * Nome completo do usuário. String com nome e sobrenome. Campo obrigatório.
    * @minLength 2
    * @maxLength 100
    * @pattern ^\S+\s+\S+
    */
   name: string
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Valor padrão: user. Campo obrigatório. */
   role?: CreateUserBodyRole
 }
 
