@@ -475,8 +475,6 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
             variant="ghost"
             size="icon"
             onClick={handleWarningOpenDoor}
-            // TODO: retirar hidden ao liberar quarta entrega de reservas
-            className="hidden"
           >
             <LockOpenIcon />
           </Button>
