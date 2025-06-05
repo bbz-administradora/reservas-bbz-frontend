@@ -2,9 +2,9 @@
 
 import { revalidateTags } from '@/actions/revalidate-tags'
 import {
-  useCreateUser,
   useGetUser,
   useUpdateUser,
+  useUserCreate,
 } from '@/api/endpoints/user/user'
 import { Text } from '@/components/Text'
 import { useUserFormMode } from '@/context/UserFormModeProvider'
@@ -173,7 +173,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
     },
   )
 
-  const { isMutating: loadingCreateUser, trigger: createUser } = useCreateUser({
+  const { isMutating: loadingCreateUser, trigger: createUser } = useUserCreate({
     swr: {
       onSuccess: (response) => {
         if (response.status === 201) {
