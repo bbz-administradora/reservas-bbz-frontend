@@ -1132,7 +1132,7 @@
     },
     "/v1/private/user": {
       "post": {
-        "operationId": "createUser",
+        "operationId": "userCreate",
         "summary": "Criar um novo usuário",
         "tags": [
           "User"

@@ -11,14 +11,6 @@ import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
-  CreateUser201,
-  CreateUser400,
-  CreateUser401,
-  CreateUser403,
-  CreateUser409,
-  CreateUser422,
-  CreateUser500,
-  CreateUserBody,
   DeleteUser200,
   DeleteUser400,
   DeleteUser401,
@@ -50,6 +42,14 @@ import type {
   UpdateUser422,
   UpdateUser500,
   UpdateUserBody,
+  UserCreate201,
+  UserCreate400,
+  UserCreate401,
+  UserCreate403,
+  UserCreate409,
+  UserCreate422,
+  UserCreate500,
+  UserCreateBody,
   UserMe201,
   UserMe400,
   UserMe401,
@@ -160,77 +160,77 @@ export const useUserMe = <
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Criar um novo usuário
  */
-export type createUserResponse = {
-  data: CreateUser201
+export type userCreateResponse = {
+  data: UserCreate201
   status: number
   headers: Headers
 }
 
-export const getCreateUserUrl = () => {
+export const getUserCreateUrl = () => {
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user`
 }
 
-export const createUser = async (
-  createUserBody: CreateUserBody,
+export const userCreate = async (
+  userCreateBody: UserCreateBody,
   options?: RequestInit,
-): Promise<createUserResponse> => {
-  return customFetch<Promise<createUserResponse>>(getCreateUserUrl(), {
+): Promise<userCreateResponse> => {
+  return customFetch<Promise<userCreateResponse>>(getUserCreateUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(createUserBody),
+    body: JSON.stringify(userCreateBody),
   })
 }
 
-export const getCreateUserMutationFetcher = (
+export const getUserCreateMutationFetcher = (
   options?: SecondParameter<typeof customFetch>,
 ) => {
   return (
     _: Key,
-    { arg }: { arg: CreateUserBody },
-  ): Promise<createUserResponse> => {
-    return createUser(arg, options)
+    { arg }: { arg: UserCreateBody },
+  ): Promise<userCreateResponse> => {
+    return userCreate(arg, options)
   }
 }
-export const getCreateUserMutationKey = () =>
+export const getUserCreateMutationKey = () =>
   [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user`] as const
 
-export type CreateUserMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createUser>>
+export type UserCreateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof userCreate>>
 >
-export type CreateUserMutationError =
-  | CreateUser400
-  | CreateUser401
-  | CreateUser403
-  | CreateUser409
-  | CreateUser422
-  | CreateUser500
+export type UserCreateMutationError =
+  | UserCreate400
+  | UserCreate401
+  | UserCreate403
+  | UserCreate409
+  | UserCreate422
+  | UserCreate500
 
 /**
  * @summary Criar um novo usuário
  */
-export const useCreateUser = <
+export const useUserCreate = <
   TError =
-    | CreateUser400
-    | CreateUser401
-    | CreateUser403
-    | CreateUser409
-    | CreateUser422
-    | CreateUser500,
+    | UserCreate400
+    | UserCreate401
+    | UserCreate403
+    | UserCreate409
+    | UserCreate422
+    | UserCreate500,
 >(options?: {
   swr?: SWRMutationConfiguration<
-    Awaited<ReturnType<typeof createUser>>,
+    Awaited<ReturnType<typeof userCreate>>,
     TError,
     Key,
-    CreateUserBody,
-    Awaited<ReturnType<typeof createUser>>
+    UserCreateBody,
+    Awaited<ReturnType<typeof userCreate>>
   > & { swrKey?: string }
   request?: SecondParameter<typeof customFetch>
 }) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getCreateUserMutationKey()
-  const swrFn = getCreateUserMutationFetcher(requestOptions)
+  const swrKey = swrOptions?.swrKey ?? getUserCreateMutationKey()
+  const swrFn = getUserCreateMutationFetcher(requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
