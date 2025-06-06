@@ -1,7 +1,7 @@
 'use client'
 
 import { revalidateTags } from '@/actions/revalidate-tags'
-import { ListUsers201UsersItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { UserList200UsersItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { useDeleteUser } from '@/api/endpoints/user/user'
 import { showToast } from '@/components/ShowToast'
 import { useUserFormMode } from '@/context/UserFormModeProvider'
@@ -14,15 +14,25 @@ import { Trash, UserRoundPen } from 'lucide-react'
 import { Button } from '../../ui/button'
 import { DataTableColumnHeader } from '../data-table-column-header'
 
+/**
+ * Formata um CPF adicionando pontuação no formato XXX.XXX.XXX-XX
+ */
+function formatCPF(cpf: string): string {
+  if (!cpf || cpf.length !== 11) return 'N/A'
+
+  return `${cpf.slice(0, 3)}.${cpf.slice(3, 6)}.${cpf.slice(6, 9)}-${cpf.slice(9)}`
+}
+
 export const usersTitlesColumns = {
   name: 'Nome',
   email: 'Email',
   role: 'Role',
   accountStatus: 'Status',
+  cpf: 'CPF',
   createdAt: 'Criado em',
 }
 
-export const columnsUsers: ColumnDef<ListUsers201UsersItem>[] = [
+export const columnsUsers: ColumnDef<UserList200UsersItem>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => (
@@ -74,6 +84,17 @@ export const columnsUsers: ColumnDef<ListUsers201UsersItem>[] = [
         : rowA.getValue(columnId)
           ? -1
           : 1
+    },
+  },
+  {
+    accessorKey: 'cpf',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={usersTitlesColumns.cpf} />
+    ),
+    cell: ({ row }) => {
+      const cpf = row.original.cpf || ''
+      const formattedCPF = formatCPF(cpf)
+      return <span>{formattedCPF}</span>
     },
   },
   {
