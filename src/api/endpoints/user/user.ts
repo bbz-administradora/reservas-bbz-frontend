@@ -19,29 +19,6 @@ import type {
   DeleteUser409,
   DeleteUser422,
   DeleteUser500,
-  GetUser200,
-  GetUser400,
-  GetUser401,
-  GetUser403,
-  GetUser404,
-  GetUser422,
-  GetUser500,
-  ListUsers201,
-  ListUsers400,
-  ListUsers401,
-  ListUsers403,
-  ListUsers422,
-  ListUsers500,
-  ListUsersParams,
-  UpdateUser200,
-  UpdateUser400,
-  UpdateUser401,
-  UpdateUser403,
-  UpdateUser404,
-  UpdateUser409,
-  UpdateUser422,
-  UpdateUser500,
-  UpdateUserBody,
   UserCreate201,
   UserCreate400,
   UserCreate401,
@@ -50,11 +27,34 @@ import type {
   UserCreate422,
   UserCreate500,
   UserCreateBody,
-  UserMe201,
+  UserGet200,
+  UserGet400,
+  UserGet401,
+  UserGet403,
+  UserGet404,
+  UserGet422,
+  UserGet500,
+  UserList200,
+  UserList400,
+  UserList401,
+  UserList403,
+  UserList422,
+  UserList500,
+  UserListParams,
+  UserMe200,
   UserMe400,
   UserMe401,
   UserMe403,
   UserMe500,
+  UserUpdate200,
+  UserUpdate400,
+  UserUpdate401,
+  UserUpdate403,
+  UserUpdate404,
+  UserUpdate409,
+  UserUpdate422,
+  UserUpdate500,
+  UserUpdateBody,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
@@ -63,24 +63,13 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
  * Este endpoint recupera os dados completos do usuário atualmente autenticado.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autenticação**: Requer token JWT válido no cabeçalho de autorização.
+* **Autorização**: Restrito a usuários com conta ativa.
 * **Validação de conta**: Verifica se a conta do usuário está ativa e não requer reset de senha.
-* **Dados retornados**:
-  - Identificador único (UUID)
-  - Nome completo e apelido
-  - Endereço de e-mail
-  - URL do avatar
-  - Função no sistema (admin, user, dev)
-  - Status da conta
-  - Indicador de necessidade de redefinição de senha
-  - Telefone
-  - Status de autorização do calendário
-
-* **Códigos de erro**:
-  - 401: Token JWT inválido ou expirado
-  - 403: Acesso proibido
-  - 400: Requisição mal formatada
-  - 500: Erro interno do servidor
+* **Processo**:
+  1. Valida a autenticação do usuário via token JWT
+  2. Verifica se a conta do usuário está ativa
+  3. Recupera os dados completos do usuário
+  4. Verifica se o usuário autorizou integração com calendário Google
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
@@ -88,7 +77,7 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
  * @summary Obter dados do usuário autenticado
  */
 export type userMeResponse = {
-  data: UserMe201
+  data: UserMe200
   status: number
   headers: Headers
 }
@@ -148,11 +137,11 @@ export const useUserMe = <
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
-* **Processo de criação**:
+* **Processo**:
   1. Verifica se já existe um usuário com o email fornecido
-  2. Cria o registro de usuário com nome, email e perfil definido
+  2. Cria o registro de usuário com nome, email, cpf e perfil definido
   3. Configura uma conta Google associada ao usuário
-* **Resposta**: Retorna o usuário criado com seu ID e perfil, incluindo status da conta
+  4. Retorna o usuário criado com seu ID e perfil, incluindo status da conta
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
@@ -257,13 +246,13 @@ export const useUserCreate = <
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Listar todos os usuários
  */
-export type listUsersResponse = {
-  data: ListUsers201
+export type userListResponse = {
+  data: UserList200
   status: number
   headers: Headers
 }
 
-export const getListUsersUrl = (params?: ListUsersParams) => {
+export const getUserListUrl = (params?: UserListParams) => {
   const normalizedParams = new URLSearchParams()
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -277,46 +266,41 @@ export const getListUsersUrl = (params?: ListUsersParams) => {
     : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user`
 }
 
-export const listUsers = async (
-  params?: ListUsersParams,
+export const userList = async (
+  params?: UserListParams,
   options?: RequestInit,
-): Promise<listUsersResponse> => {
-  return customFetch<Promise<listUsersResponse>>(getListUsersUrl(params), {
+): Promise<userListResponse> => {
+  return customFetch<Promise<userListResponse>>(getUserListUrl(params), {
     ...options,
     method: 'GET',
   })
 }
 
-export const getListUsersKey = (params?: ListUsersParams) =>
+export const getUserListKey = (params?: UserListParams) =>
   [
     `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user`,
     ...(params ? [params] : []),
   ] as const
 
-export type ListUsersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof listUsers>>
+export type UserListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof userList>>
 >
-export type ListUsersQueryError =
-  | ListUsers400
-  | ListUsers401
-  | ListUsers403
-  | ListUsers422
-  | ListUsers500
+export type UserListQueryError =
+  | UserList400
+  | UserList401
+  | UserList403
+  | UserList422
+  | UserList500
 
 /**
  * @summary Listar todos os usuários
  */
-export const useListUsers = <
-  TError =
-    | ListUsers400
-    | ListUsers401
-    | ListUsers403
-    | ListUsers422
-    | ListUsers500,
+export const useUserList = <
+  TError = UserList400 | UserList401 | UserList403 | UserList422 | UserList500,
 >(
-  params?: ListUsersParams,
+  params?: UserListParams,
   options?: {
-    swr?: SWRConfiguration<Awaited<ReturnType<typeof listUsers>>, TError> & {
+    swr?: SWRConfiguration<Awaited<ReturnType<typeof userList>>, TError> & {
       swrKey?: Key
       enabled?: boolean
     }
@@ -327,8 +311,8 @@ export const useListUsers = <
 
   const isEnabled = swrOptions?.enabled !== false
   const swrKey =
-    swrOptions?.swrKey ?? (() => (isEnabled ? getListUsersKey(params) : null))
-  const swrFn = () => listUsers(params, requestOptions)
+    swrOptions?.swrKey ?? (() => (isEnabled ? getUserListKey(params) : null))
+  const swrFn = () => userList(params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
@@ -459,55 +443,55 @@ export const useDeleteUser = <
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Obter detalhes de um usuário
  */
-export type getUserResponse = {
-  data: GetUser200
+export type userGetResponse = {
+  data: UserGet200
   status: number
   headers: Headers
 }
 
-export const getGetUserUrl = (id: string) => {
+export const getUserGetUrl = (id: string) => {
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`
 }
 
-export const getUser = async (
+export const userGet = async (
   id: string,
   options?: RequestInit,
-): Promise<getUserResponse> => {
-  return customFetch<Promise<getUserResponse>>(getGetUserUrl(id), {
+): Promise<userGetResponse> => {
+  return customFetch<Promise<userGetResponse>>(getUserGetUrl(id), {
     ...options,
     method: 'GET',
   })
 }
 
-export const getGetUserKey = (id: string) =>
+export const getUserGetKey = (id: string) =>
   [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`] as const
 
-export type GetUserQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getUser>>
+export type UserGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof userGet>>
 >
-export type GetUserQueryError =
-  | GetUser400
-  | GetUser401
-  | GetUser403
-  | GetUser404
-  | GetUser422
-  | GetUser500
+export type UserGetQueryError =
+  | UserGet400
+  | UserGet401
+  | UserGet403
+  | UserGet404
+  | UserGet422
+  | UserGet500
 
 /**
  * @summary Obter detalhes de um usuário
  */
-export const useGetUser = <
+export const useUserGet = <
   TError =
-    | GetUser400
-    | GetUser401
-    | GetUser403
-    | GetUser404
-    | GetUser422
-    | GetUser500,
+    | UserGet400
+    | UserGet401
+    | UserGet403
+    | UserGet404
+    | UserGet422
+    | UserGet500,
 >(
   id: string,
   options?: {
-    swr?: SWRConfiguration<Awaited<ReturnType<typeof getUser>>, TError> & {
+    swr?: SWRConfiguration<Awaited<ReturnType<typeof userGet>>, TError> & {
       swrKey?: Key
       enabled?: boolean
     }
@@ -518,8 +502,8 @@ export const useGetUser = <
 
   const isEnabled = swrOptions?.enabled !== false && !!id
   const swrKey =
-    swrOptions?.swrKey ?? (() => (isEnabled ? getGetUserKey(id) : null))
-  const swrFn = () => getUser(id, requestOptions)
+    swrOptions?.swrKey ?? (() => (isEnabled ? getUserGetKey(id) : null))
+  const swrFn = () => userGet(id, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
@@ -551,84 +535,84 @@ export const useGetUser = <
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Atualizar dados parciais de um usuário
  */
-export type updateUserResponse = {
-  data: UpdateUser200
+export type userUpdateResponse = {
+  data: UserUpdate200
   status: number
   headers: Headers
 }
 
-export const getUpdateUserUrl = (id: string) => {
+export const getUserUpdateUrl = (id: string) => {
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`
 }
 
-export const updateUser = async (
+export const userUpdate = async (
   id: string,
-  updateUserBody: UpdateUserBody,
+  userUpdateBody: UserUpdateBody,
   options?: RequestInit,
-): Promise<updateUserResponse> => {
-  return customFetch<Promise<updateUserResponse>>(getUpdateUserUrl(id), {
+): Promise<userUpdateResponse> => {
+  return customFetch<Promise<userUpdateResponse>>(getUserUpdateUrl(id), {
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(updateUserBody),
+    body: JSON.stringify(userUpdateBody),
   })
 }
 
-export const getUpdateUserMutationFetcher = (
+export const getUserUpdateMutationFetcher = (
   id: string,
   options?: SecondParameter<typeof customFetch>,
 ) => {
   return (
     _: Key,
-    { arg }: { arg: UpdateUserBody },
-  ): Promise<updateUserResponse> => {
-    return updateUser(id, arg, options)
+    { arg }: { arg: UserUpdateBody },
+  ): Promise<userUpdateResponse> => {
+    return userUpdate(id, arg, options)
   }
 }
-export const getUpdateUserMutationKey = (id: string) =>
+export const getUserUpdateMutationKey = (id: string) =>
   [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${id}`] as const
 
-export type UpdateUserMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateUser>>
+export type UserUpdateMutationResult = NonNullable<
+  Awaited<ReturnType<typeof userUpdate>>
 >
-export type UpdateUserMutationError =
-  | UpdateUser400
-  | UpdateUser401
-  | UpdateUser403
-  | UpdateUser404
-  | UpdateUser409
-  | UpdateUser422
-  | UpdateUser500
+export type UserUpdateMutationError =
+  | UserUpdate400
+  | UserUpdate401
+  | UserUpdate403
+  | UserUpdate404
+  | UserUpdate409
+  | UserUpdate422
+  | UserUpdate500
 
 /**
  * @summary Atualizar dados parciais de um usuário
  */
-export const useUpdateUser = <
+export const useUserUpdate = <
   TError =
-    | UpdateUser400
-    | UpdateUser401
-    | UpdateUser403
-    | UpdateUser404
-    | UpdateUser409
-    | UpdateUser422
-    | UpdateUser500,
+    | UserUpdate400
+    | UserUpdate401
+    | UserUpdate403
+    | UserUpdate404
+    | UserUpdate409
+    | UserUpdate422
+    | UserUpdate500,
 >(
   id: string,
   options?: {
     swr?: SWRMutationConfiguration<
-      Awaited<ReturnType<typeof updateUser>>,
+      Awaited<ReturnType<typeof userUpdate>>,
       TError,
       Key,
-      UpdateUserBody,
-      Awaited<ReturnType<typeof updateUser>>
+      UserUpdateBody,
+      Awaited<ReturnType<typeof userUpdate>>
     > & { swrKey?: string }
     request?: SecondParameter<typeof customFetch>
   },
 ) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getUpdateUserMutationKey(id)
-  const swrFn = getUpdateUserMutationFetcher(id, requestOptions)
+  const swrKey = swrOptions?.swrKey ?? getUserUpdateMutationKey(id)
+  const swrFn = getUserUpdateMutationFetcher(id, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 

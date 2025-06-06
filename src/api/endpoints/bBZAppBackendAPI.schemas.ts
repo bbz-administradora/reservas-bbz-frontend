@@ -412,6 +412,20 @@ export type ListRoomReservations400 = {
 }
 
 /**
+ * Resposta paginada contendo reservas de sala
+ */
+export type ListRoomReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListRoomReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
+
+/**
  * Informações do usuário que fez a reserva
  */
 export type ListRoomReservations200ReservationsItemUser = {
@@ -542,20 +556,6 @@ export type ListRoomReservations200ReservationsItem = {
   status: ListRoomReservations200ReservationsItemStatus
   /** Informações do usuário que fez a reserva */
   user: ListRoomReservations200ReservationsItemUser
-}
-
-/**
- * Resposta paginada contendo reservas de sala
- */
-export type ListRoomReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListRoomReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
 }
 
 export type ListRoomReservationsParams = {
@@ -4631,29 +4631,29 @@ export type UploadImageParams = {
 /**
  * Código de status HTTP 500.
  */
-export type UpdateUser500StatusCode =
-  (typeof UpdateUser500StatusCode)[keyof typeof UpdateUser500StatusCode]
+export type UserUpdate500StatusCode =
+  (typeof UserUpdate500StatusCode)[keyof typeof UserUpdate500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser500StatusCode = {
+export const UserUpdate500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateUser500Name =
-  (typeof UpdateUser500Name)[keyof typeof UpdateUser500Name]
+export type UserUpdate500Name =
+  (typeof UserUpdate500Name)[keyof typeof UserUpdate500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser500Name = {
+export const UserUpdate500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type UpdateUser500 = {
+export type UserUpdate500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4661,34 +4661,34 @@ export type UpdateUser500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateUser500Name
+  name: UserUpdate500Name
   /** Código de status HTTP 500. */
-  status_code: UpdateUser500StatusCode
+  status_code: UserUpdate500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type UpdateUser422StatusCode =
-  (typeof UpdateUser422StatusCode)[keyof typeof UpdateUser422StatusCode]
+export type UserUpdate422StatusCode =
+  (typeof UserUpdate422StatusCode)[keyof typeof UserUpdate422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser422StatusCode = {
+export const UserUpdate422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateUser422Name =
-  (typeof UpdateUser422Name)[keyof typeof UpdateUser422Name]
+export type UserUpdate422Name =
+  (typeof UserUpdate422Name)[keyof typeof UserUpdate422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser422Name = {
+export const UserUpdate422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type UpdateUser422DetailsItem = {
+export type UserUpdate422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -4698,45 +4698,45 @@ export type UpdateUser422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type UpdateUser422 = {
+export type UserUpdate422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: UpdateUser422DetailsItem[]
+  details?: UserUpdate422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateUser422Name
+  name: UserUpdate422Name
   /** Código de status HTTP 422. */
-  status_code: UpdateUser422StatusCode
+  status_code: UserUpdate422StatusCode
 }
 
 /**
  * Código de status HTTP 409.
  */
-export type UpdateUser409StatusCode =
-  (typeof UpdateUser409StatusCode)[keyof typeof UpdateUser409StatusCode]
+export type UserUpdate409StatusCode =
+  (typeof UserUpdate409StatusCode)[keyof typeof UserUpdate409StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser409StatusCode = {
+export const UserUpdate409StatusCode = {
   NUMBER_409: 409,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateUser409Name =
-  (typeof UpdateUser409Name)[keyof typeof UpdateUser409Name]
+export type UserUpdate409Name =
+  (typeof UserUpdate409Name)[keyof typeof UserUpdate409Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser409Name = {
+export const UserUpdate409Name = {
   ConflictError: 'ConflictError',
 } as const
 
 /**
  * Schema to represent Conflict errors (HTTP 409)
  */
-export type UpdateUser409 = {
+export type UserUpdate409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4744,37 +4744,37 @@ export type UpdateUser409 = {
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateUser409Name
+  name: UserUpdate409Name
   /** Código de status HTTP 409. */
-  status_code: UpdateUser409StatusCode
+  status_code: UserUpdate409StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type UpdateUser404StatusCode =
-  (typeof UpdateUser404StatusCode)[keyof typeof UpdateUser404StatusCode]
+export type UserUpdate404StatusCode =
+  (typeof UserUpdate404StatusCode)[keyof typeof UserUpdate404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser404StatusCode = {
+export const UserUpdate404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateUser404Name =
-  (typeof UpdateUser404Name)[keyof typeof UpdateUser404Name]
+export type UserUpdate404Name =
+  (typeof UserUpdate404Name)[keyof typeof UserUpdate404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser404Name = {
+export const UserUpdate404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type UpdateUser404 = {
+export type UserUpdate404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4782,37 +4782,37 @@ export type UpdateUser404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateUser404Name
+  name: UserUpdate404Name
   /** Código de status HTTP 404. */
-  status_code: UpdateUser404StatusCode
+  status_code: UserUpdate404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type UpdateUser403StatusCode =
-  (typeof UpdateUser403StatusCode)[keyof typeof UpdateUser403StatusCode]
+export type UserUpdate403StatusCode =
+  (typeof UserUpdate403StatusCode)[keyof typeof UserUpdate403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser403StatusCode = {
+export const UserUpdate403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateUser403Name =
-  (typeof UpdateUser403Name)[keyof typeof UpdateUser403Name]
+export type UserUpdate403Name =
+  (typeof UserUpdate403Name)[keyof typeof UserUpdate403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser403Name = {
+export const UserUpdate403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type UpdateUser403 = {
+export type UserUpdate403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4820,37 +4820,37 @@ export type UpdateUser403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateUser403Name
+  name: UserUpdate403Name
   /** Código de status HTTP 403. */
-  status_code: UpdateUser403StatusCode
+  status_code: UserUpdate403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type UpdateUser401StatusCode =
-  (typeof UpdateUser401StatusCode)[keyof typeof UpdateUser401StatusCode]
+export type UserUpdate401StatusCode =
+  (typeof UserUpdate401StatusCode)[keyof typeof UserUpdate401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser401StatusCode = {
+export const UserUpdate401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateUser401Name =
-  (typeof UpdateUser401Name)[keyof typeof UpdateUser401Name]
+export type UserUpdate401Name =
+  (typeof UserUpdate401Name)[keyof typeof UserUpdate401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser401Name = {
+export const UserUpdate401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type UpdateUser401 = {
+export type UserUpdate401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4858,37 +4858,37 @@ export type UpdateUser401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateUser401Name
+  name: UserUpdate401Name
   /** Código de status HTTP 401. */
-  status_code: UpdateUser401StatusCode
+  status_code: UserUpdate401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type UpdateUser400StatusCode =
-  (typeof UpdateUser400StatusCode)[keyof typeof UpdateUser400StatusCode]
+export type UserUpdate400StatusCode =
+  (typeof UserUpdate400StatusCode)[keyof typeof UserUpdate400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser400StatusCode = {
+export const UserUpdate400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateUser400Name =
-  (typeof UpdateUser400Name)[keyof typeof UpdateUser400Name]
+export type UserUpdate400Name =
+  (typeof UserUpdate400Name)[keyof typeof UserUpdate400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser400Name = {
+export const UserUpdate400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type UpdateUser400 = {
+export type UserUpdate400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4896,104 +4896,116 @@ export type UpdateUser400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateUser400Name
+  name: UserUpdate400Name
   /** Código de status HTTP 400. */
-  status_code: UpdateUser400StatusCode
-}
-
-export type UpdateUser200UserRole =
-  (typeof UpdateUser200UserRole)[keyof typeof UpdateUser200UserRole]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUser200UserRole = {
-  admin: 'admin',
-  user: 'user',
-  dev: 'dev',
-} as const
-
-export type UpdateUser200User = {
-  accountStatus: boolean
-  /** @nullable */
-  avatar: string | null
-  email: string
-  id: string
-  /** @nullable */
-  name: string | null
-  /** @nullable */
-  nickName: string | null
-  passwordResetRequired: boolean
-  /** @nullable */
-  phone: string | null
-  role: UpdateUser200UserRole
+  status_code: UserUpdate400StatusCode
 }
 
 /**
- * Usuário atualizado com sucesso
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
  */
-export type UpdateUser200 = {
-  message: string
-  user: UpdateUser200User
-}
-
-export type UpdateUserBodyRole =
-  (typeof UpdateUserBodyRole)[keyof typeof UpdateUserBodyRole]
+export type UserUpdate200UserRole =
+  (typeof UserUpdate200UserRole)[keyof typeof UserUpdate200UserRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateUserBodyRole = {
+export const UserUpdate200UserRole = {
   admin: 'admin',
   user: 'user',
   dev: 'dev',
 } as const
 
-export type UpdateUserBody = {
-  accountStatus?: boolean
-  /** @nullable */
-  avatar?: string | null
+export type UserUpdate200User = {
+  /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
+  accountStatus: boolean
   /**
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo obrigatório.
+   * @nullable
+   * @pattern ^\d{11}$
+   */
+  cpf: string | null
+  /** Email do usuário. Endereço de email válido. Campo obrigatório. */
+  email: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  id: string
+  /** Nome completo do usuário. Campo obrigatório. */
+  name: string
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
+  role: UserUpdate200UserRole
+}
+
+/**
+ * Detalhes do usuário atualizado com sucesso
+ */
+export type UserUpdate200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  user: UserUpdate200User
+}
+
+/**
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo opcional.
+ */
+export type UserUpdateBodyRole =
+  (typeof UserUpdateBodyRole)[keyof typeof UserUpdateBodyRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UserUpdateBodyRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type UserUpdateBody = {
+  /** Indica se a conta do usuário está ativa. Valor booleano. Campo opcional. */
+  accountStatus?: boolean
+  /**
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * @pattern ^\d{11}$
+   */
+  cpf?: string
+  /**
+   * Email do usuário. Endereço de email válido. Campo opcional.
    * @minLength 3
    * @maxLength 254
    */
   email?: string
   /**
+   * Nome completo do usuário. String com nome e sobrenome. Campo opcional.
    * @minLength 2
    * @maxLength 100
    * @pattern ^\S+\s+\S+
    */
   name?: string
-  /** @nullable */
-  nickName?: string | null
-  passwordResetRequired?: boolean
-  /** @nullable */
-  phone?: string | null
-  role?: UpdateUserBodyRole
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo opcional. */
+  role?: UserUpdateBodyRole
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type GetUser500StatusCode =
-  (typeof GetUser500StatusCode)[keyof typeof GetUser500StatusCode]
+export type UserGet500StatusCode =
+  (typeof UserGet500StatusCode)[keyof typeof UserGet500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser500StatusCode = {
+export const UserGet500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetUser500Name =
-  (typeof GetUser500Name)[keyof typeof GetUser500Name]
+export type UserGet500Name =
+  (typeof UserGet500Name)[keyof typeof UserGet500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser500Name = {
+export const UserGet500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type GetUser500 = {
+export type UserGet500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -5001,34 +5013,34 @@ export type GetUser500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: GetUser500Name
+  name: UserGet500Name
   /** Código de status HTTP 500. */
-  status_code: GetUser500StatusCode
+  status_code: UserGet500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type GetUser422StatusCode =
-  (typeof GetUser422StatusCode)[keyof typeof GetUser422StatusCode]
+export type UserGet422StatusCode =
+  (typeof UserGet422StatusCode)[keyof typeof UserGet422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser422StatusCode = {
+export const UserGet422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetUser422Name =
-  (typeof GetUser422Name)[keyof typeof GetUser422Name]
+export type UserGet422Name =
+  (typeof UserGet422Name)[keyof typeof UserGet422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser422Name = {
+export const UserGet422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type GetUser422DetailsItem = {
+export type UserGet422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -5038,45 +5050,45 @@ export type GetUser422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type GetUser422 = {
+export type UserGet422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: GetUser422DetailsItem[]
+  details?: UserGet422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: GetUser422Name
+  name: UserGet422Name
   /** Código de status HTTP 422. */
-  status_code: GetUser422StatusCode
+  status_code: UserGet422StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type GetUser404StatusCode =
-  (typeof GetUser404StatusCode)[keyof typeof GetUser404StatusCode]
+export type UserGet404StatusCode =
+  (typeof UserGet404StatusCode)[keyof typeof UserGet404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser404StatusCode = {
+export const UserGet404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetUser404Name =
-  (typeof GetUser404Name)[keyof typeof GetUser404Name]
+export type UserGet404Name =
+  (typeof UserGet404Name)[keyof typeof UserGet404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser404Name = {
+export const UserGet404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type GetUser404 = {
+export type UserGet404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -5084,37 +5096,37 @@ export type GetUser404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: GetUser404Name
+  name: UserGet404Name
   /** Código de status HTTP 404. */
-  status_code: GetUser404StatusCode
+  status_code: UserGet404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type GetUser403StatusCode =
-  (typeof GetUser403StatusCode)[keyof typeof GetUser403StatusCode]
+export type UserGet403StatusCode =
+  (typeof UserGet403StatusCode)[keyof typeof UserGet403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser403StatusCode = {
+export const UserGet403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetUser403Name =
-  (typeof GetUser403Name)[keyof typeof GetUser403Name]
+export type UserGet403Name =
+  (typeof UserGet403Name)[keyof typeof UserGet403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser403Name = {
+export const UserGet403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type GetUser403 = {
+export type UserGet403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -5122,37 +5134,37 @@ export type GetUser403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: GetUser403Name
+  name: UserGet403Name
   /** Código de status HTTP 403. */
-  status_code: GetUser403StatusCode
+  status_code: UserGet403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type GetUser401StatusCode =
-  (typeof GetUser401StatusCode)[keyof typeof GetUser401StatusCode]
+export type UserGet401StatusCode =
+  (typeof UserGet401StatusCode)[keyof typeof UserGet401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser401StatusCode = {
+export const UserGet401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetUser401Name =
-  (typeof GetUser401Name)[keyof typeof GetUser401Name]
+export type UserGet401Name =
+  (typeof UserGet401Name)[keyof typeof UserGet401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser401Name = {
+export const UserGet401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type GetUser401 = {
+export type UserGet401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -5160,37 +5172,37 @@ export type GetUser401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: GetUser401Name
+  name: UserGet401Name
   /** Código de status HTTP 401. */
-  status_code: GetUser401StatusCode
+  status_code: UserGet401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type GetUser400StatusCode =
-  (typeof GetUser400StatusCode)[keyof typeof GetUser400StatusCode]
+export type UserGet400StatusCode =
+  (typeof UserGet400StatusCode)[keyof typeof UserGet400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser400StatusCode = {
+export const UserGet400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetUser400Name =
-  (typeof GetUser400Name)[keyof typeof GetUser400Name]
+export type UserGet400Name =
+  (typeof UserGet400Name)[keyof typeof UserGet400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser400Name = {
+export const UserGet400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type GetUser400 = {
+export type UserGet400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -5198,43 +5210,52 @@ export type GetUser400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: GetUser400Name
+  name: UserGet400Name
   /** Código de status HTTP 400. */
-  status_code: GetUser400StatusCode
+  status_code: UserGet400StatusCode
 }
 
-export type GetUser200UserRole =
-  (typeof GetUser200UserRole)[keyof typeof GetUser200UserRole]
+/**
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
+ */
+export type UserGet200UserRole =
+  (typeof UserGet200UserRole)[keyof typeof UserGet200UserRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetUser200UserRole = {
+export const UserGet200UserRole = {
   admin: 'admin',
   user: 'user',
   dev: 'dev',
 } as const
 
-export type GetUser200User = {
+export type UserGet200User = {
+  /** Indica se a conta do usuário está ativa no sistema. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
-  /** @nullable */
-  avatar: string | null
+  /**
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * @pattern ^\d{11}$
+   */
+  cpf: string
+  /** Email do usuário para acesso ao sistema. Endereço de email válido. Campo obrigatório. */
   email: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
   id: string
-  /** @nullable */
+  /**
+   * Nome completo do usuário com nome e sobrenome. Pode ser nulo. Campo obrigatório.
+   * @nullable
+   */
   name: string | null
-  /** @nullable */
-  nickName: string | null
-  passwordResetRequired: boolean
-  /** @nullable */
-  phone: string | null
-  role: GetUser200UserRole
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
+  role: UserGet200UserRole
 }
 
 /**
- * Dados do usuário recuperados com sucesso
+ * Detalhes do usuário recuperados com sucesso
  */
-export type GetUser200 = {
+export type UserGet200 = {
+  /** Mensagem informativa sobre o resultado da operação de consulta do usuário. Campo obrigatório. */
   message: string
-  user: GetUser200User
+  user: UserGet200User
 }
 
 /**
@@ -5521,29 +5542,29 @@ export type DeleteUser200 = {
 /**
  * Código de status HTTP 500.
  */
-export type ListUsers500StatusCode =
-  (typeof ListUsers500StatusCode)[keyof typeof ListUsers500StatusCode]
+export type UserList500StatusCode =
+  (typeof UserList500StatusCode)[keyof typeof UserList500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers500StatusCode = {
+export const UserList500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListUsers500Name =
-  (typeof ListUsers500Name)[keyof typeof ListUsers500Name]
+export type UserList500Name =
+  (typeof UserList500Name)[keyof typeof UserList500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers500Name = {
+export const UserList500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type ListUsers500 = {
+export type UserList500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -5551,34 +5572,34 @@ export type ListUsers500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: ListUsers500Name
+  name: UserList500Name
   /** Código de status HTTP 500. */
-  status_code: ListUsers500StatusCode
+  status_code: UserList500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type ListUsers422StatusCode =
-  (typeof ListUsers422StatusCode)[keyof typeof ListUsers422StatusCode]
+export type UserList422StatusCode =
+  (typeof UserList422StatusCode)[keyof typeof UserList422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers422StatusCode = {
+export const UserList422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListUsers422Name =
-  (typeof ListUsers422Name)[keyof typeof ListUsers422Name]
+export type UserList422Name =
+  (typeof UserList422Name)[keyof typeof UserList422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers422Name = {
+export const UserList422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ListUsers422DetailsItem = {
+export type UserList422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -5588,45 +5609,45 @@ export type ListUsers422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type ListUsers422 = {
+export type UserList422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: ListUsers422DetailsItem[]
+  details?: UserList422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: ListUsers422Name
+  name: UserList422Name
   /** Código de status HTTP 422. */
-  status_code: ListUsers422StatusCode
+  status_code: UserList422StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type ListUsers403StatusCode =
-  (typeof ListUsers403StatusCode)[keyof typeof ListUsers403StatusCode]
+export type UserList403StatusCode =
+  (typeof UserList403StatusCode)[keyof typeof UserList403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers403StatusCode = {
+export const UserList403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListUsers403Name =
-  (typeof ListUsers403Name)[keyof typeof ListUsers403Name]
+export type UserList403Name =
+  (typeof UserList403Name)[keyof typeof UserList403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers403Name = {
+export const UserList403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type ListUsers403 = {
+export type UserList403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -5634,37 +5655,37 @@ export type ListUsers403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: ListUsers403Name
+  name: UserList403Name
   /** Código de status HTTP 403. */
-  status_code: ListUsers403StatusCode
+  status_code: UserList403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type ListUsers401StatusCode =
-  (typeof ListUsers401StatusCode)[keyof typeof ListUsers401StatusCode]
+export type UserList401StatusCode =
+  (typeof UserList401StatusCode)[keyof typeof UserList401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers401StatusCode = {
+export const UserList401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListUsers401Name =
-  (typeof ListUsers401Name)[keyof typeof ListUsers401Name]
+export type UserList401Name =
+  (typeof UserList401Name)[keyof typeof UserList401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers401Name = {
+export const UserList401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type ListUsers401 = {
+export type UserList401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -5672,37 +5693,37 @@ export type ListUsers401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: ListUsers401Name
+  name: UserList401Name
   /** Código de status HTTP 401. */
-  status_code: ListUsers401StatusCode
+  status_code: UserList401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type ListUsers400StatusCode =
-  (typeof ListUsers400StatusCode)[keyof typeof ListUsers400StatusCode]
+export type UserList400StatusCode =
+  (typeof UserList400StatusCode)[keyof typeof UserList400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers400StatusCode = {
+export const UserList400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListUsers400Name =
-  (typeof ListUsers400Name)[keyof typeof ListUsers400Name]
+export type UserList400Name =
+  (typeof UserList400Name)[keyof typeof UserList400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers400Name = {
+export const UserList400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type ListUsers400 = {
+export type UserList400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -5710,62 +5731,90 @@ export type ListUsers400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: ListUsers400Name
+  name: UserList400Name
   /** Código de status HTTP 400. */
-  status_code: ListUsers400StatusCode
-}
-
-export type ListUsers201UsersItemRole =
-  (typeof ListUsers201UsersItemRole)[keyof typeof ListUsers201UsersItemRole]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsers201UsersItemRole = {
-  admin: 'admin',
-  user: 'user',
-  dev: 'dev',
-} as const
-
-export type ListUsers201UsersItem = {
-  accountStatus: boolean
-  /** @nullable */
-  avatar: string | null
-  createdAt: string
-  email: string
-  id: string
-  /** @nullable */
-  name: string | null
-  /** @nullable */
-  nickName: string | null
-  passwordResetRequired: boolean
-  /** @nullable */
-  phone: string | null
-  role: ListUsers201UsersItemRole
+  status_code: UserList400StatusCode
 }
 
 /**
  * Lista de usuários recuperada com sucesso
  */
-export type ListUsers201 = {
+export type UserList200 = {
+  /** Número da página atual da consulta. Campo obrigatório. */
   currentPage: number
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
   message: string
+  /** Número total de páginas disponíveis com base no tamanho da página. Campo obrigatório. */
   totalPages: number
-  users: ListUsers201UsersItem[]
+  /** Lista de usuários recuperados conforme os filtros aplicados. */
+  users: UserList200UsersItem[]
 }
 
-export type ListUsersRole = (typeof ListUsersRole)[keyof typeof ListUsersRole]
+/**
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
+ */
+export type UserList200UsersItemRole =
+  (typeof UserList200UsersItemRole)[keyof typeof UserList200UsersItemRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListUsersRole = {
+export const UserList200UsersItemRole = {
   admin: 'admin',
   user: 'user',
   dev: 'dev',
 } as const
 
-export type ListUsersParams = {
+export type UserList200UsersItem = {
+  /** Indica se a conta do usuário está ativa (true) ou inativa (false). Campo obrigatório. */
+  accountStatus: boolean
+  /**
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * @pattern ^\d{11}$
+   */
+  cpf: string
+  /** Data e hora de criação do registro no formato ISO 8601. Campo obrigatório. */
+  createdAt: string
+  /** Endereço de email do usuário. Endereço de email válido. Campo obrigatório. */
+  email: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  id: string
+  /**
+   * Nome completo do usuário. Pode ser nulo se não fornecido. Campo obrigatório.
+   * @nullable
+   */
+  name: string | null
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
+  role: UserList200UsersItemRole
+}
+
+export type UserListRole = (typeof UserListRole)[keyof typeof UserListRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UserListRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type UserListParams = {
+  /**
+   * Número da página para paginação, começando em 1. Valor padrão: 1. Campo opcional.
+   */
   page?: string
+  /**
+   * Quantidade de registros por página. Valor padrão: 1000. Campo opcional.
+   */
   pageSize?: string
+  /**
+   * Termo de busca para filtrar usuários por nome ou email. Campo opcional.
+   */
   search?: string
-  role?: ListUsersRole
+  /**
+   * Função do usuário no sistema para filtrar resultados. Aceita apenas: admin, user ou dev. Campo opcional.
+   */
+  role?: UserListRole
+  /**
+   * Status da conta do usuário para filtrar resultados. Valores aceitos: "true" (ativo) ou "false" (inativo). Campo opcional.
+   */
   accountStatus?: string
 }
 
@@ -6018,34 +6067,19 @@ export const UserCreate201UserRole = {
 } as const
 
 export type UserCreate201User = {
-  /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
+  /** Indica se a conta do usuário está ativa no sistema. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
   /**
-   * URL da imagem de avatar do usuário. Pode ser nulo. Campo obrigatório.
-   * @nullable
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * @pattern ^\d{11}$
    */
-  avatar: string | null
-  /** Email do usuário. Endereço de email válido. Campo obrigatório. */
+  cpf: string
+  /** Email do usuário para acesso ao sistema. Endereço de email válido. Campo obrigatório. */
   email: string
   /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
   id: string
-  /**
-   * Nome completo do usuário. Pode ser nulo. Campo obrigatório.
-   * @nullable
-   */
-  name: string | null
-  /**
-   * Apelido do usuário. Pode ser nulo. Campo obrigatório.
-   * @nullable
-   */
-  nickName: string | null
-  /** Indica se o usuário precisa redefinir a senha no próximo login. Valor booleano. Campo obrigatório. */
-  passwordResetRequired: boolean
-  /**
-   * Número de telefone do usuário. Pode ser nulo. Campo obrigatório.
-   * @nullable
-   */
-  phone: string | null
+  /** Nome completo do usuário com nome e sobrenome. Campo obrigatório. */
+  name: string
   /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
   role: UserCreate201UserRole
 }
@@ -6054,7 +6088,7 @@ export type UserCreate201User = {
  * Detalhes do usuário criado com sucesso
  */
 export type UserCreate201 = {
-  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  /** Mensagem informativa sobre o resultado da operação de criação do usuário. Campo obrigatório. */
   message: string
   user: UserCreate201User
 }
@@ -6074,18 +6108,30 @@ export const UserCreateBodyRole = {
 
 export type UserCreateBody = {
   /**
-   * Email do usuário. Endereço de email válido. Campo obrigatório.
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo obrigatório.
+   * @minLength 1
+   * @pattern ^\d{11}$
+   */
+  cpf: string
+  /**
+   * Email do usuário para acesso ao sistema. Deve ser um endereço de email válido entre 3 e 254 caracteres. Campo obrigatório.
    * @minLength 3
    * @maxLength 254
    */
   email: string
   /**
-   * Nome completo do usuário. String com nome e sobrenome. Campo obrigatório.
+   * Nome completo do usuário. String com nome e sobrenome separados por espaço. Campo obrigatório.
    * @minLength 2
    * @maxLength 100
    * @pattern ^\S+\s+\S+
    */
   name: string
+  /**
+   * Senha do usuário para autenticação no sistema. Deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e símbolos. Campo obrigatório.
+   * @minLength 8
+   * @maxLength 100
+   */
+  password: string
   /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Valor padrão: user. Campo obrigatório. */
   role?: UserCreateBodyRole
 }
@@ -6238,39 +6284,47 @@ export type UserMe400 = {
   status_code: UserMe400StatusCode
 }
 
-export type UserMe201UserRole =
-  (typeof UserMe201UserRole)[keyof typeof UserMe201UserRole]
+/**
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
+ */
+export type UserMe200UserRole =
+  (typeof UserMe200UserRole)[keyof typeof UserMe200UserRole]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserMe201UserRole = {
+export const UserMe200UserRole = {
   admin: 'admin',
   user: 'user',
   dev: 'dev',
 } as const
 
-export type UserMe201User = {
+export type UserMe200User = {
+  /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
-  /** @nullable */
-  avatar: string | null
-  calendarAuthorized: boolean
+  /**
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * @pattern ^\d{11}$
+   */
+  cpf: string
+  /** Endereço de email do usuário. Email válido. Campo obrigatório. */
   email: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
   id: string
-  /** @nullable */
+  /**
+   * Nome completo do usuário. String de texto. Pode ser nulo. Campo obrigatório.
+   * @nullable
+   */
   name: string | null
-  /** @nullable */
-  nickName: string | null
-  passwordResetRequired: boolean
-  /** @nullable */
-  phone: string | null
-  role: UserMe201UserRole
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
+  role: UserMe200UserRole
 }
 
 /**
  * Dados do usuário recuperados com sucesso
  */
-export type UserMe201 = {
+export type UserMe200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
   message: string
-  user: UserMe201User
+  user: UserMe200User
 }
 
 /**
@@ -6425,6 +6479,9 @@ export type RefreshUserSession400 = {
   status_code: RefreshUserSession400StatusCode
 }
 
+/**
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
+ */
 export type RefreshUserSession201UserRole =
   (typeof RefreshUserSession201UserRole)[keyof typeof RefreshUserSession201UserRole]
 
@@ -6436,19 +6493,17 @@ export const RefreshUserSession201UserRole = {
 } as const
 
 export type RefreshUserSession201User = {
+  /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
-  /** @nullable */
-  avatar: string | null
-  calendarAuthorized: boolean
+  /** CPF do usuário. String no formato de CPF brasileiro. Campo obrigatório. */
+  cpf: string
+  /** Email do usuário. Endereço de email válido. Campo obrigatório. */
   email: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
   id: string
-  /** @nullable */
-  name: string | null
-  /** @nullable */
-  nickName: string | null
-  passwordResetRequired: boolean
-  /** @nullable */
-  phone: string | null
+  /** Nome completo do usuário. String. Campo obrigatório. */
+  name: string
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
   role: RefreshUserSession201UserRole
 }
 
@@ -6456,7 +6511,9 @@ export type RefreshUserSession201User = {
  * Sessão atualizada com sucesso
  */
 export type RefreshUserSession201 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
   message: string
+  /** Identificador único da sessão no formato UUID v4. Campo obrigatório. */
   sessionId: string
   user: RefreshUserSession201User
 }
@@ -6618,6 +6675,262 @@ export type LogoutUser400 = {
  */
 export type LogoutUser200 = {
   message: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type AuthLoginCredential500StatusCode =
+  (typeof AuthLoginCredential500StatusCode)[keyof typeof AuthLoginCredential500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthLoginCredential500Name =
+  (typeof AuthLoginCredential500Name)[keyof typeof AuthLoginCredential500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type AuthLoginCredential500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthLoginCredential500Name
+  /** Código de status HTTP 500. */
+  status_code: AuthLoginCredential500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type AuthLoginCredential422StatusCode =
+  (typeof AuthLoginCredential422StatusCode)[keyof typeof AuthLoginCredential422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthLoginCredential422Name =
+  (typeof AuthLoginCredential422Name)[keyof typeof AuthLoginCredential422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type AuthLoginCredential422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type AuthLoginCredential422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: AuthLoginCredential422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthLoginCredential422Name
+  /** Código de status HTTP 422. */
+  status_code: AuthLoginCredential422StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type AuthLoginCredential403StatusCode =
+  (typeof AuthLoginCredential403StatusCode)[keyof typeof AuthLoginCredential403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthLoginCredential403Name =
+  (typeof AuthLoginCredential403Name)[keyof typeof AuthLoginCredential403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type AuthLoginCredential403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthLoginCredential403Name
+  /** Código de status HTTP 403. */
+  status_code: AuthLoginCredential403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type AuthLoginCredential401StatusCode =
+  (typeof AuthLoginCredential401StatusCode)[keyof typeof AuthLoginCredential401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthLoginCredential401Name =
+  (typeof AuthLoginCredential401Name)[keyof typeof AuthLoginCredential401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type AuthLoginCredential401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthLoginCredential401Name
+  /** Código de status HTTP 401. */
+  status_code: AuthLoginCredential401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type AuthLoginCredential400StatusCode =
+  (typeof AuthLoginCredential400StatusCode)[keyof typeof AuthLoginCredential400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthLoginCredential400Name =
+  (typeof AuthLoginCredential400Name)[keyof typeof AuthLoginCredential400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type AuthLoginCredential400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthLoginCredential400Name
+  /** Código de status HTTP 400. */
+  status_code: AuthLoginCredential400StatusCode
+}
+
+/**
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
+ */
+export type AuthLoginCredential200UserRole =
+  (typeof AuthLoginCredential200UserRole)[keyof typeof AuthLoginCredential200UserRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthLoginCredential200UserRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
+export type AuthLoginCredential200User = {
+  /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
+  accountStatus: boolean
+  /**
+   * CPF do usuário. Deve conter 11 dígitos numéricos. Pode ser nulo. Campo opcional.
+   * @nullable
+   * @pattern ^\d{11}$
+   */
+  cpf: string | null
+  /** Email do usuário. Endereço de email válido. Campo obrigatório. */
+  email: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  id: string
+  /**
+   * Nome completo do usuário. Pode ser nulo. Campo obrigatório.
+   * @nullable
+   */
+  name: string | null
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
+  role: AuthLoginCredential200UserRole
+}
+
+/**
+ * Autenticação com credenciais realizada com sucesso
+ */
+export type AuthLoginCredential200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  user: AuthLoginCredential200User
+}
+
+export type AuthLoginCredentialBody = {
+  /**
+   * Email do usuário para autenticação. Deve ser um endereço de email válido entre 3 e 254 caracteres. Campo obrigatório.
+   * @minLength 3
+   * @maxLength 254
+   */
+  email: string
+  /**
+   * Senha do usuário para autenticação. Deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um símbolo. Campo obrigatório.
+   * @minLength 8
+   * @maxLength 100
+   */
+  password: string
 }
 
 /**

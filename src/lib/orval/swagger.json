@@ -354,6 +354,379 @@
         }
       }
     },
+    "/v1/public/auth/login/credential": {
+      "post": {
+        "operationId": "authLoginCredential",
+        "summary": "Autenticação com credenciais (email e senha)",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Endpoint para autenticação de usuários com email e senha.\n\n* **Segurança**: Endpoint público, não requer autenticação prévia.\n* **Processo**:\n  1. Valida os dados de entrada (email e senha)\n  2. Verifica se o usuário existe e se a senha está correta\n  3. Cria uma sessão para o usuário e retorna os dados do usuário autenticado\n\n**Dados de entrada**:\n- Email do usuário (obrigatório)\n- Senha do usuário (obrigatório)\n\n**Resposta**:\n- Dados do usuário autenticado\n- Mensagem de confirmação",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 254,
+                    "format": "email",
+                    "description": "Email do usuário para autenticação. Deve ser um endereço de email válido entre 3 e 254 caracteres. Campo obrigatório."
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "allOf": [
+                      {
+                        "pattern": "[A-Z]"
+                      },
+                      {
+                        "pattern": "[a-z]"
+                      },
+                      {
+                        "pattern": "[0-9]"
+                      },
+                      {
+                        "pattern": "[^A-Za-z0-9]"
+                      }
+                    ],
+                    "maxLength": 100,
+                    "description": "Senha do usuário para autenticação. Deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um símbolo. Campo obrigatório."
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Autenticação com credenciais realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
+                        },
+                        "name": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Nome completo do usuário. Pode ser nulo. Campo obrigatório."
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email",
+                          "description": "Email do usuário. Endereço de email válido. Campo obrigatório."
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "admin",
+                            "user",
+                            "dev"
+                          ],
+                          "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório."
+                        },
+                        "accountStatus": {
+                          "type": "boolean",
+                          "description": "Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório."
+                        },
+                        "cpf": {
+                          "type": "string",
+                          "pattern": "^\\d{11}$",
+                          "nullable": true,
+                          "description": "CPF do usuário. Deve conter 11 dígitos numéricos. Pode ser nulo. Campo opcional."
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "email",
+                        "role",
+                        "accountStatus",
+                        "cpf"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
+                    }
+                  },
+                  "required": [
+                    "user",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Autenticação com credenciais realizada com sucesso"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Caminho para o campo com erro."
+                          },
+                          "message": {
+                            "type": "string",
+                            "description": "Mensagem de validação para o campo."
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Detalhes adicionais sobre os erros de validação."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/private/auth/logout/user": {
       "patch": {
         "operationId": "logoutUser",
@@ -578,7 +951,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "Este endpoint renova automaticamente a sessão de um usuário que já está autenticado, permitindo que ele permaneça conectado sem necessidade de fazer login novamente quando sua sessão atual estiver expirando.\n\nFuncionalidades principais:\n\n - Validação de Sessão Atual: O sistema verifica se o token de atualização (refresh token) é válido e corresponde a uma sessão existente no banco de dados, além de confirmar a validade do token CSRF para proteção contra ataques CSRF.\n\n - Segurança por Dispositivo: Garante que a renovação da sessão só pode ser feita no mesmo dispositivo onde a sessão foi iniciada, evitando que tokens roubados possam ser usados em outros dispositivos.\n\n - Geração de Novos Tokens: Cria um novo token de sessão para autenticação imediata (validade de 10 minutos) e um novo token de atualização com duração estendida - 7 dias para usuários que selecionaram \"lembrar-me\" ou 90 minutos para sessões padrão.\n\n - Persistência da Sessão: Atualiza a sessão existente no banco de dados com o novo token de atualização e nova data de expiração, mantendo o mesmo ID de sessão para rastreabilidade.\n\n - Informações do Usuário: Retorna dados atualizados do usuário, incluindo permissão de calendário (quando aplicável), permitindo que a interface do usuário se atualize sem necessidade de consultas adicionais.\n\nA resposta bem-sucedida inclui o ID da sessão renovada, os dados do usuário e uma mensagem de confirmação. Em caso de falha na validação, são retornados códigos de erro apropriados (401 para problemas de autenticação, 403 para conta desativada).",
+        "description": "Este endpoint renova automaticamente a sessão de um usuário que já está autenticado, permitindo que ele permaneça conectado sem necessidade de fazer login novamente quando sua sessão atual estiver expirando.\n\n* **Segurança**: Protegido por autenticação JWT Refresh (token de atualização) e CSRF via cookie/header.\n* **Autorização**: Disponível para usuários autenticados com qualquer perfil.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Valida o token de atualização (refresh token) e confirma a validade do token CSRF\n  2. Verifica se a sessão existe no banco de dados e corresponde ao usuário autenticado\n  3. Gera novos tokens de autenticação e atualização\n  4. Atualiza a sessão existente no banco de dados\n  5. Retorna os dados atualizados do usuário e o ID da sessão renovada\n\n**Middlewares aplicados**:\n- `verifyJWTRefresh`: Valida o token de atualização JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "security": [
           {
             "bearerAuth": []
@@ -597,23 +970,17 @@
                       "properties": {
                         "id": {
                           "type": "string",
-                          "format": "uuid"
+                          "format": "uuid",
+                          "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
                         },
                         "name": {
                           "type": "string",
-                          "nullable": true
-                        },
-                        "nickName": {
-                          "type": "string",
-                          "nullable": true
+                          "description": "Nome completo do usuário. String. Campo obrigatório."
                         },
                         "email": {
                           "type": "string",
-                          "format": "email"
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "nullable": true
+                          "format": "email",
+                          "description": "Email do usuário. Endereço de email válido. Campo obrigatório."
                         },
                         "role": {
                           "type": "string",
@@ -621,42 +988,36 @@
                             "admin",
                             "user",
                             "dev"
-                          ]
-                        },
-                        "passwordResetRequired": {
-                          "type": "boolean"
+                          ],
+                          "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório."
                         },
                         "accountStatus": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório."
                         },
-                        "phone": {
+                        "cpf": {
                           "type": "string",
-                          "nullable": true
-                        },
-                        "calendarAuthorized": {
-                          "type": "boolean"
+                          "description": "CPF do usuário. String no formato de CPF brasileiro. Campo obrigatório."
                         }
                       },
                       "required": [
                         "id",
                         "name",
-                        "nickName",
                         "email",
-                        "avatar",
                         "role",
-                        "passwordResetRequired",
                         "accountStatus",
-                        "phone",
-                        "calendarAuthorized"
+                        "cpf"
                       ],
                       "additionalProperties": false
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
                     },
                     "sessionId": {
                       "type": "string",
-                      "format": "uuid"
+                      "format": "uuid",
+                      "description": "Identificador único da sessão no formato UUID v4. Campo obrigatório."
                     }
                   },
                   "required": [
@@ -860,14 +1221,14 @@
         "tags": [
           "User"
         ],
-        "description": "Este endpoint recupera os dados completos do usuário atualmente autenticado.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autenticação**: Requer token JWT válido no cabeçalho de autorização.\n* **Validação de conta**: Verifica se a conta do usuário está ativa e não requer reset de senha.\n* **Dados retornados**:\n  - Identificador único (UUID)\n  - Nome completo e apelido\n  - Endereço de e-mail\n  - URL do avatar\n  - Função no sistema (admin, user, dev)\n  - Status da conta\n  - Indicador de necessidade de redefinição de senha\n  - Telefone\n  - Status de autorização do calendário\n\n* **Códigos de erro**:\n  - 401: Token JWT inválido ou expirado\n  - 403: Acesso proibido\n  - 400: Requisição mal formatada\n  - 500: Erro interno do servidor\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário está ativa",
+        "description": "Este endpoint recupera os dados completos do usuário atualmente autenticado.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com conta ativa.\n* **Validação de conta**: Verifica se a conta do usuário está ativa e não requer reset de senha.\n* **Processo**:\n  1. Valida a autenticação do usuário via token JWT\n  2. Verifica se a conta do usuário está ativa\n  3. Recupera os dados completos do usuário\n  4. Verifica se o usuário autorizou integração com calendário Google\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário está ativa",
         "security": [
           {
             "bearerAuth": []
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Dados do usuário recuperados com sucesso",
             "content": {
               "application/json": {
@@ -879,23 +1240,18 @@
                       "properties": {
                         "id": {
                           "type": "string",
-                          "format": "uuid"
+                          "format": "uuid",
+                          "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
                         },
                         "name": {
                           "type": "string",
-                          "nullable": true
-                        },
-                        "nickName": {
-                          "type": "string",
-                          "nullable": true
+                          "nullable": true,
+                          "description": "Nome completo do usuário. String de texto. Pode ser nulo. Campo obrigatório."
                         },
                         "email": {
                           "type": "string",
-                          "format": "email"
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "nullable": true
+                          "format": "email",
+                          "description": "Endereço de email do usuário. Email válido. Campo obrigatório."
                         },
                         "role": {
                           "type": "string",
@@ -903,38 +1259,32 @@
                             "admin",
                             "user",
                             "dev"
-                          ]
-                        },
-                        "passwordResetRequired": {
-                          "type": "boolean"
+                          ],
+                          "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório."
                         },
                         "accountStatus": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório."
                         },
-                        "phone": {
+                        "cpf": {
                           "type": "string",
-                          "nullable": true
-                        },
-                        "calendarAuthorized": {
-                          "type": "boolean"
+                          "pattern": "^\\d{11}$",
+                          "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional."
                         }
                       },
                       "required": [
                         "id",
                         "name",
-                        "nickName",
                         "email",
-                        "avatar",
                         "role",
-                        "passwordResetRequired",
                         "accountStatus",
-                        "phone",
-                        "calendarAuthorized"
+                        "cpf"
                       ],
                       "additionalProperties": false
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
                     }
                   },
                   "required": [
@@ -1137,7 +1487,7 @@
         "tags": [
           "User"
         ],
-        "description": "Este endpoint permite criar um novo usuário no sistema com as seguintes características:\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo de criação**:\n  1. Verifica se já existe um usuário com o email fornecido\n  2. Cria o registro de usuário com nome, email e perfil definido\n  3. Configura uma conta Google associada ao usuário\n* **Resposta**: Retorna o usuário criado com seu ID e perfil, incluindo status da conta\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "description": "Este endpoint permite criar um novo usuário no sistema com as seguintes características:\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Verifica se já existe um usuário com o email fornecido\n  2. Cria o registro de usuário com nome, email, cpf e perfil definido\n  3. Configura uma conta Google associada ao usuário\n  4. Retorna o usuário criado com seu ID e perfil, incluindo status da conta\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1149,14 +1499,40 @@
                     "minLength": 2,
                     "maxLength": 100,
                     "pattern": "^\\S+\\s+\\S+",
-                    "description": "Nome completo do usuário. String com nome e sobrenome. Campo obrigatório."
+                    "description": "Nome completo do usuário. String com nome e sobrenome separados por espaço. Campo obrigatório."
                   },
                   "email": {
                     "type": "string",
                     "minLength": 3,
                     "maxLength": 254,
                     "format": "email",
-                    "description": "Email do usuário. Endereço de email válido. Campo obrigatório."
+                    "description": "Email do usuário para acesso ao sistema. Deve ser um endereço de email válido entre 3 e 254 caracteres. Campo obrigatório."
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^\\d{11}$",
+                    "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo obrigatório."
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "allOf": [
+                      {
+                        "pattern": "[A-Z]"
+                      },
+                      {
+                        "pattern": "[a-z]"
+                      },
+                      {
+                        "pattern": "[0-9]"
+                      },
+                      {
+                        "pattern": "[^A-Za-z0-9]"
+                      }
+                    ],
+                    "maxLength": 100,
+                    "description": "Senha do usuário para autenticação no sistema. Deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e símbolos. Campo obrigatório."
                   },
                   "role": {
                     "type": "string",
@@ -1171,7 +1547,9 @@
                 },
                 "required": [
                   "name",
-                  "email"
+                  "email",
+                  "cpf",
+                  "password"
                 ],
                 "additionalProperties": false
               }
@@ -1202,18 +1580,12 @@
                         },
                         "name": {
                           "type": "string",
-                          "nullable": true,
-                          "description": "Nome completo do usuário. Pode ser nulo. Campo obrigatório."
-                        },
-                        "nickName": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "Apelido do usuário. Pode ser nulo. Campo obrigatório."
+                          "description": "Nome completo do usuário com nome e sobrenome. Campo obrigatório."
                         },
                         "email": {
                           "type": "string",
                           "format": "email",
-                          "description": "Email do usuário. Endereço de email válido. Campo obrigatório."
+                          "description": "Email do usuário para acesso ao sistema. Endereço de email válido. Campo obrigatório."
                         },
                         "role": {
                           "type": "string",
@@ -1224,41 +1596,29 @@
                           ],
                           "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório."
                         },
-                        "avatar": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "URL da imagem de avatar do usuário. Pode ser nulo. Campo obrigatório."
-                        },
-                        "phone": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "Número de telefone do usuário. Pode ser nulo. Campo obrigatório."
-                        },
                         "accountStatus": {
                           "type": "boolean",
-                          "description": "Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório."
+                          "description": "Indica se a conta do usuário está ativa no sistema. Valor booleano. Campo obrigatório."
                         },
-                        "passwordResetRequired": {
-                          "type": "boolean",
-                          "description": "Indica se o usuário precisa redefinir a senha no próximo login. Valor booleano. Campo obrigatório."
+                        "cpf": {
+                          "type": "string",
+                          "pattern": "^\\d{11}$",
+                          "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional."
                         }
                       },
                       "required": [
                         "id",
                         "name",
-                        "nickName",
                         "email",
                         "role",
-                        "avatar",
-                        "phone",
                         "accountStatus",
-                        "passwordResetRequired"
+                        "cpf"
                       ],
                       "additionalProperties": false
                     },
                     "message": {
                       "type": "string",
-                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
+                      "description": "Mensagem informativa sobre o resultado da operação de criação do usuário. Campo obrigatório."
                     }
                   },
                   "required": [
@@ -1566,7 +1926,7 @@
         }
       },
       "get": {
-        "operationId": "listUsers",
+        "operationId": "userList",
         "summary": "Listar todos os usuários",
         "tags": [
           "User"
@@ -1579,7 +1939,8 @@
             },
             "in": "query",
             "name": "page",
-            "required": false
+            "required": false,
+            "description": "Número da página para paginação, começando em 1. Valor padrão: 1. Campo opcional."
           },
           {
             "schema": {
@@ -1587,7 +1948,8 @@
             },
             "in": "query",
             "name": "pageSize",
-            "required": false
+            "required": false,
+            "description": "Quantidade de registros por página. Valor padrão: 1000. Campo opcional."
           },
           {
             "schema": {
@@ -1595,7 +1957,8 @@
             },
             "in": "query",
             "name": "search",
-            "required": false
+            "required": false,
+            "description": "Termo de busca para filtrar usuários por nome ou email. Campo opcional."
           },
           {
             "schema": {
@@ -1608,7 +1971,8 @@
             },
             "in": "query",
             "name": "role",
-            "required": false
+            "required": false,
+            "description": "Função do usuário no sistema para filtrar resultados. Aceita apenas: admin, user ou dev. Campo opcional."
           },
           {
             "schema": {
@@ -1616,7 +1980,8 @@
             },
             "in": "query",
             "name": "accountStatus",
-            "required": false
+            "required": false,
+            "description": "Status da conta do usuário para filtrar resultados. Valores aceitos: \"true\" (ativo) ou \"false\" (inativo). Campo opcional."
           }
         ],
         "security": [
@@ -1625,7 +1990,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Lista de usuários recuperada com sucesso",
             "content": {
               "application/json": {
@@ -1639,19 +2004,18 @@
                         "properties": {
                           "id": {
                             "type": "string",
-                            "format": "uuid"
+                            "format": "uuid",
+                            "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
                           },
                           "name": {
                             "type": "string",
-                            "nullable": true
-                          },
-                          "nickName": {
-                            "type": "string",
-                            "nullable": true
+                            "nullable": true,
+                            "description": "Nome completo do usuário. Pode ser nulo se não fornecido. Campo obrigatório."
                           },
                           "email": {
                             "type": "string",
-                            "format": "email"
+                            "format": "email",
+                            "description": "Endereço de email do usuário. Endereço de email válido. Campo obrigatório."
                           },
                           "role": {
                             "type": "string",
@@ -1659,49 +2023,47 @@
                               "admin",
                               "user",
                               "dev"
-                            ]
-                          },
-                          "avatar": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "phone": {
-                            "type": "string",
-                            "nullable": true
+                            ],
+                            "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório."
                           },
                           "accountStatus": {
-                            "type": "boolean"
+                            "type": "boolean",
+                            "description": "Indica se a conta do usuário está ativa (true) ou inativa (false). Campo obrigatório."
                           },
-                          "passwordResetRequired": {
-                            "type": "boolean"
+                          "cpf": {
+                            "type": "string",
+                            "pattern": "^\\d{11}$",
+                            "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional."
                           },
                           "createdAt": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Data e hora de criação do registro no formato ISO 8601. Campo obrigatório."
                           }
                         },
                         "required": [
                           "id",
                           "name",
-                          "nickName",
                           "email",
                           "role",
-                          "avatar",
-                          "phone",
                           "accountStatus",
-                          "passwordResetRequired",
+                          "cpf",
                           "createdAt"
                         ],
                         "additionalProperties": false
-                      }
+                      },
+                      "description": "Lista de usuários recuperados conforme os filtros aplicados."
                     },
                     "totalPages": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "Número total de páginas disponíveis com base no tamanho da página. Campo obrigatório."
                     },
                     "currentPage": {
-                      "type": "number"
+                      "type": "number",
+                      "description": "Número da página atual da consulta. Campo obrigatório."
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
                     }
                   },
                   "required": [
@@ -2356,7 +2718,7 @@
         }
       },
       "get": {
-        "operationId": "getUser",
+        "operationId": "userGet",
         "summary": "Obter detalhes de um usuário",
         "tags": [
           "User"
@@ -2370,7 +2732,8 @@
             },
             "in": "path",
             "name": "id",
-            "required": true
+            "required": true,
+            "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
           }
         ],
         "security": [
@@ -2380,7 +2743,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Dados do usuário recuperados com sucesso",
+            "description": "Detalhes do usuário recuperados com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -2391,19 +2754,18 @@
                       "properties": {
                         "id": {
                           "type": "string",
-                          "format": "uuid"
+                          "format": "uuid",
+                          "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
                         },
                         "name": {
                           "type": "string",
-                          "nullable": true
-                        },
-                        "nickName": {
-                          "type": "string",
-                          "nullable": true
+                          "nullable": true,
+                          "description": "Nome completo do usuário com nome e sobrenome. Pode ser nulo. Campo obrigatório."
                         },
                         "email": {
                           "type": "string",
-                          "format": "email"
+                          "format": "email",
+                          "description": "Email do usuário para acesso ao sistema. Endereço de email válido. Campo obrigatório."
                         },
                         "role": {
                           "type": "string",
@@ -2411,38 +2773,32 @@
                             "admin",
                             "user",
                             "dev"
-                          ]
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "phone": {
-                          "type": "string",
-                          "nullable": true
+                          ],
+                          "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório."
                         },
                         "accountStatus": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indica se a conta do usuário está ativa no sistema. Valor booleano. Campo obrigatório."
                         },
-                        "passwordResetRequired": {
-                          "type": "boolean"
+                        "cpf": {
+                          "type": "string",
+                          "pattern": "^\\d{11}$",
+                          "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional."
                         }
                       },
                       "required": [
                         "id",
                         "name",
-                        "nickName",
                         "email",
                         "role",
-                        "avatar",
-                        "phone",
                         "accountStatus",
-                        "passwordResetRequired"
+                        "cpf"
                       ],
                       "additionalProperties": false
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação de consulta do usuário. Campo obrigatório."
                     }
                   },
                   "required": [
@@ -2450,7 +2806,7 @@
                     "message"
                   ],
                   "additionalProperties": false,
-                  "description": "Dados do usuário recuperados com sucesso"
+                  "description": "Detalhes do usuário recuperados com sucesso"
                 }
               }
             }
@@ -2750,7 +3106,7 @@
         }
       },
       "patch": {
-        "operationId": "updateUser",
+        "operationId": "userUpdate",
         "summary": "Atualizar dados parciais de um usuário",
         "tags": [
           "User"
@@ -2766,17 +3122,15 @@
                     "type": "string",
                     "minLength": 2,
                     "maxLength": 100,
-                    "pattern": "^\\S+\\s+\\S+"
-                  },
-                  "nickName": {
-                    "type": "string",
-                    "nullable": true
+                    "pattern": "^\\S+\\s+\\S+",
+                    "description": "Nome completo do usuário. String com nome e sobrenome. Campo opcional."
                   },
                   "email": {
                     "type": "string",
                     "minLength": 3,
                     "maxLength": 254,
-                    "format": "email"
+                    "format": "email",
+                    "description": "Email do usuário. Endereço de email válido. Campo opcional."
                   },
                   "role": {
                     "type": "string",
@@ -2784,22 +3138,17 @@
                       "admin",
                       "user",
                       "dev"
-                    ]
-                  },
-                  "avatar": {
-                    "type": "string",
-                    "format": "uri",
-                    "nullable": true
-                  },
-                  "phone": {
-                    "type": "string",
-                    "nullable": true
+                    ],
+                    "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo opcional."
                   },
                   "accountStatus": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Indica se a conta do usuário está ativa. Valor booleano. Campo opcional."
                   },
-                  "passwordResetRequired": {
-                    "type": "boolean"
+                  "cpf": {
+                    "type": "string",
+                    "pattern": "^\\d{11}$",
+                    "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional."
                   }
                 },
                 "additionalProperties": false
@@ -2815,7 +3164,8 @@
             },
             "in": "path",
             "name": "id",
-            "required": true
+            "required": true,
+            "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
           }
         ],
         "security": [
@@ -2825,7 +3175,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Usuário atualizado com sucesso",
+            "description": "Detalhes do usuário atualizado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -2836,19 +3186,17 @@
                       "properties": {
                         "id": {
                           "type": "string",
-                          "format": "uuid"
+                          "format": "uuid",
+                          "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
                         },
                         "name": {
                           "type": "string",
-                          "nullable": true
-                        },
-                        "nickName": {
-                          "type": "string",
-                          "nullable": true
+                          "description": "Nome completo do usuário. Campo obrigatório."
                         },
                         "email": {
                           "type": "string",
-                          "format": "email"
+                          "format": "email",
+                          "description": "Email do usuário. Endereço de email válido. Campo obrigatório."
                         },
                         "role": {
                           "type": "string",
@@ -2856,38 +3204,33 @@
                             "admin",
                             "user",
                             "dev"
-                          ]
-                        },
-                        "avatar": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "phone": {
-                          "type": "string",
-                          "nullable": true
+                          ],
+                          "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório."
                         },
                         "accountStatus": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório."
                         },
-                        "passwordResetRequired": {
-                          "type": "boolean"
+                        "cpf": {
+                          "type": "string",
+                          "pattern": "^\\d{11}$",
+                          "nullable": true,
+                          "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo obrigatório."
                         }
                       },
                       "required": [
                         "id",
                         "name",
-                        "nickName",
                         "email",
                         "role",
-                        "avatar",
-                        "phone",
                         "accountStatus",
-                        "passwordResetRequired"
+                        "cpf"
                       ],
                       "additionalProperties": false
                     },
                     "message": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
                     }
                   },
                   "required": [
@@ -2895,7 +3238,7 @@
                     "message"
                   ],
                   "additionalProperties": false,
-                  "description": "Usuário atualizado com sucesso"
+                  "description": "Detalhes do usuário atualizado com sucesso"
                 }
               }
             }

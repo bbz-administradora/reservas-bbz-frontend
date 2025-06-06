@@ -1,12 +1,12 @@
 'use client'
 
-import { ListUsers201UsersItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { UserList200UsersItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { DataTable } from '../data-table'
 import { columnsUsers } from './columns-users'
 import { DataTableUsersToolbar } from './toolbar-users'
 
 interface DataTableUsersProps {
-  initialData?: ListUsers201UsersItem[]
+  initialData?: UserList200UsersItem[]
   className?: string
 }
 

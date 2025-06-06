@@ -11,6 +11,13 @@ import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  AuthLoginCredential200,
+  AuthLoginCredential400,
+  AuthLoginCredential401,
+  AuthLoginCredential403,
+  AuthLoginCredential422,
+  AuthLoginCredential500,
+  AuthLoginCredentialBody,
   LoginUserGoogle302,
   LoginUserGoogle500,
   LoginUserGoogleCallback302,
@@ -194,6 +201,106 @@ export const useLoginUserGoogleCallback = <
   }
 }
 /**
+ * Endpoint para autenticação de usuários com email e senha.
+
+* **Segurança**: Endpoint público, não requer autenticação prévia.
+* **Processo**:
+  1. Valida os dados de entrada (email e senha)
+  2. Verifica se o usuário existe e se a senha está correta
+  3. Cria uma sessão para o usuário e retorna os dados do usuário autenticado
+
+**Dados de entrada**:
+- Email do usuário (obrigatório)
+- Senha do usuário (obrigatório)
+
+**Resposta**:
+- Dados do usuário autenticado
+- Mensagem de confirmação
+ * @summary Autenticação com credenciais (email e senha)
+ */
+export type authLoginCredentialResponse = {
+  data: AuthLoginCredential200
+  status: number
+  headers: Headers
+}
+
+export const getAuthLoginCredentialUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/public/auth/login/credential`
+}
+
+export const authLoginCredential = async (
+  authLoginCredentialBody: AuthLoginCredentialBody,
+  options?: RequestInit,
+): Promise<authLoginCredentialResponse> => {
+  return customFetch<Promise<authLoginCredentialResponse>>(
+    getAuthLoginCredentialUrl(),
+    {
+      ...options,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(authLoginCredentialBody),
+    },
+  )
+}
+
+export const getAuthLoginCredentialMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: AuthLoginCredentialBody },
+  ): Promise<authLoginCredentialResponse> => {
+    return authLoginCredential(arg, options)
+  }
+}
+export const getAuthLoginCredentialMutationKey = () =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/public/auth/login/credential`,
+  ] as const
+
+export type AuthLoginCredentialMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authLoginCredential>>
+>
+export type AuthLoginCredentialMutationError =
+  | AuthLoginCredential400
+  | AuthLoginCredential401
+  | AuthLoginCredential403
+  | AuthLoginCredential422
+  | AuthLoginCredential500
+
+/**
+ * @summary Autenticação com credenciais (email e senha)
+ */
+export const useAuthLoginCredential = <
+  TError =
+    | AuthLoginCredential400
+    | AuthLoginCredential401
+    | AuthLoginCredential403
+    | AuthLoginCredential422
+    | AuthLoginCredential500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof authLoginCredential>>,
+    TError,
+    Key,
+    AuthLoginCredentialBody,
+    Awaited<ReturnType<typeof authLoginCredential>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getAuthLoginCredentialMutationKey()
+  const swrFn = getAuthLoginCredentialMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
  * Este endpoint realiza o logout do usuário ao encerrar sua sessão atual. Quando acionado, o sistema identifica a sessão do usuário atual através do token de atualização (refresh token), remove esta sessão específica do banco de dados e limpa todos os cookies de autenticação no navegador do usuário.
 
 Processo de execução:
@@ -275,19 +382,19 @@ export const useLogoutUser = <
 /**
  * Este endpoint renova automaticamente a sessão de um usuário que já está autenticado, permitindo que ele permaneça conectado sem necessidade de fazer login novamente quando sua sessão atual estiver expirando.
 
-Funcionalidades principais:
+* **Segurança**: Protegido por autenticação JWT Refresh (token de atualização) e CSRF via cookie/header.
+* **Autorização**: Disponível para usuários autenticados com qualquer perfil.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Processo**:
+  1. Valida o token de atualização (refresh token) e confirma a validade do token CSRF
+  2. Verifica se a sessão existe no banco de dados e corresponde ao usuário autenticado
+  3. Gera novos tokens de autenticação e atualização
+  4. Atualiza a sessão existente no banco de dados
+  5. Retorna os dados atualizados do usuário e o ID da sessão renovada
 
- - Validação de Sessão Atual: O sistema verifica se o token de atualização (refresh token) é válido e corresponde a uma sessão existente no banco de dados, além de confirmar a validade do token CSRF para proteção contra ataques CSRF.
-
- - Segurança por Dispositivo: Garante que a renovação da sessão só pode ser feita no mesmo dispositivo onde a sessão foi iniciada, evitando que tokens roubados possam ser usados em outros dispositivos.
-
- - Geração de Novos Tokens: Cria um novo token de sessão para autenticação imediata (validade de 10 minutos) e um novo token de atualização com duração estendida - 7 dias para usuários que selecionaram "lembrar-me" ou 90 minutos para sessões padrão.
-
- - Persistência da Sessão: Atualiza a sessão existente no banco de dados com o novo token de atualização e nova data de expiração, mantendo o mesmo ID de sessão para rastreabilidade.
-
- - Informações do Usuário: Retorna dados atualizados do usuário, incluindo permissão de calendário (quando aplicável), permitindo que a interface do usuário se atualize sem necessidade de consultas adicionais.
-
-A resposta bem-sucedida inclui o ID da sessão renovada, os dados do usuário e uma mensagem de confirmação. Em caso de falha na validação, são retornados códigos de erro apropriados (401 para problemas de autenticação, 403 para conta desativada).
+**Middlewares aplicados**:
+- `verifyJWTRefresh`: Valida o token de atualização JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Atualizar sessão do usuário
  */
 export type refreshUserSessionResponse = {

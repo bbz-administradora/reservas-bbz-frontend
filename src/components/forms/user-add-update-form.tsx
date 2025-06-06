@@ -2,9 +2,9 @@
 
 import { revalidateTags } from '@/actions/revalidate-tags'
 import {
-  useGetUser,
-  useUpdateUser,
   useUserCreate,
+  useUserGet,
+  useUserUpdate,
 } from '@/api/endpoints/user/user'
 import { Text } from '@/components/Text'
 import { useUserFormMode } from '@/context/UserFormModeProvider'
@@ -67,7 +67,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
     data: getUserData,
     isLoading: loadingGetUser,
     mutate,
-  } = useGetUser(selectedUserId as string, {
+  } = useUserGet(selectedUserId as string, {
     swr: {
       swrKey,
       onSuccess: (response) => {
@@ -123,7 +123,7 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
     },
   })
 
-  const { isMutating: loadingUpdateUser, trigger: updateUser } = useUpdateUser(
+  const { isMutating: loadingUpdateUser, trigger: updateUser } = useUserUpdate(
     selectedUserId as string,
     {
       swr: {

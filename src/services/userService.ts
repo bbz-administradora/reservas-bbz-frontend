@@ -6,9 +6,9 @@
  */
 
 import type {
-  ListUsers201,
-  ListUsersParams,
-  UserMe201User,
+  UserList200,
+  UserListParams,
+  UserMe200User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { customFetch } from '@/api/mutator/custom-fetch'
 import { webserver } from '@/infra/webserver'
@@ -22,7 +22,7 @@ import { getHeadersServer } from '@/lib/cookie'
  * @property isAuthenticated Indica se o usuário está autenticado
  */
 export interface CurrentUser {
-  user: UserMe201User | null
+  user: UserMe200User | null
   isAuthenticated: boolean
 }
 
@@ -68,7 +68,7 @@ export async function fetchCurrentUserInServer(): Promise<CurrentUser> {
     return { user: null, isAuthenticated: false }
   }
 
-  const response = await customFetch<{ user: UserMe201User }>(
+  const response = await customFetch<{ user: UserMe200User }>(
     `${webserver.hostApi}/v1/private/user/me`,
     {
       method: 'GET',
@@ -79,8 +79,8 @@ export async function fetchCurrentUserInServer(): Promise<CurrentUser> {
     },
   )
 
-  if (response.status === 201) {
-    return { user: response.data.user as UserMe201User, isAuthenticated: true }
+  if (response.status === 200) {
+    return { user: response.data.user as UserMe200User, isAuthenticated: true }
   }
 
   return { user: null, isAuthenticated: false }
@@ -105,7 +105,7 @@ export async function fetchCurrentUserInServer(): Promise<CurrentUser> {
  *    Caso contrário, registra erro e retorna null.
  *
  * @param {ListUsersParams} [params] Parâmetros de filtragem/paginação da listagem.
- * @returns {Promise<ListUsers201 | null>} Objeto com dados da listagem ou null
+ * @returns {Promise<ListUsers200 | null>} Objeto com dados da listagem ou null
  *
  * @example
  * ```ts
@@ -123,15 +123,15 @@ export async function fetchCurrentUserInServer(): Promise<CurrentUser> {
  * ```
  */
 export async function fetchListUsersInServer(
-  params?: ListUsersParams,
-): Promise<ListUsers201 | null> {
+  params?: UserListParams,
+): Promise<UserList200 | null> {
   const headers = await getHeadersServer()
   if (!headers) {
     console.warn('CSRF token not found')
     return null
   }
 
-  const getListUsersUrl = (params?: ListUsersParams) => {
+  const getListUsersUrl = (params?: UserListParams) => {
     const normalizedParams = new URLSearchParams()
 
     Object.entries(params || {}).forEach(([key, value]) => {
@@ -147,7 +147,7 @@ export async function fetchListUsersInServer(
 
   const url = getListUsersUrl(params)
 
-  const response = await customFetch<ListUsers201>(url, {
+  const response = await customFetch<UserList200>(url, {
     method: 'GET',
     credentials: 'include',
     cache: 'no-store',
@@ -155,7 +155,7 @@ export async function fetchListUsersInServer(
     next: { tags: ['delete-user', 'update-user', 'create-user'] },
   })
 
-  if (response.status === 201) {
+  if (response.status === 200) {
     return response.data
   }
 
