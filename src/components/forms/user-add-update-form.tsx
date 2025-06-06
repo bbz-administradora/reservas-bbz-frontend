@@ -8,10 +8,23 @@ import {
 } from '@/api/endpoints/user/user'
 import { Text } from '@/components/Text'
 import { useUserFormMode } from '@/context/UserFormModeProvider'
-import { emailSchema, fullNameSchema } from '@/schema'
+import {
+  cpfSchema,
+  emailSchema,
+  fullNameSchema,
+  passwordSchema,
+} from '@/schema'
 import { cn } from '@/utils/mergeClassNames'
+import { generatePassword } from '@/utils/password'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoaderCircleIcon, ShieldIcon, UserIcon } from 'lucide-react'
+import {
+  Copy,
+  Eye,
+  EyeOff,
+  LoaderCircleIcon,
+  ShieldIcon,
+  UserIcon,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -30,14 +43,27 @@ import {
 import { Input } from '../ui/input'
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group'
 
-const addUpdateUserFormSchema = z.object({
+// Schemas separados para adição e atualização
+const addUserFormSchema = z.object({
   name: fullNameSchema,
   email: emailSchema,
+  cpf: cpfSchema.nullable(),
+  password: passwordSchema,
   role: z.enum(['user', 'admin', 'dev']),
   accountStatus: z.boolean(),
 })
 
-type UserAddUpdateFormSchemaProps = z.infer<typeof addUpdateUserFormSchema>
+const updateUserFormSchema = z.object({
+  name: fullNameSchema,
+  email: emailSchema,
+  cpf: cpfSchema.nullable().optional(),
+  // Para edição, tornamos a senha completamente opcional (string vazia é válida)
+  password: z.string().optional(),
+  role: z.enum(['user', 'admin', 'dev']),
+  accountStatus: z.boolean(),
+})
+
+type UserAddUpdateFormSchemaProps = z.infer<typeof updateUserFormSchema>
 
 export interface UserAddUpdateFormProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -47,13 +73,18 @@ export interface UserAddUpdateFormProps
 export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
   const { mode, selectedUserId, setMode, setSelectedUserId } = useUserFormMode()
   const [isDev, setIsDev] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   // React Hook Form
   const form = useForm<UserAddUpdateFormSchemaProps>({
-    resolver: zodResolver(addUpdateUserFormSchema),
+    resolver: zodResolver(
+      mode === 'add' ? addUserFormSchema : updateUserFormSchema,
+    ),
     defaultValues: {
       name: '',
       email: '',
+      cpf: '',
+      password: '',
       role: 'user',
       accountStatus: true,
     },
@@ -77,6 +108,8 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
           form.reset({
             name: user.name ?? undefined,
             email: user.email,
+            cpf: user.cpf ?? '',
+            password: '',
             role: user.role as 'user' | 'admin' | 'dev',
             accountStatus: user.accountStatus,
           })
@@ -97,6 +130,8 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
           form.reset({
             name: '',
             email: '',
+            cpf: '',
+            password: '',
             role: 'user',
             accountStatus: true,
           })
@@ -116,6 +151,8 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
         form.reset({
           name: '',
           email: '',
+          cpf: '',
+          password: '',
           role: 'user',
           accountStatus: true,
         })
@@ -134,6 +171,8 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
             form.reset({
               name: '',
               email: '',
+              cpf: '',
+              password: '',
               role: 'user',
               accountStatus: true,
             })
@@ -182,6 +221,8 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
           form.reset({
             name: '',
             email: '',
+            cpf: '',
+            password: '',
             role: 'user',
             accountStatus: true,
           })
@@ -257,6 +298,8 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
     form.reset({
       name: '',
       email: '',
+      cpf: '',
+      password: '',
       role: 'user',
       accountStatus: true,
     })
@@ -265,10 +308,76 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // Função para gerar uma senha aleatória
+  function handleGeneratePassword() {
+    const newPassword = generatePassword(12)
+    form.setValue('password', newPassword)
+  }
+
+  // Função para copiar a senha para a área de transferência
+  function handleCopyPassword() {
+    const password = form.getValues('password')
+    if (password) {
+      navigator.clipboard.writeText(password)
+      showToast({
+        message: 'Senha copiada para a área de transferência',
+        duration: 3000,
+        variant: 'success',
+      })
+    }
+  }
+
+  // Função para formatar o CPF durante a digitação
+  function formatCPF(value: string) {
+    // Remove todos os caracteres não numéricos
+    const cpfDigits = value.replace(/\D/g, '')
+    // Limita a 11 dígitos
+    const cpfLimited = cpfDigits.slice(0, 11)
+
+    // Formata apenas para exibição, mantendo apenas números no valor
+    if (cpfLimited.length <= 3) {
+      return cpfLimited
+    } else if (cpfLimited.length <= 6) {
+      return `${cpfLimited.slice(0, 3)}.${cpfLimited.slice(3)}`
+    } else if (cpfLimited.length <= 9) {
+      return `${cpfLimited.slice(0, 3)}.${cpfLimited.slice(3, 6)}.${cpfLimited.slice(6)}`
+    } else {
+      return `${cpfLimited.slice(0, 3)}.${cpfLimited.slice(3, 6)}.${cpfLimited.slice(6, 9)}-${cpfLimited.slice(9)}`
+    }
+  }
+
   function onSubmit(values: UserAddUpdateFormSchemaProps) {
+    // Remover formatação do CPF antes de enviar
+    const formattedValues = { ...values }
+
+    // Tratar o CPF: se estiver vazio, definir como null; caso contrário, remover formatação
+    if (formattedValues.cpf === '') {
+      formattedValues.cpf = null
+    } else if (formattedValues.cpf) {
+      formattedValues.cpf = formattedValues.cpf.replace(/\D/g, '')
+    }
+
     if (mode === 'add') {
-      // adiciona todos os campos
-      createUser(values)
+      try {
+        // Validar os campos obrigatórios para criação
+        const validatedValues = addUserFormSchema.parse(formattedValues)
+
+        createUser({
+          ...validatedValues,
+          cpf: validatedValues.cpf || null,
+        })
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          // Mostrar erros de validação
+          error.errors.forEach((err) => {
+            showToast({
+              message: `Campo obrigatório: ${err.path.join('.')}`,
+              duration: 5000,
+              variant: 'error',
+            })
+          })
+        }
+      }
     } else {
       // prepara payload somente com mudanças
       const orig = getUserData?.data.user
@@ -276,11 +385,27 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
       if (!orig) return
       const diff: Partial<UserAddUpdateFormSchemaProps> = {}
 
-      if (values.name && values.name !== orig.name) diff.name = values.name
-      if (values.email && values.email !== orig.email) diff.email = values.email
-      if (values.role && values.role !== orig.role) diff.role = values.role
-      if (values.accountStatus !== orig.accountStatus)
-        diff.accountStatus = values.accountStatus
+      if (formattedValues.name && formattedValues.name !== orig.name)
+        diff.name = formattedValues.name
+      if (formattedValues.email && formattedValues.email !== orig.email)
+        diff.email = formattedValues.email
+
+      // Tratamento especial para o CPF
+      // Se formattedValues.cpf for null, enviamos null
+      // Se formattedValues.cpf estiver definido e for diferente do original, enviamos o valor
+      if (formattedValues.cpf !== undefined && formattedValues.cpf !== orig.cpf)
+        diff.cpf = formattedValues.cpf
+
+      // Tratamento especial para a senha:
+      // - Só enviamos se tiver valor (senha preenchida)
+      // - Ignoramos strings vazias na edição
+      if (formattedValues.password && formattedValues.password.trim() !== '')
+        diff.password = formattedValues.password
+
+      if (formattedValues.role && formattedValues.role !== orig.role)
+        diff.role = formattedValues.role
+      if (formattedValues.accountStatus !== orig.accountStatus)
+        diff.accountStatus = formattedValues.accountStatus
 
       if (Object.keys(diff).length === 0) {
         showToast({
@@ -299,8 +424,15 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
   useEffect(() => {
     if (mode === 'edit' && selectedUserId) {
       mutate()
+    } else if (mode === 'add') {
+      // Reseta o campo de senha quando volta ao modo de adicionar
+      form.setValue('password', '')
     }
-  }, [selectedUserId])
+
+    // Atualiza o resolver quando o modo muda
+    form.clearErrors()
+    form.setError = form.setError.bind(form)
+  }, [mode, selectedUserId])
 
   return (
     <div className={cn('flex w-full flex-1 flex-col items-center', className)}>
@@ -366,6 +498,114 @@ export function UserAddUpdateForm({ className }: UserAddUpdateFormProps) {
                   </FormControl>
                   <FormDescription className="text-[14px] leading-[20px] tracking-[0.25px] text-black/70">
                     O usuário so conseguirá realizar login com este email
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* CPF */}
+            <FormField
+              control={form.control}
+              name="cpf"
+              render={({ field }) => (
+                <FormItem className="grid gap-2">
+                  <FormLabel>CPF (Opcional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isDev}
+                      type="text"
+                      placeholder="000.000.000-00"
+                      value={formatCPF(field.value || '')}
+                      onChange={(e) => {
+                        field.onChange(e.target.value.replace(/\D/g, ''))
+                      }}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
+                    CPF (digite somente números, sem pontos ou traços)
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Senha - Visível apenas no modo de adição */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem
+                  className={cn('grid gap-1', mode === 'edit' && 'sr-only')}
+                >
+                  <div className="flex items-center justify-between">
+                    <FormLabel>Senha</FormLabel>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        disabled={isDev}
+                        onClick={handleGeneratePassword}
+                        className="text-muted-foreground/50"
+                      >
+                        Gerar Senha
+                      </Button>
+                      {field.value && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          disabled={isDev}
+                          size="icon"
+                          onClick={handleCopyPassword}
+                          className="group"
+                        >
+                          <Copy
+                            size={20}
+                            className="text-muted-foreground/50 group-hover:text-accent-foreground transition-all"
+                          />
+                          <span className="sr-only">Copiar Senha</span>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <FormControl>
+                    <div className="relative">
+                      <Button
+                        type="button"
+                        disabled={isDev}
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsPasswordVisible((prev) => !prev)}
+                        className="text-muted-foreground/50 hover:text-primary absolute top-0.5 right-0 hover:bg-transparent"
+                      >
+                        {isPasswordVisible ? (
+                          <>
+                            <Eye size={20} />
+                            <span className="sr-only">Esconder senha</span>
+                          </>
+                        ) : (
+                          <>
+                            <EyeOff size={20} />
+                            <span className="sr-only">Mostrar senha</span>
+                          </>
+                        )}
+                      </Button>
+                      <Input
+                        type={isPasswordVisible ? 'text' : 'password'}
+                        disabled={isDev}
+                        placeholder={
+                          mode === 'add'
+                            ? 'Digite a senha'
+                            : 'Digite a nova senha'
+                        }
+                        {...field}
+                        className="h-10 pr-10"
+                      />
+                    </div>
+                  </FormControl>
+                  <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
+                    A senha deve ter pelo menos 8 caracteres, incluindo
+                    maiúsculas, minúsculas, números e símbolos.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
