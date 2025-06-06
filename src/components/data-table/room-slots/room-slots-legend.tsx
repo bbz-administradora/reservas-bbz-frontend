@@ -1,4 +1,4 @@
-import { UserMe201User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { UserMe200User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { Text } from '@/components/Text'
 import {
   CalendarCheck2Icon,
@@ -8,7 +8,7 @@ import {
 } from 'lucide-react'
 
 interface LegendProps {
-  user: UserMe201User | null
+  user: UserMe200User | null
 }
 
 export function RoomSlotsLegend({ user }: LegendProps) {

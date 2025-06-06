@@ -1,7 +1,7 @@
 'use client'
 
 import { revalidateTags } from '@/actions/revalidate-tags'
-import { UserMe201User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { UserMe200User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import {
   useCancelRoomReservation,
   useCloseRoomReservation,
@@ -55,7 +55,7 @@ interface SlotButtonProps {
   date: string
   time: string
   slot: SlotCell
-  user: UserMe201User | null
+  user: UserMe200User | null
   onDataChange?: () => void
   roomId?: string
 }

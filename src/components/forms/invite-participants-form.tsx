@@ -9,7 +9,7 @@ import { z } from 'zod'
 import { revalidateTags } from '@/actions/revalidate-tags'
 import {
   GetRoomSlotAvailability200SlotsItem,
-  UserMe201User,
+  UserMe200User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { useCreateRoomReservation } from '@/api/endpoints/reservation/reservation'
 import {
@@ -48,7 +48,7 @@ interface InviteParticipantsFormProps {
   roomId: string // ID da sala
   startDate: string // Data inicial para buscar os slots
   endDate: string // Data final para buscar os slots
-  user: UserMe201User | null // Dados do usuário logado
+  user: UserMe200User | null // Dados do usuário logado
 }
 
 export function InviteParticipantsForm({

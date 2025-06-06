@@ -3,7 +3,7 @@
 import {
   GetRoomSlotAvailability200,
   GetRoomSlotAvailability200SlotsItem,
-  UserMe201User,
+  UserMe200User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import {
   getGetRoomSlotAvailabilityKey,
@@ -36,7 +36,7 @@ interface DataTableRoomSlotsProps {
   startDate: string
   endDate: string
   className?: string
-  user: UserMe201User | null
+  user: UserMe200User | null
   roomData: GetRoomSlotAvailability200
   roomId: string
 }

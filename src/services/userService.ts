@@ -18,7 +18,7 @@ import { getHeadersServer } from '@/lib/cookie'
  * CurrentUser
  *
  * Interface de retorno para dados do usuário autenticado.
- * @property user            Dados do usuário (UserMe201User) ou null
+ * @property user            Dados do usuário (UserMe200User) ou null
  * @property isAuthenticated Indica se o usuário está autenticado
  */
 export interface CurrentUser {

@@ -2,7 +2,7 @@
 
 import {
   GetRoomSlotAvailability200SlotsItem,
-  UserMe201User,
+  UserMe200User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { Text } from '@/components/Text'
 import { differenceInMilliseconds, isBefore, parseISO } from 'date-fns'
@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 
 interface PreReservationCountdownProps {
   slots: GetRoomSlotAvailability200SlotsItem[]
-  user: UserMe201User | null
+  user: UserMe200User | null
 }
 
 export function PreReservationCountdown({
