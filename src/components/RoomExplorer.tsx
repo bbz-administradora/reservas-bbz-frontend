@@ -27,7 +27,7 @@ import {
 import { cn } from '@/utils/mergeClassNames'
 import { format } from 'date-fns'
 import { ClockIcon, XIcon } from 'lucide-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text } from './Text'
 
 interface RoomExplorerProps {
@@ -136,12 +136,11 @@ export function RoomExplorer({
     setCurrentPage(1)
   }, [formattedDate, timeSlot])
 
-  const handleTimeSelect = useCallback(
-    (time: string) => {
-      setTimeSlot(time === timeSlot ? '' : time) // Toggle time selection
-    },
-    [timeSlot],
-  )
+  // Função para manipular a seleção dos horários mais usados
+  function handleTimeSelect(time: string) {
+    // Se o horário já estiver selecionado, limpa a seleção, caso contrário, seleciona o horário
+    setTimeSlot(time === timeSlot ? '' : time)
+  }
 
   // Get the data from the hook result
   const roomsData = data?.data
@@ -166,9 +165,11 @@ export function RoomExplorer({
 
         {/* Time slot selection */}
         <div className="flex w-full gap-2 lg:w-min">
-          <Select value={timeSlot} onValueChange={setTimeSlot}>
+          <Select value={timeSlot} onValueChange={setTimeSlot} defaultValue="">
             <SelectTrigger className="bg-background hover:bg-accent data-[placeholder]:hover:text-accent-foreground hover:text-accent-foreground hover:[&_svg]:stroke-accent-foreground w-full transition-colors lg:w-min [&_svg]:stroke-3">
-              <SelectValue placeholder="Horário" />
+              <SelectValue placeholder="Horário">
+                {timeSlot || 'Horário'}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {Array.from({ length: 14 }, (_, i) => i + 7)
