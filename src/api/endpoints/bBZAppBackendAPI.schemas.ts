@@ -4959,10 +4959,11 @@ export type UserUpdateBody = {
   /** Indica se a conta do usuário está ativa. Valor booleano. Campo opcional. */
   accountStatus?: boolean
   /**
-   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional.
+   * @nullable
    * @pattern ^\d{11}$
    */
-  cpf?: string
+  cpf?: string | null
   /**
    * Email do usuário. Endereço de email válido. Campo opcional.
    * @minLength 3
@@ -5232,10 +5233,11 @@ export type UserGet200User = {
   /** Indica se a conta do usuário está ativa no sistema. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
   /**
-   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional.
+   * @nullable
    * @pattern ^\d{11}$
    */
-  cpf: string
+  cpf: string | null
   /** Email do usuário para acesso ao sistema. Endereço de email válido. Campo obrigatório. */
   email: string
   /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
@@ -5767,10 +5769,11 @@ export type UserList200UsersItem = {
   /** Indica se a conta do usuário está ativa (true) ou inativa (false). Campo obrigatório. */
   accountStatus: boolean
   /**
-   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional.
+   * @nullable
    * @pattern ^\d{11}$
    */
-  cpf: string
+  cpf: string | null
   /** Data e hora de criação do registro no formato ISO 8601. Campo obrigatório. */
   createdAt: string
   /** Endereço de email do usuário. Endereço de email válido. Campo obrigatório. */
@@ -6108,11 +6111,12 @@ export const UserCreateBodyRole = {
 
 export type UserCreateBody = {
   /**
-   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo obrigatório.
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional.
    * @minLength 1
+   * @nullable
    * @pattern ^\d{11}$
    */
-  cpf: string
+  cpf: string | null
   /**
    * Email do usuário para acesso ao sistema. Deve ser um endereço de email válido entre 3 e 254 caracteres. Campo obrigatório.
    * @minLength 3
@@ -6301,10 +6305,11 @@ export type UserMe200User = {
   /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
   /**
-   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional.
+   * @nullable
    * @pattern ^\d{11}$
    */
-  cpf: string
+  cpf: string | null
   /** Endereço de email do usuário. Email válido. Campo obrigatório. */
   email: string
   /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
@@ -6495,8 +6500,11 @@ export const RefreshUserSession201UserRole = {
 export type RefreshUserSession201User = {
   /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
-  /** CPF do usuário. String no formato de CPF brasileiro. Campo obrigatório. */
-  cpf: string
+  /**
+   * CPF do usuário. String no formato de CPF brasileiro. Pode ser nulo. Campo opcional.
+   * @nullable
+   */
+  cpf: string | null
   /** Email do usuário. Endereço de email válido. Campo obrigatório. */
   email: string
   /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */

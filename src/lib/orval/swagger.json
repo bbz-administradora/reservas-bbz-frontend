@@ -997,7 +997,8 @@
                         },
                         "cpf": {
                           "type": "string",
-                          "description": "CPF do usuário. String no formato de CPF brasileiro. Campo obrigatório."
+                          "nullable": true,
+                          "description": "CPF do usuário. String no formato de CPF brasileiro. Pode ser nulo. Campo opcional."
                         }
                       },
                       "required": [
@@ -1269,7 +1270,8 @@
                         "cpf": {
                           "type": "string",
                           "pattern": "^\\d{11}$",
-                          "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional."
+                          "nullable": true,
+                          "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional."
                         }
                       },
                       "required": [
@@ -1512,7 +1514,8 @@
                     "type": "string",
                     "minLength": 1,
                     "pattern": "^\\d{11}$",
-                    "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo obrigatório."
+                    "nullable": true,
+                    "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional."
                   },
                   "password": {
                     "type": "string",
@@ -2033,7 +2036,8 @@
                           "cpf": {
                             "type": "string",
                             "pattern": "^\\d{11}$",
-                            "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional."
+                            "nullable": true,
+                            "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional."
                           },
                           "createdAt": {
                             "type": "string",
@@ -2783,7 +2787,8 @@
                         "cpf": {
                           "type": "string",
                           "pattern": "^\\d{11}$",
-                          "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional."
+                          "nullable": true,
+                          "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional."
                         }
                       },
                       "required": [
@@ -3148,7 +3153,8 @@
                   "cpf": {
                     "type": "string",
                     "pattern": "^\\d{11}$",
-                    "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional."
+                    "nullable": true,
+                    "description": "CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional."
                   }
                 },
                 "additionalProperties": false
