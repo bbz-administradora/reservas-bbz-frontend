@@ -11,6 +11,12 @@ import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  AuthForgotPassword201,
+  AuthForgotPassword400,
+  AuthForgotPassword403,
+  AuthForgotPassword422,
+  AuthForgotPassword500,
+  AuthForgotPasswordBody,
   AuthLoginCredential200,
   AuthLoginCredential400,
   AuthLoginCredential401,
@@ -18,6 +24,13 @@ import type {
   AuthLoginCredential422,
   AuthLoginCredential500,
   AuthLoginCredentialBody,
+  AuthResetPassword200,
+  AuthResetPassword401,
+  AuthResetPassword403,
+  AuthResetPassword404,
+  AuthResetPassword422,
+  AuthResetPassword500,
+  AuthResetPasswordBody,
   LoginUserGoogle302,
   LoginUserGoogle500,
   LoginUserGoogleCallback302,
@@ -292,6 +305,215 @@ export const useAuthLoginCredential = <
 
   const swrKey = swrOptions?.swrKey ?? getAuthLoginCredentialMutationKey()
   const swrFn = getAuthLoginCredentialMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite ao usuário solicitar a redefinição de senha, enviando um email com instruções para criação de uma nova senha.
+
+* **Segurança**: Endpoint público, não requer autenticação. Implementa verificações para impedir abuso.
+* **Processo**:
+  1. Valida o email fornecido
+  2. Verifica se existe um usuário com o email informado
+  3. Verifica se a conta do usuário está ativa
+  4. Gera um token de redefinição de senha temporário
+  5. Envia um email com instruções e link para redefinição
+  6. Retorna confirmação de envio
+
+**Processo detalhado**:
+- O email contém um link que direciona o usuário para a página de redefinição de senha
+- O token gerado é válido por 24 horas
+- O sistema verifica a validade do token quando o usuário acessa o link de redefinição
+- O email inclui tanto um botão de ação quanto o link em texto plano para maior acessibilidade
+ * @summary Solicitar redefinição de senha
+ */
+export type authForgotPasswordResponse = {
+  data: AuthForgotPassword201
+  status: number
+  headers: Headers
+}
+
+export const getAuthForgotPasswordUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/public/auth/forgot-password`
+}
+
+export const authForgotPassword = async (
+  authForgotPasswordBody: AuthForgotPasswordBody,
+  options?: RequestInit,
+): Promise<authForgotPasswordResponse> => {
+  return customFetch<Promise<authForgotPasswordResponse>>(
+    getAuthForgotPasswordUrl(),
+    {
+      ...options,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(authForgotPasswordBody),
+    },
+  )
+}
+
+export const getAuthForgotPasswordMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: AuthForgotPasswordBody },
+  ): Promise<authForgotPasswordResponse> => {
+    return authForgotPassword(arg, options)
+  }
+}
+export const getAuthForgotPasswordMutationKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/public/auth/forgot-password`] as const
+
+export type AuthForgotPasswordMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authForgotPassword>>
+>
+export type AuthForgotPasswordMutationError =
+  | AuthForgotPassword400
+  | AuthForgotPassword403
+  | AuthForgotPassword422
+  | AuthForgotPassword500
+
+/**
+ * @summary Solicitar redefinição de senha
+ */
+export const useAuthForgotPassword = <
+  TError =
+    | AuthForgotPassword400
+    | AuthForgotPassword403
+    | AuthForgotPassword422
+    | AuthForgotPassword500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof authForgotPassword>>,
+    TError,
+    Key,
+    AuthForgotPasswordBody,
+    Awaited<ReturnType<typeof authForgotPassword>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getAuthForgotPasswordMutationKey()
+  const swrFn = getAuthForgotPasswordMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Redefine a senha do usuário utilizando um token de verificação enviado previamente por e-mail.
+
+* **Segurança**: Acesso público, sem autenticação JWT.
+* **Processo**:
+  1. Verifica se o token de redefinição de senha é válido e não expirou
+  2. Verifica se o usuário existe e está ativo
+  3. Atualiza a senha do usuário
+  4. Invalida o token utilizado para evitar reuso
+  5. Retorna confirmação de sucesso com status 200 (OK), pois estamos atualizando recursos existentes
+
+**Uso comum**: Página de redefinição de senha após o usuário clicar no link recebido por e-mail.
+ * @summary Redefine a senha do usuário com um token válido
+ */
+export type authResetPasswordResponse = {
+  data: AuthResetPassword200
+  status: number
+  headers: Headers
+}
+
+export const getAuthResetPasswordUrl = (userId: string, token: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/public/auth/reset-password/${userId}/${token}`
+}
+
+export const authResetPassword = async (
+  userId: string,
+  token: string,
+  authResetPasswordBody: AuthResetPasswordBody,
+  options?: RequestInit,
+): Promise<authResetPasswordResponse> => {
+  return customFetch<Promise<authResetPasswordResponse>>(
+    getAuthResetPasswordUrl(userId, token),
+    {
+      ...options,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(authResetPasswordBody),
+    },
+  )
+}
+
+export const getAuthResetPasswordMutationFetcher = (
+  userId: string,
+  token: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: AuthResetPasswordBody },
+  ): Promise<authResetPasswordResponse> => {
+    return authResetPassword(userId, token, arg, options)
+  }
+}
+export const getAuthResetPasswordMutationKey = (
+  userId: string,
+  token: string,
+) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/public/auth/reset-password/${userId}/${token}`,
+  ] as const
+
+export type AuthResetPasswordMutationResult = NonNullable<
+  Awaited<ReturnType<typeof authResetPassword>>
+>
+export type AuthResetPasswordMutationError =
+  | AuthResetPassword401
+  | AuthResetPassword403
+  | AuthResetPassword404
+  | AuthResetPassword422
+  | AuthResetPassword500
+
+/**
+ * @summary Redefine a senha do usuário com um token válido
+ */
+export const useAuthResetPassword = <
+  TError =
+    | AuthResetPassword401
+    | AuthResetPassword403
+    | AuthResetPassword404
+    | AuthResetPassword422
+    | AuthResetPassword500,
+>(
+  userId: string,
+  token: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof authResetPassword>>,
+      TError,
+      Key,
+      AuthResetPasswordBody,
+      Awaited<ReturnType<typeof authResetPassword>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey =
+    swrOptions?.swrKey ?? getAuthResetPasswordMutationKey(userId, token)
+  const swrFn = getAuthResetPasswordMutationFetcher(
+    userId,
+    token,
+    requestOptions,
+  )
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 

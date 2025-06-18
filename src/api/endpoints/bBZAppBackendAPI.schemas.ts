@@ -2304,15 +2304,6 @@ export type GetRoomSlotAvailability200SlotsItemUser = {
   name: string
 }
 
-export type GetRoomSlotAvailability200SlotsItemStatus =
-  (typeof GetRoomSlotAvailability200SlotsItemStatus)[keyof typeof GetRoomSlotAvailability200SlotsItemStatus]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability200SlotsItemStatus = {
-  reserved: 'reserved',
-  pre_reserved: 'pre_reserved',
-} as const
-
 export type GetRoomSlotAvailability200SlotsItem = {
   /** Identificador único do slot */
   id: string
@@ -2329,6 +2320,20 @@ export type GetRoomSlotAvailability200SlotsItem = {
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
   user: GetRoomSlotAvailability200SlotsItemUser
 }
+
+export type GetRoomSlotAvailability200 = {
+  room: GetRoomSlotAvailability200Room
+  slots: GetRoomSlotAvailability200SlotsItem[]
+}
+
+export type GetRoomSlotAvailability200SlotsItemStatus =
+  (typeof GetRoomSlotAvailability200SlotsItemStatus)[keyof typeof GetRoomSlotAvailability200SlotsItemStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetRoomSlotAvailability200SlotsItemStatus = {
+  reserved: 'reserved',
+  pre_reserved: 'pre_reserved',
+} as const
 
 export type GetRoomSlotAvailability200Room = {
   /** Capacidade máxima de pessoas na sala */
@@ -2348,11 +2353,6 @@ export type GetRoomSlotAvailability200Room = {
   name: string
   /** Lista de recursos disponíveis na sala */
   recursos: string[]
-}
-
-export type GetRoomSlotAvailability200 = {
-  room: GetRoomSlotAvailability200Room
-  slots: GetRoomSlotAvailability200SlotsItem[]
 }
 
 export type GetRoomSlotAvailabilityParams = {
@@ -5739,20 +5739,6 @@ export type UserList400 = {
 }
 
 /**
- * Lista de usuários recuperada com sucesso
- */
-export type UserList200 = {
-  /** Número da página atual da consulta. Campo obrigatório. */
-  currentPage: number
-  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
-  message: string
-  /** Número total de páginas disponíveis com base no tamanho da página. Campo obrigatório. */
-  totalPages: number
-  /** Lista de usuários recuperados conforme os filtros aplicados. */
-  users: UserList200UsersItem[]
-}
-
-/**
  * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
  */
 export type UserList200UsersItemRole =
@@ -5787,6 +5773,20 @@ export type UserList200UsersItem = {
   name: string | null
   /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
   role: UserList200UsersItemRole
+}
+
+/**
+ * Lista de usuários recuperada com sucesso
+ */
+export type UserList200 = {
+  /** Número da página atual da consulta. Campo obrigatório. */
+  currentPage: number
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  /** Número total de páginas disponíveis com base no tamanho da página. Campo obrigatório. */
+  totalPages: number
+  /** Lista de usuários recuperados conforme os filtros aplicados. */
+  users: UserList200UsersItem[]
 }
 
 export type UserListRole = (typeof UserListRole)[keyof typeof UserListRole]
@@ -6074,9 +6074,10 @@ export type UserCreate201User = {
   accountStatus: boolean
   /**
    * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Campo opcional.
+   * @nullable
    * @pattern ^\d{11}$
    */
-  cpf: string
+  cpf: string | null
   /** Email do usuário para acesso ao sistema. Endereço de email válido. Campo obrigatório. */
   email: string
   /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
@@ -6683,6 +6684,400 @@ export type LogoutUser400 = {
  */
 export type LogoutUser200 = {
   message: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type AuthResetPassword500StatusCode =
+  (typeof AuthResetPassword500StatusCode)[keyof typeof AuthResetPassword500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthResetPassword500Name =
+  (typeof AuthResetPassword500Name)[keyof typeof AuthResetPassword500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type AuthResetPassword500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthResetPassword500Name
+  /** Código de status HTTP 500. */
+  status_code: AuthResetPassword500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type AuthResetPassword422StatusCode =
+  (typeof AuthResetPassword422StatusCode)[keyof typeof AuthResetPassword422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthResetPassword422Name =
+  (typeof AuthResetPassword422Name)[keyof typeof AuthResetPassword422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type AuthResetPassword422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type AuthResetPassword422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: AuthResetPassword422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthResetPassword422Name
+  /** Código de status HTTP 422. */
+  status_code: AuthResetPassword422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type AuthResetPassword404StatusCode =
+  (typeof AuthResetPassword404StatusCode)[keyof typeof AuthResetPassword404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthResetPassword404Name =
+  (typeof AuthResetPassword404Name)[keyof typeof AuthResetPassword404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type AuthResetPassword404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthResetPassword404Name
+  /** Código de status HTTP 404. */
+  status_code: AuthResetPassword404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type AuthResetPassword403StatusCode =
+  (typeof AuthResetPassword403StatusCode)[keyof typeof AuthResetPassword403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthResetPassword403Name =
+  (typeof AuthResetPassword403Name)[keyof typeof AuthResetPassword403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type AuthResetPassword403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthResetPassword403Name
+  /** Código de status HTTP 403. */
+  status_code: AuthResetPassword403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type AuthResetPassword401StatusCode =
+  (typeof AuthResetPassword401StatusCode)[keyof typeof AuthResetPassword401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthResetPassword401Name =
+  (typeof AuthResetPassword401Name)[keyof typeof AuthResetPassword401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthResetPassword401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type AuthResetPassword401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthResetPassword401Name
+  /** Código de status HTTP 401. */
+  status_code: AuthResetPassword401StatusCode
+}
+
+/**
+ * Senha redefinida com sucesso
+ */
+export type AuthResetPassword200 = {
+  /** Mensagem informativa sobre o resultado da redefinição de senha. Campo obrigatório. */
+  message: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  userId: string
+}
+
+export type AuthResetPasswordBody = {
+  /**
+   * Nova senha do usuário. Deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um símbolo. Campo obrigatório.
+   * @minLength 8
+   * @maxLength 100
+   */
+  password: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type AuthForgotPassword500StatusCode =
+  (typeof AuthForgotPassword500StatusCode)[keyof typeof AuthForgotPassword500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthForgotPassword500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthForgotPassword500Name =
+  (typeof AuthForgotPassword500Name)[keyof typeof AuthForgotPassword500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthForgotPassword500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type AuthForgotPassword500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthForgotPassword500Name
+  /** Código de status HTTP 500. */
+  status_code: AuthForgotPassword500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type AuthForgotPassword422StatusCode =
+  (typeof AuthForgotPassword422StatusCode)[keyof typeof AuthForgotPassword422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthForgotPassword422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthForgotPassword422Name =
+  (typeof AuthForgotPassword422Name)[keyof typeof AuthForgotPassword422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthForgotPassword422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type AuthForgotPassword422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type AuthForgotPassword422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: AuthForgotPassword422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthForgotPassword422Name
+  /** Código de status HTTP 422. */
+  status_code: AuthForgotPassword422StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type AuthForgotPassword403StatusCode =
+  (typeof AuthForgotPassword403StatusCode)[keyof typeof AuthForgotPassword403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthForgotPassword403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthForgotPassword403Name =
+  (typeof AuthForgotPassword403Name)[keyof typeof AuthForgotPassword403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthForgotPassword403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type AuthForgotPassword403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthForgotPassword403Name
+  /** Código de status HTTP 403. */
+  status_code: AuthForgotPassword403StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type AuthForgotPassword400StatusCode =
+  (typeof AuthForgotPassword400StatusCode)[keyof typeof AuthForgotPassword400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthForgotPassword400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type AuthForgotPassword400Name =
+  (typeof AuthForgotPassword400Name)[keyof typeof AuthForgotPassword400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AuthForgotPassword400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type AuthForgotPassword400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: AuthForgotPassword400Name
+  /** Código de status HTTP 400. */
+  status_code: AuthForgotPassword400StatusCode
+}
+
+/**
+ * Email para redefinição de senha enviado com sucesso
+ */
+export type AuthForgotPassword201 = {
+  /** Mensagem informativa sobre o envio do email de redefinição de senha. Campo obrigatório. */
+  message: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  userId: string
+}
+
+export type AuthForgotPasswordBody = {
+  /**
+   * Email do usuário para envio do token de redefinição de senha. Deve ser um endereço de email válido entre 3 e 254 caracteres. Campo obrigatório.
+   * @minLength 3
+   * @maxLength 254
+   */
+  email: string
 }
 
 /**
