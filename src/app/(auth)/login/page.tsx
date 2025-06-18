@@ -1,5 +1,5 @@
 import { metadata as metadataHome } from '@/app/layout'
-import { GoogleLoginButton } from '@/components/GoogleLoginButton'
+import { LoginForm } from '@/components/forms/LoginForm'
 import { LogoBbz } from '@/components/svg/logo-bbz'
 import { Text } from '@/components/Text'
 import { ToastOnLoad } from '@/components/ToastOnLoad'
@@ -45,7 +45,7 @@ export default async function Login({ searchParams }: LoginPageProps) {
         className="from-primary to-tertiary flex flex-1 flex-col items-center justify-center bg-gradient-to-b px-4 py-5"
       >
         {/* Card with login form */}
-        <Card className="bg-background w-full gap-10 border-none shadow-none md:max-w-md md:p-10 md:shadow-md">
+        <Card className="bg-background w-full gap-10 border-none shadow-none md:max-w-md md:px-5 md:py-10 md:shadow-md">
           <CardHeader className="gap-10 p-0">
             <LogoBbz className="mx-auto" />
             <Text as="h1" variant={'title-22-32-700'} className="text-center">
@@ -53,12 +53,7 @@ export default async function Login({ searchParams }: LoginPageProps) {
             </Text>
           </CardHeader>
           <CardContent className="gap-5 space-y-5">
-            <Text className="text-center">
-              Para entrar, clique no botão abaixo e faça login com sua conta
-              Google.
-            </Text>
-
-            <GoogleLoginButton />
+            <LoginForm />
 
             <Text
               variant={'label-14-14-400'}
