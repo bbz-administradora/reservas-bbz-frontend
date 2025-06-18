@@ -1,5 +1,5 @@
 import { DataTableUsers } from '@/components/data-table/users/table-users'
-import { UserAddUpdateForm } from '@/components/forms/user-add-update-form'
+import { UserAddUpdateForm } from '@/components/forms/UserAddUpdateForm'
 import { Text } from '@/components/Text'
 import { Separator } from '@/components/ui/separator'
 import { fetchListUsersInServer } from '@/services/userService'

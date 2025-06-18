@@ -1,5 +1,5 @@
 import { DataTableRoomSlots } from '@/components/data-table/room-slots/table-room-slots'
-import { InviteParticipantsForm } from '@/components/forms/invite-participants-form'
+import { InviteParticipantsForm } from '@/components/forms/InviteParticipantsForm'
 import { ImageGallery } from '@/components/ImageGallery'
 import { Text } from '@/components/Text'
 import { Badge } from '@/components/ui/badge'

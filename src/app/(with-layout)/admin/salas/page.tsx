@@ -1,6 +1,6 @@
 import { DataTableRooms } from '@/components/data-table/rooms/table-rooms'
-import { RoomAddUpdateForm } from '@/components/forms/room-add-update-form'
-import { RoomAddUpdateImageForm } from '@/components/forms/room-add-update-image-form'
+import { RoomAddUpdateForm } from '@/components/forms/RoomAddUpdateForm'
+import { RoomAddUpdateImageForm } from '@/components/forms/RoomAddUpdateImageForm'
 import { Text } from '@/components/Text'
 import { fetchListRoomsInServer } from '@/services/roomService'
 import { Separator } from '@radix-ui/react-select'
