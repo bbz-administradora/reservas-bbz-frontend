@@ -11,8 +11,8 @@ import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   ...metadataHome,
-  title: 'Reserva de Salas BBZ - Login',
-  description: 'Login Reserva de Salas BBZ',
+  title: 'Reserva de Espaços BBZ - Login',
+  description: 'Login Reserva de Espaços BBZ',
 }
 
 type SearchParams = Promise<{
@@ -49,7 +49,7 @@ export default async function Login({ searchParams }: LoginPageProps) {
           <CardHeader className="gap-10 p-0">
             <LogoBbz className="mx-auto" />
             <Text as="h1" variant={'title-22-32-700'} className="text-center">
-              Acesse o sistema de Reserva de Salas BBZ
+              Acesse o sistema de Reserva de Espaços BBZ
             </Text>
           </CardHeader>
           <CardContent className="gap-5 space-y-5">

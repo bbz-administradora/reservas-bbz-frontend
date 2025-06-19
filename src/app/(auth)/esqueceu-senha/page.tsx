@@ -11,8 +11,8 @@ import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   ...metadataHome,
-  title: 'Reserva de Salas BBZ - Esqueceu Senha',
-  description: 'Recuperação de senha para Reserva de Salas BBZ',
+  title: 'Reserva de Espaços BBZ - Esqueceu Senha',
+  description: 'Recuperação de senha para Reserva de Espaços BBZ',
 }
 
 export default async function EsqueceuSenha() {

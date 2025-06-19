@@ -15,27 +15,27 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Reserva de Salas - Gestão Inteligente para Ambientes Corporativos',
+  title: 'Reserva de Espaços - Gestão Inteligente para Ambientes Corporativos',
   description:
-    'Sistema completo para gestão e reserva de salas corporativas. Agendamentos rápidos, controle de acesso, integração com Google Calendar e abertura remota via fechadura inteligente.',
+    'Sistema completo para gestão e reserva de espaços corporativas. Agendamentos rápidos, controle de acesso, integração com Google Calendar e abertura remota via fechadura inteligente.',
   openGraph: {
-    title: 'Reserva de Salas BBZ - Agende, Gerencie e Acesse com Facilidade',
+    title: 'Reserva de Espaços BBZ - Agende, Gerencie e Acesse com Facilidade',
     description:
-      'Organize o uso de espaços corporativos com o sistema de reserva de salas da BBZ. Controle de horários, abertura via fechadura inteligente e integração com calendário.',
+      'Organize o uso de espaços corporativos com o sistema de reserva de espaços da BBZ. Controle de horários, abertura via fechadura inteligente e integração com calendário.',
     url: '/',
-    siteName: 'Reserva de Salas BBZ',
+    siteName: 'Reserva de Espaços BBZ',
     images: [
       {
         url: `${env.NEXT_PUBLIC_BUCKET}/og-800x600-bbz.png`,
         width: 800,
         height: 600,
-        alt: 'Reserva de Salas - Sistema Corporativo de Agendamento',
+        alt: 'Reserva de Espaços - Sistema Corporativo de Agendamento',
       },
       {
         url: `${env.NEXT_PUBLIC_BUCKET}/og-1800x1600-bbz.png`,
         width: 1800,
         height: 1600,
-        alt: 'Reserva de Salas - Gestão de Ambientes e Acessos',
+        alt: 'Reserva de Espaços - Gestão de Ambientes e Acessos',
       },
     ],
     locale: 'pt_BR',
@@ -54,9 +54,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Reserva de Salas BBZ - Agendamentos Inteligentes',
+    title: 'Reserva de Espaços BBZ - Agendamentos Inteligentes',
     description:
-      'Otimize a gestão de salas da sua empresa com agendamentos inteligentes, controle de acesso e integração com Google Calendar.',
+      'Otimize a gestão de espaços da sua empresa com agendamentos inteligentes, controle de acesso e integração com Google Calendar.',
     images: [`${env.NEXT_PUBLIC_BUCKET}/og-800x600-reserva.png`],
   },
   verification: {
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://gestao.bbz.com.br/',
   },
-  category: 'Sistema de Reserva de Salas Corporativas',
+  category: 'Sistema de Reserva de Espaços Corporativas',
 }
 
 export default async function RootLayout({

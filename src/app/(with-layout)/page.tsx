@@ -22,7 +22,7 @@ export default async function Home() {
         .shift()}!`}</p>
 
       <p className="text-2xl">
-        Aqui é a home page do sistema de reserva de salas BBZ, sera
+        Aqui é a home page do sistema de reserva de espaços BBZ, sera
         redirecionado automaticamente.
       </p>
     </div>

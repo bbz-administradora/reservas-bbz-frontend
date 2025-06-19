@@ -20,7 +20,7 @@ export default function NotFound() {
 
         {/* Title */}
         <Text variant="title-18-24-700" className="">
-          Reserva de Salas BBZ
+          Reserva de Espaços BBZ
         </Text>
       </div>
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-4">

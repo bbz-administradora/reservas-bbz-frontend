@@ -34,8 +34,8 @@ import { Textarea } from '../ui/textarea'
 const addUpdateRoomFormSchema = z.object({
   name: z
     .string({ required_error: 'O preenchimento do nome é obrigatório.' })
-    .min(3, 'O nome da sala deve ter pelo menos 3 caracteres.')
-    .max(100, 'O nome da sala deve ter no máximo 100 caracteres.'),
+    .min(3, 'O nome do espaço deve ter pelo menos 3 caracteres.')
+    .max(100, 'O nome do espaço deve ter no máximo 100 caracteres.'),
 
   description: z
     .string({ required_error: 'O preenchimento da descrição é obrigatório.' })
@@ -75,7 +75,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
     },
   })
 
-  // Hook para obter os dados da sala
+  // Hook para obter os dados do espaço
   const swrKey =
     mode === 'edit' && selectedRoomId ? ['get-room', selectedRoomId] : null
   const {
@@ -105,7 +105,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
           })
         } else {
           showToast({
-            message: 'Ops... Falha ao carregar dados da Sala.',
+            message: 'Ops... Falha ao carregar dados do espaço.',
             duration: 5000,
             variant: 'error',
           })
@@ -117,7 +117,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
       },
       onError: () => {
         showToast({
-          message: 'Ops... Falha ao carregar dados da Sala.',
+          message: 'Ops... Falha ao carregar dados da Espaço.',
           duration: 5000,
           variant: 'error',
         })
@@ -129,7 +129,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
     },
   })
 
-  // Hook para atualizar a sala
+  // Hook para atualizar o espaço
   const { isMutating: loadingUpdateRoom, trigger: updateRoom } = useUpdateRoom(
     selectedRoomId as string,
     {
@@ -144,19 +144,19 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
             handleResetForm()
 
             showToast({
-              message: `Sala ${room.name} atualizado com sucesso.`,
+              message: `Espaço ${room.name} atualizado com sucesso.`,
               duration: 5000,
               variant: 'success',
             })
           } else if (response.status === 409) {
             showToast({
-              message: 'Ops... Já existe uma sala com este nome.',
+              message: 'Ops... Já existe um espaço com este nome.',
               duration: 5000,
               variant: 'error',
             })
           } else {
             showToast({
-              message: 'Ops... Falha ao atualizar dados da Sala.',
+              message: 'Ops... Falha ao atualizar dados do espaço.',
               duration: 5000,
               variant: 'error',
             })
@@ -164,7 +164,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
         },
         onError: () => {
           showToast({
-            message: 'Ops... Falha ao atualizar dados da Sala.',
+            message: 'Ops... Falha ao atualizar dados do Espaço.',
             duration: 5000,
             variant: 'error',
           })
@@ -173,7 +173,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
     },
   )
 
-  // Hook para criar a sala
+  // Hook para criar o espaço
   const { isMutating: loadingCreateRoom, trigger: createRoom } = useCreateRoom({
     swr: {
       onSuccess: (response) => {
@@ -185,19 +185,19 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
           handleResetForm()
 
           showToast({
-            message: `Sala ${room.name} criada com sucesso.`,
+            message: `Espaço ${room.name} criado com sucesso.`,
             duration: 5000,
             variant: 'success',
           })
         } else if (response.status === 409) {
           showToast({
-            message: 'Ops... Já existe uma Sala com este nome.',
+            message: 'Ops... Já existe uma Espaço com este nome.',
             duration: 5000,
             variant: 'error',
           })
         } else {
           showToast({
-            message: 'Ops... Falha ao criar sala.',
+            message: 'Ops... Falha ao criar espaço.',
             duration: 5000,
             variant: 'error',
           })
@@ -205,7 +205,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
       },
       onError: () => {
         showToast({
-          message: 'Ops... Falha ao criar sala.',
+          message: 'Ops... Falha ao criar espaço.',
           duration: 5000,
           variant: 'error',
         })
@@ -229,19 +229,19 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
   function resolveTitle() {
     switch (true) {
       case loadingCreateRoom:
-        return 'Adicionando Sala...'
+        return 'Adicionando Espaço...'
       case loadingUpdateRoom:
-        return 'Atualizando Sala...'
+        return 'Atualizando Espaço...'
       case loadingGetRoom:
-        return 'Carregando Sala...'
+        return 'Carregando Espaço...'
       default:
-        return mode === 'add' ? 'Adicionar Sala' : 'Editar Sala'
+        return mode === 'add' ? 'Adicionar Espaço' : 'Editar Espaço'
     }
   }
 
   const title = resolveTitle()
 
-  // Função para cancelar a edição da sala
+  // Função para cancelar a edição dao Espaço
   function handleResetForm() {
     setMode('add')
     setSelectedRoomId(null)
@@ -268,7 +268,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
 
       if (!original) {
         showToast({
-          message: 'Ops... Falha ao carregar dados da Sala.',
+          message: 'Ops... Falha ao carregar dados dao Espaço.',
           duration: 5000,
           variant: 'error',
         })
@@ -300,7 +300,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
       if (Object.keys(diff).length === 0) {
         showToast({
           message:
-            'Os dados atuais da sala não foram alterados. Faça uma alteração para atualizar.',
+            'Os dados atuais do Espaço não foram alterados. Faça uma alteração para atualizar.',
           duration: 5000,
           variant: 'info',
         })
@@ -312,7 +312,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
     handleResetForm()
   }
 
-  // Efeito para atualizar o formulário quando o modo for 'edit' e o ID da Sala estiver definido
+  // Efeito para atualizar o formulário quando o modo for 'edit' e o ID do Espaço estiver definido
   useEffect(() => {
     if (mode === 'edit' && selectedRoomId) {
       mutate()
@@ -335,7 +335,7 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
         {title}
       </Text>
 
-      {/* Formulário de adição e edição de sala */}
+      {/* Formulário de adição e edição de espaço */}
       <Form {...form}>
         <form
           id="form-edit-user"
@@ -452,7 +452,8 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
                   </div>
 
                   <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
-                    Adicionar recurso é opcional.
+                    Adicionar recurso é opcional. Adicione um por vez, não use
+                    '-' para separar.
                   </FormDescription>
 
                   <FormMessage />
@@ -495,7 +496,9 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
                       field.value && 'text-muted-foreground',
                     )}
                   >
-                    {mode === 'edit' ? 'Inativar sala' : 'Criar sala inativa'}
+                    {mode === 'edit'
+                      ? 'Inativar espaço'
+                      : 'Criar espaço inativo'}
                   </FormLabel>
                 </div>
                 <FormMessage />

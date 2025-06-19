@@ -47,7 +47,7 @@ export default async function Layout({
 
           <div className="flex flex-col items-center justify-center gap-1 lg:absolute lg:right-1/2 lg:translate-x-1/2">
             {/* Title */}
-            <Text variant="title-18-24-700">Reserva de Salas BBZ</Text>
+            <Text variant="title-18-24-700">Reserva de Espaços BBZ</Text>
             <Text variant="label-14-14-400">{email}</Text>
           </div>
 
@@ -101,8 +101,8 @@ export default async function Layout({
                 </Link>
 
                 <Link
-                  href={`${webserver.host}/admin/salas`}
-                  title="Ir para a página administrativa de salas"
+                  href={`${webserver.host}/admin/espacos`}
+                  title="Ir para a página administrativa de espaços"
                   className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   <Button
@@ -158,8 +158,8 @@ export default async function Layout({
               </BottomTabButton>
 
               <BottomTabButton
-                label="Salas"
-                href={`${webserver.host}/admin/salas`}
+                label="Espaços"
+                href={`${webserver.host}/admin/espacos`}
               >
                 <DoorOpenIcon className="size-6" />
               </BottomTabButton>

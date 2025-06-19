@@ -11,8 +11,8 @@ import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   ...metadataHome,
-  title: 'Reserva de Salas BBZ - Redefinir Senha',
-  description: 'Redefinição de senha para Reserva de Salas BBZ',
+  title: 'Reserva de Espaços BBZ - Redefinir Senha',
+  description: 'Redefinição de senha para Reserva de Espaços BBZ',
 }
 
 type Params = Promise<{

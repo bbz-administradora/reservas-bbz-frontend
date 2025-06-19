@@ -17,7 +17,7 @@ export default async function AdminRooms() {
       className="wrapper flex flex-1 flex-col items-center gap-5 pt-5 pb-28 lg:pb-10"
     >
       <Text variant={'title-22-32-700'} className="my-4">
-        Lista de Salas
+        Lista de Espaços
       </Text>
 
       <div className="container mx-auto py-10">
