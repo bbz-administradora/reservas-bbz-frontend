@@ -12,7 +12,7 @@ export default async function UserLayout({
 
   // Verifica se o usuário está autenticado e tem a função de admin
   if (user?.role === 'user') {
-    redirect(`${webserver.host}/salas`)
+    redirect(`${webserver.host}/espacos`)
   }
   return <UserFormModeProvider>{children}</UserFormModeProvider>
 }

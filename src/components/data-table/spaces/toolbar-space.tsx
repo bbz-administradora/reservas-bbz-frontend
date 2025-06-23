@@ -6,7 +6,7 @@ import { Button } from '../../ui/button'
 import { Input } from '../../ui/input'
 import { DataTableFacetedFilter } from '../data-table-faceted-filter'
 import { DataTableViewOptions } from '../data-table-view-options'
-import { roomsTitlesColumns } from './columns-rooms'
+import { spacesTitlesColumns } from './columns-spaces'
 
 export const status = [
   {
@@ -25,7 +25,7 @@ interface DataTableToolbarProps<TData> {
   table: Table<TData>
 }
 
-export function DataTableRoomsToolbar<TData>({
+export function DataTableSpacesToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
@@ -68,7 +68,7 @@ export function DataTableRoomsToolbar<TData>({
             <X />
           </Button>
         )}
-        <DataTableViewOptions titles={roomsTitlesColumns} table={table} />
+        <DataTableViewOptions titles={spacesTitlesColumns} table={table} />
       </div>
     </div>
   )

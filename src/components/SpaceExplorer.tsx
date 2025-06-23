@@ -1,12 +1,12 @@
 'use client'
 
 import {
-  ListRoomSlots200,
-  ListRoomSlotsParams,
+  ListSpaceSlots200,
+  ListSpaceSlotsParams,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
-import { useListRoomSlots } from '@/api/endpoints/room-slot/room-slot'
+import { useListSpaceSlots } from '@/api/endpoints/space-slot/space-slot'
 import { DatePickerWithButton } from '@/components/DatePickerWithButton'
-import { RoomCard } from '@/components/RoomCard'
+import { SpaceCard } from '@/components/SpaceCard'
 import { Button } from '@/components/ui/button'
 import {
   Pagination,
@@ -30,17 +30,17 @@ import { ClockIcon, XIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Text } from './Text'
 
-interface RoomExplorerProps {
-  initialData: ListRoomSlots200 | null
+interface SpaceExplorerProps {
+  initialData: ListSpaceSlots200 | null
   className?: string
   mostUsedTimes?: string[]
 }
 
-export function RoomExplorer({
+export function SpaceExplorer({
   initialData,
   className,
   mostUsedTimes = ['10:00', '14:00', '16:00'],
-}: RoomExplorerProps) {
+}: SpaceExplorerProps) {
   // Função para garantir que a data seja sempre hoje ou no futuro
   const ensureDateIsNotPast = (date: Date | undefined): Date => {
     if (!date) return new Date()
@@ -109,14 +109,14 @@ export function RoomExplorer({
     : formattedDateTime
 
   // Create params object for API call
-  const params: ListRoomSlotsParams = {
+  const params: ListSpaceSlotsParams = {
     datetime: datetimeWithTimeSlot,
     page: currentPage.toString(),
     pageSize: itemsPerPage.toString(),
   }
 
   // Use the hook with initial data to avoid flickering
-  const { data, isLoading, error } = useListRoomSlots(params, {
+  const { data, isLoading, error } = useListSpaceSlots(params, {
     swr: {
       fallbackData: initialData
         ? {
@@ -143,15 +143,16 @@ export function RoomExplorer({
   }
 
   // Get the data from the hook result
-  const roomsData = data?.data
-  const totalPages = roomsData?.totalPages || 1
-  const totalCount = roomsData?.totalCount || 0
+  const spacesData = data?.data
+  const totalPages = spacesData?.totalPages || 1
+  const totalCount = spacesData?.totalCount || 0
 
-  // Extract rooms from data
-  const currentRooms = roomsData?.rooms || []
+  // Extract spaces from data
+  const currentSpaces = spacesData?.spaces || []
 
   // Determine if we should show loading state
-  const showLoading = isLoading && (!currentRooms || currentRooms.length === 0)
+  const showLoading =
+    isLoading && (!currentSpaces || currentSpaces.length === 0)
 
   return (
     <div className={cn('flex w-full flex-col gap-6', className)}>
@@ -224,7 +225,7 @@ export function RoomExplorer({
         </div>
       </div>
 
-      {/* Room cards grid with loading state */}
+      {/* Space cards grid with loading state */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
         {showLoading ? (
           // Placeholder loading state
@@ -234,33 +235,33 @@ export function RoomExplorer({
               className="bg-muted/40 h-[350px] animate-pulse rounded-lg"
             ></div>
           ))
-        ) : currentRooms.length > 0 ? (
-          currentRooms.map((room) => (
-            <RoomCard key={room.id} {...room} date={date} />
+        ) : currentSpaces.length > 0 ? (
+          currentSpaces.map((space) => (
+            <SpaceCard key={space.id} {...space} date={date} />
           ))
         ) : (
           <div className="col-span-3 flex h-40 w-full items-center justify-center">
             <Text className="text-muted-foreground">
               {error
-                ? 'Erro ao carregar as salas. Tente novamente mais tarde.'
-                : `Nenhuma sala disponível ${timeSlot ? `às ${timeSlot}` : ''} em ${formattedDate}.`}
+                ? 'Erro ao carregar os espaços. Tente novamente mais tarde.'
+                : `Nenhum espaço disponível ${timeSlot ? `às ${timeSlot}` : ''} em ${formattedDate}.`}
             </Text>
           </div>
         )}
       </div>
 
       {/* Summary information */}
-      {!showLoading && currentRooms.length > 0 && (
+      {!showLoading && currentSpaces.length > 0 && (
         <Text className="text-muted-foreground text-sm">
-          Exibindo {currentRooms.length} sala
-          {currentRooms.length !== 1 ? 's' : ''}
+          Exibindo {currentSpaces.length} espaço
+          {currentSpaces.length !== 1 ? 's' : ''}
           {timeSlot ? ` às ${timeSlot}` : ''} em {formattedDate}
-          {totalCount > currentRooms.length ? ` (${totalCount} no total)` : ''}
+          {totalCount > currentSpaces.length ? ` (${totalCount} no total)` : ''}
         </Text>
       )}
 
       {/* Pagination */}
-      {!showLoading && currentRooms.length > 0 && totalPages > 1 && (
+      {!showLoading && currentSpaces.length > 0 && totalPages > 1 && (
         <Pagination className="mt-6">
           <PaginationContent>
             <PaginationItem>

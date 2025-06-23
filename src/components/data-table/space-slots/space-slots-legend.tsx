@@ -11,7 +11,7 @@ interface LegendProps {
   user: UserMe200User | null
 }
 
-export function RoomSlotsLegend({ user }: LegendProps) {
+export function SpaceSlotsLegend({ user }: LegendProps) {
   return (
     <div className="flex flex-wrap items-center justify-center gap-2.5 lg:justify-end">
       {user?.role !== 'user' ? (

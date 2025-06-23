@@ -1,7 +1,7 @@
 'use client'
 
 import {
-  GetRoomSlotAvailability200SlotsItem,
+  GetSpaceSlotAvailability200SlotsItem,
   UserMe200User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { Text } from '@/components/Text'
@@ -10,7 +10,7 @@ import { ClockAlertIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface PreReservationCountdownProps {
-  slots: GetRoomSlotAvailability200SlotsItem[]
+  slots: GetSpaceSlotAvailability200SlotsItem[]
   user: UserMe200User | null
 }
 

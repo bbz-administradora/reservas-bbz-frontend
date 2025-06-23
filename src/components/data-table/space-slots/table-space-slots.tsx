@@ -1,14 +1,14 @@
 'use client'
 
 import {
-  GetRoomSlotAvailability200,
-  GetRoomSlotAvailability200SlotsItem,
+  GetSpaceSlotAvailability200,
+  GetSpaceSlotAvailability200SlotsItem,
   UserMe200User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import {
-  getGetRoomSlotAvailabilityKey,
-  useGetRoomSlotAvailability,
-} from '@/api/endpoints/room-slot/room-slot'
+  getGetSpaceSlotAvailabilityKey,
+  useGetSpaceSlotAvailability,
+} from '@/api/endpoints/space-slot/space-slot'
 import { Text } from '@/components/Text'
 import {
   Table,
@@ -22,42 +22,42 @@ import { addDays, format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useEffect, useState } from 'react'
 import { useSWRConfig } from 'swr'
-import { PreReservationCountdown } from './PreReservationCountdown'
-import { RoomSlotsLegend } from './room-slots-legend'
-import { SelectedPreReservation } from './SelectedPreReservations'
+import { PreReservationCountdown } from './pre-reservation-countdown'
+import { SelectedPreReservation } from './selected-pre-reservations'
 import { SlotButton } from './slot-button'
 import {
   SlotCell,
   TIME_SLOTS,
   prepareSlotTableData,
-} from './slotTableDataUtils'
+} from './slot-table-data-utils'
+import { SpaceSlotsLegend } from './space-slots-legend'
 
-interface DataTableRoomSlotsProps {
+interface DataTableSpaceSlotsProps {
   startDate: string
   endDate: string
   className?: string
   user: UserMe200User | null
-  roomData: GetRoomSlotAvailability200
-  roomId: string
+  spaceData: GetSpaceSlotAvailability200
+  spaceId: string
 }
 
-export function DataTableRoomSlots({
+export function DataTableSpaceSlots({
   startDate,
   endDate,
   className,
   user,
-  roomData: initialRoomData,
-  roomId,
-}: DataTableRoomSlotsProps) {
+  spaceData: initialSpaceData,
+  spaceId,
+}: DataTableSpaceSlotsProps) {
   // Obter a função mutate do SWR para força revalidação
   const { mutate } = useSWRConfig()
 
   // Estado para armazenar os dados mesclados (iniciais + atualizações do SWR)
-  const [roomData, setRoomData] = useState<any | null>(initialRoomData)
+  const [spaceData, setSpaceData] = useState<any | null>(initialSpaceData)
 
   // Usar o hook SWR para buscar dados atualizados com revalidação a cada 30 segundos
-  const { data: liveRoomData, isLoading } = useGetRoomSlotAvailability(
-    roomId,
+  const { data: liveSpaceData, isLoading } = useGetSpaceSlotAvailability(
+    spaceId,
     { startDate, endDate },
     {
       swr: {
@@ -70,14 +70,14 @@ export function DataTableRoomSlots({
 
   // Efeito para atualizar os dados quando o SWR retornar novos dados
   useEffect(() => {
-    if (liveRoomData?.data) {
-      setRoomData(liveRoomData.data)
+    if (liveSpaceData?.data) {
+      setSpaceData(liveSpaceData.data)
     }
-  }, [liveRoomData])
+  }, [liveSpaceData])
 
   // Se não houver dados, garantir que temos 7 dias de slots
   const startDateObj = parseISO(startDate)
-  const slotData = roomData?.slots || []
+  const slotData = spaceData?.slots || []
 
   // Processar os dados em um formato adequado para nossa tabela
   let processedData = prepareSlotTableData(slotData)
@@ -121,10 +121,10 @@ export function DataTableRoomSlots({
         time={time}
         slot={cell}
         user={user}
-        roomId={roomId}
+        spaceId={spaceId}
         onDataChange={() => {
           // Forçar revalidação dos dados quando houver alteração (cancelamento da pré-reserva)
-          const swrKey = getGetRoomSlotAvailabilityKey(roomId, {
+          const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
             startDate,
             endDate,
           })
@@ -142,7 +142,7 @@ export function DataTableRoomSlots({
             Atualizando...
           </p>
         )}
-        <RoomSlotsLegend user={user} />
+        <SpaceSlotsLegend user={user} />
       </div>
       <div className="mt-4 rounded-md border">
         <Table>
@@ -190,17 +190,17 @@ export function DataTableRoomSlots({
         </Text>
 
         {/* Exibir pré-reservas do usuário atual - ordenadas por data/hora do slot (mais antigo primeiro) */}
-        {roomData?.slots
+        {spaceData?.slots
           .filter(
-            (slot: GetRoomSlotAvailability200SlotsItem) =>
+            (slot: GetSpaceSlotAvailability200SlotsItem) =>
               slot.status === 'pre_reserved' &&
               user &&
               slot.user.id === user.id,
           )
           .sort(
             (
-              a: GetRoomSlotAvailability200SlotsItem,
-              b: GetRoomSlotAvailability200SlotsItem,
+              a: GetSpaceSlotAvailability200SlotsItem,
+              b: GetSpaceSlotAvailability200SlotsItem,
             ) => {
               // Ordenar por data/hora de início do slot (mais antigo primeiro)
               return (
@@ -209,13 +209,13 @@ export function DataTableRoomSlots({
               )
             },
           )
-          .map((slot: GetRoomSlotAvailability200SlotsItem) => (
+          .map((slot: GetSpaceSlotAvailability200SlotsItem) => (
             <SelectedPreReservation
               key={slot.id}
               slot={slot}
               onDataChange={() => {
                 // Forçar revalidação dos dados quando houver alteração (cancelamento da pré-reserva)
-                const swrKey = getGetRoomSlotAvailabilityKey(roomId, {
+                const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
                   startDate,
                   endDate,
                 })
@@ -225,14 +225,14 @@ export function DataTableRoomSlots({
           ))}
 
         {/* Exibir contagem regressiva para o slot que vence primeiro */}
-        {roomData?.slots && (
-          <PreReservationCountdown slots={roomData.slots} user={user} />
+        {spaceData?.slots && (
+          <PreReservationCountdown slots={spaceData.slots} user={user} />
         )}
 
         {/* Mensagem quando não há pré-reservas */}
-        {(!roomData?.slots ||
-          roomData.slots.filter(
-            (slot: GetRoomSlotAvailability200SlotsItem) =>
+        {(!spaceData?.slots ||
+          spaceData.slots.filter(
+            (slot: GetSpaceSlotAvailability200SlotsItem) =>
               slot.status === 'pre_reserved' &&
               user &&
               slot.user.id === user.id,

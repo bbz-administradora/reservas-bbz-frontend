@@ -8,29 +8,29 @@
 /**
  * Código de status HTTP 500.
  */
-export type GetRoomReservationStats500StatusCode =
-  (typeof GetRoomReservationStats500StatusCode)[keyof typeof GetRoomReservationStats500StatusCode]
+export type GetSpaceReservationStats500StatusCode =
+  (typeof GetSpaceReservationStats500StatusCode)[keyof typeof GetSpaceReservationStats500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomReservationStats500StatusCode = {
+export const GetSpaceReservationStats500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomReservationStats500Name =
-  (typeof GetRoomReservationStats500Name)[keyof typeof GetRoomReservationStats500Name]
+export type GetSpaceReservationStats500Name =
+  (typeof GetSpaceReservationStats500Name)[keyof typeof GetSpaceReservationStats500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomReservationStats500Name = {
+export const GetSpaceReservationStats500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type GetRoomReservationStats500 = {
+export type GetSpaceReservationStats500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -38,37 +38,37 @@ export type GetRoomReservationStats500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomReservationStats500Name
+  name: GetSpaceReservationStats500Name
   /** Código de status HTTP 500. */
-  status_code: GetRoomReservationStats500StatusCode
+  status_code: GetSpaceReservationStats500StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type GetRoomReservationStats403StatusCode =
-  (typeof GetRoomReservationStats403StatusCode)[keyof typeof GetRoomReservationStats403StatusCode]
+export type GetSpaceReservationStats403StatusCode =
+  (typeof GetSpaceReservationStats403StatusCode)[keyof typeof GetSpaceReservationStats403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomReservationStats403StatusCode = {
+export const GetSpaceReservationStats403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomReservationStats403Name =
-  (typeof GetRoomReservationStats403Name)[keyof typeof GetRoomReservationStats403Name]
+export type GetSpaceReservationStats403Name =
+  (typeof GetSpaceReservationStats403Name)[keyof typeof GetSpaceReservationStats403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomReservationStats403Name = {
+export const GetSpaceReservationStats403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type GetRoomReservationStats403 = {
+export type GetSpaceReservationStats403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -76,37 +76,37 @@ export type GetRoomReservationStats403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomReservationStats403Name
+  name: GetSpaceReservationStats403Name
   /** Código de status HTTP 403. */
-  status_code: GetRoomReservationStats403StatusCode
+  status_code: GetSpaceReservationStats403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type GetRoomReservationStats401StatusCode =
-  (typeof GetRoomReservationStats401StatusCode)[keyof typeof GetRoomReservationStats401StatusCode]
+export type GetSpaceReservationStats401StatusCode =
+  (typeof GetSpaceReservationStats401StatusCode)[keyof typeof GetSpaceReservationStats401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomReservationStats401StatusCode = {
+export const GetSpaceReservationStats401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomReservationStats401Name =
-  (typeof GetRoomReservationStats401Name)[keyof typeof GetRoomReservationStats401Name]
+export type GetSpaceReservationStats401Name =
+  (typeof GetSpaceReservationStats401Name)[keyof typeof GetSpaceReservationStats401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomReservationStats401Name = {
+export const GetSpaceReservationStats401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type GetRoomReservationStats401 = {
+export type GetSpaceReservationStats401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -114,37 +114,37 @@ export type GetRoomReservationStats401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomReservationStats401Name
+  name: GetSpaceReservationStats401Name
   /** Código de status HTTP 401. */
-  status_code: GetRoomReservationStats401StatusCode
+  status_code: GetSpaceReservationStats401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type GetRoomReservationStats400StatusCode =
-  (typeof GetRoomReservationStats400StatusCode)[keyof typeof GetRoomReservationStats400StatusCode]
+export type GetSpaceReservationStats400StatusCode =
+  (typeof GetSpaceReservationStats400StatusCode)[keyof typeof GetSpaceReservationStats400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomReservationStats400StatusCode = {
+export const GetSpaceReservationStats400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomReservationStats400Name =
-  (typeof GetRoomReservationStats400Name)[keyof typeof GetRoomReservationStats400Name]
+export type GetSpaceReservationStats400Name =
+  (typeof GetSpaceReservationStats400Name)[keyof typeof GetSpaceReservationStats400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomReservationStats400Name = {
+export const GetSpaceReservationStats400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type GetRoomReservationStats400 = {
+export type GetSpaceReservationStats400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -152,25 +152,25 @@ export type GetRoomReservationStats400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomReservationStats400Name
+  name: GetSpaceReservationStats400Name
   /** Código de status HTTP 400. */
-  status_code: GetRoomReservationStats400StatusCode
+  status_code: GetSpaceReservationStats400StatusCode
 }
 
-export type GetRoomReservationStats200 = {
+export type GetSpaceReservationStats200 = {
   /**
-   * Array with the three most used start times, from smallest to largest, format HH:mm
+   * Array com os três horários de início mais utilizados, do menor para o maior, formato HH:mm
    * @minItems 3
    * @maxItems 3
    */
   mostUsedStartTimes: string[]
   /**
-   * Start date and time of the next reservation in the format 'dd/MM/yyyy às HH:mm', or null if none
+   * Data e hora da próxima reserva no formato 'dd/MM/yyyy às HH:mm', ou null se não houver
    * @nullable
    */
   nextReservation: string | null
   /**
-   * Total number of reservations for the user
+   * Número total de reservas para o usuário
    * @minimum 0
    */
   total: number
@@ -179,29 +179,29 @@ export type GetRoomReservationStats200 = {
 /**
  * Código de status HTTP 500.
  */
-export type ListRoomReservations500StatusCode =
-  (typeof ListRoomReservations500StatusCode)[keyof typeof ListRoomReservations500StatusCode]
+export type ListSpaceReservations500StatusCode =
+  (typeof ListSpaceReservations500StatusCode)[keyof typeof ListSpaceReservations500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations500StatusCode = {
+export const ListSpaceReservations500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomReservations500Name =
-  (typeof ListRoomReservations500Name)[keyof typeof ListRoomReservations500Name]
+export type ListSpaceReservations500Name =
+  (typeof ListSpaceReservations500Name)[keyof typeof ListSpaceReservations500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations500Name = {
+export const ListSpaceReservations500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type ListRoomReservations500 = {
+export type ListSpaceReservations500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -209,34 +209,34 @@ export type ListRoomReservations500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomReservations500Name
+  name: ListSpaceReservations500Name
   /** Código de status HTTP 500. */
-  status_code: ListRoomReservations500StatusCode
+  status_code: ListSpaceReservations500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type ListRoomReservations422StatusCode =
-  (typeof ListRoomReservations422StatusCode)[keyof typeof ListRoomReservations422StatusCode]
+export type ListSpaceReservations422StatusCode =
+  (typeof ListSpaceReservations422StatusCode)[keyof typeof ListSpaceReservations422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations422StatusCode = {
+export const ListSpaceReservations422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomReservations422Name =
-  (typeof ListRoomReservations422Name)[keyof typeof ListRoomReservations422Name]
+export type ListSpaceReservations422Name =
+  (typeof ListSpaceReservations422Name)[keyof typeof ListSpaceReservations422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations422Name = {
+export const ListSpaceReservations422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ListRoomReservations422DetailsItem = {
+export type ListSpaceReservations422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -246,45 +246,45 @@ export type ListRoomReservations422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type ListRoomReservations422 = {
+export type ListSpaceReservations422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: ListRoomReservations422DetailsItem[]
+  details?: ListSpaceReservations422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomReservations422Name
+  name: ListSpaceReservations422Name
   /** Código de status HTTP 422. */
-  status_code: ListRoomReservations422StatusCode
+  status_code: ListSpaceReservations422StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type ListRoomReservations404StatusCode =
-  (typeof ListRoomReservations404StatusCode)[keyof typeof ListRoomReservations404StatusCode]
+export type ListSpaceReservations404StatusCode =
+  (typeof ListSpaceReservations404StatusCode)[keyof typeof ListSpaceReservations404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations404StatusCode = {
+export const ListSpaceReservations404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomReservations404Name =
-  (typeof ListRoomReservations404Name)[keyof typeof ListRoomReservations404Name]
+export type ListSpaceReservations404Name =
+  (typeof ListSpaceReservations404Name)[keyof typeof ListSpaceReservations404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations404Name = {
+export const ListSpaceReservations404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type ListRoomReservations404 = {
+export type ListSpaceReservations404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -292,37 +292,37 @@ export type ListRoomReservations404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomReservations404Name
+  name: ListSpaceReservations404Name
   /** Código de status HTTP 404. */
-  status_code: ListRoomReservations404StatusCode
+  status_code: ListSpaceReservations404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type ListRoomReservations403StatusCode =
-  (typeof ListRoomReservations403StatusCode)[keyof typeof ListRoomReservations403StatusCode]
+export type ListSpaceReservations403StatusCode =
+  (typeof ListSpaceReservations403StatusCode)[keyof typeof ListSpaceReservations403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations403StatusCode = {
+export const ListSpaceReservations403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomReservations403Name =
-  (typeof ListRoomReservations403Name)[keyof typeof ListRoomReservations403Name]
+export type ListSpaceReservations403Name =
+  (typeof ListSpaceReservations403Name)[keyof typeof ListSpaceReservations403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations403Name = {
+export const ListSpaceReservations403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type ListRoomReservations403 = {
+export type ListSpaceReservations403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -330,37 +330,37 @@ export type ListRoomReservations403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomReservations403Name
+  name: ListSpaceReservations403Name
   /** Código de status HTTP 403. */
-  status_code: ListRoomReservations403StatusCode
+  status_code: ListSpaceReservations403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type ListRoomReservations401StatusCode =
-  (typeof ListRoomReservations401StatusCode)[keyof typeof ListRoomReservations401StatusCode]
+export type ListSpaceReservations401StatusCode =
+  (typeof ListSpaceReservations401StatusCode)[keyof typeof ListSpaceReservations401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations401StatusCode = {
+export const ListSpaceReservations401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomReservations401Name =
-  (typeof ListRoomReservations401Name)[keyof typeof ListRoomReservations401Name]
+export type ListSpaceReservations401Name =
+  (typeof ListSpaceReservations401Name)[keyof typeof ListSpaceReservations401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations401Name = {
+export const ListSpaceReservations401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type ListRoomReservations401 = {
+export type ListSpaceReservations401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -368,37 +368,37 @@ export type ListRoomReservations401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomReservations401Name
+  name: ListSpaceReservations401Name
   /** Código de status HTTP 401. */
-  status_code: ListRoomReservations401StatusCode
+  status_code: ListSpaceReservations401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type ListRoomReservations400StatusCode =
-  (typeof ListRoomReservations400StatusCode)[keyof typeof ListRoomReservations400StatusCode]
+export type ListSpaceReservations400StatusCode =
+  (typeof ListSpaceReservations400StatusCode)[keyof typeof ListSpaceReservations400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations400StatusCode = {
+export const ListSpaceReservations400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomReservations400Name =
-  (typeof ListRoomReservations400Name)[keyof typeof ListRoomReservations400Name]
+export type ListSpaceReservations400Name =
+  (typeof ListSpaceReservations400Name)[keyof typeof ListSpaceReservations400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations400Name = {
+export const ListSpaceReservations400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type ListRoomReservations400 = {
+export type ListSpaceReservations400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -406,29 +406,15 @@ export type ListRoomReservations400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomReservations400Name
+  name: ListSpaceReservations400Name
   /** Código de status HTTP 400. */
-  status_code: ListRoomReservations400StatusCode
-}
-
-/**
- * Resposta paginada contendo reservas de sala
- */
-export type ListRoomReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListRoomReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
+  status_code: ListSpaceReservations400StatusCode
 }
 
 /**
  * Informações do usuário que fez a reserva
  */
-export type ListRoomReservations200ReservationsItemUser = {
+export type ListSpaceReservations200ReservationsItemUser = {
   /** E-mail do usuário */
   email: string
   /** Identificador único do usuário */
@@ -440,24 +426,63 @@ export type ListRoomReservations200ReservationsItemUser = {
 /**
  * Status atual da reserva
  */
-export type ListRoomReservations200ReservationsItemStatus =
-  (typeof ListRoomReservations200ReservationsItemStatus)[keyof typeof ListRoomReservations200ReservationsItemStatus]
+export type ListSpaceReservations200ReservationsItemStatus =
+  (typeof ListSpaceReservations200ReservationsItemStatus)[keyof typeof ListSpaceReservations200ReservationsItemStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations200ReservationsItemStatus = {
+export const ListSpaceReservations200ReservationsItemStatus = {
   reserved: 'reserved',
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
 
 /**
- * Status do slot
+ * Tipo do espaço
  */
-export type ListRoomReservations200ReservationsItemSlotStatus =
-  (typeof ListRoomReservations200ReservationsItemSlotStatus)[keyof typeof ListRoomReservations200ReservationsItemSlotStatus]
+export type ListSpaceReservations200ReservationsItemSpaceType =
+  (typeof ListSpaceReservations200ReservationsItemSpaceType)[keyof typeof ListSpaceReservations200ReservationsItemSpaceType]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomReservations200ReservationsItemSlotStatus = {
+export const ListSpaceReservations200ReservationsItemSpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+/**
+ * Informações básicas do espaço
+ */
+export type ListSpaceReservations200ReservationsItemSpace = {
+  /**
+   * Andar do espaço
+   * @nullable
+   */
+  floor: string | null
+  /** Identificador único do espaço */
+  id: string
+  /** Nome do espaço */
+  name: string
+  /**
+   * Posição do espaço
+   * @nullable
+   */
+  position: string | null
+  /** Tipo do espaço */
+  type: ListSpaceReservations200ReservationsItemSpaceType
+  /**
+   * Zona do espaço
+   * @nullable
+   */
+  zone: string | null
+}
+
+/**
+ * Status do slot
+ */
+export type ListSpaceReservations200ReservationsItemSlotStatus =
+  (typeof ListSpaceReservations200ReservationsItemSlotStatus)[keyof typeof ListSpaceReservations200ReservationsItemSlotStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaceReservations200ReservationsItemSlotStatus = {
   pre_reserved: 'pre_reserved',
   reserved: 'reserved',
 } as const
@@ -466,7 +491,7 @@ export const ListRoomReservations200ReservationsItemSlotStatus = {
  * Informações do slot de tempo reservado (ou null se não houver)
  * @nullable
  */
-export type ListRoomReservations200ReservationsItemSlot = {
+export type ListSpaceReservations200ReservationsItemSlot = {
   /** Data/hora de criação do slot */
   createdAt: string
   /** Identificador único do slot de tempo */
@@ -483,24 +508,14 @@ export type ListRoomReservations200ReservationsItemSlot = {
    */
   slotRange: string[]
   /** Status do slot */
-  status: ListRoomReservations200ReservationsItemSlotStatus
+  status: ListSpaceReservations200ReservationsItemSlotStatus
 } | null
-
-/**
- * Informações básicas da sala
- */
-export type ListRoomReservations200ReservationsItemRoom = {
-  /** Identificador único da sala */
-  id: string
-  /** Nome da sala */
-  name: string
-}
 
 /**
  * Usuário que cancelou a reserva (ou null)
  * @nullable
  */
-export type ListRoomReservations200ReservationsItemCancelledBy = {
+export type ListSpaceReservations200ReservationsItemCancelledBy = {
   /** ID do usuário que cancelou */
   id: string
   /** Nome do usuário que cancelou */
@@ -510,7 +525,7 @@ export type ListRoomReservations200ReservationsItemCancelledBy = {
 /**
  * Detalhes completos de uma reserva paginada
  */
-export type ListRoomReservations200ReservationsItem = {
+export type ListSpaceReservations200ReservationsItem = {
   /** Lista de colaboradores da BBZ participantes */
   bbzCollaborators: string[]
   /**
@@ -522,7 +537,7 @@ export type ListRoomReservations200ReservationsItem = {
    * Usuário que cancelou a reserva (ou null)
    * @nullable
    */
-  cancelledBy: ListRoomReservations200ReservationsItemCancelledBy
+  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
   /**
    * Motivo do cancelamento (ou null)
    * @nullable
@@ -541,24 +556,38 @@ export type ListRoomReservations200ReservationsItem = {
   id: string
   /** Indica se a reserva necessita de serviço de copeira */
   needsCopeira: boolean
-  /** Informações básicas da sala */
-  room: ListRoomReservations200ReservationsItemRoom
   /**
    * Informações do slot de tempo reservado (ou null se não houver)
    * @nullable
    */
-  slot: ListRoomReservations200ReservationsItemSlot
+  slot: ListSpaceReservations200ReservationsItemSlot
   /** Horário de término do slot no formato ISO com timezone do usuário */
   slotEnd: string
   /** Horário de início do slot no formato ISO com timezone do usuário */
   slotStart: string
+  /** Informações básicas do espaço */
+  space: ListSpaceReservations200ReservationsItemSpace
   /** Status atual da reserva */
-  status: ListRoomReservations200ReservationsItemStatus
+  status: ListSpaceReservations200ReservationsItemStatus
   /** Informações do usuário que fez a reserva */
-  user: ListRoomReservations200ReservationsItemUser
+  user: ListSpaceReservations200ReservationsItemUser
 }
 
-export type ListRoomReservationsParams = {
+/**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
+
+export type ListSpaceReservationsParams = {
   /**
    * Número da página para paginação, começando em 1 (padrão: 1)
    */
@@ -572,29 +601,29 @@ export type ListRoomReservationsParams = {
 /**
  * Código de status HTTP 500.
  */
-export type CancelRoomReservation500StatusCode =
-  (typeof CancelRoomReservation500StatusCode)[keyof typeof CancelRoomReservation500StatusCode]
+export type CancelSpaceReservation500StatusCode =
+  (typeof CancelSpaceReservation500StatusCode)[keyof typeof CancelSpaceReservation500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation500StatusCode = {
+export const CancelSpaceReservation500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomReservation500Name =
-  (typeof CancelRoomReservation500Name)[keyof typeof CancelRoomReservation500Name]
+export type CancelSpaceReservation500Name =
+  (typeof CancelSpaceReservation500Name)[keyof typeof CancelSpaceReservation500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation500Name = {
+export const CancelSpaceReservation500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type CancelRoomReservation500 = {
+export type CancelSpaceReservation500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -602,34 +631,34 @@ export type CancelRoomReservation500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomReservation500Name
+  name: CancelSpaceReservation500Name
   /** Código de status HTTP 500. */
-  status_code: CancelRoomReservation500StatusCode
+  status_code: CancelSpaceReservation500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type CancelRoomReservation422StatusCode =
-  (typeof CancelRoomReservation422StatusCode)[keyof typeof CancelRoomReservation422StatusCode]
+export type CancelSpaceReservation422StatusCode =
+  (typeof CancelSpaceReservation422StatusCode)[keyof typeof CancelSpaceReservation422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation422StatusCode = {
+export const CancelSpaceReservation422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomReservation422Name =
-  (typeof CancelRoomReservation422Name)[keyof typeof CancelRoomReservation422Name]
+export type CancelSpaceReservation422Name =
+  (typeof CancelSpaceReservation422Name)[keyof typeof CancelSpaceReservation422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation422Name = {
+export const CancelSpaceReservation422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CancelRoomReservation422DetailsItem = {
+export type CancelSpaceReservation422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -639,45 +668,45 @@ export type CancelRoomReservation422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type CancelRoomReservation422 = {
+export type CancelSpaceReservation422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: CancelRoomReservation422DetailsItem[]
+  details?: CancelSpaceReservation422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomReservation422Name
+  name: CancelSpaceReservation422Name
   /** Código de status HTTP 422. */
-  status_code: CancelRoomReservation422StatusCode
+  status_code: CancelSpaceReservation422StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type CancelRoomReservation404StatusCode =
-  (typeof CancelRoomReservation404StatusCode)[keyof typeof CancelRoomReservation404StatusCode]
+export type CancelSpaceReservation404StatusCode =
+  (typeof CancelSpaceReservation404StatusCode)[keyof typeof CancelSpaceReservation404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation404StatusCode = {
+export const CancelSpaceReservation404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomReservation404Name =
-  (typeof CancelRoomReservation404Name)[keyof typeof CancelRoomReservation404Name]
+export type CancelSpaceReservation404Name =
+  (typeof CancelSpaceReservation404Name)[keyof typeof CancelSpaceReservation404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation404Name = {
+export const CancelSpaceReservation404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type CancelRoomReservation404 = {
+export type CancelSpaceReservation404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -685,37 +714,37 @@ export type CancelRoomReservation404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomReservation404Name
+  name: CancelSpaceReservation404Name
   /** Código de status HTTP 404. */
-  status_code: CancelRoomReservation404StatusCode
+  status_code: CancelSpaceReservation404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type CancelRoomReservation403StatusCode =
-  (typeof CancelRoomReservation403StatusCode)[keyof typeof CancelRoomReservation403StatusCode]
+export type CancelSpaceReservation403StatusCode =
+  (typeof CancelSpaceReservation403StatusCode)[keyof typeof CancelSpaceReservation403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation403StatusCode = {
+export const CancelSpaceReservation403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomReservation403Name =
-  (typeof CancelRoomReservation403Name)[keyof typeof CancelRoomReservation403Name]
+export type CancelSpaceReservation403Name =
+  (typeof CancelSpaceReservation403Name)[keyof typeof CancelSpaceReservation403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation403Name = {
+export const CancelSpaceReservation403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type CancelRoomReservation403 = {
+export type CancelSpaceReservation403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -723,37 +752,37 @@ export type CancelRoomReservation403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomReservation403Name
+  name: CancelSpaceReservation403Name
   /** Código de status HTTP 403. */
-  status_code: CancelRoomReservation403StatusCode
+  status_code: CancelSpaceReservation403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type CancelRoomReservation401StatusCode =
-  (typeof CancelRoomReservation401StatusCode)[keyof typeof CancelRoomReservation401StatusCode]
+export type CancelSpaceReservation401StatusCode =
+  (typeof CancelSpaceReservation401StatusCode)[keyof typeof CancelSpaceReservation401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation401StatusCode = {
+export const CancelSpaceReservation401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomReservation401Name =
-  (typeof CancelRoomReservation401Name)[keyof typeof CancelRoomReservation401Name]
+export type CancelSpaceReservation401Name =
+  (typeof CancelSpaceReservation401Name)[keyof typeof CancelSpaceReservation401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation401Name = {
+export const CancelSpaceReservation401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type CancelRoomReservation401 = {
+export type CancelSpaceReservation401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -761,37 +790,37 @@ export type CancelRoomReservation401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomReservation401Name
+  name: CancelSpaceReservation401Name
   /** Código de status HTTP 401. */
-  status_code: CancelRoomReservation401StatusCode
+  status_code: CancelSpaceReservation401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type CancelRoomReservation400StatusCode =
-  (typeof CancelRoomReservation400StatusCode)[keyof typeof CancelRoomReservation400StatusCode]
+export type CancelSpaceReservation400StatusCode =
+  (typeof CancelSpaceReservation400StatusCode)[keyof typeof CancelSpaceReservation400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation400StatusCode = {
+export const CancelSpaceReservation400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CancelRoomReservation400Name =
-  (typeof CancelRoomReservation400Name)[keyof typeof CancelRoomReservation400Name]
+export type CancelSpaceReservation400Name =
+  (typeof CancelSpaceReservation400Name)[keyof typeof CancelSpaceReservation400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation400Name = {
+export const CancelSpaceReservation400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type CancelRoomReservation400 = {
+export type CancelSpaceReservation400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -799,25 +828,25 @@ export type CancelRoomReservation400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: CancelRoomReservation400Name
+  name: CancelSpaceReservation400Name
   /** Código de status HTTP 400. */
-  status_code: CancelRoomReservation400StatusCode
+  status_code: CancelSpaceReservation400StatusCode
 }
 
 /**
  * Status atual da reserva
  */
-export type CancelRoomReservation200ReservationStatus =
-  (typeof CancelRoomReservation200ReservationStatus)[keyof typeof CancelRoomReservation200ReservationStatus]
+export type CancelSpaceReservation200ReservationStatus =
+  (typeof CancelSpaceReservation200ReservationStatus)[keyof typeof CancelSpaceReservation200ReservationStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CancelRoomReservation200ReservationStatus = {
+export const CancelSpaceReservation200ReservationStatus = {
   reserved: 'reserved',
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
 
-export type CancelRoomReservation200Reservation = {
+export type CancelSpaceReservation200Reservation = {
   /** Lista de colaboradores da BBZ */
   bbzCollaborators: string[]
   /** Data e hora do cancelamento da reserva */
@@ -832,30 +861,30 @@ export type CancelRoomReservation200Reservation = {
   id: string
   /** Indica se a reserva necessita de serviço de copeira */
   needsCopeira: boolean
-  /** Identificador único da sala */
-  roomId: string
-  /** Identificador único do slot de tempo */
-  roomSlotId: string
   /** Horário de término do slot no formato ISO com timezone do usuário */
   slotEnd: string
   /** Horário de início do slot no formato ISO com timezone do usuário */
   slotStart: string
+  /** Identificador único do espaço */
+  spaceId: string
+  /** Identificador único do slot de tempo */
+  spaceSlotId: string
   /** Status atual da reserva */
-  status: CancelRoomReservation200ReservationStatus
+  status: CancelSpaceReservation200ReservationStatus
   /** Identificador único do usuário que fez a reserva */
   userId: string
 }
 
-export type CancelRoomReservation200 = {
+export type CancelSpaceReservation200 = {
   /** Mensagem de sucesso */
   message: string
-  reservation: CancelRoomReservation200Reservation
+  reservation: CancelSpaceReservation200Reservation
 }
 
 /**
  * Corpo da requisição para cancelar uma reserva
  */
-export type CancelRoomReservationBody = {
+export type CancelSpaceReservationBody = {
   /**
    * Motivo do cancelamento da reserva
    * @minLength 3
@@ -865,35 +894,35 @@ export type CancelRoomReservationBody = {
   /** Identificador único da reserva a ser cancelada */
   id?: string
   /** Identificador único do slot de tempo associado à reserva */
-  roomSlotId?: string
+  spaceSlotId?: string
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type CloseRoomReservation500StatusCode =
-  (typeof CloseRoomReservation500StatusCode)[keyof typeof CloseRoomReservation500StatusCode]
+export type CloseSpaceReservation500StatusCode =
+  (typeof CloseSpaceReservation500StatusCode)[keyof typeof CloseSpaceReservation500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation500StatusCode = {
+export const CloseSpaceReservation500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CloseRoomReservation500Name =
-  (typeof CloseRoomReservation500Name)[keyof typeof CloseRoomReservation500Name]
+export type CloseSpaceReservation500Name =
+  (typeof CloseSpaceReservation500Name)[keyof typeof CloseSpaceReservation500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation500Name = {
+export const CloseSpaceReservation500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type CloseRoomReservation500 = {
+export type CloseSpaceReservation500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -901,34 +930,34 @@ export type CloseRoomReservation500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: CloseRoomReservation500Name
+  name: CloseSpaceReservation500Name
   /** Código de status HTTP 500. */
-  status_code: CloseRoomReservation500StatusCode
+  status_code: CloseSpaceReservation500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type CloseRoomReservation422StatusCode =
-  (typeof CloseRoomReservation422StatusCode)[keyof typeof CloseRoomReservation422StatusCode]
+export type CloseSpaceReservation422StatusCode =
+  (typeof CloseSpaceReservation422StatusCode)[keyof typeof CloseSpaceReservation422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation422StatusCode = {
+export const CloseSpaceReservation422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CloseRoomReservation422Name =
-  (typeof CloseRoomReservation422Name)[keyof typeof CloseRoomReservation422Name]
+export type CloseSpaceReservation422Name =
+  (typeof CloseSpaceReservation422Name)[keyof typeof CloseSpaceReservation422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation422Name = {
+export const CloseSpaceReservation422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CloseRoomReservation422DetailsItem = {
+export type CloseSpaceReservation422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -938,45 +967,45 @@ export type CloseRoomReservation422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type CloseRoomReservation422 = {
+export type CloseSpaceReservation422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: CloseRoomReservation422DetailsItem[]
+  details?: CloseSpaceReservation422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: CloseRoomReservation422Name
+  name: CloseSpaceReservation422Name
   /** Código de status HTTP 422. */
-  status_code: CloseRoomReservation422StatusCode
+  status_code: CloseSpaceReservation422StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type CloseRoomReservation404StatusCode =
-  (typeof CloseRoomReservation404StatusCode)[keyof typeof CloseRoomReservation404StatusCode]
+export type CloseSpaceReservation404StatusCode =
+  (typeof CloseSpaceReservation404StatusCode)[keyof typeof CloseSpaceReservation404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation404StatusCode = {
+export const CloseSpaceReservation404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CloseRoomReservation404Name =
-  (typeof CloseRoomReservation404Name)[keyof typeof CloseRoomReservation404Name]
+export type CloseSpaceReservation404Name =
+  (typeof CloseSpaceReservation404Name)[keyof typeof CloseSpaceReservation404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation404Name = {
+export const CloseSpaceReservation404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type CloseRoomReservation404 = {
+export type CloseSpaceReservation404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -984,37 +1013,37 @@ export type CloseRoomReservation404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: CloseRoomReservation404Name
+  name: CloseSpaceReservation404Name
   /** Código de status HTTP 404. */
-  status_code: CloseRoomReservation404StatusCode
+  status_code: CloseSpaceReservation404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type CloseRoomReservation403StatusCode =
-  (typeof CloseRoomReservation403StatusCode)[keyof typeof CloseRoomReservation403StatusCode]
+export type CloseSpaceReservation403StatusCode =
+  (typeof CloseSpaceReservation403StatusCode)[keyof typeof CloseSpaceReservation403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation403StatusCode = {
+export const CloseSpaceReservation403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CloseRoomReservation403Name =
-  (typeof CloseRoomReservation403Name)[keyof typeof CloseRoomReservation403Name]
+export type CloseSpaceReservation403Name =
+  (typeof CloseSpaceReservation403Name)[keyof typeof CloseSpaceReservation403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation403Name = {
+export const CloseSpaceReservation403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type CloseRoomReservation403 = {
+export type CloseSpaceReservation403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1022,37 +1051,37 @@ export type CloseRoomReservation403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: CloseRoomReservation403Name
+  name: CloseSpaceReservation403Name
   /** Código de status HTTP 403. */
-  status_code: CloseRoomReservation403StatusCode
+  status_code: CloseSpaceReservation403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type CloseRoomReservation401StatusCode =
-  (typeof CloseRoomReservation401StatusCode)[keyof typeof CloseRoomReservation401StatusCode]
+export type CloseSpaceReservation401StatusCode =
+  (typeof CloseSpaceReservation401StatusCode)[keyof typeof CloseSpaceReservation401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation401StatusCode = {
+export const CloseSpaceReservation401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CloseRoomReservation401Name =
-  (typeof CloseRoomReservation401Name)[keyof typeof CloseRoomReservation401Name]
+export type CloseSpaceReservation401Name =
+  (typeof CloseSpaceReservation401Name)[keyof typeof CloseSpaceReservation401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation401Name = {
+export const CloseSpaceReservation401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type CloseRoomReservation401 = {
+export type CloseSpaceReservation401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1060,37 +1089,37 @@ export type CloseRoomReservation401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: CloseRoomReservation401Name
+  name: CloseSpaceReservation401Name
   /** Código de status HTTP 401. */
-  status_code: CloseRoomReservation401StatusCode
+  status_code: CloseSpaceReservation401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type CloseRoomReservation400StatusCode =
-  (typeof CloseRoomReservation400StatusCode)[keyof typeof CloseRoomReservation400StatusCode]
+export type CloseSpaceReservation400StatusCode =
+  (typeof CloseSpaceReservation400StatusCode)[keyof typeof CloseSpaceReservation400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation400StatusCode = {
+export const CloseSpaceReservation400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CloseRoomReservation400Name =
-  (typeof CloseRoomReservation400Name)[keyof typeof CloseRoomReservation400Name]
+export type CloseSpaceReservation400Name =
+  (typeof CloseSpaceReservation400Name)[keyof typeof CloseSpaceReservation400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation400Name = {
+export const CloseSpaceReservation400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type CloseRoomReservation400 = {
+export type CloseSpaceReservation400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1098,25 +1127,25 @@ export type CloseRoomReservation400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: CloseRoomReservation400Name
+  name: CloseSpaceReservation400Name
   /** Código de status HTTP 400. */
-  status_code: CloseRoomReservation400StatusCode
+  status_code: CloseSpaceReservation400StatusCode
 }
 
 /**
  * Status atual da reserva
  */
-export type CloseRoomReservation200ReservationStatus =
-  (typeof CloseRoomReservation200ReservationStatus)[keyof typeof CloseRoomReservation200ReservationStatus]
+export type CloseSpaceReservation200ReservationStatus =
+  (typeof CloseSpaceReservation200ReservationStatus)[keyof typeof CloseSpaceReservation200ReservationStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CloseRoomReservation200ReservationStatus = {
+export const CloseSpaceReservation200ReservationStatus = {
   reserved: 'reserved',
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
 
-export type CloseRoomReservation200Reservation = {
+export type CloseSpaceReservation200Reservation = {
   /** Lista de colaboradores da BBZ */
   bbzCollaborators: string[]
   /** Data e hora do fechamento da reserva */
@@ -1127,62 +1156,62 @@ export type CloseRoomReservation200Reservation = {
   id: string
   /** Indica se a reserva necessita de serviço de copeira */
   needsCopeira: boolean
-  /** Identificador único da sala */
-  roomId: string
-  /** Identificador único do slot de tempo */
-  roomSlotId: string
   /** Horário de término do slot no formato ISO com timezone do usuário */
   slotEnd: string
   /** Horário de início do slot no formato ISO com timezone do usuário */
   slotStart: string
+  /** Identificador único do espaço */
+  spaceId: string
+  /** Identificador único do slot de tempo */
+  spaceSlotId: string
   /** Status atual da reserva */
-  status: CloseRoomReservation200ReservationStatus
+  status: CloseSpaceReservation200ReservationStatus
   /** Identificador único do usuário que fez a reserva */
   userId: string
 }
 
-export type CloseRoomReservation200 = {
+export type CloseSpaceReservation200 = {
   /** Mensagem de sucesso */
   message: string
-  reservation: CloseRoomReservation200Reservation
+  reservation: CloseSpaceReservation200Reservation
 }
 
 /**
  * Corpo da requisição para fechar uma reserva (atualmente vazio, mas requerido para o formato PATCH)
  */
-export type CloseRoomReservationBody = {
+export type CloseSpaceReservationBody = {
   /** Identificador único da reserva a ser fechada */
   id?: string
   /** Identificador único do slot de tempo associado à reserva */
-  roomSlotId?: string
+  spaceSlotId?: string
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type CreateRoomReservation500StatusCode =
-  (typeof CreateRoomReservation500StatusCode)[keyof typeof CreateRoomReservation500StatusCode]
+export type CreateSpaceReservation500StatusCode =
+  (typeof CreateSpaceReservation500StatusCode)[keyof typeof CreateSpaceReservation500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation500StatusCode = {
+export const CreateSpaceReservation500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomReservation500Name =
-  (typeof CreateRoomReservation500Name)[keyof typeof CreateRoomReservation500Name]
+export type CreateSpaceReservation500Name =
+  (typeof CreateSpaceReservation500Name)[keyof typeof CreateSpaceReservation500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation500Name = {
+export const CreateSpaceReservation500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type CreateRoomReservation500 = {
+export type CreateSpaceReservation500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1190,34 +1219,34 @@ export type CreateRoomReservation500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomReservation500Name
+  name: CreateSpaceReservation500Name
   /** Código de status HTTP 500. */
-  status_code: CreateRoomReservation500StatusCode
+  status_code: CreateSpaceReservation500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type CreateRoomReservation422StatusCode =
-  (typeof CreateRoomReservation422StatusCode)[keyof typeof CreateRoomReservation422StatusCode]
+export type CreateSpaceReservation422StatusCode =
+  (typeof CreateSpaceReservation422StatusCode)[keyof typeof CreateSpaceReservation422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation422StatusCode = {
+export const CreateSpaceReservation422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomReservation422Name =
-  (typeof CreateRoomReservation422Name)[keyof typeof CreateRoomReservation422Name]
+export type CreateSpaceReservation422Name =
+  (typeof CreateSpaceReservation422Name)[keyof typeof CreateSpaceReservation422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation422Name = {
+export const CreateSpaceReservation422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CreateRoomReservation422DetailsItem = {
+export type CreateSpaceReservation422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -1227,45 +1256,45 @@ export type CreateRoomReservation422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type CreateRoomReservation422 = {
+export type CreateSpaceReservation422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: CreateRoomReservation422DetailsItem[]
+  details?: CreateSpaceReservation422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomReservation422Name
+  name: CreateSpaceReservation422Name
   /** Código de status HTTP 422. */
-  status_code: CreateRoomReservation422StatusCode
+  status_code: CreateSpaceReservation422StatusCode
 }
 
 /**
  * Código de status HTTP 409.
  */
-export type CreateRoomReservation409StatusCode =
-  (typeof CreateRoomReservation409StatusCode)[keyof typeof CreateRoomReservation409StatusCode]
+export type CreateSpaceReservation409StatusCode =
+  (typeof CreateSpaceReservation409StatusCode)[keyof typeof CreateSpaceReservation409StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation409StatusCode = {
+export const CreateSpaceReservation409StatusCode = {
   NUMBER_409: 409,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomReservation409Name =
-  (typeof CreateRoomReservation409Name)[keyof typeof CreateRoomReservation409Name]
+export type CreateSpaceReservation409Name =
+  (typeof CreateSpaceReservation409Name)[keyof typeof CreateSpaceReservation409Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation409Name = {
+export const CreateSpaceReservation409Name = {
   ConflictError: 'ConflictError',
 } as const
 
 /**
  * Schema to represent Conflict errors (HTTP 409)
  */
-export type CreateRoomReservation409 = {
+export type CreateSpaceReservation409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1273,37 +1302,37 @@ export type CreateRoomReservation409 = {
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomReservation409Name
+  name: CreateSpaceReservation409Name
   /** Código de status HTTP 409. */
-  status_code: CreateRoomReservation409StatusCode
+  status_code: CreateSpaceReservation409StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type CreateRoomReservation404StatusCode =
-  (typeof CreateRoomReservation404StatusCode)[keyof typeof CreateRoomReservation404StatusCode]
+export type CreateSpaceReservation404StatusCode =
+  (typeof CreateSpaceReservation404StatusCode)[keyof typeof CreateSpaceReservation404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation404StatusCode = {
+export const CreateSpaceReservation404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomReservation404Name =
-  (typeof CreateRoomReservation404Name)[keyof typeof CreateRoomReservation404Name]
+export type CreateSpaceReservation404Name =
+  (typeof CreateSpaceReservation404Name)[keyof typeof CreateSpaceReservation404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation404Name = {
+export const CreateSpaceReservation404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type CreateRoomReservation404 = {
+export type CreateSpaceReservation404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1311,37 +1340,37 @@ export type CreateRoomReservation404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomReservation404Name
+  name: CreateSpaceReservation404Name
   /** Código de status HTTP 404. */
-  status_code: CreateRoomReservation404StatusCode
+  status_code: CreateSpaceReservation404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type CreateRoomReservation403StatusCode =
-  (typeof CreateRoomReservation403StatusCode)[keyof typeof CreateRoomReservation403StatusCode]
+export type CreateSpaceReservation403StatusCode =
+  (typeof CreateSpaceReservation403StatusCode)[keyof typeof CreateSpaceReservation403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation403StatusCode = {
+export const CreateSpaceReservation403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomReservation403Name =
-  (typeof CreateRoomReservation403Name)[keyof typeof CreateRoomReservation403Name]
+export type CreateSpaceReservation403Name =
+  (typeof CreateSpaceReservation403Name)[keyof typeof CreateSpaceReservation403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation403Name = {
+export const CreateSpaceReservation403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type CreateRoomReservation403 = {
+export type CreateSpaceReservation403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1349,37 +1378,37 @@ export type CreateRoomReservation403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomReservation403Name
+  name: CreateSpaceReservation403Name
   /** Código de status HTTP 403. */
-  status_code: CreateRoomReservation403StatusCode
+  status_code: CreateSpaceReservation403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type CreateRoomReservation401StatusCode =
-  (typeof CreateRoomReservation401StatusCode)[keyof typeof CreateRoomReservation401StatusCode]
+export type CreateSpaceReservation401StatusCode =
+  (typeof CreateSpaceReservation401StatusCode)[keyof typeof CreateSpaceReservation401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation401StatusCode = {
+export const CreateSpaceReservation401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomReservation401Name =
-  (typeof CreateRoomReservation401Name)[keyof typeof CreateRoomReservation401Name]
+export type CreateSpaceReservation401Name =
+  (typeof CreateSpaceReservation401Name)[keyof typeof CreateSpaceReservation401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation401Name = {
+export const CreateSpaceReservation401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type CreateRoomReservation401 = {
+export type CreateSpaceReservation401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1387,37 +1416,37 @@ export type CreateRoomReservation401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomReservation401Name
+  name: CreateSpaceReservation401Name
   /** Código de status HTTP 401. */
-  status_code: CreateRoomReservation401StatusCode
+  status_code: CreateSpaceReservation401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type CreateRoomReservation400StatusCode =
-  (typeof CreateRoomReservation400StatusCode)[keyof typeof CreateRoomReservation400StatusCode]
+export type CreateSpaceReservation400StatusCode =
+  (typeof CreateSpaceReservation400StatusCode)[keyof typeof CreateSpaceReservation400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation400StatusCode = {
+export const CreateSpaceReservation400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomReservation400Name =
-  (typeof CreateRoomReservation400Name)[keyof typeof CreateRoomReservation400Name]
+export type CreateSpaceReservation400Name =
+  (typeof CreateSpaceReservation400Name)[keyof typeof CreateSpaceReservation400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation400Name = {
+export const CreateSpaceReservation400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type CreateRoomReservation400 = {
+export type CreateSpaceReservation400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1425,25 +1454,25 @@ export type CreateRoomReservation400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomReservation400Name
+  name: CreateSpaceReservation400Name
   /** Código de status HTTP 400. */
-  status_code: CreateRoomReservation400StatusCode
+  status_code: CreateSpaceReservation400StatusCode
 }
 
 /**
  * Status atual da reserva
  */
-export type CreateRoomReservation201ReservationsItemStatus =
-  (typeof CreateRoomReservation201ReservationsItemStatus)[keyof typeof CreateRoomReservation201ReservationsItemStatus]
+export type CreateSpaceReservation201ReservationsItemStatus =
+  (typeof CreateSpaceReservation201ReservationsItemStatus)[keyof typeof CreateSpaceReservation201ReservationsItemStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomReservation201ReservationsItemStatus = {
+export const CreateSpaceReservation201ReservationsItemStatus = {
   reserved: 'reserved',
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
 
-export type CreateRoomReservation201ReservationsItem = {
+export type CreateSpaceReservation201ReservationsItem = {
   /** Lista de colaboradores da BBZ */
   bbzCollaborators: string[]
   /** Lista de convidados externos */
@@ -1452,68 +1481,68 @@ export type CreateRoomReservation201ReservationsItem = {
   id: string
   /** Indica se a reserva necessita de serviço de copeira */
   needsCopeira: boolean
-  /** Identificador único da sala */
-  roomId: string
-  /** Identificador único do slot de tempo */
-  roomSlotId: string
   /** Horário de término do slot no formato ISO com timezone do usuário */
   slotEnd: string
   /** Horário de início do slot no formato ISO com timezone do usuário */
   slotStart: string
+  /** Identificador único do espaço */
+  spaceId: string
+  /** Identificador único do slot de tempo */
+  spaceSlotId: string
   /** Status atual da reserva */
-  status: CreateRoomReservation201ReservationsItemStatus
+  status: CreateSpaceReservation201ReservationsItemStatus
   /** Identificador único do usuário que fez a reserva */
   userId: string
 }
 
-export type CreateRoomReservation201 = {
+export type CreateSpaceReservation201 = {
   /** Mensagem de sucesso */
   message: string
-  reservations: CreateRoomReservation201ReservationsItem[]
+  reservations: CreateSpaceReservation201ReservationsItem[]
 }
 
-export type CreateRoomReservationBody = {
+export type CreateSpaceReservationBody = {
   /** Lista de colaboradores da BBZ que participarão da reunião */
   bbzCollaborators?: string[]
   /** Lista de convidados externos que participarão da reunião */
   externalGuests?: string[]
   /** Indica se a reserva necessita de serviço de copeira */
   needsCopeira?: boolean
-  /** Identificador único da sala a ser reservada */
-  roomId: string
+  /** Identificador único do espaço a ser reservado */
+  spaceId: string
   /**
    * Lista de identificadores únicos dos slots de tempo pré-reservados
    * @minItems 1
    */
-  roomSlotIds: string[]
+  spaceSlotIds: string[]
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type DeleteRoomSlotPreReserve500StatusCode =
-  (typeof DeleteRoomSlotPreReserve500StatusCode)[keyof typeof DeleteRoomSlotPreReserve500StatusCode]
+export type DeleteSpaceSlotPreReserve500StatusCode =
+  (typeof DeleteSpaceSlotPreReserve500StatusCode)[keyof typeof DeleteSpaceSlotPreReserve500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve500StatusCode = {
+export const DeleteSpaceSlotPreReserve500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoomSlotPreReserve500Name =
-  (typeof DeleteRoomSlotPreReserve500Name)[keyof typeof DeleteRoomSlotPreReserve500Name]
+export type DeleteSpaceSlotPreReserve500Name =
+  (typeof DeleteSpaceSlotPreReserve500Name)[keyof typeof DeleteSpaceSlotPreReserve500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve500Name = {
+export const DeleteSpaceSlotPreReserve500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type DeleteRoomSlotPreReserve500 = {
+export type DeleteSpaceSlotPreReserve500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1521,34 +1550,34 @@ export type DeleteRoomSlotPreReserve500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoomSlotPreReserve500Name
+  name: DeleteSpaceSlotPreReserve500Name
   /** Código de status HTTP 500. */
-  status_code: DeleteRoomSlotPreReserve500StatusCode
+  status_code: DeleteSpaceSlotPreReserve500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type DeleteRoomSlotPreReserve422StatusCode =
-  (typeof DeleteRoomSlotPreReserve422StatusCode)[keyof typeof DeleteRoomSlotPreReserve422StatusCode]
+export type DeleteSpaceSlotPreReserve422StatusCode =
+  (typeof DeleteSpaceSlotPreReserve422StatusCode)[keyof typeof DeleteSpaceSlotPreReserve422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve422StatusCode = {
+export const DeleteSpaceSlotPreReserve422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoomSlotPreReserve422Name =
-  (typeof DeleteRoomSlotPreReserve422Name)[keyof typeof DeleteRoomSlotPreReserve422Name]
+export type DeleteSpaceSlotPreReserve422Name =
+  (typeof DeleteSpaceSlotPreReserve422Name)[keyof typeof DeleteSpaceSlotPreReserve422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve422Name = {
+export const DeleteSpaceSlotPreReserve422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type DeleteRoomSlotPreReserve422DetailsItem = {
+export type DeleteSpaceSlotPreReserve422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -1558,45 +1587,45 @@ export type DeleteRoomSlotPreReserve422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type DeleteRoomSlotPreReserve422 = {
+export type DeleteSpaceSlotPreReserve422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: DeleteRoomSlotPreReserve422DetailsItem[]
+  details?: DeleteSpaceSlotPreReserve422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoomSlotPreReserve422Name
+  name: DeleteSpaceSlotPreReserve422Name
   /** Código de status HTTP 422. */
-  status_code: DeleteRoomSlotPreReserve422StatusCode
+  status_code: DeleteSpaceSlotPreReserve422StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type DeleteRoomSlotPreReserve404StatusCode =
-  (typeof DeleteRoomSlotPreReserve404StatusCode)[keyof typeof DeleteRoomSlotPreReserve404StatusCode]
+export type DeleteSpaceSlotPreReserve404StatusCode =
+  (typeof DeleteSpaceSlotPreReserve404StatusCode)[keyof typeof DeleteSpaceSlotPreReserve404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve404StatusCode = {
+export const DeleteSpaceSlotPreReserve404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoomSlotPreReserve404Name =
-  (typeof DeleteRoomSlotPreReserve404Name)[keyof typeof DeleteRoomSlotPreReserve404Name]
+export type DeleteSpaceSlotPreReserve404Name =
+  (typeof DeleteSpaceSlotPreReserve404Name)[keyof typeof DeleteSpaceSlotPreReserve404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve404Name = {
+export const DeleteSpaceSlotPreReserve404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type DeleteRoomSlotPreReserve404 = {
+export type DeleteSpaceSlotPreReserve404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1604,37 +1633,37 @@ export type DeleteRoomSlotPreReserve404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoomSlotPreReserve404Name
+  name: DeleteSpaceSlotPreReserve404Name
   /** Código de status HTTP 404. */
-  status_code: DeleteRoomSlotPreReserve404StatusCode
+  status_code: DeleteSpaceSlotPreReserve404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type DeleteRoomSlotPreReserve403StatusCode =
-  (typeof DeleteRoomSlotPreReserve403StatusCode)[keyof typeof DeleteRoomSlotPreReserve403StatusCode]
+export type DeleteSpaceSlotPreReserve403StatusCode =
+  (typeof DeleteSpaceSlotPreReserve403StatusCode)[keyof typeof DeleteSpaceSlotPreReserve403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve403StatusCode = {
+export const DeleteSpaceSlotPreReserve403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoomSlotPreReserve403Name =
-  (typeof DeleteRoomSlotPreReserve403Name)[keyof typeof DeleteRoomSlotPreReserve403Name]
+export type DeleteSpaceSlotPreReserve403Name =
+  (typeof DeleteSpaceSlotPreReserve403Name)[keyof typeof DeleteSpaceSlotPreReserve403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve403Name = {
+export const DeleteSpaceSlotPreReserve403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type DeleteRoomSlotPreReserve403 = {
+export type DeleteSpaceSlotPreReserve403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1642,37 +1671,37 @@ export type DeleteRoomSlotPreReserve403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoomSlotPreReserve403Name
+  name: DeleteSpaceSlotPreReserve403Name
   /** Código de status HTTP 403. */
-  status_code: DeleteRoomSlotPreReserve403StatusCode
+  status_code: DeleteSpaceSlotPreReserve403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type DeleteRoomSlotPreReserve401StatusCode =
-  (typeof DeleteRoomSlotPreReserve401StatusCode)[keyof typeof DeleteRoomSlotPreReserve401StatusCode]
+export type DeleteSpaceSlotPreReserve401StatusCode =
+  (typeof DeleteSpaceSlotPreReserve401StatusCode)[keyof typeof DeleteSpaceSlotPreReserve401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve401StatusCode = {
+export const DeleteSpaceSlotPreReserve401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoomSlotPreReserve401Name =
-  (typeof DeleteRoomSlotPreReserve401Name)[keyof typeof DeleteRoomSlotPreReserve401Name]
+export type DeleteSpaceSlotPreReserve401Name =
+  (typeof DeleteSpaceSlotPreReserve401Name)[keyof typeof DeleteSpaceSlotPreReserve401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve401Name = {
+export const DeleteSpaceSlotPreReserve401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type DeleteRoomSlotPreReserve401 = {
+export type DeleteSpaceSlotPreReserve401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1680,37 +1709,37 @@ export type DeleteRoomSlotPreReserve401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoomSlotPreReserve401Name
+  name: DeleteSpaceSlotPreReserve401Name
   /** Código de status HTTP 401. */
-  status_code: DeleteRoomSlotPreReserve401StatusCode
+  status_code: DeleteSpaceSlotPreReserve401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type DeleteRoomSlotPreReserve400StatusCode =
-  (typeof DeleteRoomSlotPreReserve400StatusCode)[keyof typeof DeleteRoomSlotPreReserve400StatusCode]
+export type DeleteSpaceSlotPreReserve400StatusCode =
+  (typeof DeleteSpaceSlotPreReserve400StatusCode)[keyof typeof DeleteSpaceSlotPreReserve400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve400StatusCode = {
+export const DeleteSpaceSlotPreReserve400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoomSlotPreReserve400Name =
-  (typeof DeleteRoomSlotPreReserve400Name)[keyof typeof DeleteRoomSlotPreReserve400Name]
+export type DeleteSpaceSlotPreReserve400Name =
+  (typeof DeleteSpaceSlotPreReserve400Name)[keyof typeof DeleteSpaceSlotPreReserve400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoomSlotPreReserve400Name = {
+export const DeleteSpaceSlotPreReserve400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type DeleteRoomSlotPreReserve400 = {
+export type DeleteSpaceSlotPreReserve400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1718,12 +1747,12 @@ export type DeleteRoomSlotPreReserve400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoomSlotPreReserve400Name
+  name: DeleteSpaceSlotPreReserve400Name
   /** Código de status HTTP 400. */
-  status_code: DeleteRoomSlotPreReserve400StatusCode
+  status_code: DeleteSpaceSlotPreReserve400StatusCode
 }
 
-export type DeleteRoomSlotPreReserve200 = {
+export type DeleteSpaceSlotPreReserve200 = {
   /** Mensagem de sucesso */
   message: string
   /** Identificador do slot deletado */
@@ -1733,29 +1762,29 @@ export type DeleteRoomSlotPreReserve200 = {
 /**
  * Código de status HTTP 500.
  */
-export type CreateRoomSlotPreReserve500StatusCode =
-  (typeof CreateRoomSlotPreReserve500StatusCode)[keyof typeof CreateRoomSlotPreReserve500StatusCode]
+export type CreateSpaceSlotPreReserve500StatusCode =
+  (typeof CreateSpaceSlotPreReserve500StatusCode)[keyof typeof CreateSpaceSlotPreReserve500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve500StatusCode = {
+export const CreateSpaceSlotPreReserve500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomSlotPreReserve500Name =
-  (typeof CreateRoomSlotPreReserve500Name)[keyof typeof CreateRoomSlotPreReserve500Name]
+export type CreateSpaceSlotPreReserve500Name =
+  (typeof CreateSpaceSlotPreReserve500Name)[keyof typeof CreateSpaceSlotPreReserve500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve500Name = {
+export const CreateSpaceSlotPreReserve500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type CreateRoomSlotPreReserve500 = {
+export type CreateSpaceSlotPreReserve500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1763,34 +1792,34 @@ export type CreateRoomSlotPreReserve500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomSlotPreReserve500Name
+  name: CreateSpaceSlotPreReserve500Name
   /** Código de status HTTP 500. */
-  status_code: CreateRoomSlotPreReserve500StatusCode
+  status_code: CreateSpaceSlotPreReserve500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type CreateRoomSlotPreReserve422StatusCode =
-  (typeof CreateRoomSlotPreReserve422StatusCode)[keyof typeof CreateRoomSlotPreReserve422StatusCode]
+export type CreateSpaceSlotPreReserve422StatusCode =
+  (typeof CreateSpaceSlotPreReserve422StatusCode)[keyof typeof CreateSpaceSlotPreReserve422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve422StatusCode = {
+export const CreateSpaceSlotPreReserve422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomSlotPreReserve422Name =
-  (typeof CreateRoomSlotPreReserve422Name)[keyof typeof CreateRoomSlotPreReserve422Name]
+export type CreateSpaceSlotPreReserve422Name =
+  (typeof CreateSpaceSlotPreReserve422Name)[keyof typeof CreateSpaceSlotPreReserve422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve422Name = {
+export const CreateSpaceSlotPreReserve422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CreateRoomSlotPreReserve422DetailsItem = {
+export type CreateSpaceSlotPreReserve422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -1800,45 +1829,45 @@ export type CreateRoomSlotPreReserve422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type CreateRoomSlotPreReserve422 = {
+export type CreateSpaceSlotPreReserve422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: CreateRoomSlotPreReserve422DetailsItem[]
+  details?: CreateSpaceSlotPreReserve422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomSlotPreReserve422Name
+  name: CreateSpaceSlotPreReserve422Name
   /** Código de status HTTP 422. */
-  status_code: CreateRoomSlotPreReserve422StatusCode
+  status_code: CreateSpaceSlotPreReserve422StatusCode
 }
 
 /**
  * Código de status HTTP 409.
  */
-export type CreateRoomSlotPreReserve409StatusCode =
-  (typeof CreateRoomSlotPreReserve409StatusCode)[keyof typeof CreateRoomSlotPreReserve409StatusCode]
+export type CreateSpaceSlotPreReserve409StatusCode =
+  (typeof CreateSpaceSlotPreReserve409StatusCode)[keyof typeof CreateSpaceSlotPreReserve409StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve409StatusCode = {
+export const CreateSpaceSlotPreReserve409StatusCode = {
   NUMBER_409: 409,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomSlotPreReserve409Name =
-  (typeof CreateRoomSlotPreReserve409Name)[keyof typeof CreateRoomSlotPreReserve409Name]
+export type CreateSpaceSlotPreReserve409Name =
+  (typeof CreateSpaceSlotPreReserve409Name)[keyof typeof CreateSpaceSlotPreReserve409Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve409Name = {
+export const CreateSpaceSlotPreReserve409Name = {
   ConflictError: 'ConflictError',
 } as const
 
 /**
  * Schema to represent Conflict errors (HTTP 409)
  */
-export type CreateRoomSlotPreReserve409 = {
+export type CreateSpaceSlotPreReserve409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1846,37 +1875,37 @@ export type CreateRoomSlotPreReserve409 = {
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomSlotPreReserve409Name
+  name: CreateSpaceSlotPreReserve409Name
   /** Código de status HTTP 409. */
-  status_code: CreateRoomSlotPreReserve409StatusCode
+  status_code: CreateSpaceSlotPreReserve409StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type CreateRoomSlotPreReserve404StatusCode =
-  (typeof CreateRoomSlotPreReserve404StatusCode)[keyof typeof CreateRoomSlotPreReserve404StatusCode]
+export type CreateSpaceSlotPreReserve404StatusCode =
+  (typeof CreateSpaceSlotPreReserve404StatusCode)[keyof typeof CreateSpaceSlotPreReserve404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve404StatusCode = {
+export const CreateSpaceSlotPreReserve404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomSlotPreReserve404Name =
-  (typeof CreateRoomSlotPreReserve404Name)[keyof typeof CreateRoomSlotPreReserve404Name]
+export type CreateSpaceSlotPreReserve404Name =
+  (typeof CreateSpaceSlotPreReserve404Name)[keyof typeof CreateSpaceSlotPreReserve404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve404Name = {
+export const CreateSpaceSlotPreReserve404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type CreateRoomSlotPreReserve404 = {
+export type CreateSpaceSlotPreReserve404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1884,37 +1913,37 @@ export type CreateRoomSlotPreReserve404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomSlotPreReserve404Name
+  name: CreateSpaceSlotPreReserve404Name
   /** Código de status HTTP 404. */
-  status_code: CreateRoomSlotPreReserve404StatusCode
+  status_code: CreateSpaceSlotPreReserve404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type CreateRoomSlotPreReserve403StatusCode =
-  (typeof CreateRoomSlotPreReserve403StatusCode)[keyof typeof CreateRoomSlotPreReserve403StatusCode]
+export type CreateSpaceSlotPreReserve403StatusCode =
+  (typeof CreateSpaceSlotPreReserve403StatusCode)[keyof typeof CreateSpaceSlotPreReserve403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve403StatusCode = {
+export const CreateSpaceSlotPreReserve403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomSlotPreReserve403Name =
-  (typeof CreateRoomSlotPreReserve403Name)[keyof typeof CreateRoomSlotPreReserve403Name]
+export type CreateSpaceSlotPreReserve403Name =
+  (typeof CreateSpaceSlotPreReserve403Name)[keyof typeof CreateSpaceSlotPreReserve403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve403Name = {
+export const CreateSpaceSlotPreReserve403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type CreateRoomSlotPreReserve403 = {
+export type CreateSpaceSlotPreReserve403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1922,37 +1951,37 @@ export type CreateRoomSlotPreReserve403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomSlotPreReserve403Name
+  name: CreateSpaceSlotPreReserve403Name
   /** Código de status HTTP 403. */
-  status_code: CreateRoomSlotPreReserve403StatusCode
+  status_code: CreateSpaceSlotPreReserve403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type CreateRoomSlotPreReserve401StatusCode =
-  (typeof CreateRoomSlotPreReserve401StatusCode)[keyof typeof CreateRoomSlotPreReserve401StatusCode]
+export type CreateSpaceSlotPreReserve401StatusCode =
+  (typeof CreateSpaceSlotPreReserve401StatusCode)[keyof typeof CreateSpaceSlotPreReserve401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve401StatusCode = {
+export const CreateSpaceSlotPreReserve401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomSlotPreReserve401Name =
-  (typeof CreateRoomSlotPreReserve401Name)[keyof typeof CreateRoomSlotPreReserve401Name]
+export type CreateSpaceSlotPreReserve401Name =
+  (typeof CreateSpaceSlotPreReserve401Name)[keyof typeof CreateSpaceSlotPreReserve401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve401Name = {
+export const CreateSpaceSlotPreReserve401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type CreateRoomSlotPreReserve401 = {
+export type CreateSpaceSlotPreReserve401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1960,37 +1989,37 @@ export type CreateRoomSlotPreReserve401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomSlotPreReserve401Name
+  name: CreateSpaceSlotPreReserve401Name
   /** Código de status HTTP 401. */
-  status_code: CreateRoomSlotPreReserve401StatusCode
+  status_code: CreateSpaceSlotPreReserve401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type CreateRoomSlotPreReserve400StatusCode =
-  (typeof CreateRoomSlotPreReserve400StatusCode)[keyof typeof CreateRoomSlotPreReserve400StatusCode]
+export type CreateSpaceSlotPreReserve400StatusCode =
+  (typeof CreateSpaceSlotPreReserve400StatusCode)[keyof typeof CreateSpaceSlotPreReserve400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve400StatusCode = {
+export const CreateSpaceSlotPreReserve400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoomSlotPreReserve400Name =
-  (typeof CreateRoomSlotPreReserve400Name)[keyof typeof CreateRoomSlotPreReserve400Name]
+export type CreateSpaceSlotPreReserve400Name =
+  (typeof CreateSpaceSlotPreReserve400Name)[keyof typeof CreateSpaceSlotPreReserve400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve400Name = {
+export const CreateSpaceSlotPreReserve400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type CreateRoomSlotPreReserve400 = {
+export type CreateSpaceSlotPreReserve400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -1998,94 +2027,94 @@ export type CreateRoomSlotPreReserve400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoomSlotPreReserve400Name
+  name: CreateSpaceSlotPreReserve400Name
   /** Código de status HTTP 400. */
-  status_code: CreateRoomSlotPreReserve400StatusCode
+  status_code: CreateSpaceSlotPreReserve400StatusCode
 }
 
 /**
  * Status do slot - sempre pre_reserved para este endpoint
  */
-export type CreateRoomSlotPreReserve201SlotStatus =
-  (typeof CreateRoomSlotPreReserve201SlotStatus)[keyof typeof CreateRoomSlotPreReserve201SlotStatus]
+export type CreateSpaceSlotPreReserve201SlotStatus =
+  (typeof CreateSpaceSlotPreReserve201SlotStatus)[keyof typeof CreateSpaceSlotPreReserve201SlotStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserve201SlotStatus = {
+export const CreateSpaceSlotPreReserve201SlotStatus = {
   pre_reserved: 'pre_reserved',
   reserved: 'reserved',
 } as const
 
-export type CreateRoomSlotPreReserve201Slot = {
+export type CreateSpaceSlotPreReserve201Slot = {
   /** Identificador único do slot */
   id: string
   /** Data e hora até quando o slot está pré-reservado */
   preReservedUntil: string
-  /** Identificador único da sala */
-  roomId: string
   /** Horário de término do slot no formato ISO com timezone do usuário */
   slotEnd: string
   /** Horário de início do slot no formato ISO com timezone do usuário */
   slotStart: string
+  /** Identificador único do espaço */
+  spaceId: string
   /** Status do slot - sempre pre_reserved para este endpoint */
-  status: CreateRoomSlotPreReserve201SlotStatus
+  status: CreateSpaceSlotPreReserve201SlotStatus
   /** ID do usuário que fez a pré-reserva */
   userId: string
 }
 
-export type CreateRoomSlotPreReserve201 = {
+export type CreateSpaceSlotPreReserve201 = {
   /** Mensagem de sucesso */
   message: string
-  slot: CreateRoomSlotPreReserve201Slot
+  slot: CreateSpaceSlotPreReserve201Slot
 }
 
 /**
  * Status da reserva - deve ser pre_reserved para pré-reservas
  */
-export type CreateRoomSlotPreReserveBodyStatus =
-  (typeof CreateRoomSlotPreReserveBodyStatus)[keyof typeof CreateRoomSlotPreReserveBodyStatus]
+export type CreateSpaceSlotPreReserveBodyStatus =
+  (typeof CreateSpaceSlotPreReserveBodyStatus)[keyof typeof CreateSpaceSlotPreReserveBodyStatus]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoomSlotPreReserveBodyStatus = {
+export const CreateSpaceSlotPreReserveBodyStatus = {
   pre_reserved: 'pre_reserved',
   reserved: 'reserved',
 } as const
 
-export type CreateRoomSlotPreReserveBody = {
-  roomId: string
+export type CreateSpaceSlotPreReserveBody = {
   /** Horário de término da reserva no formato ISO com timezone do usuário */
   slotEnd: string
   /** Horário de início da reserva no formato ISO com timezone do usuário */
   slotStart: string
+  spaceId: string
   /** Status da reserva - deve ser pre_reserved para pré-reservas */
-  status?: CreateRoomSlotPreReserveBodyStatus
+  status?: CreateSpaceSlotPreReserveBodyStatus
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type GetRoomSlotAvailability500StatusCode =
-  (typeof GetRoomSlotAvailability500StatusCode)[keyof typeof GetRoomSlotAvailability500StatusCode]
+export type GetSpaceSlotAvailability500StatusCode =
+  (typeof GetSpaceSlotAvailability500StatusCode)[keyof typeof GetSpaceSlotAvailability500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability500StatusCode = {
+export const GetSpaceSlotAvailability500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomSlotAvailability500Name =
-  (typeof GetRoomSlotAvailability500Name)[keyof typeof GetRoomSlotAvailability500Name]
+export type GetSpaceSlotAvailability500Name =
+  (typeof GetSpaceSlotAvailability500Name)[keyof typeof GetSpaceSlotAvailability500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability500Name = {
+export const GetSpaceSlotAvailability500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type GetRoomSlotAvailability500 = {
+export type GetSpaceSlotAvailability500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2093,34 +2122,34 @@ export type GetRoomSlotAvailability500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomSlotAvailability500Name
+  name: GetSpaceSlotAvailability500Name
   /** Código de status HTTP 500. */
-  status_code: GetRoomSlotAvailability500StatusCode
+  status_code: GetSpaceSlotAvailability500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type GetRoomSlotAvailability422StatusCode =
-  (typeof GetRoomSlotAvailability422StatusCode)[keyof typeof GetRoomSlotAvailability422StatusCode]
+export type GetSpaceSlotAvailability422StatusCode =
+  (typeof GetSpaceSlotAvailability422StatusCode)[keyof typeof GetSpaceSlotAvailability422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability422StatusCode = {
+export const GetSpaceSlotAvailability422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomSlotAvailability422Name =
-  (typeof GetRoomSlotAvailability422Name)[keyof typeof GetRoomSlotAvailability422Name]
+export type GetSpaceSlotAvailability422Name =
+  (typeof GetSpaceSlotAvailability422Name)[keyof typeof GetSpaceSlotAvailability422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability422Name = {
+export const GetSpaceSlotAvailability422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type GetRoomSlotAvailability422DetailsItem = {
+export type GetSpaceSlotAvailability422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -2130,45 +2159,45 @@ export type GetRoomSlotAvailability422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type GetRoomSlotAvailability422 = {
+export type GetSpaceSlotAvailability422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: GetRoomSlotAvailability422DetailsItem[]
+  details?: GetSpaceSlotAvailability422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomSlotAvailability422Name
+  name: GetSpaceSlotAvailability422Name
   /** Código de status HTTP 422. */
-  status_code: GetRoomSlotAvailability422StatusCode
+  status_code: GetSpaceSlotAvailability422StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type GetRoomSlotAvailability404StatusCode =
-  (typeof GetRoomSlotAvailability404StatusCode)[keyof typeof GetRoomSlotAvailability404StatusCode]
+export type GetSpaceSlotAvailability404StatusCode =
+  (typeof GetSpaceSlotAvailability404StatusCode)[keyof typeof GetSpaceSlotAvailability404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability404StatusCode = {
+export const GetSpaceSlotAvailability404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomSlotAvailability404Name =
-  (typeof GetRoomSlotAvailability404Name)[keyof typeof GetRoomSlotAvailability404Name]
+export type GetSpaceSlotAvailability404Name =
+  (typeof GetSpaceSlotAvailability404Name)[keyof typeof GetSpaceSlotAvailability404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability404Name = {
+export const GetSpaceSlotAvailability404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type GetRoomSlotAvailability404 = {
+export type GetSpaceSlotAvailability404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2176,37 +2205,37 @@ export type GetRoomSlotAvailability404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomSlotAvailability404Name
+  name: GetSpaceSlotAvailability404Name
   /** Código de status HTTP 404. */
-  status_code: GetRoomSlotAvailability404StatusCode
+  status_code: GetSpaceSlotAvailability404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type GetRoomSlotAvailability403StatusCode =
-  (typeof GetRoomSlotAvailability403StatusCode)[keyof typeof GetRoomSlotAvailability403StatusCode]
+export type GetSpaceSlotAvailability403StatusCode =
+  (typeof GetSpaceSlotAvailability403StatusCode)[keyof typeof GetSpaceSlotAvailability403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability403StatusCode = {
+export const GetSpaceSlotAvailability403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomSlotAvailability403Name =
-  (typeof GetRoomSlotAvailability403Name)[keyof typeof GetRoomSlotAvailability403Name]
+export type GetSpaceSlotAvailability403Name =
+  (typeof GetSpaceSlotAvailability403Name)[keyof typeof GetSpaceSlotAvailability403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability403Name = {
+export const GetSpaceSlotAvailability403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type GetRoomSlotAvailability403 = {
+export type GetSpaceSlotAvailability403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2214,37 +2243,37 @@ export type GetRoomSlotAvailability403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomSlotAvailability403Name
+  name: GetSpaceSlotAvailability403Name
   /** Código de status HTTP 403. */
-  status_code: GetRoomSlotAvailability403StatusCode
+  status_code: GetSpaceSlotAvailability403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type GetRoomSlotAvailability401StatusCode =
-  (typeof GetRoomSlotAvailability401StatusCode)[keyof typeof GetRoomSlotAvailability401StatusCode]
+export type GetSpaceSlotAvailability401StatusCode =
+  (typeof GetSpaceSlotAvailability401StatusCode)[keyof typeof GetSpaceSlotAvailability401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability401StatusCode = {
+export const GetSpaceSlotAvailability401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomSlotAvailability401Name =
-  (typeof GetRoomSlotAvailability401Name)[keyof typeof GetRoomSlotAvailability401Name]
+export type GetSpaceSlotAvailability401Name =
+  (typeof GetSpaceSlotAvailability401Name)[keyof typeof GetSpaceSlotAvailability401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability401Name = {
+export const GetSpaceSlotAvailability401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type GetRoomSlotAvailability401 = {
+export type GetSpaceSlotAvailability401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2252,37 +2281,37 @@ export type GetRoomSlotAvailability401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomSlotAvailability401Name
+  name: GetSpaceSlotAvailability401Name
   /** Código de status HTTP 401. */
-  status_code: GetRoomSlotAvailability401StatusCode
+  status_code: GetSpaceSlotAvailability401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type GetRoomSlotAvailability400StatusCode =
-  (typeof GetRoomSlotAvailability400StatusCode)[keyof typeof GetRoomSlotAvailability400StatusCode]
+export type GetSpaceSlotAvailability400StatusCode =
+  (typeof GetSpaceSlotAvailability400StatusCode)[keyof typeof GetSpaceSlotAvailability400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability400StatusCode = {
+export const GetSpaceSlotAvailability400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoomSlotAvailability400Name =
-  (typeof GetRoomSlotAvailability400Name)[keyof typeof GetRoomSlotAvailability400Name]
+export type GetSpaceSlotAvailability400Name =
+  (typeof GetSpaceSlotAvailability400Name)[keyof typeof GetSpaceSlotAvailability400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability400Name = {
+export const GetSpaceSlotAvailability400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type GetRoomSlotAvailability400 = {
+export type GetSpaceSlotAvailability400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2290,21 +2319,84 @@ export type GetRoomSlotAvailability400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoomSlotAvailability400Name
+  name: GetSpaceSlotAvailability400Name
   /** Código de status HTTP 400. */
-  status_code: GetRoomSlotAvailability400StatusCode
+  status_code: GetSpaceSlotAvailability400StatusCode
+}
+
+export type GetSpaceSlotAvailability200 = {
+  slots: GetSpaceSlotAvailability200SlotsItem[]
+  space: GetSpaceSlotAvailability200Space
+}
+
+/**
+ * Tipo de espaço: sala ou estação de trabalho
+ */
+export type GetSpaceSlotAvailability200SpaceType =
+  (typeof GetSpaceSlotAvailability200SpaceType)[keyof typeof GetSpaceSlotAvailability200SpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetSpaceSlotAvailability200SpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+export type GetSpaceSlotAvailability200Space = {
+  /** Capacidade máxima de pessoas no espaço */
+  capacidade: number
+  /**
+   * Descrição do espaço (pode ser nulo)
+   * @nullable
+   */
+  description: string | null
+  /**
+   * Andar onde o espaço está localizado
+   * @nullable
+   */
+  floor: string | null
+  /** Identificador único do espaço */
+  id: string
+  /** URLs das imagens do espaço */
+  imagens: string[]
+  /** Indica se o espaço está ativo ou inativo */
+  isActive: boolean
+  /** Nome do espaço */
+  name: string
+  /**
+   * Posição específica do espaço
+   * @nullable
+   */
+  position: string | null
+  /** Lista de recursos disponíveis no espaço */
+  recursos: string[]
+  /** Tipo de espaço: sala ou estação de trabalho */
+  type: GetSpaceSlotAvailability200SpaceType
+  /**
+   * Zona/setor do espaço
+   * @nullable
+   */
+  zone: string | null
 }
 
 /**
  * Usuário que fez a pré-reserva (null quando não há pré-reserva)
  */
-export type GetRoomSlotAvailability200SlotsItemUser = {
+export type GetSpaceSlotAvailability200SlotsItemUser = {
   email: string
   id: string
   name: string
 }
 
-export type GetRoomSlotAvailability200SlotsItem = {
+export type GetSpaceSlotAvailability200SlotsItemStatus =
+  (typeof GetSpaceSlotAvailability200SlotsItemStatus)[keyof typeof GetSpaceSlotAvailability200SlotsItemStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetSpaceSlotAvailability200SlotsItemStatus = {
+  reserved: 'reserved',
+  pre_reserved: 'pre_reserved',
+} as const
+
+export type GetSpaceSlotAvailability200SlotsItem = {
   /** Identificador único do slot */
   id: string
   /**
@@ -2316,46 +2408,12 @@ export type GetRoomSlotAvailability200SlotsItem = {
   slotEnd: string
   /** Data e hora do slot no formato ISO (UTC) */
   slotStart: string
-  status: GetRoomSlotAvailability200SlotsItemStatus
+  status: GetSpaceSlotAvailability200SlotsItemStatus
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
-  user: GetRoomSlotAvailability200SlotsItemUser
+  user: GetSpaceSlotAvailability200SlotsItemUser
 }
 
-export type GetRoomSlotAvailability200 = {
-  room: GetRoomSlotAvailability200Room
-  slots: GetRoomSlotAvailability200SlotsItem[]
-}
-
-export type GetRoomSlotAvailability200SlotsItemStatus =
-  (typeof GetRoomSlotAvailability200SlotsItemStatus)[keyof typeof GetRoomSlotAvailability200SlotsItemStatus]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoomSlotAvailability200SlotsItemStatus = {
-  reserved: 'reserved',
-  pre_reserved: 'pre_reserved',
-} as const
-
-export type GetRoomSlotAvailability200Room = {
-  /** Capacidade máxima de pessoas na sala */
-  capacidade: number
-  /**
-   * Descrição da sala (pode ser nulo)
-   * @nullable
-   */
-  description: string | null
-  /** Identificador único da sala */
-  id: string
-  /** URLs das imagens da sala */
-  imagens: string[]
-  /** Indica se a sala está ativa ou inativa */
-  isActive: boolean
-  /** Nome da sala */
-  name: string
-  /** Lista de recursos disponíveis na sala */
-  recursos: string[]
-}
-
-export type GetRoomSlotAvailabilityParams = {
+export type GetSpaceSlotAvailabilityParams = {
   /**
    * Data inicial para verificação de disponibilidade no formato YYYY-MM-DD
    */
@@ -2369,29 +2427,29 @@ export type GetRoomSlotAvailabilityParams = {
 /**
  * Código de status HTTP 500.
  */
-export type ListRoomSlots500StatusCode =
-  (typeof ListRoomSlots500StatusCode)[keyof typeof ListRoomSlots500StatusCode]
+export type ListSpaceSlots500StatusCode =
+  (typeof ListSpaceSlots500StatusCode)[keyof typeof ListSpaceSlots500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots500StatusCode = {
+export const ListSpaceSlots500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomSlots500Name =
-  (typeof ListRoomSlots500Name)[keyof typeof ListRoomSlots500Name]
+export type ListSpaceSlots500Name =
+  (typeof ListSpaceSlots500Name)[keyof typeof ListSpaceSlots500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots500Name = {
+export const ListSpaceSlots500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type ListRoomSlots500 = {
+export type ListSpaceSlots500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2399,34 +2457,34 @@ export type ListRoomSlots500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomSlots500Name
+  name: ListSpaceSlots500Name
   /** Código de status HTTP 500. */
-  status_code: ListRoomSlots500StatusCode
+  status_code: ListSpaceSlots500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type ListRoomSlots422StatusCode =
-  (typeof ListRoomSlots422StatusCode)[keyof typeof ListRoomSlots422StatusCode]
+export type ListSpaceSlots422StatusCode =
+  (typeof ListSpaceSlots422StatusCode)[keyof typeof ListSpaceSlots422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots422StatusCode = {
+export const ListSpaceSlots422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomSlots422Name =
-  (typeof ListRoomSlots422Name)[keyof typeof ListRoomSlots422Name]
+export type ListSpaceSlots422Name =
+  (typeof ListSpaceSlots422Name)[keyof typeof ListSpaceSlots422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots422Name = {
+export const ListSpaceSlots422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ListRoomSlots422DetailsItem = {
+export type ListSpaceSlots422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -2436,45 +2494,45 @@ export type ListRoomSlots422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type ListRoomSlots422 = {
+export type ListSpaceSlots422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: ListRoomSlots422DetailsItem[]
+  details?: ListSpaceSlots422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomSlots422Name
+  name: ListSpaceSlots422Name
   /** Código de status HTTP 422. */
-  status_code: ListRoomSlots422StatusCode
+  status_code: ListSpaceSlots422StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type ListRoomSlots403StatusCode =
-  (typeof ListRoomSlots403StatusCode)[keyof typeof ListRoomSlots403StatusCode]
+export type ListSpaceSlots403StatusCode =
+  (typeof ListSpaceSlots403StatusCode)[keyof typeof ListSpaceSlots403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots403StatusCode = {
+export const ListSpaceSlots403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomSlots403Name =
-  (typeof ListRoomSlots403Name)[keyof typeof ListRoomSlots403Name]
+export type ListSpaceSlots403Name =
+  (typeof ListSpaceSlots403Name)[keyof typeof ListSpaceSlots403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots403Name = {
+export const ListSpaceSlots403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type ListRoomSlots403 = {
+export type ListSpaceSlots403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2482,37 +2540,37 @@ export type ListRoomSlots403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomSlots403Name
+  name: ListSpaceSlots403Name
   /** Código de status HTTP 403. */
-  status_code: ListRoomSlots403StatusCode
+  status_code: ListSpaceSlots403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type ListRoomSlots401StatusCode =
-  (typeof ListRoomSlots401StatusCode)[keyof typeof ListRoomSlots401StatusCode]
+export type ListSpaceSlots401StatusCode =
+  (typeof ListSpaceSlots401StatusCode)[keyof typeof ListSpaceSlots401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots401StatusCode = {
+export const ListSpaceSlots401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomSlots401Name =
-  (typeof ListRoomSlots401Name)[keyof typeof ListRoomSlots401Name]
+export type ListSpaceSlots401Name =
+  (typeof ListSpaceSlots401Name)[keyof typeof ListSpaceSlots401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots401Name = {
+export const ListSpaceSlots401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type ListRoomSlots401 = {
+export type ListSpaceSlots401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2520,37 +2578,37 @@ export type ListRoomSlots401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomSlots401Name
+  name: ListSpaceSlots401Name
   /** Código de status HTTP 401. */
-  status_code: ListRoomSlots401StatusCode
+  status_code: ListSpaceSlots401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type ListRoomSlots400StatusCode =
-  (typeof ListRoomSlots400StatusCode)[keyof typeof ListRoomSlots400StatusCode]
+export type ListSpaceSlots400StatusCode =
+  (typeof ListSpaceSlots400StatusCode)[keyof typeof ListSpaceSlots400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots400StatusCode = {
+export const ListSpaceSlots400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRoomSlots400Name =
-  (typeof ListRoomSlots400Name)[keyof typeof ListRoomSlots400Name]
+export type ListSpaceSlots400Name =
+  (typeof ListSpaceSlots400Name)[keyof typeof ListSpaceSlots400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRoomSlots400Name = {
+export const ListSpaceSlots400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type ListRoomSlots400 = {
+export type ListSpaceSlots400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2558,48 +2616,77 @@ export type ListRoomSlots400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRoomSlots400Name
+  name: ListSpaceSlots400Name
   /** Código de status HTTP 400. */
-  status_code: ListRoomSlots400StatusCode
-}
-
-export type ListRoomSlots200RoomsItem = {
-  /** Capacidade máxima de pessoas na sala */
-  capacidade: number
-  /**
-   * Descrição da sala (pode ser nulo)
-   * @nullable
-   */
-  description: string | null
-  /** Identificador único da sala */
-  id: string
-  /** URLs das imagens da sala */
-  imagens: string[]
-  /** Nome da sala */
-  name: string
-  /** Lista de recursos disponíveis na sala */
-  recursos: string[]
+  status_code: ListSpaceSlots400StatusCode
 }
 
 /**
- * Lista paginada de salas disponíveis com metadados
+ * Tipo de espaço: sala ou estação de trabalho
  */
-export type ListRoomSlots200 = {
+export type ListSpaceSlots200SpacesItemType =
+  (typeof ListSpaceSlots200SpacesItemType)[keyof typeof ListSpaceSlots200SpacesItemType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaceSlots200SpacesItemType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+export type ListSpaceSlots200SpacesItem = {
+  /** Capacidade máxima de pessoas no espaço */
+  capacidade: number
+  /**
+   * Descrição do espaço (pode ser nulo)
+   * @nullable
+   */
+  description: string | null
+  /**
+   * Andar onde o espaço está localizado
+   * @nullable
+   */
+  floor: string | null
+  /** Identificador único do espaço */
+  id: string
+  /** URLs das imagens do espaço */
+  imagens: string[]
+  /** Nome do espaço */
+  name: string
+  /**
+   * Posição específica do espaço
+   * @nullable
+   */
+  position: string | null
+  /** Lista de recursos disponíveis no espaço */
+  recursos: string[]
+  /** Tipo de espaço: sala ou estação de trabalho */
+  type: ListSpaceSlots200SpacesItemType
+  /**
+   * Zona/setor do espaço
+   * @nullable
+   */
+  zone: string | null
+}
+
+/**
+ * Lista paginada de espaços disponíveis com metadados
+ */
+export type ListSpaceSlots200 = {
   /** Número da página atual sendo exibida */
   currentPage: number
   /** Mensagem informativa sobre o resultado da operação */
   message: string
-  /** Array de salas disponíveis no período solicitado */
-  rooms: ListRoomSlots200RoomsItem[]
-  /** Número total de salas disponíveis para a consulta */
+  /** Array de espaços disponíveis no período solicitado */
+  spaces: ListSpaceSlots200SpacesItem[]
+  /** Número total de espaços disponíveis para a consulta */
   totalCount: number
   /** Número total de páginas com base no tamanho de página */
   totalPages: number
 }
 
-export type ListRoomSlotsParams = {
+export type ListSpaceSlotsParams = {
   /**
-   * Data/hora no formato ISO com timezone (suporta formatos como -03:00, +00:00 ou Z). Se enviar apenas a data com hora zerada (00:00:00), retorna salas com pelo menos um horário disponível nessa data. Se enviar data com uma hora específica, retorna salas disponíveis nesse horário específico. Exemplo para data: "2025-05-22T00:00:00-03:00", exemplo para hora específica: "2025-05-22T14:00:00-03:00"
+   * Data/hora no formato ISO com timezone (suporta formatos como -03:00, +00:00 ou Z). Se enviar apenas a data com hora zerada (00:00:00), retorna espaços com pelo menos um horário disponível nessa data. Se enviar data com uma hora específica, retorna espaços disponíveis nesse horário específico. Exemplo para data: "2025-05-22T00:00:00-03:00", exemplo para hora específica: "2025-05-22T14:00:00-03:00"
    */
   datetime: string
   /**
@@ -2847,9 +2934,19 @@ export type OpenDoor400 = {
   status_code: OpenDoor400StatusCode
 }
 
-export type OpenDoor200Room = {
+export type OpenDoor200SpaceType =
+  (typeof OpenDoor200SpaceType)[keyof typeof OpenDoor200SpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const OpenDoor200SpaceType = {
+  space: 'space',
+  workstation: 'workstation',
+} as const
+
+export type OpenDoor200Space = {
   id: string
   name: string
+  type: OpenDoor200SpaceType
 }
 
 /**
@@ -2859,39 +2956,39 @@ export type OpenDoor200 = {
   doorCode: string
   expiresAt: string
   message: string
-  room: OpenDoor200Room
+  space: OpenDoor200Space
 }
 
 export type OpenDoorParams = {
-  roomName: string
+  spaceName: string
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type UpdateRoom500StatusCode =
-  (typeof UpdateRoom500StatusCode)[keyof typeof UpdateRoom500StatusCode]
+export type UpdateSpace500StatusCode =
+  (typeof UpdateSpace500StatusCode)[keyof typeof UpdateSpace500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom500StatusCode = {
+export const UpdateSpace500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateRoom500Name =
-  (typeof UpdateRoom500Name)[keyof typeof UpdateRoom500Name]
+export type UpdateSpace500Name =
+  (typeof UpdateSpace500Name)[keyof typeof UpdateSpace500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom500Name = {
+export const UpdateSpace500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type UpdateRoom500 = {
+export type UpdateSpace500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2899,34 +2996,34 @@ export type UpdateRoom500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateRoom500Name
+  name: UpdateSpace500Name
   /** Código de status HTTP 500. */
-  status_code: UpdateRoom500StatusCode
+  status_code: UpdateSpace500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type UpdateRoom422StatusCode =
-  (typeof UpdateRoom422StatusCode)[keyof typeof UpdateRoom422StatusCode]
+export type UpdateSpace422StatusCode =
+  (typeof UpdateSpace422StatusCode)[keyof typeof UpdateSpace422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom422StatusCode = {
+export const UpdateSpace422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateRoom422Name =
-  (typeof UpdateRoom422Name)[keyof typeof UpdateRoom422Name]
+export type UpdateSpace422Name =
+  (typeof UpdateSpace422Name)[keyof typeof UpdateSpace422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom422Name = {
+export const UpdateSpace422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type UpdateRoom422DetailsItem = {
+export type UpdateSpace422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -2936,45 +3033,45 @@ export type UpdateRoom422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type UpdateRoom422 = {
+export type UpdateSpace422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: UpdateRoom422DetailsItem[]
+  details?: UpdateSpace422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateRoom422Name
+  name: UpdateSpace422Name
   /** Código de status HTTP 422. */
-  status_code: UpdateRoom422StatusCode
+  status_code: UpdateSpace422StatusCode
 }
 
 /**
  * Código de status HTTP 409.
  */
-export type UpdateRoom409StatusCode =
-  (typeof UpdateRoom409StatusCode)[keyof typeof UpdateRoom409StatusCode]
+export type UpdateSpace409StatusCode =
+  (typeof UpdateSpace409StatusCode)[keyof typeof UpdateSpace409StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom409StatusCode = {
+export const UpdateSpace409StatusCode = {
   NUMBER_409: 409,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateRoom409Name =
-  (typeof UpdateRoom409Name)[keyof typeof UpdateRoom409Name]
+export type UpdateSpace409Name =
+  (typeof UpdateSpace409Name)[keyof typeof UpdateSpace409Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom409Name = {
+export const UpdateSpace409Name = {
   ConflictError: 'ConflictError',
 } as const
 
 /**
  * Schema to represent Conflict errors (HTTP 409)
  */
-export type UpdateRoom409 = {
+export type UpdateSpace409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -2982,37 +3079,37 @@ export type UpdateRoom409 = {
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateRoom409Name
+  name: UpdateSpace409Name
   /** Código de status HTTP 409. */
-  status_code: UpdateRoom409StatusCode
+  status_code: UpdateSpace409StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type UpdateRoom404StatusCode =
-  (typeof UpdateRoom404StatusCode)[keyof typeof UpdateRoom404StatusCode]
+export type UpdateSpace404StatusCode =
+  (typeof UpdateSpace404StatusCode)[keyof typeof UpdateSpace404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom404StatusCode = {
+export const UpdateSpace404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateRoom404Name =
-  (typeof UpdateRoom404Name)[keyof typeof UpdateRoom404Name]
+export type UpdateSpace404Name =
+  (typeof UpdateSpace404Name)[keyof typeof UpdateSpace404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom404Name = {
+export const UpdateSpace404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type UpdateRoom404 = {
+export type UpdateSpace404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3020,37 +3117,37 @@ export type UpdateRoom404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateRoom404Name
+  name: UpdateSpace404Name
   /** Código de status HTTP 404. */
-  status_code: UpdateRoom404StatusCode
+  status_code: UpdateSpace404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type UpdateRoom403StatusCode =
-  (typeof UpdateRoom403StatusCode)[keyof typeof UpdateRoom403StatusCode]
+export type UpdateSpace403StatusCode =
+  (typeof UpdateSpace403StatusCode)[keyof typeof UpdateSpace403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom403StatusCode = {
+export const UpdateSpace403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateRoom403Name =
-  (typeof UpdateRoom403Name)[keyof typeof UpdateRoom403Name]
+export type UpdateSpace403Name =
+  (typeof UpdateSpace403Name)[keyof typeof UpdateSpace403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom403Name = {
+export const UpdateSpace403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type UpdateRoom403 = {
+export type UpdateSpace403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3058,37 +3155,37 @@ export type UpdateRoom403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateRoom403Name
+  name: UpdateSpace403Name
   /** Código de status HTTP 403. */
-  status_code: UpdateRoom403StatusCode
+  status_code: UpdateSpace403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type UpdateRoom401StatusCode =
-  (typeof UpdateRoom401StatusCode)[keyof typeof UpdateRoom401StatusCode]
+export type UpdateSpace401StatusCode =
+  (typeof UpdateSpace401StatusCode)[keyof typeof UpdateSpace401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom401StatusCode = {
+export const UpdateSpace401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateRoom401Name =
-  (typeof UpdateRoom401Name)[keyof typeof UpdateRoom401Name]
+export type UpdateSpace401Name =
+  (typeof UpdateSpace401Name)[keyof typeof UpdateSpace401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom401Name = {
+export const UpdateSpace401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type UpdateRoom401 = {
+export type UpdateSpace401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3096,37 +3193,37 @@ export type UpdateRoom401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateRoom401Name
+  name: UpdateSpace401Name
   /** Código de status HTTP 401. */
-  status_code: UpdateRoom401StatusCode
+  status_code: UpdateSpace401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type UpdateRoom400StatusCode =
-  (typeof UpdateRoom400StatusCode)[keyof typeof UpdateRoom400StatusCode]
+export type UpdateSpace400StatusCode =
+  (typeof UpdateSpace400StatusCode)[keyof typeof UpdateSpace400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom400StatusCode = {
+export const UpdateSpace400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type UpdateRoom400Name =
-  (typeof UpdateRoom400Name)[keyof typeof UpdateRoom400Name]
+export type UpdateSpace400Name =
+  (typeof UpdateSpace400Name)[keyof typeof UpdateSpace400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateRoom400Name = {
+export const UpdateSpace400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type UpdateRoom400 = {
+export type UpdateSpace400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3134,34 +3231,62 @@ export type UpdateRoom400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: UpdateRoom400Name
+  name: UpdateSpace400Name
   /** Código de status HTTP 400. */
-  status_code: UpdateRoom400StatusCode
+  status_code: UpdateSpace400StatusCode
 }
 
-export type UpdateRoom200Room = {
+export type UpdateSpace200SpaceType =
+  (typeof UpdateSpace200SpaceType)[keyof typeof UpdateSpace200SpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSpace200SpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+export type UpdateSpace200Space = {
   capacidade: number
   createdAt: string
   /** @nullable */
   description: string | null
+  /** @nullable */
+  floor: string | null
   id: string
   imagens: string[]
   isActive: boolean
   name: string
+  /** @nullable */
+  position: string | null
   recursos: string[]
+  type: UpdateSpace200SpaceType
   updatedAt: string
   userId: string
+  /** @nullable */
+  zone: string | null
 }
 
 /**
- * Sala atualizada com sucesso
+ * Espaço atualizado com sucesso
  */
-export type UpdateRoom200 = {
+export type UpdateSpace200 = {
   message: string
-  room: UpdateRoom200Room
+  space: UpdateSpace200Space
 }
 
-export type UpdateRoomBody = {
+/**
+ * Tipo do espaço: sala (room) ou estação de trabalho (workstation)
+ */
+export type UpdateSpaceBodyType =
+  (typeof UpdateSpaceBodyType)[keyof typeof UpdateSpaceBodyType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSpaceBodyType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+export type UpdateSpaceBody = {
   /**
    * @minimum 0
    * @exclusiveMinimum
@@ -3172,6 +3297,12 @@ export type UpdateRoomBody = {
    * @nullable
    */
   description?: string | null
+  /**
+   * Andar onde o espaço está localizado
+   * @maxLength 10
+   * @nullable
+   */
+  floor?: string | null
   /** @maxItems 5 */
   imagens?: string[]
   isActive?: boolean
@@ -3180,35 +3311,49 @@ export type UpdateRoomBody = {
    * @maxLength 100
    */
   name?: string
+  /**
+   * Posição específica do espaço
+   * @maxLength 50
+   * @nullable
+   */
+  position?: string | null
   recursos?: string[]
+  /** Tipo do espaço: sala (room) ou estação de trabalho (workstation) */
+  type?: UpdateSpaceBodyType
+  /**
+   * Zona ou setor onde o espaço está localizado
+   * @maxLength 50
+   * @nullable
+   */
+  zone?: string | null
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type GetRoom500StatusCode =
-  (typeof GetRoom500StatusCode)[keyof typeof GetRoom500StatusCode]
+export type GetSpace500StatusCode =
+  (typeof GetSpace500StatusCode)[keyof typeof GetSpace500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom500StatusCode = {
+export const GetSpace500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoom500Name =
-  (typeof GetRoom500Name)[keyof typeof GetRoom500Name]
+export type GetSpace500Name =
+  (typeof GetSpace500Name)[keyof typeof GetSpace500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom500Name = {
+export const GetSpace500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type GetRoom500 = {
+export type GetSpace500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3216,34 +3361,34 @@ export type GetRoom500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoom500Name
+  name: GetSpace500Name
   /** Código de status HTTP 500. */
-  status_code: GetRoom500StatusCode
+  status_code: GetSpace500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type GetRoom422StatusCode =
-  (typeof GetRoom422StatusCode)[keyof typeof GetRoom422StatusCode]
+export type GetSpace422StatusCode =
+  (typeof GetSpace422StatusCode)[keyof typeof GetSpace422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom422StatusCode = {
+export const GetSpace422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoom422Name =
-  (typeof GetRoom422Name)[keyof typeof GetRoom422Name]
+export type GetSpace422Name =
+  (typeof GetSpace422Name)[keyof typeof GetSpace422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom422Name = {
+export const GetSpace422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type GetRoom422DetailsItem = {
+export type GetSpace422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -3253,45 +3398,45 @@ export type GetRoom422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type GetRoom422 = {
+export type GetSpace422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: GetRoom422DetailsItem[]
+  details?: GetSpace422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoom422Name
+  name: GetSpace422Name
   /** Código de status HTTP 422. */
-  status_code: GetRoom422StatusCode
+  status_code: GetSpace422StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type GetRoom404StatusCode =
-  (typeof GetRoom404StatusCode)[keyof typeof GetRoom404StatusCode]
+export type GetSpace404StatusCode =
+  (typeof GetSpace404StatusCode)[keyof typeof GetSpace404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom404StatusCode = {
+export const GetSpace404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoom404Name =
-  (typeof GetRoom404Name)[keyof typeof GetRoom404Name]
+export type GetSpace404Name =
+  (typeof GetSpace404Name)[keyof typeof GetSpace404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom404Name = {
+export const GetSpace404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type GetRoom404 = {
+export type GetSpace404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3299,37 +3444,37 @@ export type GetRoom404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoom404Name
+  name: GetSpace404Name
   /** Código de status HTTP 404. */
-  status_code: GetRoom404StatusCode
+  status_code: GetSpace404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type GetRoom403StatusCode =
-  (typeof GetRoom403StatusCode)[keyof typeof GetRoom403StatusCode]
+export type GetSpace403StatusCode =
+  (typeof GetSpace403StatusCode)[keyof typeof GetSpace403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom403StatusCode = {
+export const GetSpace403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoom403Name =
-  (typeof GetRoom403Name)[keyof typeof GetRoom403Name]
+export type GetSpace403Name =
+  (typeof GetSpace403Name)[keyof typeof GetSpace403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom403Name = {
+export const GetSpace403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type GetRoom403 = {
+export type GetSpace403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3337,37 +3482,37 @@ export type GetRoom403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoom403Name
+  name: GetSpace403Name
   /** Código de status HTTP 403. */
-  status_code: GetRoom403StatusCode
+  status_code: GetSpace403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type GetRoom401StatusCode =
-  (typeof GetRoom401StatusCode)[keyof typeof GetRoom401StatusCode]
+export type GetSpace401StatusCode =
+  (typeof GetSpace401StatusCode)[keyof typeof GetSpace401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom401StatusCode = {
+export const GetSpace401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoom401Name =
-  (typeof GetRoom401Name)[keyof typeof GetRoom401Name]
+export type GetSpace401Name =
+  (typeof GetSpace401Name)[keyof typeof GetSpace401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom401Name = {
+export const GetSpace401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type GetRoom401 = {
+export type GetSpace401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3375,37 +3520,37 @@ export type GetRoom401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoom401Name
+  name: GetSpace401Name
   /** Código de status HTTP 401. */
-  status_code: GetRoom401StatusCode
+  status_code: GetSpace401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type GetRoom400StatusCode =
-  (typeof GetRoom400StatusCode)[keyof typeof GetRoom400StatusCode]
+export type GetSpace400StatusCode =
+  (typeof GetSpace400StatusCode)[keyof typeof GetSpace400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom400StatusCode = {
+export const GetSpace400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type GetRoom400Name =
-  (typeof GetRoom400Name)[keyof typeof GetRoom400Name]
+export type GetSpace400Name =
+  (typeof GetSpace400Name)[keyof typeof GetSpace400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetRoom400Name = {
+export const GetSpace400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type GetRoom400 = {
+export type GetSpace400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3413,59 +3558,75 @@ export type GetRoom400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: GetRoom400Name
+  name: GetSpace400Name
   /** Código de status HTTP 400. */
-  status_code: GetRoom400StatusCode
+  status_code: GetSpace400StatusCode
 }
 
-export type GetRoom200Room = {
+export type GetSpace200SpaceType =
+  (typeof GetSpace200SpaceType)[keyof typeof GetSpace200SpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetSpace200SpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+export type GetSpace200Space = {
   capacidade: number
   createdAt: string
   /** @nullable */
   description: string | null
+  /** @nullable */
+  floor: string | null
   id: string
   imagens: string[]
   isActive: boolean
   name: string
+  /** @nullable */
+  position: string | null
   recursos: string[]
+  type: GetSpace200SpaceType
   updatedAt: string
   userId: string
   userName: string
+  /** @nullable */
+  zone: string | null
 }
 
 /**
- * Detalhes da sala
+ * Detalhes do espaço
  */
-export type GetRoom200 = {
-  room: GetRoom200Room
+export type GetSpace200 = {
+  space: GetSpace200Space
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type DeleteRoom500StatusCode =
-  (typeof DeleteRoom500StatusCode)[keyof typeof DeleteRoom500StatusCode]
+export type DeleteSpace500StatusCode =
+  (typeof DeleteSpace500StatusCode)[keyof typeof DeleteSpace500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom500StatusCode = {
+export const DeleteSpace500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoom500Name =
-  (typeof DeleteRoom500Name)[keyof typeof DeleteRoom500Name]
+export type DeleteSpace500Name =
+  (typeof DeleteSpace500Name)[keyof typeof DeleteSpace500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom500Name = {
+export const DeleteSpace500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type DeleteRoom500 = {
+export type DeleteSpace500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3473,34 +3634,34 @@ export type DeleteRoom500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoom500Name
+  name: DeleteSpace500Name
   /** Código de status HTTP 500. */
-  status_code: DeleteRoom500StatusCode
+  status_code: DeleteSpace500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type DeleteRoom422StatusCode =
-  (typeof DeleteRoom422StatusCode)[keyof typeof DeleteRoom422StatusCode]
+export type DeleteSpace422StatusCode =
+  (typeof DeleteSpace422StatusCode)[keyof typeof DeleteSpace422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom422StatusCode = {
+export const DeleteSpace422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoom422Name =
-  (typeof DeleteRoom422Name)[keyof typeof DeleteRoom422Name]
+export type DeleteSpace422Name =
+  (typeof DeleteSpace422Name)[keyof typeof DeleteSpace422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom422Name = {
+export const DeleteSpace422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type DeleteRoom422DetailsItem = {
+export type DeleteSpace422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -3510,45 +3671,45 @@ export type DeleteRoom422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type DeleteRoom422 = {
+export type DeleteSpace422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: DeleteRoom422DetailsItem[]
+  details?: DeleteSpace422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoom422Name
+  name: DeleteSpace422Name
   /** Código de status HTTP 422. */
-  status_code: DeleteRoom422StatusCode
+  status_code: DeleteSpace422StatusCode
 }
 
 /**
  * Código de status HTTP 404.
  */
-export type DeleteRoom404StatusCode =
-  (typeof DeleteRoom404StatusCode)[keyof typeof DeleteRoom404StatusCode]
+export type DeleteSpace404StatusCode =
+  (typeof DeleteSpace404StatusCode)[keyof typeof DeleteSpace404StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom404StatusCode = {
+export const DeleteSpace404StatusCode = {
   NUMBER_404: 404,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoom404Name =
-  (typeof DeleteRoom404Name)[keyof typeof DeleteRoom404Name]
+export type DeleteSpace404Name =
+  (typeof DeleteSpace404Name)[keyof typeof DeleteSpace404Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom404Name = {
+export const DeleteSpace404Name = {
   NotFoundError: 'NotFoundError',
 } as const
 
 /**
  * Schema to represent Not Found errors (HTTP 404)
  */
-export type DeleteRoom404 = {
+export type DeleteSpace404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3556,37 +3717,37 @@ export type DeleteRoom404 = {
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoom404Name
+  name: DeleteSpace404Name
   /** Código de status HTTP 404. */
-  status_code: DeleteRoom404StatusCode
+  status_code: DeleteSpace404StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type DeleteRoom403StatusCode =
-  (typeof DeleteRoom403StatusCode)[keyof typeof DeleteRoom403StatusCode]
+export type DeleteSpace403StatusCode =
+  (typeof DeleteSpace403StatusCode)[keyof typeof DeleteSpace403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom403StatusCode = {
+export const DeleteSpace403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoom403Name =
-  (typeof DeleteRoom403Name)[keyof typeof DeleteRoom403Name]
+export type DeleteSpace403Name =
+  (typeof DeleteSpace403Name)[keyof typeof DeleteSpace403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom403Name = {
+export const DeleteSpace403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type DeleteRoom403 = {
+export type DeleteSpace403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3594,37 +3755,37 @@ export type DeleteRoom403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoom403Name
+  name: DeleteSpace403Name
   /** Código de status HTTP 403. */
-  status_code: DeleteRoom403StatusCode
+  status_code: DeleteSpace403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type DeleteRoom401StatusCode =
-  (typeof DeleteRoom401StatusCode)[keyof typeof DeleteRoom401StatusCode]
+export type DeleteSpace401StatusCode =
+  (typeof DeleteSpace401StatusCode)[keyof typeof DeleteSpace401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom401StatusCode = {
+export const DeleteSpace401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoom401Name =
-  (typeof DeleteRoom401Name)[keyof typeof DeleteRoom401Name]
+export type DeleteSpace401Name =
+  (typeof DeleteSpace401Name)[keyof typeof DeleteSpace401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom401Name = {
+export const DeleteSpace401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type DeleteRoom401 = {
+export type DeleteSpace401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3632,37 +3793,37 @@ export type DeleteRoom401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoom401Name
+  name: DeleteSpace401Name
   /** Código de status HTTP 401. */
-  status_code: DeleteRoom401StatusCode
+  status_code: DeleteSpace401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type DeleteRoom400StatusCode =
-  (typeof DeleteRoom400StatusCode)[keyof typeof DeleteRoom400StatusCode]
+export type DeleteSpace400StatusCode =
+  (typeof DeleteSpace400StatusCode)[keyof typeof DeleteSpace400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom400StatusCode = {
+export const DeleteSpace400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type DeleteRoom400Name =
-  (typeof DeleteRoom400Name)[keyof typeof DeleteRoom400Name]
+export type DeleteSpace400Name =
+  (typeof DeleteSpace400Name)[keyof typeof DeleteSpace400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteRoom400Name = {
+export const DeleteSpace400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type DeleteRoom400 = {
+export type DeleteSpace400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3670,44 +3831,44 @@ export type DeleteRoom400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: DeleteRoom400Name
+  name: DeleteSpace400Name
   /** Código de status HTTP 400. */
-  status_code: DeleteRoom400StatusCode
+  status_code: DeleteSpace400StatusCode
 }
 
 /**
- * Sala excluída com sucesso
+ * Espaço excluído com sucesso
  */
-export type DeleteRoom200 = {
+export type DeleteSpace200 = {
   message: string
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type ListRooms500StatusCode =
-  (typeof ListRooms500StatusCode)[keyof typeof ListRooms500StatusCode]
+export type ListSpaces500StatusCode =
+  (typeof ListSpaces500StatusCode)[keyof typeof ListSpaces500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms500StatusCode = {
+export const ListSpaces500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRooms500Name =
-  (typeof ListRooms500Name)[keyof typeof ListRooms500Name]
+export type ListSpaces500Name =
+  (typeof ListSpaces500Name)[keyof typeof ListSpaces500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms500Name = {
+export const ListSpaces500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type ListRooms500 = {
+export type ListSpaces500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3715,34 +3876,34 @@ export type ListRooms500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRooms500Name
+  name: ListSpaces500Name
   /** Código de status HTTP 500. */
-  status_code: ListRooms500StatusCode
+  status_code: ListSpaces500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type ListRooms422StatusCode =
-  (typeof ListRooms422StatusCode)[keyof typeof ListRooms422StatusCode]
+export type ListSpaces422StatusCode =
+  (typeof ListSpaces422StatusCode)[keyof typeof ListSpaces422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms422StatusCode = {
+export const ListSpaces422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRooms422Name =
-  (typeof ListRooms422Name)[keyof typeof ListRooms422Name]
+export type ListSpaces422Name =
+  (typeof ListSpaces422Name)[keyof typeof ListSpaces422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms422Name = {
+export const ListSpaces422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ListRooms422DetailsItem = {
+export type ListSpaces422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -3752,45 +3913,45 @@ export type ListRooms422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type ListRooms422 = {
+export type ListSpaces422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: ListRooms422DetailsItem[]
+  details?: ListSpaces422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRooms422Name
+  name: ListSpaces422Name
   /** Código de status HTTP 422. */
-  status_code: ListRooms422StatusCode
+  status_code: ListSpaces422StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type ListRooms403StatusCode =
-  (typeof ListRooms403StatusCode)[keyof typeof ListRooms403StatusCode]
+export type ListSpaces403StatusCode =
+  (typeof ListSpaces403StatusCode)[keyof typeof ListSpaces403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms403StatusCode = {
+export const ListSpaces403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRooms403Name =
-  (typeof ListRooms403Name)[keyof typeof ListRooms403Name]
+export type ListSpaces403Name =
+  (typeof ListSpaces403Name)[keyof typeof ListSpaces403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms403Name = {
+export const ListSpaces403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type ListRooms403 = {
+export type ListSpaces403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3798,37 +3959,37 @@ export type ListRooms403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRooms403Name
+  name: ListSpaces403Name
   /** Código de status HTTP 403. */
-  status_code: ListRooms403StatusCode
+  status_code: ListSpaces403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type ListRooms401StatusCode =
-  (typeof ListRooms401StatusCode)[keyof typeof ListRooms401StatusCode]
+export type ListSpaces401StatusCode =
+  (typeof ListSpaces401StatusCode)[keyof typeof ListSpaces401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms401StatusCode = {
+export const ListSpaces401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRooms401Name =
-  (typeof ListRooms401Name)[keyof typeof ListRooms401Name]
+export type ListSpaces401Name =
+  (typeof ListSpaces401Name)[keyof typeof ListSpaces401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms401Name = {
+export const ListSpaces401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type ListRooms401 = {
+export type ListSpaces401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3836,37 +3997,37 @@ export type ListRooms401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRooms401Name
+  name: ListSpaces401Name
   /** Código de status HTTP 401. */
-  status_code: ListRooms401StatusCode
+  status_code: ListSpaces401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type ListRooms400StatusCode =
-  (typeof ListRooms400StatusCode)[keyof typeof ListRooms400StatusCode]
+export type ListSpaces400StatusCode =
+  (typeof ListSpaces400StatusCode)[keyof typeof ListSpaces400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms400StatusCode = {
+export const ListSpaces400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type ListRooms400Name =
-  (typeof ListRooms400Name)[keyof typeof ListRooms400Name]
+export type ListSpaces400Name =
+  (typeof ListSpaces400Name)[keyof typeof ListSpaces400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListRooms400Name = {
+export const ListSpaces400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type ListRooms400 = {
+export type ListSpaces400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3874,70 +4035,89 @@ export type ListRooms400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: ListRooms400Name
+  name: ListSpaces400Name
   /** Código de status HTTP 400. */
-  status_code: ListRooms400StatusCode
+  status_code: ListSpaces400StatusCode
 }
 
-export type ListRooms200RoomsItem = {
+export type ListSpaces200SpacesItemType =
+  (typeof ListSpaces200SpacesItemType)[keyof typeof ListSpaces200SpacesItemType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaces200SpacesItemType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+export type ListSpaces200SpacesItem = {
   capacidade: number
   createdAt: string
   /** @nullable */
   description: string | null
+  /** @nullable */
+  floor: string | null
   id: string
   imagens: string[]
   isActive: boolean
   name: string
+  /** @nullable */
+  position: string | null
   recursos: string[]
+  type: ListSpaces200SpacesItemType
   updatedAt: string
   userId: string
   userName: string
+  /** @nullable */
+  zone: string | null
 }
 
 /**
- * Lista de salas
+ * Lista de espaços
  */
-export type ListRooms200 = {
+export type ListSpaces200 = {
   currentPage: number
-  rooms: ListRooms200RoomsItem[]
+  spaces: ListSpaces200SpacesItem[]
   totalCount: number
   totalPages: number
 }
 
-export type ListRoomsParams = {
+export type ListSpacesParams = {
   page?: string
   pageSize?: string
   searchTerm?: string
   isActive?: string
   capacidade?: string
+  type?: string
+  floor?: string
+  zone?: string
 }
 
 /**
  * Código de status HTTP 500.
  */
-export type CreateRoom500StatusCode =
-  (typeof CreateRoom500StatusCode)[keyof typeof CreateRoom500StatusCode]
+export type CreateSpace500StatusCode =
+  (typeof CreateSpace500StatusCode)[keyof typeof CreateSpace500StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom500StatusCode = {
+export const CreateSpace500StatusCode = {
   NUMBER_500: 500,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoom500Name =
-  (typeof CreateRoom500Name)[keyof typeof CreateRoom500Name]
+export type CreateSpace500Name =
+  (typeof CreateSpace500Name)[keyof typeof CreateSpace500Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom500Name = {
+export const CreateSpace500Name = {
   InternalServerError: 'InternalServerError',
 } as const
 
 /**
  * Schema to represent Internal Server errors (HTTP 500)
  */
-export type CreateRoom500 = {
+export type CreateSpace500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -3945,34 +4125,34 @@ export type CreateRoom500 = {
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoom500Name
+  name: CreateSpace500Name
   /** Código de status HTTP 500. */
-  status_code: CreateRoom500StatusCode
+  status_code: CreateSpace500StatusCode
 }
 
 /**
  * Código de status HTTP 422.
  */
-export type CreateRoom422StatusCode =
-  (typeof CreateRoom422StatusCode)[keyof typeof CreateRoom422StatusCode]
+export type CreateSpace422StatusCode =
+  (typeof CreateSpace422StatusCode)[keyof typeof CreateSpace422StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom422StatusCode = {
+export const CreateSpace422StatusCode = {
   NUMBER_422: 422,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoom422Name =
-  (typeof CreateRoom422Name)[keyof typeof CreateRoom422Name]
+export type CreateSpace422Name =
+  (typeof CreateSpace422Name)[keyof typeof CreateSpace422Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom422Name = {
+export const CreateSpace422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CreateRoom422DetailsItem = {
+export type CreateSpace422DetailsItem = {
   /** Mensagem de validação para o campo. */
   message: string
   /** Caminho para o campo com erro. */
@@ -3982,45 +4162,45 @@ export type CreateRoom422DetailsItem = {
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
-export type CreateRoom422 = {
+export type CreateSpace422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
   /** Detalhes adicionais sobre os erros de validação. */
-  details?: CreateRoom422DetailsItem[]
+  details?: CreateSpace422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoom422Name
+  name: CreateSpace422Name
   /** Código de status HTTP 422. */
-  status_code: CreateRoom422StatusCode
+  status_code: CreateSpace422StatusCode
 }
 
 /**
  * Código de status HTTP 409.
  */
-export type CreateRoom409StatusCode =
-  (typeof CreateRoom409StatusCode)[keyof typeof CreateRoom409StatusCode]
+export type CreateSpace409StatusCode =
+  (typeof CreateSpace409StatusCode)[keyof typeof CreateSpace409StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom409StatusCode = {
+export const CreateSpace409StatusCode = {
   NUMBER_409: 409,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoom409Name =
-  (typeof CreateRoom409Name)[keyof typeof CreateRoom409Name]
+export type CreateSpace409Name =
+  (typeof CreateSpace409Name)[keyof typeof CreateSpace409Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom409Name = {
+export const CreateSpace409Name = {
   ConflictError: 'ConflictError',
 } as const
 
 /**
  * Schema to represent Conflict errors (HTTP 409)
  */
-export type CreateRoom409 = {
+export type CreateSpace409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4028,37 +4208,37 @@ export type CreateRoom409 = {
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoom409Name
+  name: CreateSpace409Name
   /** Código de status HTTP 409. */
-  status_code: CreateRoom409StatusCode
+  status_code: CreateSpace409StatusCode
 }
 
 /**
  * Código de status HTTP 403.
  */
-export type CreateRoom403StatusCode =
-  (typeof CreateRoom403StatusCode)[keyof typeof CreateRoom403StatusCode]
+export type CreateSpace403StatusCode =
+  (typeof CreateSpace403StatusCode)[keyof typeof CreateSpace403StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom403StatusCode = {
+export const CreateSpace403StatusCode = {
   NUMBER_403: 403,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoom403Name =
-  (typeof CreateRoom403Name)[keyof typeof CreateRoom403Name]
+export type CreateSpace403Name =
+  (typeof CreateSpace403Name)[keyof typeof CreateSpace403Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom403Name = {
+export const CreateSpace403Name = {
   ForbiddenError: 'ForbiddenError',
 } as const
 
 /**
  * Schema to represent Forbidden errors (HTTP 403)
  */
-export type CreateRoom403 = {
+export type CreateSpace403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4066,37 +4246,37 @@ export type CreateRoom403 = {
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoom403Name
+  name: CreateSpace403Name
   /** Código de status HTTP 403. */
-  status_code: CreateRoom403StatusCode
+  status_code: CreateSpace403StatusCode
 }
 
 /**
  * Código de status HTTP 401.
  */
-export type CreateRoom401StatusCode =
-  (typeof CreateRoom401StatusCode)[keyof typeof CreateRoom401StatusCode]
+export type CreateSpace401StatusCode =
+  (typeof CreateSpace401StatusCode)[keyof typeof CreateSpace401StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom401StatusCode = {
+export const CreateSpace401StatusCode = {
   NUMBER_401: 401,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoom401Name =
-  (typeof CreateRoom401Name)[keyof typeof CreateRoom401Name]
+export type CreateSpace401Name =
+  (typeof CreateSpace401Name)[keyof typeof CreateSpace401Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom401Name = {
+export const CreateSpace401Name = {
   UnauthorizedError: 'UnauthorizedError',
 } as const
 
 /**
  * Schema to represent Unauthorized errors (HTTP 401)
  */
-export type CreateRoom401 = {
+export type CreateSpace401 = {
   /** Ação recomendada para a autenticação. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4104,37 +4284,37 @@ export type CreateRoom401 = {
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoom401Name
+  name: CreateSpace401Name
   /** Código de status HTTP 401. */
-  status_code: CreateRoom401StatusCode
+  status_code: CreateSpace401StatusCode
 }
 
 /**
  * Código de status HTTP 400.
  */
-export type CreateRoom400StatusCode =
-  (typeof CreateRoom400StatusCode)[keyof typeof CreateRoom400StatusCode]
+export type CreateSpace400StatusCode =
+  (typeof CreateSpace400StatusCode)[keyof typeof CreateSpace400StatusCode]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom400StatusCode = {
+export const CreateSpace400StatusCode = {
   NUMBER_400: 400,
 } as const
 
 /**
  * Nome fixo do erro.
  */
-export type CreateRoom400Name =
-  (typeof CreateRoom400Name)[keyof typeof CreateRoom400Name]
+export type CreateSpace400Name =
+  (typeof CreateSpace400Name)[keyof typeof CreateSpace400Name]
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateRoom400Name = {
+export const CreateSpace400Name = {
   BadRequestError: 'BadRequestError',
 } as const
 
 /**
  * Schema to represent Bad Request errors (HTTP 400)
  */
-export type CreateRoom400 = {
+export type CreateSpace400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
   /** Detalhes adicionais sobre o erro. */
@@ -4142,35 +4322,63 @@ export type CreateRoom400 = {
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
-  name: CreateRoom400Name
+  name: CreateSpace400Name
   /** Código de status HTTP 400. */
-  status_code: CreateRoom400StatusCode
+  status_code: CreateSpace400StatusCode
 }
 
-export type CreateRoom201Room = {
+export type CreateSpace201SpaceType =
+  (typeof CreateSpace201SpaceType)[keyof typeof CreateSpace201SpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateSpace201SpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+export type CreateSpace201Space = {
   capacidade: number
   createdAt: string
   /** @nullable */
   description: string | null
+  /** @nullable */
+  floor: string | null
   id: string
   imagens: string[]
   isActive: boolean
   name: string
+  /** @nullable */
+  position: string | null
   recursos: string[]
+  type: CreateSpace201SpaceType
   updatedAt: string
   userId: string
   userName: string
+  /** @nullable */
+  zone: string | null
 }
 
 /**
- * Sala criada com sucesso
+ * Espaço criado com sucesso
  */
-export type CreateRoom201 = {
+export type CreateSpace201 = {
   message: string
-  room: CreateRoom201Room
+  space: CreateSpace201Space
 }
 
-export type CreateRoomBody = {
+/**
+ * Tipo do espaço: sala (room) ou estação de trabalho (workstation)
+ */
+export type CreateSpaceBodyType =
+  (typeof CreateSpaceBodyType)[keyof typeof CreateSpaceBodyType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateSpaceBodyType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+export type CreateSpaceBody = {
   /**
    * @minimum 0
    * @exclusiveMinimum
@@ -4181,6 +4389,12 @@ export type CreateRoomBody = {
    * @nullable
    */
   description?: string | null
+  /**
+   * Andar onde o espaço está localizado
+   * @maxLength 10
+   * @nullable
+   */
+  floor?: string | null
   /** @maxItems 5 */
   imagens?: string[]
   isActive?: boolean
@@ -4189,7 +4403,21 @@ export type CreateRoomBody = {
    * @maxLength 100
    */
   name: string
+  /**
+   * Posição específica do espaço
+   * @maxLength 50
+   * @nullable
+   */
+  position?: string | null
   recursos?: string[]
+  /** Tipo do espaço: sala (room) ou estação de trabalho (workstation) */
+  type: CreateSpaceBodyType
+  /**
+   * Zona ou setor onde o espaço está localizado
+   * @maxLength 50
+   * @nullable
+   */
+  zone?: string | null
 }
 
 /**
@@ -6057,6 +6285,15 @@ export type UserCreate400 = {
 }
 
 /**
+ * Detalhes do usuário criado com sucesso
+ */
+export type UserCreate201 = {
+  /** Mensagem informativa sobre o resultado da operação de criação do usuário. Campo obrigatório. */
+  message: string
+  user: UserCreate201User
+}
+
+/**
  * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
  */
 export type UserCreate201UserRole =
@@ -6086,15 +6323,6 @@ export type UserCreate201User = {
   name: string
   /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
   role: UserCreate201UserRole
-}
-
-/**
- * Detalhes do usuário criado com sucesso
- */
-export type UserCreate201 = {
-  /** Mensagem informativa sobre o resultado da operação de criação do usuário. Campo obrigatório. */
-  message: string
-  user: UserCreate201User
 }
 
 /**

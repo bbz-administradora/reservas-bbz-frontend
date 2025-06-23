@@ -1,12 +1,12 @@
-import { DataTableRooms } from '@/components/data-table/rooms/table-rooms'
-import { RoomAddUpdateForm } from '@/components/forms/RoomAddUpdateForm'
-import { RoomAddUpdateImageForm } from '@/components/forms/RoomAddUpdateImageForm'
+import { DataTableSpaces } from '@/components/data-table/spaces/table-spaces'
+import { SpaceAddUpdateForm } from '@/components/forms/SpaceAddUpdateForm'
+import { SpaceAddUpdateImageForm } from '@/components/forms/SpaceAddUpdateImageForm'
 import { Text } from '@/components/Text'
-import { fetchListRoomsInServer } from '@/services/roomService'
+import { fetchListSpacesInServer } from '@/services/spaceService'
 import { Separator } from '@radix-ui/react-select'
 
-export default async function AdminRooms() {
-  const listRooms = await fetchListRoomsInServer({
+export default async function AdminSpaces() {
+  const listSpaces = await fetchListSpacesInServer({
     page: '1',
     pageSize: '1000',
   })
@@ -21,14 +21,14 @@ export default async function AdminRooms() {
       </Text>
 
       <div className="container mx-auto py-10">
-        <DataTableRooms initialData={listRooms?.rooms} />
+        <DataTableSpaces initialData={listSpaces?.spaces} />
       </div>
 
       <Separator className="bg-primary w-full" />
 
-      <RoomAddUpdateForm />
+      <SpaceAddUpdateForm />
 
-      <RoomAddUpdateImageForm />
+      <SpaceAddUpdateImageForm />
     </div>
   )
 }

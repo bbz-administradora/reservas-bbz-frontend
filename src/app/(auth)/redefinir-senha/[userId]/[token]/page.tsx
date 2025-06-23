@@ -31,7 +31,7 @@ export default async function RedefinirSenha({
   const { isAuthenticated } = await fetchCurrentUserInServer()
 
   if (isAuthenticated) {
-    return redirect(`${webserver.host}/salas`)
+    return redirect(`${webserver.host}/espacos`)
   }
 
   return (

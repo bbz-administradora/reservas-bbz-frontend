@@ -1,18 +1,18 @@
 'use client'
 
-import { ListRoomReservations200ReservationsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { ListSpaceReservations200ReservationsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { FilterFn } from '@tanstack/react-table'
 import { DataTable } from '../data-table'
 import { columnsReservations } from './columns-reservations'
 import { DataTableReservationsToolbar } from './toolbar-reservations'
 
 interface DataTableReservationsProps {
-  initialData?: ListRoomReservations200ReservationsItem[]
+  initialData?: ListSpaceReservations200ReservationsItem[]
   className?: string
 }
 
-// Custom filter function for room name (nested property)
-const roomNameFilter: FilterFn<ListRoomReservations200ReservationsItem> = (
+// Custom filter function for space name (nested property)
+const spaceNameFilter: FilterFn<ListSpaceReservations200ReservationsItem> = (
   row,
   columnId,
   filterValue,
@@ -20,10 +20,10 @@ const roomNameFilter: FilterFn<ListRoomReservations200ReservationsItem> = (
   // Skip if no filter value
   if (!filterValue || typeof filterValue !== 'string') return true
 
-  // For room name column, search in the nested property
+  // For space name column, search in the nested property
   if (columnId === 'name') {
-    const roomName = row.original.room.name || ''
-    return roomName.toLowerCase().includes(filterValue.toLowerCase())
+    const spaceName = row.original.space.name || ''
+    return spaceName.toLowerCase().includes(filterValue.toLowerCase())
   }
 
   // Default behavior for other columns
@@ -31,9 +31,9 @@ const roomNameFilter: FilterFn<ListRoomReservations200ReservationsItem> = (
   return value?.toLowerCase().includes(filterValue.toLowerCase())
 }
 
-// Interface para representar reservas agrupadas
+// Interface para representar reservas de espaços agrupadas
 interface GroupedReservation
-  extends Omit<ListRoomReservations200ReservationsItem, 'id'> {
+  extends Omit<ListSpaceReservations200ReservationsItem, 'id'> {
   id: string // ID da primeira reserva do grupo
   ids: string[] // Array com todos os IDs das reservas agrupadas
   // Acrescentamos campos para representar o intervalo completo
@@ -41,17 +41,17 @@ interface GroupedReservation
   groupSlotEnd: string
 }
 
-// Função para agrupar slots consecutivos da mesma sala
+// Função para agrupar slots consecutivos do mesmo espaço
 const groupConsecutiveSlots = (
-  reservations: ListRoomReservations200ReservationsItem[],
+  reservations: ListSpaceReservations200ReservationsItem[],
 ): GroupedReservation[] => {
   if (!reservations || reservations.length === 0) return []
 
-  // Primeiro, ordenamos por sala e data/hora de início
+  // Primeiro, ordenamos por espaço e data/hora de início
   const sortedReservations = [...reservations].sort((a, b) => {
-    // Primeiro por sala
-    if (a.room.id !== b.room.id) {
-      return a.room.id.localeCompare(b.room.id)
+    // Primeiro por espaço
+    if (a.space.id !== b.space.id) {
+      return a.space.id.localeCompare(b.space.id)
     }
     // Depois por horário de início
     return (
@@ -62,8 +62,8 @@ const groupConsecutiveSlots = (
 
   const groupedReservations: GroupedReservation[] = []
   let currentGroup: {
-    reservations: ListRoomReservations200ReservationsItem[]
-    roomId: string
+    reservations: ListSpaceReservations200ReservationsItem[]
+    spaceId: string
     lastEndTime: Date
   } | null = null
 
@@ -71,11 +71,11 @@ const groupConsecutiveSlots = (
     const startTime = new Date(reservation.slotStart || '')
     const endTime = new Date(reservation.slotEnd || '')
 
-    // Se não temos um grupo atual ou a reserva é de outra sala
+    // Se não temos um grupo atual ou a reserva é de outro espaço
     // ou não é consecutiva (início != fim do último slot)
     if (
       !currentGroup ||
-      reservation.room.id !== currentGroup.roomId ||
+      reservation.space.id !== currentGroup.spaceId ||
       Math.abs(startTime.getTime() - currentGroup.lastEndTime.getTime()) > 60000 // tolerância de 1 minuto
     ) {
       // Se temos um grupo em andamento, finalizamos ele
@@ -84,19 +84,35 @@ const groupConsecutiveSlots = (
         const lastReservation =
           currentGroup.reservations[currentGroup.reservations.length - 1]
 
+        // Criamos um novo objeto GroupedReservation a partir da primeira reserva
         groupedReservations.push({
-          ...firstReservation,
+          // Copiamos todas as propriedades necessárias de forma explícita
           id: firstReservation.id,
           ids: currentGroup.reservations.map((r) => r.id),
           groupSlotStart: firstReservation.slotStart || '',
           groupSlotEnd: lastReservation.slotEnd || '',
+          // Outras propriedades necessárias da reserva
+          status: firstReservation.status,
+          space: firstReservation.space,
+          slotStart: firstReservation.slotStart,
+          slotEnd: firstReservation.slotEnd,
+          slot: firstReservation.slot,
+          user: firstReservation.user,
+          createdAt: firstReservation.createdAt,
+          cancelledAt: firstReservation.cancelledAt,
+          cancelledBy: firstReservation.cancelledBy,
+          cancelReason: firstReservation.cancelReason,
+          closedAt: firstReservation.closedAt,
+          bbzCollaborators: firstReservation.bbzCollaborators,
+          externalGuests: firstReservation.externalGuests,
+          needsCopeira: firstReservation.needsCopeira,
         })
       }
 
       // Iniciamos um novo grupo
       currentGroup = {
         reservations: [reservation],
-        roomId: reservation.room.id,
+        spaceId: reservation.space.id,
         lastEndTime: endTime,
       }
     } else {
@@ -113,11 +129,26 @@ const groupConsecutiveSlots = (
       currentGroup.reservations[currentGroup.reservations.length - 1]
 
     groupedReservations.push({
-      ...firstReservation,
+      // Copiamos todas as propriedades necessárias de forma explícita
       id: firstReservation.id,
       ids: currentGroup.reservations.map((r) => r.id),
       groupSlotStart: firstReservation.slotStart || '',
       groupSlotEnd: lastReservation.slotEnd || '',
+      // Outras propriedades necessárias da reserva
+      status: firstReservation.status,
+      space: firstReservation.space,
+      slotStart: firstReservation.slotStart,
+      slotEnd: firstReservation.slotEnd,
+      slot: firstReservation.slot,
+      user: firstReservation.user,
+      createdAt: firstReservation.createdAt,
+      cancelledAt: firstReservation.cancelledAt,
+      cancelledBy: firstReservation.cancelledBy,
+      cancelReason: firstReservation.cancelReason,
+      closedAt: firstReservation.closedAt,
+      bbzCollaborators: firstReservation.bbzCollaborators,
+      externalGuests: firstReservation.externalGuests,
+      needsCopeira: firstReservation.needsCopeira,
     })
   }
 
@@ -128,7 +159,7 @@ export function DataTableReservations({
   initialData,
   className,
 }: DataTableReservationsProps) {
-  // Agrupar slots consecutivos da mesma sala
+  // Agrupar slots consecutivos do mesmo espaço
   const groupedData = groupConsecutiveSlots(initialData || [])
 
   return (
@@ -137,7 +168,7 @@ export function DataTableReservations({
       columns={columnsReservations as any[]}
       Toolbar={DataTableReservationsToolbar}
       className={className}
-      globalFilterFn={roomNameFilter}
+      globalFilterFn={spaceNameFilter}
       initialSorting={[{ id: 'dateTime', desc: true }]} // Ordenar por data/hora, mais recente primeiro
     />
   )

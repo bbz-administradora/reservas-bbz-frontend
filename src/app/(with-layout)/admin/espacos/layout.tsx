@@ -1,9 +1,9 @@
-import { RoomFormModeProvider } from '@/context/RoomFormModeProvider'
+import { SpaceFormModeProvider } from '@/context/SpaceFormModeProvider'
 import { webserver } from '@/infra/webserver'
 import { fetchCurrentUserInServer } from '@/services/userService'
 import { redirect } from 'next/navigation'
 
-export default async function RoomLayout({
+export default async function SpaceLayout({
   children,
 }: {
   children: React.ReactNode
@@ -12,7 +12,7 @@ export default async function RoomLayout({
 
   // Verifica se o usuário está autenticado e tem a função de admin
   if (user?.role === 'user') {
-    redirect(`${webserver.host}/salas`)
+    redirect(`${webserver.host}/espacos`)
   }
-  return <RoomFormModeProvider>{children}</RoomFormModeProvider>
+  return <SpaceFormModeProvider>{children}</SpaceFormModeProvider>
 }

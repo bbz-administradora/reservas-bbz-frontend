@@ -19,7 +19,7 @@ export default async function EsqueceuSenha() {
   const { isAuthenticated } = await fetchCurrentUserInServer()
 
   if (isAuthenticated) {
-    return redirect(`${webserver.host}/salas`)
+    return redirect(`${webserver.host}/espacos`)
   }
 
   return (

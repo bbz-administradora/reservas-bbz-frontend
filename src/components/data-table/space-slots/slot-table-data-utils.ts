@@ -1,6 +1,6 @@
 // src/utils/slotTableData.ts
 
-import { GetRoomSlotAvailability200SlotsItemUser } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { GetSpaceSlotAvailability200SlotsItemUser } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 
 // Interface para células da tabela com informações de slots
 export interface SlotCell {
@@ -10,7 +10,7 @@ export interface SlotCell {
   // Campos da API
   slotStart?: string
   slotEnd?: string
-  user?: GetRoomSlotAvailability200SlotsItemUser | null
+  user?: GetSpaceSlotAvailability200SlotsItemUser | null
 }
 
 export interface SlotRow {

@@ -2,9 +2,9 @@
 
 import { revalidateTags } from '@/actions/revalidate-tags'
 import { useDeleteImage, useUploadImage } from '@/api/endpoints/image/image'
-import { useGetRoom, useUpdateRoom } from '@/api/endpoints/room/room'
+import { useGetSpace, useUpdateSpace } from '@/api/endpoints/space/space'
 import { Text } from '@/components/Text'
-import { useRoomFormMode } from '@/context/RoomFormModeProvider'
+import { useSpaceFormMode } from '@/context/SpaceFormModeProvider'
 import { env } from '@/infra/env'
 import { ImageShimmerPlaceholder, resizeImageToWebp } from '@/utils/imagesUtils'
 import { cn } from '@/utils/mergeClassNames'
@@ -24,7 +24,7 @@ import {
 } from '../ui/form'
 import { Input } from '../ui/input'
 
-// largura e altura da imagem maxima da sala
+// largura e altura da imagem maxima do espaço
 const MAX_IMAGE_UPLOAD = 5
 const TARGET_WIDTH_IMAGE = 1024
 const TARGET_HEIGHT_IMAGE = 576
@@ -36,14 +36,21 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ]
 
-export interface RoomAddUpdateFormProps
+export interface SpaceAddUpdateFormProps
   extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
 }
 
-export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
-  const { mode, setMode, selectedRoomId, setSelectedRoomId, toggleResetForm } =
-    useRoomFormMode()
+export function SpaceAddUpdateImageForm({
+  className,
+}: SpaceAddUpdateFormProps) {
+  const {
+    mode,
+    setMode,
+    selectedSpaceId,
+    setSelectedSpaceId,
+    toggleResetForm,
+  } = useSpaceFormMode()
   const [imagesData, setImagesData] = useState<string[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
 
@@ -54,61 +61,60 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
     },
   })
 
-  // Hook para obter os dados da sala
+  // Hook para obter os dados do espaço
   const swrKey =
-    mode === 'image' && selectedRoomId ? ['get-room', selectedRoomId] : null
+    mode === 'image' && selectedSpaceId ? ['get-space', selectedSpaceId] : null
   const {
-    data: getRoomData,
-    isLoading: loadingGetRoom,
-    mutate: getRoom,
-  } = useGetRoom(selectedRoomId as string, {
+    data: getSpaceData,
+    isLoading: loadingGetSpace,
+    mutate: getSpace,
+  } = useGetSpace(selectedSpaceId as string, {
     swr: {
       swrKey,
       onSuccess: (response) => {
         if (response.status === 200) {
-          const { room } = response.data
-          setSelectedRoomId(room.id)
-          setImagesData(room.imagens ?? [])
-          form.setValue('imagens', room.imagens ?? [])
+          const { space } = response.data
+          setSelectedSpaceId(space.id)
+          setImagesData(space.imagens ?? [])
+          form.setValue('imagens', space.imagens ?? [])
         } else {
           showToast({
-            message: 'Ops... Falha ao carregar imagens da Sala.',
+            message: 'Ops... Falha ao carregar imagens do Espaço.',
             duration: 5000,
             variant: 'error',
           })
 
-          handleResetUpdateImagesRoom()
+          handleResetUpdateImagesSpace()
         }
       },
       onError: () => {
         showToast({
-          message: 'Ops... Falha ao carregar imagens da Sala.',
+          message: 'Ops... Falha ao carregar imagens do Espaço.',
           duration: 5000,
           variant: 'error',
         })
 
-        handleResetUpdateImagesRoom()
+        handleResetUpdateImagesSpace()
       },
     },
   })
 
-  // Hook para atualizar a sala
-  const { isMutating: loadingUpdateRoom, trigger: updateRoom } = useUpdateRoom(
-    selectedRoomId as string,
-    {
+  // Hook para atualizar o espaço
+  const { isMutating: loadingUpdateSpace, trigger: updateSpace } =
+    useUpdateSpace(selectedSpaceId as string, {
       swr: {
         onSuccess: (response) => {
           if (response.status === 200) {
-            const { room } = response.data
+            const { space } = response.data
 
             showToast({
-              message: `Imagens da sala ${room.name} atualizada com sucesso.`,
+              message: `Imagens do espaço ${space.name} atualizada com sucesso.`,
               duration: 5000,
               variant: 'success',
             })
           } else {
             showToast({
-              message: 'Ops... Falha ao atualizar imagens da Sala.',
+              message: 'Ops... Falha ao atualizar imagens do Espaço.',
               duration: 5000,
               variant: 'error',
             })
@@ -116,14 +122,13 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
         },
         onError: () => {
           showToast({
-            message: 'Ops... Falha ao atualizar imagens da Sala.',
+            message: 'Ops... Falha ao atualizar imagens do Espaço.',
             duration: 5000,
             variant: 'error',
           })
         },
       },
-    },
-  )
+    })
 
   // Hook para deletar a imagem antiga do S3 (caso exista)
   const { trigger: deleteImage, isMutating: loadingDeleteImage } =
@@ -143,7 +148,7 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
   // Hook para enviar a imagem para S3
   const { trigger: uploadImage, isMutating: loadingUploadImage } =
     useUploadImage(
-      { folder: 'salas', group: 'sala', subtitle: 'bbz' },
+      { folder: 'espacos', group: 'espaco', subtitle: 'bbz' },
       {
         swr: {
           onSuccess: (response) => {
@@ -170,22 +175,22 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
   function resolveTitle() {
     switch (true) {
       case isProcessing ||
-        loadingUpdateRoom ||
-        loadingGetRoom ||
+        loadingUpdateSpace ||
+        loadingGetSpace ||
         loadingUploadImage ||
         loadingDeleteImage:
-        return 'Atualizando Imagens da Sala...'
+        return 'Atualizando Imagens do Espaço...'
       default:
-        return `Atualizar Imagens da ${getRoomData?.data?.room?.name}`
+        return `Atualizar Imagens do ${getSpaceData?.data?.space?.name}`
     }
   }
 
   const title = resolveTitle()
 
-  // Função para cancelar a edição da sala
-  function handleResetUpdateImagesRoom() {
+  // Função para cancelar a edição do espaço
+  function handleResetUpdateImagesSpace() {
     setMode('add')
-    setSelectedRoomId(null)
+    setSelectedSpaceId(null)
     setImagesData([])
     form.reset({ imagens: [] })
     toggleResetForm()
@@ -207,7 +212,7 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
       showToast({
         message:
           imagesData.length > 0
-            ? `A sala possui ${imagesData.length} image${imagesData.length > 1 ? 'ns' : 'm'}. Você pode adicionar mais ${
+            ? `O espaço possui ${imagesData.length} image${imagesData.length > 1 ? 'ns' : 'm'}. Você pode adicionar mais ${
                 MAX_IMAGE_UPLOAD - imagesData.length
               } image${MAX_IMAGE_UPLOAD - imagesData.length > 1 ? 'ns' : 'm'}.`
             : `Você pode adicionar até 5 imagens. Você esta adicionando ${
@@ -284,10 +289,10 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
       // 📌 Atualizo imagesData com as novas imagens do S3
       const updatedImages = [...imagesData, ...resizedImages]
 
-      // 📌 Atualizo o banco de dados das salas
-      if (mode === 'image' && selectedRoomId) {
+      // 📌 Atualizo o banco de dados dos espaços
+      if (mode === 'image' && selectedSpaceId) {
         try {
-          const updateResult = await updateRoom({ imagens: updatedImages })
+          const updateResult = await updateSpace({ imagens: updatedImages })
 
           if (updateResult.status !== 200) {
             // Rollback: Se houve erro na atualização do banco, excluo as imagens enviadas
@@ -311,7 +316,7 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
           form.setValue('imagens', updatedImages)
 
           // 📌 Revalido tag para atualizar a tabela se tudo deu certo
-          revalidateTags(['update-room-image'])
+          revalidateTags(['update-space-image'])
         } catch (error) {
           // Rollback: Se houve exceção, excluo as imagens enviadas
           for (const imagePath of resizedImages) {
@@ -355,9 +360,9 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
       currentImages.splice(index, 1)
 
       // 📌 Atualiza banco de dados
-      if (mode === 'image' && selectedRoomId) {
+      if (mode === 'image' && selectedSpaceId) {
         try {
-          const result = await updateRoom({ imagens: currentImages })
+          const result = await updateSpace({ imagens: currentImages })
 
           if (result.status === 200) {
             // 📌 Só deleta a imagem do S3 após sucesso na atualização do banco
@@ -368,7 +373,7 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
             form.setValue('imagens', currentImages)
 
             // 📌 Revalida tag para atualizar a tabela
-            revalidateTags(['update-room-image'])
+            revalidateTags(['update-space-image'])
           } else {
             showToast({
               message: 'Erro ao remover imagem.',
@@ -397,12 +402,12 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
     }
   }
 
-  // Efeito para atualizar o formulário quando o modo for 'image' e o ID da Sala estiver definido
+  // Efeito para atualizar o formulário quando o modo for 'image' e o ID do Espaço estiver definido
   useEffect(() => {
-    if (mode === 'image' && selectedRoomId) {
-      getRoom()
+    if (mode === 'image' && selectedSpaceId) {
+      getSpace()
     }
-  }, [selectedRoomId])
+  }, [selectedSpaceId])
 
   return (
     <div
@@ -416,7 +421,7 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
         {title}
       </Text>
 
-      {/* Formulário de adição e edição de sala */}
+      {/* Formulário de adição e edição de espaço */}
       <Form {...form}>
         <div
           id="form-edit-images"
@@ -461,7 +466,7 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
                     onChange={handleAddImage}
                     disabled={
                       isProcessing ||
-                      loadingUpdateRoom ||
+                      loadingUpdateSpace ||
                       loadingUploadImage ||
                       loadingDeleteImage
                     }
@@ -488,7 +493,7 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
                             className={cn(
                               'bg-destructive text-destructive-foreground border-destructive-foreground absolute top-[-10px] right-[-10px] z-10 cursor-pointer rounded-full border-1 p-0.5',
                               (isProcessing ||
-                                loadingUpdateRoom ||
+                                loadingUpdateSpace ||
                                 loadingDeleteImage) &&
                                 'cursor-not-allowed opacity-50',
                             )}
@@ -519,10 +524,10 @@ export function RoomAddUpdateImageForm({ className }: RoomAddUpdateFormProps) {
             <Button
               type="button"
               variant="outline"
-              onClick={handleResetUpdateImagesRoom}
+              onClick={handleResetUpdateImagesSpace}
               disabled={
                 isProcessing ||
-                loadingUpdateRoom ||
+                loadingUpdateSpace ||
                 loadingUploadImage ||
                 loadingDeleteImage
               }

@@ -8,14 +8,14 @@ import { z } from 'zod'
 
 import { revalidateTags } from '@/actions/revalidate-tags'
 import {
-  GetRoomSlotAvailability200SlotsItem,
+  GetSpaceSlotAvailability200SlotsItem,
   UserMe200User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
-import { useCreateRoomReservation } from '@/api/endpoints/reservation/reservation'
+import { useCreateSpaceReservation } from '@/api/endpoints/reservation/reservation'
 import {
-  getGetRoomSlotAvailabilityKey,
-  useGetRoomSlotAvailability,
-} from '@/api/endpoints/room-slot/room-slot'
+  getGetSpaceSlotAvailabilityKey,
+  useGetSpaceSlotAvailability,
+} from '@/api/endpoints/space-slot/space-slot'
 import { showToast } from '@/components/ShowToast'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -45,7 +45,7 @@ type FormData = z.infer<typeof participantsSchema>
 
 interface InviteParticipantsFormProps {
   className?: string
-  roomId: string // ID da sala
+  spaceId: string // ID do espaço
   startDate: string // Data inicial para buscar os slots
   endDate: string // Data final para buscar os slots
   user: UserMe200User | null // Dados do usuário logado
@@ -53,7 +53,7 @@ interface InviteParticipantsFormProps {
 
 export function InviteParticipantsForm({
   className,
-  roomId,
+  spaceId,
   startDate,
   endDate,
   user = null,
@@ -71,13 +71,13 @@ export function InviteParticipantsForm({
   const [internalParticipants, setInternalParticipants] = useState<string[]>([])
   const [externalParticipants, setExternalParticipants] = useState<string[]>([])
 
-  // Hook para buscar disponibilidade de slots da sala
-  const { data: roomSlotData, mutate: getRoomSlotData } =
-    useGetRoomSlotAvailability(roomId, { startDate, endDate })
+  // Hook para buscar disponibilidade de slots do espaço
+  const { data: spaceSlotData, mutate: getSpaceSlotData } =
+    useGetSpaceSlotAvailability(spaceId, { startDate, endDate })
 
-  // Hook para criar reserva de sala a partir de pré-reserva
-  const { trigger: createRoomReservation, isMutating: isCreatingReservation } =
-    useCreateRoomReservation({
+  // Hook para criar reserva de espaço a partir de pré-reserva
+  const { trigger: createSpaceReservation, isMutating: isCreatingReservation } =
+    useCreateSpaceReservation({
       swr: {
         onSuccess: (response) => {
           // Verificar se a resposta contém mensagem de sucesso
@@ -245,9 +245,9 @@ export function InviteParticipantsForm({
   }
 
   // Função para filtrar slots pré-reservados do usuário atual
-  const getUserPreReservedSlots = (roomSlotData: any, userId: string) => {
-    const userSlots = roomSlotData.data.slots.filter(
-      (slot: GetRoomSlotAvailability200SlotsItem) =>
+  const getUserPreReservedSlots = (spaceSlotData: any, userId: string) => {
+    const userSlots = spaceSlotData.data.slots.filter(
+      (slot: GetSpaceSlotAvailability200SlotsItem) =>
         slot.status === 'pre_reserved' && slot.user.id === userId,
     )
 
@@ -256,17 +256,17 @@ export function InviteParticipantsForm({
 
   // Função para criar reservas para todos os slots de uma vez
   const createReservationsForSlots = async (
-    slots: GetRoomSlotAvailability200SlotsItem[],
+    slots: GetSpaceSlotAvailability200SlotsItem[],
     formData: FormData,
   ) => {
     const reservationData = {
-      roomId: roomId,
-      roomSlotIds: slots.map((slot) => slot.id),
+      spaceId: spaceId,
+      spaceSlotIds: slots.map((slot) => slot.id),
       bbzCollaborators: internalParticipants,
       externalGuests: externalParticipants,
       needsCopeira: formData.needsWaitress,
     }
-    await createRoomReservation(reservationData)
+    await createSpaceReservation(reservationData)
   }
 
   const onFormSubmit: SubmitHandler<FormData> = async (data) => {
@@ -274,10 +274,10 @@ export function InviteParticipantsForm({
 
     try {
       // Forçar revalidação dos dados dos slots
-      await getRoomSlotData()
+      await getSpaceSlotData()
 
       // Verificar se temos os dados necessários
-      if (!roomId || !roomSlotData?.data || !user) {
+      if (!spaceId || !spaceSlotData?.data || !user) {
         showToast({
           message:
             'Não foi possível acessar os dados necessários. Tente novamente.',
@@ -290,7 +290,7 @@ export function InviteParticipantsForm({
 
       // Obter slots pré-reservados do usuário
       const userPreReservedSlots = getUserPreReservedSlots(
-        roomSlotData,
+        spaceSlotData,
         user.id,
       )
 
@@ -309,7 +309,7 @@ export function InviteParticipantsForm({
       await createReservationsForSlots(userPreReservedSlots, data)
 
       // Forçar revalidação dos dados após o sucesso
-      const swrKey = getGetRoomSlotAvailabilityKey(roomId, {
+      const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
         startDate,
         endDate,
       })

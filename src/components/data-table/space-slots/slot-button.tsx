@@ -3,13 +3,13 @@
 import { revalidateTags } from '@/actions/revalidate-tags'
 import { UserMe200User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import {
-  useCancelRoomReservation,
-  useCloseRoomReservation,
+  useCancelSpaceReservation,
+  useCloseSpaceReservation,
 } from '@/api/endpoints/reservation/reservation'
 import {
-  useCreateRoomSlotPreReserve,
-  useDeleteRoomSlotPreReserve,
-} from '@/api/endpoints/room-slot/room-slot'
+  useCreateSpaceSlotPreReserve,
+  useDeleteSpaceSlotPreReserve,
+} from '@/api/endpoints/space-slot/space-slot'
 import { showToast } from '@/components/ShowToast'
 import { Text } from '@/components/Text'
 import { Button } from '@/components/ui/button'
@@ -49,7 +49,7 @@ import {
   CalendarX2Icon,
 } from 'lucide-react'
 import { useState } from 'react'
-import { SlotCell } from './slotTableDataUtils'
+import { SlotCell } from './slot-table-data-utils'
 
 interface SlotButtonProps {
   date: string
@@ -57,7 +57,7 @@ interface SlotButtonProps {
   slot: SlotCell
   user: UserMe200User | null
   onDataChange?: () => void
-  roomId?: string
+  spaceId?: string
 }
 
 type SlotVariant =
@@ -109,7 +109,7 @@ export function SlotButton({
   slot,
   user,
   onDataChange,
-  roomId,
+  spaceId,
 }: SlotButtonProps) {
   // Estado para controlar a abertura do Dialog e Sheet
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -150,7 +150,7 @@ export function SlotButton({
 
   // Hook para deletar a pré-reserva
   const { trigger: deletePreReserve, isMutating: deletingPreReserve } =
-    useDeleteRoomSlotPreReserve(slot.id || '', {
+    useDeleteSpaceSlotPreReserve(slot.id || '', {
       swr: {
         onSuccess: () => {
           showToast({
@@ -181,7 +181,7 @@ export function SlotButton({
 
   // Hook para criar uma pré-reserva
   const { trigger: createPreReserve, isMutating: isCreatingPreReserve } =
-    useCreateRoomSlotPreReserve({
+    useCreateSpaceSlotPreReserve({
       swr: {
         onSuccess: (response) => {
           if (response.status === 201) {
@@ -255,7 +255,7 @@ export function SlotButton({
 
   // Hook para cancelar uma reserva
   const { trigger: cancelReservation, isMutating: isCancelingReservation } =
-    useCancelRoomReservation({
+    useCancelSpaceReservation({
       swr: {
         onSuccess: (response) => {
           if (response.status === 200) {
@@ -300,7 +300,7 @@ export function SlotButton({
 
   // Hook para encerrar uma reserva
   const { trigger: closeReservation, isMutating: isClosingReservation } =
-    useCloseRoomReservation({
+    useCloseSpaceReservation({
       swr: {
         onSuccess: (response) => {
           if (response.status === 200) {
@@ -355,7 +355,7 @@ export function SlotButton({
     }
 
     cancelReservation({
-      roomSlotId: slot.id,
+      spaceSlotId: slot.id,
       cancelReason: cancelReason.trim(),
     })
     // Dialog e Sheet serão fechados no callback de sucesso/erro
@@ -374,7 +374,7 @@ export function SlotButton({
       return
     }
 
-    closeReservation({ roomSlotId: slot.id })
+    closeReservation({ spaceSlotId: slot.id })
     // Dialog e Sheet serão fechados no callback de sucesso/erro
   }
 
@@ -394,7 +394,7 @@ export function SlotButton({
   }
 
   function handleCreatePreReservation() {
-    if (!roomId) {
+    if (!spaceId) {
       showToast({
         message: 'ID da sala não disponível',
         variant: 'error',
@@ -416,7 +416,7 @@ export function SlotButton({
 
     // Dados da pré-reserva
     const preReserveData = {
-      roomId: roomId,
+      spaceId,
       slotStart,
       slotEnd,
     }

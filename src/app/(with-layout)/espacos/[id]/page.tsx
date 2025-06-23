@@ -1,11 +1,11 @@
-import { DataTableRoomSlots } from '@/components/data-table/room-slots/table-room-slots'
+import { DataTableSpaceSlots } from '@/components/data-table/space-slots/table-space-slots'
 import { InviteParticipantsForm } from '@/components/forms/InviteParticipantsForm'
 import { ImageGallery } from '@/components/ImageGallery'
 import { Text } from '@/components/Text'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { webserver } from '@/infra/webserver'
-import { fetchAvailableRoomSlotsByRoom } from '@/services/roomSlotService'
+import { fetchAvailableSpaceSlotsBySpace } from '@/services/spaceSlotService'
 import { fetchCurrentUserInServer } from '@/services/userService'
 import { ChevronLeftIcon, UserRoundIcon } from 'lucide-react'
 import { Metadata } from 'next'
@@ -31,31 +31,31 @@ export async function generateMetadata(props: {
   if (!id || !searchParams.startDate || !searchParams.endDate) {
     return {
       title: 'Redirecionando | BBZ Reservas',
-      description: 'Redirecionando para a página de salas',
+      description: 'Redirecionando para a página de espaços',
     }
   }
 
-  const roomData = await fetchAvailableRoomSlotsByRoom(id, {
+  const spaceData = await fetchAvailableSpaceSlotsBySpace(id, {
     startDate: searchParams.startDate,
     endDate: searchParams.endDate,
   })
 
-  if (!roomData) {
+  if (!spaceData) {
     return {
-      title: 'Sala não encontrada | BBZ Reservas',
-      description: 'Sala de reunião não encontrada',
+      title: 'Espaço não encontrado | BBZ Reservas',
+      description: 'Espaço não encontrado',
     }
   }
 
   return {
-    title: `${roomData.room.name} | BBZ Reservas`,
-    description: roomData.room.description || 'Sala de reunião',
+    title: `${spaceData.space.name} | BBZ Reservas`,
+    description: spaceData.space.description || 'Espaço',
     openGraph: {
       images:
-        roomData.room.imagens.length > 0
+        spaceData.space.imagens.length > 0
           ? [
               {
-                url: `${process.env.NEXT_PUBLIC_BUCKET || ''}/${roomData.room.imagens[0]}`,
+                url: `${process.env.NEXT_PUBLIC_BUCKET || ''}/${spaceData.space.imagens[0]}`,
                 width: 1200,
                 height: 630,
               },
@@ -65,7 +65,7 @@ export async function generateMetadata(props: {
   }
 }
 
-export default async function RoomDetailsAndReservation(props: {
+export default async function SpaceDetailsAndReservation(props: {
   params: Params
   searchParams: SearchParams
 }) {
@@ -76,18 +76,18 @@ export default async function RoomDetailsAndReservation(props: {
   const endDate = searchParams.endDate
 
   if (!id || !startDate || !endDate) {
-    return redirect(`${webserver.host}/salas`)
+    return redirect(`${webserver.host}/espacos`)
   }
 
-  const roomData = await fetchAvailableRoomSlotsByRoom(id, {
+  const spaceData = await fetchAvailableSpaceSlotsBySpace(id, {
     startDate,
     endDate,
   })
 
   const { user } = await fetchCurrentUserInServer()
 
-  if (!roomData || !user) {
-    return redirect(`${webserver.host}/salas`)
+  if (!spaceData || !user) {
+    return redirect(`${webserver.host}/espacos`)
   }
 
   return (
@@ -96,31 +96,31 @@ export default async function RoomDetailsAndReservation(props: {
       className="wrapper flex flex-1 flex-col gap-5 pt-5 pb-28 lg:pb-10"
     >
       <div className="relative my-4 flex w-full items-center justify-center">
-        <Link href={`${webserver.host}/salas`} className="absolute left-0">
+        <Link href={`${webserver.host}/espacos`} className="absolute left-0">
           <ChevronLeftIcon className="text-accent size-10" />
         </Link>
         <Text as="h1" variant={'title-22-32-700'}>
-          {roomData.room.name}
+          {spaceData.space.name}
         </Text>
       </div>
 
       {/* Componente de galeria de imagens */}
-      <ImageGallery images={roomData.room.imagens} />
+      <ImageGallery images={spaceData.space.imagens} />
 
-      {/* Componente de descrição da sala */}
+      {/* Componente de descrição do espaço */}
       <Text variant={'body-16-18-400'} className="my-5 max-w-3xl">
-        {roomData.room.description}
+        {spaceData.space.description}
       </Text>
 
-      {/* Componente de recursos da sala */}
+      {/* Componente de recursos do espaço */}
       <div className="my-5 flex flex-wrap justify-center gap-3 lg:justify-start">
         <Badge className="bg-accent text-accent-foreground hover:bg-accent/80 gap-2.5 rounded-full px-5 py-2 transition-colors">
           <UserRoundIcon />
-          {`${roomData.room.capacidade} pessoa${
-            roomData.room.capacidade === 1 ? '' : 's'
+          {`${spaceData.space.capacidade} pessoa${
+            spaceData.space.capacidade === 1 ? '' : 's'
           }`}
         </Badge>
-        {roomData.room.recursos.map((recurso, index) => (
+        {spaceData.space.recursos.map((recurso, index) => (
           <Badge
             key={index}
             className="bg-accent text-accent-foreground hover:bg-accent/80 gap-2.5 rounded-full px-5 py-2 transition-colors"
@@ -131,12 +131,12 @@ export default async function RoomDetailsAndReservation(props: {
       </div>
 
       <div className="container mx-auto pt-10">
-        <DataTableRoomSlots
+        <DataTableSpaceSlots
           startDate={startDate}
           endDate={endDate}
-          roomId={id}
+          spaceId={id}
           user={user}
-          roomData={roomData}
+          spaceData={spaceData}
           className="mb-5"
         />
       </div>
@@ -148,7 +148,7 @@ export default async function RoomDetailsAndReservation(props: {
           Convidar participantes:
         </Text>
         <InviteParticipantsForm
-          roomId={id}
+          spaceId={id}
           startDate={startDate}
           endDate={endDate}
           user={user}

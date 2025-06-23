@@ -50,10 +50,10 @@ export function DataTableReservationsToolbar<TData>({
   return (
     <div className="grid grid-rows-2 gap-3 lg:grid-cols-[.3fr_.2fr_.5fr] lg:grid-rows-1">
       <Input
-        placeholder="Filtrar por sala..."
+        placeholder="Filtrar por espaço..."
         value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
         onChange={(event) => {
-          // Custom filtering for room name
+          // Custom filtering for space name
           const value = event.target.value
 
           if (table.getColumn('name')) {

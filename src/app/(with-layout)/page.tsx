@@ -8,7 +8,7 @@ export default async function Home() {
   // ❗ Não estamos usando a home, então não queremos 404 aqui, então redirecionamos autenticados para a página de salas e não autenticados para a página de login
   if (!isAuthenticated) {
     redirect(`${webserver.host}/login`)
-  } else redirect(`${webserver.host}/salas`)
+  } else redirect(`${webserver.host}/espacos`)
 
   const name = user?.name || 'Usuário'
 

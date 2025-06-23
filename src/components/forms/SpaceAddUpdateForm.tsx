@@ -2,12 +2,12 @@
 
 import { revalidateTags } from '@/actions/revalidate-tags'
 import {
-  useCreateRoom,
-  useGetRoom,
-  useUpdateRoom,
-} from '@/api/endpoints/room/room'
+  useCreateSpace,
+  useGetSpace,
+  useUpdateSpace,
+} from '@/api/endpoints/space/space'
 import { Text } from '@/components/Text'
-import { useRoomFormMode } from '@/context/RoomFormModeProvider'
+import { useSpaceFormMode } from '@/context/SpaceFormModeProvider'
 import { cn } from '@/utils/mergeClassNames'
 import { areStringArraysEqual } from '@/utils/textUtils'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -31,7 +31,7 @@ import {
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 
-const addUpdateRoomFormSchema = z.object({
+const addUpdateSpaceFormSchema = z.object({
   name: z
     .string({ required_error: 'O preenchimento do nome é obrigatório.' })
     .min(3, 'O nome do espaço deve ter pelo menos 3 caracteres.')
@@ -50,54 +50,58 @@ const addUpdateRoomFormSchema = z.object({
     .positive('A capacidade deve ser um número positivo.'),
 
   isActive: z.boolean().default(true),
+
+  type: z.enum(['room', 'workstation']).default('room'),
 })
 
-type RoomAddUpdateFormSchemaProps = z.input<typeof addUpdateRoomFormSchema>
+type SpaceAddUpdateFormSchemaProps = z.input<typeof addUpdateSpaceFormSchema>
 
-export interface RoomAddUpdateFormProps
+export interface SpaceAddUpdateFormProps
   extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
 }
 
-export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
-  const { mode, setMode, selectedRoomId, setSelectedRoomId, resetForm } =
-    useRoomFormMode()
+export function SpaceAddUpdateForm({ className }: SpaceAddUpdateFormProps) {
+  const { mode, setMode, selectedSpaceId, setSelectedSpaceId, resetForm } =
+    useSpaceFormMode()
 
   // React Hook Form
-  const form = useForm<RoomAddUpdateFormSchemaProps>({
-    resolver: zodResolver(addUpdateRoomFormSchema),
+  const form = useForm<SpaceAddUpdateFormSchemaProps>({
+    resolver: zodResolver(addUpdateSpaceFormSchema),
     defaultValues: {
       name: '',
       description: '',
       recursos: [],
       capacidade: 0,
       isActive: true,
+      type: 'room',
     },
   })
 
   // Hook para obter os dados do espaço
   const swrKey =
-    mode === 'edit' && selectedRoomId ? ['get-room', selectedRoomId] : null
+    mode === 'edit' && selectedSpaceId ? ['get-space', selectedSpaceId] : null
   const {
-    data: dataGetRoom,
-    isLoading: loadingGetRoom,
+    data: dataGetSpace,
+    isLoading: loadingGetSpace,
     mutate,
-  } = useGetRoom(selectedRoomId as string, {
+  } = useGetSpace(selectedSpaceId as string, {
     swr: {
       swrKey,
       onSuccess: (response) => {
         if (response.status === 200) {
-          const { room } = response.data
+          const { space } = response.data
 
           form.reset({
-            name: room.name,
-            description: room.description ?? '',
-            recursos: room.recursos ?? [],
-            capacidade: room.capacidade,
-            isActive: room.isActive,
+            name: space.name,
+            description: space.description ?? '',
+            recursos: space.recursos ?? [],
+            capacidade: space.capacidade,
+            isActive: space.isActive,
+            type: space.type,
           })
 
-          setSelectedRoomId(room.id)
+          setSelectedSpaceId(space.id)
 
           window.scrollTo({
             top: document.documentElement.scrollHeight,
@@ -111,40 +115,39 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
           })
 
           setMode('add')
-          setSelectedRoomId(null)
+          setSelectedSpaceId(null)
           form.reset()
         }
       },
       onError: () => {
         showToast({
-          message: 'Ops... Falha ao carregar dados da Espaço.',
+          message: 'Ops... Falha ao carregar dados do espaço.',
           duration: 5000,
           variant: 'error',
         })
 
         setMode('add')
-        setSelectedRoomId(null)
+        setSelectedSpaceId(null)
         form.reset()
       },
     },
   })
 
   // Hook para atualizar o espaço
-  const { isMutating: loadingUpdateRoom, trigger: updateRoom } = useUpdateRoom(
-    selectedRoomId as string,
-    {
+  const { isMutating: loadingUpdateSpace, trigger: updateSpace } =
+    useUpdateSpace(selectedSpaceId as string, {
       swr: {
         onSuccess: (response) => {
           if (response.status === 200) {
-            const { room } = response.data
+            const { space } = response.data
 
-            revalidateTags(['update-room'])
+            revalidateTags(['update-space'])
             setMode('add')
-            setSelectedRoomId(null)
+            setSelectedSpaceId(null)
             handleResetForm()
 
             showToast({
-              message: `Espaço ${room.name} atualizado com sucesso.`,
+              message: `Espaço ${space.name} atualizado com sucesso.`,
               duration: 5000,
               variant: 'success',
             })
@@ -170,56 +173,56 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
           })
         },
       },
-    },
-  )
+    })
 
   // Hook para criar o espaço
-  const { isMutating: loadingCreateRoom, trigger: createRoom } = useCreateRoom({
-    swr: {
-      onSuccess: (response) => {
-        if (response.status === 201) {
-          const { room } = response.data
+  const { isMutating: loadingCreateSpace, trigger: createSpace } =
+    useCreateSpace({
+      swr: {
+        onSuccess: (response) => {
+          if (response.status === 201) {
+            const { space } = response.data
 
-          revalidateTags(['create-room'])
+            revalidateTags(['create-space'])
 
-          handleResetForm()
+            handleResetForm()
 
-          showToast({
-            message: `Espaço ${room.name} criado com sucesso.`,
-            duration: 5000,
-            variant: 'success',
-          })
-        } else if (response.status === 409) {
-          showToast({
-            message: 'Ops... Já existe uma Espaço com este nome.',
-            duration: 5000,
-            variant: 'error',
-          })
-        } else {
+            showToast({
+              message: `Espaço ${space.name} criado com sucesso.`,
+              duration: 5000,
+              variant: 'success',
+            })
+          } else if (response.status === 409) {
+            showToast({
+              message: 'Ops... Já existe uma Espaço com este nome.',
+              duration: 5000,
+              variant: 'error',
+            })
+          } else {
+            showToast({
+              message: 'Ops... Falha ao criar espaço.',
+              duration: 5000,
+              variant: 'error',
+            })
+          }
+        },
+        onError: () => {
           showToast({
             message: 'Ops... Falha ao criar espaço.',
             duration: 5000,
             variant: 'error',
           })
-        }
+        },
       },
-      onError: () => {
-        showToast({
-          message: 'Ops... Falha ao criar espaço.',
-          duration: 5000,
-          variant: 'error',
-        })
-      },
-    },
-  })
+    })
 
   function resolveLabelButton() {
     switch (true) {
-      case loadingCreateRoom:
+      case loadingCreateSpace:
         return 'Adicionando...'
-      case loadingUpdateRoom:
+      case loadingUpdateSpace:
         return 'Atualizando...'
-      case loadingGetRoom:
+      case loadingGetSpace:
         return 'Carregando...'
       default:
         return mode === 'add' ? 'Adicionar' : 'Atualizar'
@@ -228,11 +231,11 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
 
   function resolveTitle() {
     switch (true) {
-      case loadingCreateRoom:
+      case loadingCreateSpace:
         return 'Adicionando Espaço...'
-      case loadingUpdateRoom:
+      case loadingUpdateSpace:
         return 'Atualizando Espaço...'
-      case loadingGetRoom:
+      case loadingGetSpace:
         return 'Carregando Espaço...'
       default:
         return mode === 'add' ? 'Adicionar Espaço' : 'Editar Espaço'
@@ -241,41 +244,47 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
 
   const title = resolveTitle()
 
-  // Função para cancelar a edição dao Espaço
+  // Função para cancelar a edição do espaço
   function handleResetForm() {
     setMode('add')
-    setSelectedRoomId(null)
+    setSelectedSpaceId(null)
     form.reset({
       name: '',
       description: '',
       recursos: [],
       capacidade: 0,
       isActive: true,
+      type: 'room',
     })
 
     // Rola a página para o topo
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  function onSubmit(values: RoomAddUpdateFormSchemaProps) {
+  function onSubmit(values: SpaceAddUpdateFormSchemaProps) {
     if (mode === 'add') {
-      createRoom(values)
+      // Garantir que type é sempre passado para createSpace
+      const spaceData = {
+        ...values,
+        type: values.type || 'room',
+      }
+      createSpace(spaceData)
       return
     }
 
     if (mode === 'edit') {
-      const original = dataGetRoom?.data.room
+      const original = dataGetSpace?.data.space
 
       if (!original) {
         showToast({
-          message: 'Ops... Falha ao carregar dados dao Espaço.',
+          message: 'Ops... Falha ao carregar dados do espaço.',
           duration: 5000,
           variant: 'error',
         })
         return
       }
 
-      const diff: Partial<RoomAddUpdateFormSchemaProps> = {}
+      const diff: Partial<SpaceAddUpdateFormSchemaProps> = {}
 
       if (original.name.trim() !== values.name.trim()) {
         diff.name = values.name
@@ -297,27 +306,31 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
         diff.isActive = values.isActive
       }
 
+      if (original.type !== values.type) {
+        diff.type = values.type || 'room'
+      }
+
       if (Object.keys(diff).length === 0) {
         showToast({
           message:
-            'Os dados atuais do Espaço não foram alterados. Faça uma alteração para atualizar.',
+            'Os dados atuais do espaço não foram alterados. Faça uma alteração para atualizar.',
           duration: 5000,
           variant: 'info',
         })
         return
       }
-      updateRoom(diff)
+      updateSpace(diff)
     }
 
     handleResetForm()
   }
 
-  // Efeito para atualizar o formulário quando o modo for 'edit' e o ID do Espaço estiver definido
+  // Efeito para atualizar o formulário quando o modo for 'edit' e o ID do espaço estiver definido
   useEffect(() => {
-    if (mode === 'edit' && selectedRoomId) {
+    if (mode === 'edit' && selectedSpaceId) {
       mutate()
     }
-  }, [selectedRoomId])
+  }, [selectedSpaceId])
 
   useEffect(() => {
     handleResetForm()
@@ -514,9 +527,9 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
               onClick={handleResetForm}
               disabled={
                 form.formState.isSubmitting ||
-                loadingUpdateRoom ||
-                loadingGetRoom ||
-                loadingCreateRoom
+                loadingUpdateSpace ||
+                loadingGetSpace ||
+                loadingCreateSpace
               }
             >
               Cancelar
@@ -525,15 +538,15 @@ export function RoomAddUpdateForm({ className }: RoomAddUpdateFormProps) {
               type="submit"
               disabled={
                 form.formState.isSubmitting ||
-                loadingUpdateRoom ||
-                loadingGetRoom ||
-                loadingCreateRoom
+                loadingUpdateSpace ||
+                loadingGetSpace ||
+                loadingCreateSpace
               }
             >
               {(form.formState.isSubmitting ||
-                loadingGetRoom ||
-                loadingCreateRoom ||
-                loadingUpdateRoom) && (
+                loadingGetSpace ||
+                loadingCreateSpace ||
+                loadingUpdateSpace) && (
                 <LoaderCircleIcon className="mr-2 animate-spin" />
               )}
               {resolveLabelButton()}

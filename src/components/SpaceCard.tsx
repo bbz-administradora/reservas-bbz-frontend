@@ -13,7 +13,7 @@ import Link from 'next/link'
 import { Text } from './Text'
 import { AspectRatio } from './ui/aspect-ratio'
 
-type RoomCardProps = {
+type SpaceCardProps = {
   capacidade: number
   description: string | null
   id: string
@@ -23,14 +23,14 @@ type RoomCardProps = {
   date: Date | undefined
 }
 
-export function RoomCard({
+export function SpaceCard({
   id,
   name,
   capacidade,
   imagens,
   recursos,
   date,
-}: RoomCardProps) {
+}: SpaceCardProps) {
   const baseDate = date ?? new Date()
 
   const startDate = format(baseDate, 'yyyy-MM-dd')
@@ -42,7 +42,7 @@ export function RoomCard({
         {imagens[0] ? (
           <Image
             src={`${env.NEXT_PUBLIC_BUCKET}/${imagens[0]}`}
-            alt={`Imagem da sala ${name}`}
+            alt={`Imagem do espaço ${name}`}
             fill
             className="object-cover"
             placeholder={ImageShimmerPlaceholder()}
@@ -79,7 +79,7 @@ export function RoomCard({
       <CardFooter className="mt-2">
         <Button variant="outline" className="w-full" asChild>
           <Link
-            href={`${webserver.host}/salas/${id}?startDate=${startDate}&endDate=${endDate}`}
+            href={`${webserver.host}/espacos/${id}?startDate=${startDate}&endDate=${endDate}`}
           >
             Ver espaço
           </Link>

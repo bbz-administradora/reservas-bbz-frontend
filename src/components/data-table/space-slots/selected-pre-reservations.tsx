@@ -1,7 +1,7 @@
 'use client'
 
-import { GetRoomSlotAvailability200SlotsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
-import { useDeleteRoomSlotPreReserve } from '@/api/endpoints/room-slot/room-slot'
+import { GetSpaceSlotAvailability200SlotsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { useDeleteSpaceSlotPreReserve } from '@/api/endpoints/space-slot/space-slot'
 import { showToast } from '@/components/ShowToast'
 import { Text } from '@/components/Text'
 import { cn } from '@/utils/mergeClassNames'
@@ -11,7 +11,7 @@ import { ChevronRightIcon, XIcon } from 'lucide-react'
 import { useSWRConfig } from 'swr'
 
 interface SelectedPreReservationProps {
-  slot: GetRoomSlotAvailability200SlotsItem
+  slot: GetSpaceSlotAvailability200SlotsItem
   onDataChange: () => void
 }
 
@@ -22,7 +22,7 @@ export function SelectedPreReservation({
   const { mutate } = useSWRConfig()
 
   const { trigger: deletePreReserve, isMutating: isDeleting } =
-    useDeleteRoomSlotPreReserve(slot.id, {
+    useDeleteSpaceSlotPreReserve(slot.id, {
       swr: {
         onSuccess: () => {
           showToast({

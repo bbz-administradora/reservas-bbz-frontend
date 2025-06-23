@@ -182,8 +182,8 @@ export const useUploadImage = <
 
         ## Exemplos de uso:
         DELETE /v1/private/image/s3/delete
-        Body: { "imagePath": "images/salas/sala-presidencia-20250512123045.webp" }
-        
+        Body: { "imagePath": "images/espacos/sala-presidencia-20250512123045.webp" }
+
         DELETE /v1/private/image/s3/delete
         Body: { "imagePath": "images/produto-bebida-20250512123045.webp" }
 

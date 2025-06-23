@@ -11,50 +11,50 @@ import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
-  CancelRoomReservation200,
-  CancelRoomReservation400,
-  CancelRoomReservation401,
-  CancelRoomReservation403,
-  CancelRoomReservation404,
-  CancelRoomReservation422,
-  CancelRoomReservation500,
-  CancelRoomReservationBody,
-  CloseRoomReservation200,
-  CloseRoomReservation400,
-  CloseRoomReservation401,
-  CloseRoomReservation403,
-  CloseRoomReservation404,
-  CloseRoomReservation422,
-  CloseRoomReservation500,
-  CloseRoomReservationBody,
-  CreateRoomReservation201,
-  CreateRoomReservation400,
-  CreateRoomReservation401,
-  CreateRoomReservation403,
-  CreateRoomReservation404,
-  CreateRoomReservation409,
-  CreateRoomReservation422,
-  CreateRoomReservation500,
-  CreateRoomReservationBody,
-  GetRoomReservationStats200,
-  GetRoomReservationStats400,
-  GetRoomReservationStats401,
-  GetRoomReservationStats403,
-  GetRoomReservationStats500,
-  ListRoomReservations200,
-  ListRoomReservations400,
-  ListRoomReservations401,
-  ListRoomReservations403,
-  ListRoomReservations404,
-  ListRoomReservations422,
-  ListRoomReservations500,
-  ListRoomReservationsParams,
+  CancelSpaceReservation200,
+  CancelSpaceReservation400,
+  CancelSpaceReservation401,
+  CancelSpaceReservation403,
+  CancelSpaceReservation404,
+  CancelSpaceReservation422,
+  CancelSpaceReservation500,
+  CancelSpaceReservationBody,
+  CloseSpaceReservation200,
+  CloseSpaceReservation400,
+  CloseSpaceReservation401,
+  CloseSpaceReservation403,
+  CloseSpaceReservation404,
+  CloseSpaceReservation422,
+  CloseSpaceReservation500,
+  CloseSpaceReservationBody,
+  CreateSpaceReservation201,
+  CreateSpaceReservation400,
+  CreateSpaceReservation401,
+  CreateSpaceReservation403,
+  CreateSpaceReservation404,
+  CreateSpaceReservation409,
+  CreateSpaceReservation422,
+  CreateSpaceReservation500,
+  CreateSpaceReservationBody,
+  GetSpaceReservationStats200,
+  GetSpaceReservationStats400,
+  GetSpaceReservationStats401,
+  GetSpaceReservationStats403,
+  GetSpaceReservationStats500,
+  ListSpaceReservations200,
+  ListSpaceReservations400,
+  ListSpaceReservations401,
+  ListSpaceReservations403,
+  ListSpaceReservations404,
+  ListSpaceReservations422,
+  ListSpaceReservations500,
+  ListSpaceReservationsParams,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
 /**
- * Este endpoint permite que um usuário crie uma ou mais reservas de sala a partir de slots pré-reservados.
+ * Este endpoint permite que um usuário crie uma ou mais reservas de espaço a partir de slots pré-reservados.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
@@ -74,8 +74,8 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   4. O sistema confirma as reservas e atualiza o status dos slots para 'reserved'
 
 * **Parâmetros no corpo**:
-  - roomId (obrigatório): Identificador UUID da sala
-  - roomSlotId (obrigatório): Lista de identificadores UUID dos slots pré-reservados
+  - spaceId (obrigatório): Identificador UUID do espaço
+  - spaceSlotId (obrigatório): Lista de identificadores UUID dos slots pré-reservados
   - bbzCollaborators (opcional): Lista de colaboradores da BBZ que participarão da reunião
   - externalGuests (opcional): Lista de convidados externos que participarão da reunião
   - needsCopeira (opcional): Indica se a reserva necessita de serviço de copeira (padrão: false)
@@ -84,8 +84,8 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   - Requisição básica: `POST /v1/private/reservation` com body:
   ```json
   {
-    "roomId": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
-    "roomSlotId": ["b2c3d4e5-f6a7-8901-bcde-2345678901cd", "c3d4e5f6-a789-0123-cdef-3456789012de"],
+    "spaceId": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+    "spaceSlotId": ["b2c3d4e5-f6a7-8901-bcde-2345678901cd", "c3d4e5f6-a789-0123-cdef-3456789012de"],
     "bbzCollaborators": ["João Silva", "Maria Oliveira"],
     "externalGuests": ["Carlos Santos - Empresa XYZ"],
     "needsCopeira": true
@@ -101,84 +101,84 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   - As reservas só podem ser criadas a partir de slots que já estejam pré-reservados pelo mesmo usuário
   - Cada pré-reserva deve estar dentro do período válido de 5 minutos
   - O status das reservas criadas será definido como 'reserved'
- * @summary Criar uma reserva de sala
+ * @summary Criar uma reserva de espaço
  */
-export type createRoomReservationResponse = {
-  data: CreateRoomReservation201
+export type createSpaceReservationResponse = {
+  data: CreateSpaceReservation201
   status: number
   headers: Headers
 }
 
-export const getCreateRoomReservationUrl = () => {
+export const getCreateSpaceReservationUrl = () => {
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation`
 }
 
-export const createRoomReservation = async (
-  createRoomReservationBody: CreateRoomReservationBody,
+export const createSpaceReservation = async (
+  createSpaceReservationBody: CreateSpaceReservationBody,
   options?: RequestInit,
-): Promise<createRoomReservationResponse> => {
-  return customFetch<Promise<createRoomReservationResponse>>(
-    getCreateRoomReservationUrl(),
+): Promise<createSpaceReservationResponse> => {
+  return customFetch<Promise<createSpaceReservationResponse>>(
+    getCreateSpaceReservationUrl(),
     {
       ...options,
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...options?.headers },
-      body: JSON.stringify(createRoomReservationBody),
+      body: JSON.stringify(createSpaceReservationBody),
     },
   )
 }
 
-export const getCreateRoomReservationMutationFetcher = (
+export const getCreateSpaceReservationMutationFetcher = (
   options?: SecondParameter<typeof customFetch>,
 ) => {
   return (
     _: Key,
-    { arg }: { arg: CreateRoomReservationBody },
-  ): Promise<createRoomReservationResponse> => {
-    return createRoomReservation(arg, options)
+    { arg }: { arg: CreateSpaceReservationBody },
+  ): Promise<createSpaceReservationResponse> => {
+    return createSpaceReservation(arg, options)
   }
 }
-export const getCreateRoomReservationMutationKey = () =>
+export const getCreateSpaceReservationMutationKey = () =>
   [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation`] as const
 
-export type CreateRoomReservationMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createRoomReservation>>
+export type CreateSpaceReservationMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createSpaceReservation>>
 >
-export type CreateRoomReservationMutationError =
-  | CreateRoomReservation400
-  | CreateRoomReservation401
-  | CreateRoomReservation403
-  | CreateRoomReservation404
-  | CreateRoomReservation409
-  | CreateRoomReservation422
-  | CreateRoomReservation500
+export type CreateSpaceReservationMutationError =
+  | CreateSpaceReservation400
+  | CreateSpaceReservation401
+  | CreateSpaceReservation403
+  | CreateSpaceReservation404
+  | CreateSpaceReservation409
+  | CreateSpaceReservation422
+  | CreateSpaceReservation500
 
 /**
- * @summary Criar uma reserva de sala
+ * @summary Criar uma reserva de espaço
  */
-export const useCreateRoomReservation = <
+export const useCreateSpaceReservation = <
   TError =
-    | CreateRoomReservation400
-    | CreateRoomReservation401
-    | CreateRoomReservation403
-    | CreateRoomReservation404
-    | CreateRoomReservation409
-    | CreateRoomReservation422
-    | CreateRoomReservation500,
+    | CreateSpaceReservation400
+    | CreateSpaceReservation401
+    | CreateSpaceReservation403
+    | CreateSpaceReservation404
+    | CreateSpaceReservation409
+    | CreateSpaceReservation422
+    | CreateSpaceReservation500,
 >(options?: {
   swr?: SWRMutationConfiguration<
-    Awaited<ReturnType<typeof createRoomReservation>>,
+    Awaited<ReturnType<typeof createSpaceReservation>>,
     TError,
     Key,
-    CreateRoomReservationBody,
-    Awaited<ReturnType<typeof createRoomReservation>>
+    CreateSpaceReservationBody,
+    Awaited<ReturnType<typeof createSpaceReservation>>
   > & { swrKey?: string }
   request?: SecondParameter<typeof customFetch>
 }) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getCreateRoomReservationMutationKey()
-  const swrFn = getCreateRoomReservationMutationFetcher(requestOptions)
+  const swrKey = swrOptions?.swrKey ?? getCreateSpaceReservationMutationKey()
+  const swrFn = getCreateSpaceReservationMutationFetcher(requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
@@ -188,7 +188,7 @@ export const useCreateRoomReservation = <
   }
 }
 /**
- * Este endpoint permite que um usuário feche uma reserva de sala que ele criou.
+ * Este endpoint permite que um usuário feche uma reserva de espaço que ele criou.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
@@ -221,82 +221,82 @@ export const useCreateRoomReservation = <
   - O ID do usuário que fecha a reserva é automaticamente capturado do token JWT
   - O status da reserva será atualizado para 'closed'
   - A data e hora de fechamento (closedAt) serão registradas automaticamente
- * @summary Fechar uma reserva de sala
+ * @summary Fechar uma reserva de espaço
  */
-export type closeRoomReservationResponse = {
-  data: CloseRoomReservation200
+export type closeSpaceReservationResponse = {
+  data: CloseSpaceReservation200
   status: number
   headers: Headers
 }
 
-export const getCloseRoomReservationUrl = () => {
+export const getCloseSpaceReservationUrl = () => {
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/close`
 }
 
-export const closeRoomReservation = async (
-  closeRoomReservationBody: CloseRoomReservationBody,
+export const closeSpaceReservation = async (
+  closeSpaceReservationBody: CloseSpaceReservationBody,
   options?: RequestInit,
-): Promise<closeRoomReservationResponse> => {
-  return customFetch<Promise<closeRoomReservationResponse>>(
-    getCloseRoomReservationUrl(),
+): Promise<closeSpaceReservationResponse> => {
+  return customFetch<Promise<closeSpaceReservationResponse>>(
+    getCloseSpaceReservationUrl(),
     {
       ...options,
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', ...options?.headers },
-      body: JSON.stringify(closeRoomReservationBody),
+      body: JSON.stringify(closeSpaceReservationBody),
     },
   )
 }
 
-export const getCloseRoomReservationMutationFetcher = (
+export const getCloseSpaceReservationMutationFetcher = (
   options?: SecondParameter<typeof customFetch>,
 ) => {
   return (
     _: Key,
-    { arg }: { arg: CloseRoomReservationBody },
-  ): Promise<closeRoomReservationResponse> => {
-    return closeRoomReservation(arg, options)
+    { arg }: { arg: CloseSpaceReservationBody },
+  ): Promise<closeSpaceReservationResponse> => {
+    return closeSpaceReservation(arg, options)
   }
 }
-export const getCloseRoomReservationMutationKey = () =>
+export const getCloseSpaceReservationMutationKey = () =>
   [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/close`] as const
 
-export type CloseRoomReservationMutationResult = NonNullable<
-  Awaited<ReturnType<typeof closeRoomReservation>>
+export type CloseSpaceReservationMutationResult = NonNullable<
+  Awaited<ReturnType<typeof closeSpaceReservation>>
 >
-export type CloseRoomReservationMutationError =
-  | CloseRoomReservation400
-  | CloseRoomReservation401
-  | CloseRoomReservation403
-  | CloseRoomReservation404
-  | CloseRoomReservation422
-  | CloseRoomReservation500
+export type CloseSpaceReservationMutationError =
+  | CloseSpaceReservation400
+  | CloseSpaceReservation401
+  | CloseSpaceReservation403
+  | CloseSpaceReservation404
+  | CloseSpaceReservation422
+  | CloseSpaceReservation500
 
 /**
- * @summary Fechar uma reserva de sala
+ * @summary Fechar uma reserva de espaço
  */
-export const useCloseRoomReservation = <
+export const useCloseSpaceReservation = <
   TError =
-    | CloseRoomReservation400
-    | CloseRoomReservation401
-    | CloseRoomReservation403
-    | CloseRoomReservation404
-    | CloseRoomReservation422
-    | CloseRoomReservation500,
+    | CloseSpaceReservation400
+    | CloseSpaceReservation401
+    | CloseSpaceReservation403
+    | CloseSpaceReservation404
+    | CloseSpaceReservation422
+    | CloseSpaceReservation500,
 >(options?: {
   swr?: SWRMutationConfiguration<
-    Awaited<ReturnType<typeof closeRoomReservation>>,
+    Awaited<ReturnType<typeof closeSpaceReservation>>,
     TError,
     Key,
-    CloseRoomReservationBody,
-    Awaited<ReturnType<typeof closeRoomReservation>>
+    CloseSpaceReservationBody,
+    Awaited<ReturnType<typeof closeSpaceReservation>>
   > & { swrKey?: string }
   request?: SecondParameter<typeof customFetch>
 }) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getCloseRoomReservationMutationKey()
-  const swrFn = getCloseRoomReservationMutationFetcher(requestOptions)
+  const swrKey = swrOptions?.swrKey ?? getCloseSpaceReservationMutationKey()
+  const swrFn = getCloseSpaceReservationMutationFetcher(requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
@@ -306,7 +306,7 @@ export const useCloseRoomReservation = <
   }
 }
 /**
- * Este endpoint permite que um administrador ou desenvolvedor cancele uma reserva de sala.
+ * Este endpoint permite que um administrador ou desenvolvedor cancele uma reserva de espaço.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível APENAS a usuários com perfil 'admin' ou 'dev'.
@@ -334,7 +334,7 @@ export const useCloseRoomReservation = <
   ```json
   {
     "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
-    "cancelReason": "Sala em manutenção emergencial"
+    "cancelReason": "Espaço em manutenção emergencial"
   }
   ```
 
@@ -346,82 +346,82 @@ export const useCloseRoomReservation = <
   - O ID do usuário que cancela a reserva é automaticamente capturado do token JWT
   - O status da reserva será atualizado para 'cancelled'
   - A data e hora de cancelamento (cancelledAt) serão registradas automaticamente
- * @summary Cancelar uma reserva de sala
+ * @summary Cancelar uma reserva de espaço
  */
-export type cancelRoomReservationResponse = {
-  data: CancelRoomReservation200
+export type cancelSpaceReservationResponse = {
+  data: CancelSpaceReservation200
   status: number
   headers: Headers
 }
 
-export const getCancelRoomReservationUrl = () => {
+export const getCancelSpaceReservationUrl = () => {
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/cancel`
 }
 
-export const cancelRoomReservation = async (
-  cancelRoomReservationBody: CancelRoomReservationBody,
+export const cancelSpaceReservation = async (
+  cancelSpaceReservationBody: CancelSpaceReservationBody,
   options?: RequestInit,
-): Promise<cancelRoomReservationResponse> => {
-  return customFetch<Promise<cancelRoomReservationResponse>>(
-    getCancelRoomReservationUrl(),
+): Promise<cancelSpaceReservationResponse> => {
+  return customFetch<Promise<cancelSpaceReservationResponse>>(
+    getCancelSpaceReservationUrl(),
     {
       ...options,
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', ...options?.headers },
-      body: JSON.stringify(cancelRoomReservationBody),
+      body: JSON.stringify(cancelSpaceReservationBody),
     },
   )
 }
 
-export const getCancelRoomReservationMutationFetcher = (
+export const getCancelSpaceReservationMutationFetcher = (
   options?: SecondParameter<typeof customFetch>,
 ) => {
   return (
     _: Key,
-    { arg }: { arg: CancelRoomReservationBody },
-  ): Promise<cancelRoomReservationResponse> => {
-    return cancelRoomReservation(arg, options)
+    { arg }: { arg: CancelSpaceReservationBody },
+  ): Promise<cancelSpaceReservationResponse> => {
+    return cancelSpaceReservation(arg, options)
   }
 }
-export const getCancelRoomReservationMutationKey = () =>
+export const getCancelSpaceReservationMutationKey = () =>
   [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/cancel`] as const
 
-export type CancelRoomReservationMutationResult = NonNullable<
-  Awaited<ReturnType<typeof cancelRoomReservation>>
+export type CancelSpaceReservationMutationResult = NonNullable<
+  Awaited<ReturnType<typeof cancelSpaceReservation>>
 >
-export type CancelRoomReservationMutationError =
-  | CancelRoomReservation400
-  | CancelRoomReservation401
-  | CancelRoomReservation403
-  | CancelRoomReservation404
-  | CancelRoomReservation422
-  | CancelRoomReservation500
+export type CancelSpaceReservationMutationError =
+  | CancelSpaceReservation400
+  | CancelSpaceReservation401
+  | CancelSpaceReservation403
+  | CancelSpaceReservation404
+  | CancelSpaceReservation422
+  | CancelSpaceReservation500
 
 /**
- * @summary Cancelar uma reserva de sala
+ * @summary Cancelar uma reserva de espaço
  */
-export const useCancelRoomReservation = <
+export const useCancelSpaceReservation = <
   TError =
-    | CancelRoomReservation400
-    | CancelRoomReservation401
-    | CancelRoomReservation403
-    | CancelRoomReservation404
-    | CancelRoomReservation422
-    | CancelRoomReservation500,
+    | CancelSpaceReservation400
+    | CancelSpaceReservation401
+    | CancelSpaceReservation403
+    | CancelSpaceReservation404
+    | CancelSpaceReservation422
+    | CancelSpaceReservation500,
 >(options?: {
   swr?: SWRMutationConfiguration<
-    Awaited<ReturnType<typeof cancelRoomReservation>>,
+    Awaited<ReturnType<typeof cancelSpaceReservation>>,
     TError,
     Key,
-    CancelRoomReservationBody,
-    Awaited<ReturnType<typeof cancelRoomReservation>>
+    CancelSpaceReservationBody,
+    Awaited<ReturnType<typeof cancelSpaceReservation>>
   > & { swrKey?: string }
   request?: SecondParameter<typeof customFetch>
 }) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getCancelRoomReservationMutationKey()
-  const swrFn = getCancelRoomReservationMutationFetcher(requestOptions)
+  const swrKey = swrOptions?.swrKey ?? getCancelSpaceReservationMutationKey()
+  const swrFn = getCancelSpaceReservationMutationFetcher(requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
@@ -431,7 +431,7 @@ export const useCancelRoomReservation = <
   }
 }
 /**
- * Este endpoint permite listar todas as reservas de sala do usuário autenticado.
+ * Este endpoint permite listar todas as reservas de espaço do usuário autenticado.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários autenticados com conta ativa.
@@ -440,7 +440,7 @@ export const useCancelRoomReservation = <
 * **Funcionalidade**:
   1. Retorna todas as reservas do usuário autenticado, com paginação
   2. Permite definir parâmetros de paginação (page e pageSize)
-  3. Traz informações detalhadas de cada reserva, incluindo dados da sala e do slot de tempo
+  3. Traz informações detalhadas de cada reserva, incluindo dados do espaço e do slot de tempo
 
 * **Parâmetros de query**:
   - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)
@@ -460,16 +460,16 @@ export const useCancelRoomReservation = <
   - O userId é automaticamente extraído do token JWT do usuário autenticado
   - O endpoint sempre retorna apenas reservas do usuário autenticado, independente de outros filtros
   - As reservas são ordenadas da mais recente para a mais antiga
- * @summary Listar reservas de sala do usuário
+ * @summary Listar reservas de espaço do usuário
  */
-export type listRoomReservationsResponse = {
-  data: ListRoomReservations200
+export type listSpaceReservationsResponse = {
+  data: ListSpaceReservations200
   status: number
   headers: Headers
 }
 
-export const getListRoomReservationsUrl = (
-  params?: ListRoomReservationsParams,
+export const getListSpaceReservationsUrl = (
+  params?: ListSpaceReservationsParams,
 ) => {
   const normalizedParams = new URLSearchParams()
 
@@ -484,12 +484,12 @@ export const getListRoomReservationsUrl = (
     : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list`
 }
 
-export const listRoomReservations = async (
-  params?: ListRoomReservationsParams,
+export const listSpaceReservations = async (
+  params?: ListSpaceReservationsParams,
   options?: RequestInit,
-): Promise<listRoomReservationsResponse> => {
-  return customFetch<Promise<listRoomReservationsResponse>>(
-    getListRoomReservationsUrl(params),
+): Promise<listSpaceReservationsResponse> => {
+  return customFetch<Promise<listSpaceReservationsResponse>>(
+    getListSpaceReservationsUrl(params),
     {
       ...options,
       method: 'GET',
@@ -497,41 +497,41 @@ export const listRoomReservations = async (
   )
 }
 
-export const getListRoomReservationsKey = (
-  params?: ListRoomReservationsParams,
+export const getListSpaceReservationsKey = (
+  params?: ListSpaceReservationsParams,
 ) =>
   [
     `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list`,
     ...(params ? [params] : []),
   ] as const
 
-export type ListRoomReservationsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof listRoomReservations>>
+export type ListSpaceReservationsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listSpaceReservations>>
 >
-export type ListRoomReservationsQueryError =
-  | ListRoomReservations400
-  | ListRoomReservations401
-  | ListRoomReservations403
-  | ListRoomReservations404
-  | ListRoomReservations422
-  | ListRoomReservations500
+export type ListSpaceReservationsQueryError =
+  | ListSpaceReservations400
+  | ListSpaceReservations401
+  | ListSpaceReservations403
+  | ListSpaceReservations404
+  | ListSpaceReservations422
+  | ListSpaceReservations500
 
 /**
- * @summary Listar reservas de sala do usuário
+ * @summary Listar reservas de espaço do usuário
  */
-export const useListRoomReservations = <
+export const useListSpaceReservations = <
   TError =
-    | ListRoomReservations400
-    | ListRoomReservations401
-    | ListRoomReservations403
-    | ListRoomReservations404
-    | ListRoomReservations422
-    | ListRoomReservations500,
+    | ListSpaceReservations400
+    | ListSpaceReservations401
+    | ListSpaceReservations403
+    | ListSpaceReservations404
+    | ListSpaceReservations422
+    | ListSpaceReservations500,
 >(
-  params?: ListRoomReservationsParams,
+  params?: ListSpaceReservationsParams,
   options?: {
     swr?: SWRConfiguration<
-      Awaited<ReturnType<typeof listRoomReservations>>,
+      Awaited<ReturnType<typeof listSpaceReservations>>,
       TError
     > & { swrKey?: Key; enabled?: boolean }
     request?: SecondParameter<typeof customFetch>
@@ -542,8 +542,8 @@ export const useListRoomReservations = <
   const isEnabled = swrOptions?.enabled !== false
   const swrKey =
     swrOptions?.swrKey ??
-    (() => (isEnabled ? getListRoomReservationsKey(params) : null))
-  const swrFn = () => listRoomReservations(params, requestOptions)
+    (() => (isEnabled ? getListSpaceReservationsKey(params) : null))
+  const swrFn = () => listSpaceReservations(params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
@@ -587,21 +587,21 @@ export const useListRoomReservations = <
 
  * @summary Get reservation stats for the logged user
  */
-export type getRoomReservationStatsResponse = {
-  data: GetRoomReservationStats200
+export type getSpaceReservationStatsResponse = {
+  data: GetSpaceReservationStats200
   status: number
   headers: Headers
 }
 
-export const getGetRoomReservationStatsUrl = () => {
+export const getGetSpaceReservationStatsUrl = () => {
   return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/stats`
 }
 
-export const getRoomReservationStats = async (
+export const getSpaceReservationStats = async (
   options?: RequestInit,
-): Promise<getRoomReservationStatsResponse> => {
-  return customFetch<Promise<getRoomReservationStatsResponse>>(
-    getGetRoomReservationStatsUrl(),
+): Promise<getSpaceReservationStatsResponse> => {
+  return customFetch<Promise<getSpaceReservationStatsResponse>>(
+    getGetSpaceReservationStatsUrl(),
     {
       ...options,
       method: 'GET',
@@ -609,30 +609,30 @@ export const getRoomReservationStats = async (
   )
 }
 
-export const getGetRoomReservationStatsKey = () =>
+export const getGetSpaceReservationStatsKey = () =>
   [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/stats`] as const
 
-export type GetRoomReservationStatsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getRoomReservationStats>>
+export type GetSpaceReservationStatsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getSpaceReservationStats>>
 >
-export type GetRoomReservationStatsQueryError =
-  | GetRoomReservationStats400
-  | GetRoomReservationStats401
-  | GetRoomReservationStats403
-  | GetRoomReservationStats500
+export type GetSpaceReservationStatsQueryError =
+  | GetSpaceReservationStats400
+  | GetSpaceReservationStats401
+  | GetSpaceReservationStats403
+  | GetSpaceReservationStats500
 
 /**
  * @summary Get reservation stats for the logged user
  */
-export const useGetRoomReservationStats = <
+export const useGetSpaceReservationStats = <
   TError =
-    | GetRoomReservationStats400
-    | GetRoomReservationStats401
-    | GetRoomReservationStats403
-    | GetRoomReservationStats500,
+    | GetSpaceReservationStats400
+    | GetSpaceReservationStats401
+    | GetSpaceReservationStats403
+    | GetSpaceReservationStats500,
 >(options?: {
   swr?: SWRConfiguration<
-    Awaited<ReturnType<typeof getRoomReservationStats>>,
+    Awaited<ReturnType<typeof getSpaceReservationStats>>,
     TError
   > & { swrKey?: Key; enabled?: boolean }
   request?: SecondParameter<typeof customFetch>
@@ -642,8 +642,8 @@ export const useGetRoomReservationStats = <
   const isEnabled = swrOptions?.enabled !== false
   const swrKey =
     swrOptions?.swrKey ??
-    (() => (isEnabled ? getGetRoomReservationStatsKey() : null))
-  const swrFn = () => getRoomReservationStats(requestOptions)
+    (() => (isEnabled ? getGetSpaceReservationStatsKey() : null))
+  const swrFn = () => getSpaceReservationStats(requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,

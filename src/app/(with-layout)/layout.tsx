@@ -38,7 +38,7 @@ export default async function Layout({
         <div className="wrapper-full relative flex w-full items-center justify-between">
           {/* Logo  */}
           <Link
-            href={`${webserver.host}/salas`}
+            href={`${webserver.host}/espacos`}
             title="Ir para a página de salas"
             className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md p-1 focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
@@ -53,7 +53,7 @@ export default async function Layout({
 
           <div className="hidden items-center justify-center gap-2.5 lg:flex">
             <Link
-              href={`${webserver.host}/salas`}
+              href={`${webserver.host}/espacos`}
               title="Ir para a página de salas"
               className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
@@ -68,7 +68,7 @@ export default async function Layout({
             </Link>
 
             <Link
-              href={`${webserver.host}/salas/minhas-reservas`}
+              href={`${webserver.host}/espacos/minhas-reservas`}
               title="Ir para a página de minhas reservas"
               className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
@@ -136,13 +136,13 @@ export default async function Layout({
       {/* Footer / Bottom Tab / mobile - tablet */}
       <footer className="fixed bottom-0 z-40 flex h-auto w-[100vw] items-center justify-center lg:hidden">
         <div className="bg-secondary flex h-auto w-full items-center justify-around p-2 pb-3 opacity-100 transition-all">
-          <BottomTabButton label="Home" href={`${webserver.host}/salas`}>
+          <BottomTabButton label="Home" href={`${webserver.host}/espacos`}>
             <HomeIcon className="size-6" />
           </BottomTabButton>
 
           <BottomTabButton
             label="Reservas"
-            href={`${webserver.host}/salas/minhas-reservas`}
+            href={`${webserver.host}/espacos/minhas-reservas`}
           >
             <CalendarCheck2Icon className="size-6" />
           </BottomTabButton>

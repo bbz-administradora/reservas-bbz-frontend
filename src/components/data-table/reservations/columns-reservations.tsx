@@ -2,9 +2,9 @@
 
 import { GroupedReservation } from '@/@types/reservation'
 import { revalidateTags } from '@/actions/revalidate-tags'
-import { ListRoomReservations200ReservationsItemStatus } from '@/api/endpoints/bBZAppBackendAPI.schemas'
-import { useCloseRoomReservation } from '@/api/endpoints/reservation/reservation'
-import { useOpenDoor } from '@/api/endpoints/room/room'
+import { ListSpaceReservations200ReservationsItemStatus } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { useCloseSpaceReservation } from '@/api/endpoints/reservation/reservation'
+import { useOpenDoor } from '@/api/endpoints/space/space'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import { DoorCodeDialog } from '@/components/DoorCodeDialog'
 import { showToast } from '@/components/ShowToast'
@@ -18,7 +18,7 @@ import { LockOpenIcon, TrashIcon } from 'lucide-react'
 import { useState } from 'react'
 
 export const reservationsTitlesColumns = {
-  name: 'Sala',
+  name: 'Espaço',
   dateTime: 'Data e horário',
   status: 'Status',
   createdBy: 'Criado por',
@@ -69,7 +69,7 @@ const isReservationPast = (slotEnd: string) => {
 
 // Função para determinar o status de exibição
 const getStatusDisplay = (
-  status: ListRoomReservations200ReservationsItemStatus,
+  status: ListSpaceReservations200ReservationsItemStatus,
   slotEnd: string,
 ) => {
   if (status === 'reserved' && isReservationPast(slotEnd)) {
@@ -125,13 +125,13 @@ export const columnsReservations: ColumnDef<GroupedReservation>[] = [
     ),
     cell: ({ row }) => (
       <span className="break-words whitespace-normal">
-        {transformTextIntoCapitalizedWords(row.original.room.name || 'N/A')}
+        {transformTextIntoCapitalizedWords(row.original.space.name || 'N/A')}
       </span>
     ),
-    // Custom filter function to handle the nested room.name property
+    // Custom filter function to handle the nested space.name property
     filterFn: (row, id, value) => {
-      const roomName = row.original.room.name || ''
-      return roomName.toLowerCase().includes(value.toLowerCase())
+      const spaceName = row.original.space.name || ''
+      return spaceName.toLowerCase().includes(value.toLowerCase())
     },
   },
   {
@@ -381,7 +381,7 @@ export const columnsReservations: ColumnDef<GroupedReservation>[] = [
       const reservationId = row.original.id
       const status = row.original.status
       const isPast = isReservationPast(row.original.slotEnd || '')
-      const roomName = row.original.room.name || 'Sala'
+      const spaceName = row.original.space.name || 'Espaço'
 
       // Estado para controlar o diálogo do código de abertura
       const [isDoorCodeDialogOpen, setIsDoorCodeDialogOpen] = useState(false)
@@ -398,7 +398,7 @@ export const columnsReservations: ColumnDef<GroupedReservation>[] = [
       // Hook para gerar código de abertura da porta
       const { trigger: generateDoorCode, isMutating: isGeneratingCode } =
         useOpenDoor(
-          { roomName },
+          { spaceName },
           {
             swr: {
               onSuccess: (response) => {
@@ -447,7 +447,7 @@ export const columnsReservations: ColumnDef<GroupedReservation>[] = [
       const handleWarningOpenDoor = () => {
         showToast({
           message:
-            'Você pode gerar um código de abertura para esta sala baseado na sua reserva.',
+            'Você pode gerar um código de abertura para este espaço baseado na sua reserva.',
           duration: Infinity,
           variant: 'warning',
           firstButton: {
@@ -473,7 +473,7 @@ export const columnsReservations: ColumnDef<GroupedReservation>[] = [
         })
       }
 
-      const { isMutating, trigger: closeReservation } = useCloseRoomReservation(
+      const { isMutating, trigger: closeReservation } = useCloseSpaceReservation(
         {
           swr: {
             onSuccess: (response) => {
@@ -593,7 +593,7 @@ export const columnsReservations: ColumnDef<GroupedReservation>[] = [
             onOpenChange={setIsDoorCodeDialogOpen}
             doorCode={doorCodeInfo?.doorCode}
             expiresAt={doorCodeInfo?.expiresAt}
-            roomName={roomName}
+            spaceName={spaceName}
             isLoading={doorCodeInfo?.isLoading}
           />
         </div>

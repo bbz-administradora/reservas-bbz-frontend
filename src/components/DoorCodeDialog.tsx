@@ -18,7 +18,7 @@ interface DoorCodeDialogProps {
   onOpenChange: (isOpen: boolean) => void
   doorCode?: string
   expiresAt?: string
-  roomName: string
+  spaceName: string
   isLoading?: boolean
 }
 
@@ -27,7 +27,7 @@ export function DoorCodeDialog({
   onOpenChange,
   doorCode = '',
   expiresAt = '',
-  roomName,
+  spaceName,
   isLoading = false,
 }: DoorCodeDialogProps) {
   const [copied, setCopied] = useState(false)
@@ -101,8 +101,8 @@ export function DoorCodeDialog({
           </DialogTitle>
           <DialogDescription className="text-center">
             {isLoading
-              ? 'Gerando código para a sala ' + roomName + '...'
-              : 'Utilize este código para abrir a porta da sala ' + roomName}
+              ? 'Gerando código para o espaço ' + spaceName + '...'
+              : 'Utilize este código para abrir a porta do espaço ' + spaceName}
           </DialogDescription>
         </DialogHeader>
 

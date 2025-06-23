@@ -1,12 +1,12 @@
 'use client'
 
 import { revalidateTags } from '@/actions/revalidate-tags'
-import { ListRooms200RoomsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import { ListSpaces200SpacesItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { useDeleteImage } from '@/api/endpoints/image/image'
-import { useDeleteRoom, useOpenDoor } from '@/api/endpoints/room/room'
+import { useDeleteSpace, useOpenDoor } from '@/api/endpoints/space/space'
 import { DoorCodeDialog } from '@/components/DoorCodeDialog'
 import { showToast } from '@/components/ShowToast'
-import { useRoomFormMode } from '@/context/RoomFormModeProvider'
+import { useSpaceFormMode } from '@/context/SpaceFormModeProvider'
 import { cn } from '@/utils/mergeClassNames'
 import { transformTextIntoCapitalizedWords } from '@/utils/textUtils'
 import { ColumnDef } from '@tanstack/react-table'
@@ -22,7 +22,7 @@ import { useState } from 'react'
 import { Button } from '../../ui/button'
 import { DataTableColumnHeader } from '../data-table-column-header'
 
-export const roomsTitlesColumns = {
+export const spacesTitlesColumns = {
   name: 'Nome',
   description: 'Descrição',
   recursos: 'Recursos',
@@ -34,11 +34,11 @@ export const roomsTitlesColumns = {
   actions: 'Ações',
 }
 
-export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
+export const columnsSpaces: ColumnDef<ListSpaces200SpacesItem>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={roomsTitlesColumns.name} />
+      <DataTableColumnHeader column={column} title={spacesTitlesColumns.name} />
     ),
     cell: ({ row }) => (
       <span className="break-words whitespace-normal">
@@ -50,7 +50,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
     accessorKey: 'description',
     header: () => (
       <span className="text-primary capitalize">
-        {roomsTitlesColumns.description}
+        {spacesTitlesColumns.description}
       </span>
     ),
     cell: (info) => (
@@ -63,7 +63,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
     accessorKey: 'recursos',
     header: () => (
       <span className="text-primary">
-        {transformTextIntoCapitalizedWords(roomsTitlesColumns.recursos)}
+        {transformTextIntoCapitalizedWords(spacesTitlesColumns.recursos)}
       </span>
     ),
     // filtro customizado para array de strings
@@ -102,7 +102,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title={roomsTitlesColumns.capacidade}
+        title={spacesTitlesColumns.capacidade}
       />
     ),
     cell: ({ row }) => {
@@ -117,7 +117,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title={roomsTitlesColumns.isActive}
+        title={spacesTitlesColumns.isActive}
       />
     ),
     cell: ({ row }) => (
@@ -147,7 +147,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title={roomsTitlesColumns.createdAt}
+        title={spacesTitlesColumns.createdAt}
       />
     ),
     cell: ({ row }) => {
@@ -163,7 +163,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title={roomsTitlesColumns.userName}
+        title={spacesTitlesColumns.userName}
       />
     ),
     cell: ({ row }) => (
@@ -177,7 +177,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title={roomsTitlesColumns.imagens}
+        title={spacesTitlesColumns.imagens}
       />
     ),
     cell: ({ row }) => {
@@ -200,14 +200,14 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
       const {
         setMode,
         mode,
-        setSelectedRoomId,
-        selectedRoomId,
+        setSelectedSpaceId,
+        selectedSpaceId,
         toggleResetForm,
-      } = useRoomFormMode()
+      } = useSpaceFormMode()
 
-      const roomId = row.original.id
-      const roomImages = row.original.imagens || []
-      const hasImages = Array.isArray(roomImages) && roomImages.length > 0
+      const spaceId = row.original.id
+      const spaceImages = row.original.imagens || []
+      const hasImages = Array.isArray(spaceImages) && spaceImages.length > 0
 
       // Estado para controlar o diálogo do código de abertura
       const [isDoorCodeDialogOpen, setIsDoorCodeDialogOpen] = useState(false)
@@ -239,23 +239,22 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
           },
         })
 
-      // Hook para excluir a sala
-      const { isMutating: isDeletingRoom, trigger: deleteRoom } = useDeleteRoom(
-        roomId,
-        {
+      // Hook para excluir o espaço
+      const { isMutating: isDeletingSpace, trigger: deleteSpace } =
+        useDeleteSpace(spaceId, {
           swr: {
             onSuccess: (response) => {
               switch (response.status) {
                 case 200: {
                   showToast({
-                    message: 'Sala apagada com sucesso.',
+                    message: 'Espaço apagado com sucesso.',
                     duration: 5000,
                     variant: 'success',
                   })
 
-                  revalidateTags(['delete-room'])
+                  revalidateTags(['delete-space'])
                   setMode('add')
-                  setSelectedRoomId(null)
+                  setSelectedSpaceId(null)
                   toggleResetForm()
 
                   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -264,7 +263,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
                 }
                 default: {
                   showToast({
-                    message: 'Ops... Falha ao apagar sala, tente novamente.',
+                    message: 'Ops... Falha ao apagar espaço, tente novamente.',
                     duration: 5000,
                     variant: 'error',
                   })
@@ -276,19 +275,18 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
 
             onError: () => {
               showToast({
-                message: 'Ops... Falha ao apagar sala, tente novamente.',
+                message: 'Ops... Falha ao apagar espaço, tente novamente.',
                 duration: 5000,
                 variant: 'error',
               })
             },
           },
-        },
-      )
+        })
 
       // Hook para gerar código de abertura da porta
       const { trigger: generateDoorCode, isMutating: isGeneratingCode } =
         useOpenDoor(
-          { roomName: row.original.name },
+          { spaceName: row.original.name },
           {
             swr: {
               onSuccess: (response) => {
@@ -334,20 +332,20 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
           },
         )
 
-      // Função para lidar com a exclusão de imagens e da sala
+      // Função para lidar com a exclusão de imagens e do espaço
       const handleDelete = async () => {
         try {
-          // Se a sala tem imagens, deleta cada uma delas primeiro
+          // Se o espaço tem imagens, deleta cada uma delas primeiro
           if (hasImages) {
             // Feedback visual para o usuário
             showToast({
-              message: 'Removendo imagens associadas à sala...',
+              message: 'Removendo imagens associadas ao espaço...',
               duration: 3000,
               variant: 'info',
             })
 
             // Deleta todas as imagens em sequência
-            for (const imagePath of roomImages) {
+            for (const imagePath of spaceImages) {
               try {
                 await deleteImage({ imagePath })
               } catch (error) {
@@ -357,12 +355,12 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
             }
           }
 
-          // Após excluir todas as imagens (ou se não houver imagens), exclui a sala
-          deleteRoom()
+          // Após excluir todas as imagens (ou se não houver imagens), exclui o espaço
+          deleteSpace()
         } catch (error) {
           console.error('💥 Erro ao processar exclusão:', error)
           showToast({
-            message: 'Erro ao excluir sala. Tente novamente.',
+            message: 'Erro ao excluir espaço. Tente novamente.',
             duration: 5000,
             variant: 'error',
           })
@@ -372,7 +370,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
       const handleWarningDelete = () => {
         showToast({
           message:
-            'Você tem certeza que deseja apagar esta sala? Essa ação não pode ser desfeita.',
+            'Você tem certeza que deseja apagar este espaço? Essa ação não pode ser desfeita.',
           duration: Infinity,
           variant: 'warning',
           firstButton: {
@@ -392,7 +390,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
 
       const handleEditMode = () => {
         setMode('edit')
-        setSelectedRoomId(roomId)
+        setSelectedSpaceId(spaceId)
 
         // Aguarda próximo tick para garantir que o DOM já atualizou
         setTimeout(() => {
@@ -405,7 +403,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
 
       const handleImageMode = () => {
         setMode('image')
-        setSelectedRoomId(roomId)
+        setSelectedSpaceId(spaceId)
 
         // Aguarda próximo tick para garantir que o DOM já atualizou
         setTimeout(() => {
@@ -419,7 +417,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
       const handleWarningOpenDoor = () => {
         showToast({
           message:
-            'Como administrador, você pode gerar um código de abertura para esta sala sem necessidade de agendamento.',
+            'Como administrador, você pode gerar um código de abertura para este espaço sem necessidade de agendamento.',
           duration: Infinity,
           variant: 'warning',
           firstButton: {
@@ -449,9 +447,9 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
         <div className="flex min-w-[80px] flex-wrap items-center justify-end gap-2">
           <Button
             disabled={
-              (mode === 'image' && roomId === selectedRoomId) ||
+              (mode === 'image' && spaceId === selectedSpaceId) ||
               isDeletingImage ||
-              isDeletingRoom
+              isDeletingSpace
             }
             variant="outline"
             size="icon"
@@ -461,9 +459,9 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
           </Button>
           <Button
             disabled={
-              (mode === 'edit' && roomId === selectedRoomId) ||
+              (mode === 'edit' && spaceId === selectedSpaceId) ||
               isDeletingImage ||
-              isDeletingRoom
+              isDeletingSpace
             }
             size="icon"
             onClick={handleEditMode}
@@ -471,7 +469,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
             <PencilIcon />
           </Button>
           <Button
-            disabled={isGeneratingCode || isDeletingImage || isDeletingRoom}
+            disabled={isGeneratingCode || isDeletingImage || isDeletingSpace}
             variant="ghost"
             size="icon"
             onClick={handleWarningOpenDoor}
@@ -479,7 +477,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
             <LockOpenIcon />
           </Button>
           <Button
-            disabled={isDeletingImage || isDeletingRoom}
+            disabled={isDeletingImage || isDeletingSpace}
             variant="ghost"
             size="icon"
             onClick={handleWarningDelete}
@@ -494,7 +492,7 @@ export const columnsRooms: ColumnDef<ListRooms200RoomsItem>[] = [
             onOpenChange={setIsDoorCodeDialogOpen}
             doorCode={doorCodeInfo?.doorCode}
             expiresAt={doorCodeInfo?.expiresAt}
-            roomName={row.original.name}
+            spaceName={row.original.name}
             isLoading={doorCodeInfo?.isLoading}
           />
         </div>

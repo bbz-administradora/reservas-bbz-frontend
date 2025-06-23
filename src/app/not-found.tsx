@@ -11,7 +11,7 @@ export default function NotFound() {
       <div className="bg-primary text-primary-foreground flex h-20 w-full items-center justify-center gap-5 py-10">
         {/* Logo  */}
         <Link
-          href={`${webserver.host}/salas`}
+          href={`${webserver.host}/espacos`}
           title="Ir para a página de salas"
           className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md p-1 focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
@@ -55,7 +55,7 @@ export default function NotFound() {
           </Text>
           <Link
             className="text-primary text-[16px] leading-[24px] font-bold tracking-[0.15px] transition-all hover:underline lg:text-[18px]"
-            href={`${webserver.host}/salas`}
+            href={`${webserver.host}/espacos`}
           >
             gestao.bbz.com.br
           </Link>

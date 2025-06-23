@@ -11,35 +11,35 @@ import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
-  CreateRoom201,
-  CreateRoom400,
-  CreateRoom401,
-  CreateRoom403,
-  CreateRoom409,
-  CreateRoom422,
-  CreateRoom500,
-  CreateRoomBody,
-  DeleteRoom200,
-  DeleteRoom400,
-  DeleteRoom401,
-  DeleteRoom403,
-  DeleteRoom404,
-  DeleteRoom422,
-  DeleteRoom500,
-  GetRoom200,
-  GetRoom400,
-  GetRoom401,
-  GetRoom403,
-  GetRoom404,
-  GetRoom422,
-  GetRoom500,
-  ListRooms200,
-  ListRooms400,
-  ListRooms401,
-  ListRooms403,
-  ListRooms422,
-  ListRooms500,
-  ListRoomsParams,
+  CreateSpace201,
+  CreateSpace400,
+  CreateSpace401,
+  CreateSpace403,
+  CreateSpace409,
+  CreateSpace422,
+  CreateSpace500,
+  CreateSpaceBody,
+  DeleteSpace200,
+  DeleteSpace400,
+  DeleteSpace401,
+  DeleteSpace403,
+  DeleteSpace404,
+  DeleteSpace422,
+  DeleteSpace500,
+  GetSpace200,
+  GetSpace400,
+  GetSpace401,
+  GetSpace403,
+  GetSpace404,
+  GetSpace422,
+  GetSpace500,
+  ListSpaces200,
+  ListSpaces400,
+  ListSpaces401,
+  ListSpaces403,
+  ListSpaces422,
+  ListSpaces500,
+  ListSpacesParams,
   OpenDoor200,
   OpenDoor400,
   OpenDoor401,
@@ -48,107 +48,107 @@ import type {
   OpenDoor422,
   OpenDoor500,
   OpenDoorParams,
-  UpdateRoom200,
-  UpdateRoom400,
-  UpdateRoom401,
-  UpdateRoom403,
-  UpdateRoom404,
-  UpdateRoom409,
-  UpdateRoom422,
-  UpdateRoom500,
-  UpdateRoomBody,
+  UpdateSpace200,
+  UpdateSpace400,
+  UpdateSpace401,
+  UpdateSpace403,
+  UpdateSpace404,
+  UpdateSpace409,
+  UpdateSpace422,
+  UpdateSpace500,
+  UpdateSpaceBody,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
 /**
- * Este endpoint permite criar uma nova sala no sistema com as seguintes características:
+ * Este endpoint permite criar um novo espaço no sistema com as seguintes características:
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 * **Processo de criação**:
-  1. Cria o registro de sala com os dados fornecidos
-  2. Retorna a sala criada com seus dados completos
-* **Resposta**: Retorna a sala criada com seu ID e status
+  1. Cria o registro de espaço com os dados fornecidos
+  2. Retorna o espaço criado com seus dados completos
+* **Resposta**: Retorna o espaço criado com seu ID e status
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
 - `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Criar uma nova sala
+ * @summary Criar um novo espaço
  */
-export type createRoomResponse = {
-  data: CreateRoom201
+export type createSpaceResponse = {
+  data: CreateSpace201
   status: number
   headers: Headers
 }
 
-export const getCreateRoomUrl = () => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room`
+export const getCreateSpaceUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space`
 }
 
-export const createRoom = async (
-  createRoomBody: CreateRoomBody,
+export const createSpace = async (
+  createSpaceBody: CreateSpaceBody,
   options?: RequestInit,
-): Promise<createRoomResponse> => {
-  return customFetch<Promise<createRoomResponse>>(getCreateRoomUrl(), {
+): Promise<createSpaceResponse> => {
+  return customFetch<Promise<createSpaceResponse>>(getCreateSpaceUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(createRoomBody),
+    body: JSON.stringify(createSpaceBody),
   })
 }
 
-export const getCreateRoomMutationFetcher = (
+export const getCreateSpaceMutationFetcher = (
   options?: SecondParameter<typeof customFetch>,
 ) => {
   return (
     _: Key,
-    { arg }: { arg: CreateRoomBody },
-  ): Promise<createRoomResponse> => {
-    return createRoom(arg, options)
+    { arg }: { arg: CreateSpaceBody },
+  ): Promise<createSpaceResponse> => {
+    return createSpace(arg, options)
   }
 }
-export const getCreateRoomMutationKey = () =>
-  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/room`] as const
+export const getCreateSpaceMutationKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/space`] as const
 
-export type CreateRoomMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createRoom>>
+export type CreateSpaceMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createSpace>>
 >
-export type CreateRoomMutationError =
-  | CreateRoom400
-  | CreateRoom401
-  | CreateRoom403
-  | CreateRoom409
-  | CreateRoom422
-  | CreateRoom500
+export type CreateSpaceMutationError =
+  | CreateSpace400
+  | CreateSpace401
+  | CreateSpace403
+  | CreateSpace409
+  | CreateSpace422
+  | CreateSpace500
 
 /**
- * @summary Criar uma nova sala
+ * @summary Criar um novo espaço
  */
-export const useCreateRoom = <
+export const useCreateSpace = <
   TError =
-    | CreateRoom400
-    | CreateRoom401
-    | CreateRoom403
-    | CreateRoom409
-    | CreateRoom422
-    | CreateRoom500,
+    | CreateSpace400
+    | CreateSpace401
+    | CreateSpace403
+    | CreateSpace409
+    | CreateSpace422
+    | CreateSpace500,
 >(options?: {
   swr?: SWRMutationConfiguration<
-    Awaited<ReturnType<typeof createRoom>>,
+    Awaited<ReturnType<typeof createSpace>>,
     TError,
     Key,
-    CreateRoomBody,
-    Awaited<ReturnType<typeof createRoom>>
+    CreateSpaceBody,
+    Awaited<ReturnType<typeof createSpace>>
   > & { swrKey?: string }
   request?: SecondParameter<typeof customFetch>
 }) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getCreateRoomMutationKey()
-  const swrFn = getCreateRoomMutationFetcher(requestOptions)
+  const swrKey = swrOptions?.swrKey ?? getCreateSpaceMutationKey()
+  const swrFn = getCreateSpaceMutationFetcher(requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
@@ -158,7 +158,7 @@ export const useCreateRoom = <
   }
 }
 /**
- * Este endpoint permite listar salas com filtros e paginação.
+ * Este endpoint permite listar espaços com filtros e paginação.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
@@ -168,21 +168,21 @@ export const useCreateRoom = <
   2. Filtragem por status de ativação (isActive)
   3. Filtragem por faixa de capacidade
   4. Paginação com controle de página atual e tamanho da página
-* **Resposta**: Retorna lista de salas paginada com metadados de paginação
+* **Resposta**: Retorna lista de espaços paginada com metadados de paginação
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
 - `validateUserRole`: Permite acesso aos perfis 'admin', 'dev' e 'user'
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Listar salas com filtros e paginação
+ * @summary Listar espaços com filtros e paginação
  */
-export type listRoomsResponse = {
-  data: ListRooms200
+export type listSpacesResponse = {
+  data: ListSpaces200
   status: number
   headers: Headers
 }
 
-export const getListRoomsUrl = (params?: ListRoomsParams) => {
+export const getListSpacesUrl = (params?: ListSpacesParams) => {
   const normalizedParams = new URLSearchParams()
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -192,50 +192,50 @@ export const getListRoomsUrl = (params?: ListRoomsParams) => {
   })
 
   return normalizedParams.size
-    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room?${normalizedParams.toString()}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room`
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space`
 }
 
-export const listRooms = async (
-  params?: ListRoomsParams,
+export const listSpaces = async (
+  params?: ListSpacesParams,
   options?: RequestInit,
-): Promise<listRoomsResponse> => {
-  return customFetch<Promise<listRoomsResponse>>(getListRoomsUrl(params), {
+): Promise<listSpacesResponse> => {
+  return customFetch<Promise<listSpacesResponse>>(getListSpacesUrl(params), {
     ...options,
     method: 'GET',
   })
 }
 
-export const getListRoomsKey = (params?: ListRoomsParams) =>
+export const getListSpacesKey = (params?: ListSpacesParams) =>
   [
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space`,
     ...(params ? [params] : []),
   ] as const
 
-export type ListRoomsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof listRooms>>
+export type ListSpacesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listSpaces>>
 >
-export type ListRoomsQueryError =
-  | ListRooms400
-  | ListRooms401
-  | ListRooms403
-  | ListRooms422
-  | ListRooms500
+export type ListSpacesQueryError =
+  | ListSpaces400
+  | ListSpaces401
+  | ListSpaces403
+  | ListSpaces422
+  | ListSpaces500
 
 /**
- * @summary Listar salas com filtros e paginação
+ * @summary Listar espaços com filtros e paginação
  */
-export const useListRooms = <
+export const useListSpaces = <
   TError =
-    | ListRooms400
-    | ListRooms401
-    | ListRooms403
-    | ListRooms422
-    | ListRooms500,
+    | ListSpaces400
+    | ListSpaces401
+    | ListSpaces403
+    | ListSpaces422
+    | ListSpaces500,
 >(
-  params?: ListRoomsParams,
+  params?: ListSpacesParams,
   options?: {
-    swr?: SWRConfiguration<Awaited<ReturnType<typeof listRooms>>, TError> & {
+    swr?: SWRConfiguration<Awaited<ReturnType<typeof listSpaces>>, TError> & {
       swrKey?: Key
       enabled?: boolean
     }
@@ -246,8 +246,8 @@ export const useListRooms = <
 
   const isEnabled = swrOptions?.enabled !== false
   const swrKey =
-    swrOptions?.swrKey ?? (() => (isEnabled ? getListRoomsKey(params) : null))
-  const swrFn = () => listRooms(params, requestOptions)
+    swrOptions?.swrKey ?? (() => (isEnabled ? getListSpacesKey(params) : null))
+  const swrFn = () => listSpaces(params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
@@ -261,93 +261,93 @@ export const useListRooms = <
   }
 }
 /**
- * Este endpoint permite excluir uma sala específica permanentemente.
+ * Este endpoint permite excluir um espaço específico permanentemente.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 * **Processo**:
-  1. Valida o ID da sala a ser excluída
-  2. Verifica se a sala existe no banco de dados
-  3. Exclui permanentemente a sala (hard delete)
+  1. Valida o ID do espaço a ser excluído
+  2. Verifica se o espaço existe no banco de dados
+  3. Exclui permanentemente o espaço (hard delete)
   4. Retorna mensagem de confirmação
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
 - `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Excluir uma sala
+ * @summary Excluir um espaço
  */
-export type deleteRoomResponse = {
-  data: DeleteRoom200
+export type deleteSpaceResponse = {
+  data: DeleteSpace200
   status: number
   headers: Headers
 }
 
-export const getDeleteRoomUrl = (id: string) => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/${id}`
+export const getDeleteSpaceUrl = (id: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/${id}`
 }
 
-export const deleteRoom = async (
+export const deleteSpace = async (
   id: string,
   options?: RequestInit,
-): Promise<deleteRoomResponse> => {
-  return customFetch<Promise<deleteRoomResponse>>(getDeleteRoomUrl(id), {
+): Promise<deleteSpaceResponse> => {
+  return customFetch<Promise<deleteSpaceResponse>>(getDeleteSpaceUrl(id), {
     ...options,
     method: 'DELETE',
   })
 }
 
-export const getDeleteRoomMutationFetcher = (
+export const getDeleteSpaceMutationFetcher = (
   id: string,
   options?: SecondParameter<typeof customFetch>,
 ) => {
-  return (_: Key, __: { arg: Arguments }): Promise<deleteRoomResponse> => {
-    return deleteRoom(id, options)
+  return (_: Key, __: { arg: Arguments }): Promise<deleteSpaceResponse> => {
+    return deleteSpace(id, options)
   }
 }
-export const getDeleteRoomMutationKey = (id: string) =>
-  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/${id}`] as const
+export const getDeleteSpaceMutationKey = (id: string) =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/${id}`] as const
 
-export type DeleteRoomMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteRoom>>
+export type DeleteSpaceMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteSpace>>
 >
-export type DeleteRoomMutationError =
-  | DeleteRoom400
-  | DeleteRoom401
-  | DeleteRoom403
-  | DeleteRoom404
-  | DeleteRoom422
-  | DeleteRoom500
+export type DeleteSpaceMutationError =
+  | DeleteSpace400
+  | DeleteSpace401
+  | DeleteSpace403
+  | DeleteSpace404
+  | DeleteSpace422
+  | DeleteSpace500
 
 /**
- * @summary Excluir uma sala
+ * @summary Excluir um espaço
  */
-export const useDeleteRoom = <
+export const useDeleteSpace = <
   TError =
-    | DeleteRoom400
-    | DeleteRoom401
-    | DeleteRoom403
-    | DeleteRoom404
-    | DeleteRoom422
-    | DeleteRoom500,
+    | DeleteSpace400
+    | DeleteSpace401
+    | DeleteSpace403
+    | DeleteSpace404
+    | DeleteSpace422
+    | DeleteSpace500,
 >(
   id: string,
   options?: {
     swr?: SWRMutationConfiguration<
-      Awaited<ReturnType<typeof deleteRoom>>,
+      Awaited<ReturnType<typeof deleteSpace>>,
       TError,
       Key,
       Arguments,
-      Awaited<ReturnType<typeof deleteRoom>>
+      Awaited<ReturnType<typeof deleteSpace>>
     > & { swrKey?: string }
     request?: SecondParameter<typeof customFetch>
   },
 ) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getDeleteRoomMutationKey(id)
-  const swrFn = getDeleteRoomMutationFetcher(id, requestOptions)
+  const swrKey = swrOptions?.swrKey ?? getDeleteSpaceMutationKey(id)
+  const swrFn = getDeleteSpaceMutationFetcher(id, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
@@ -357,71 +357,71 @@ export const useDeleteRoom = <
   }
 }
 /**
- * Este endpoint permite obter os detalhes completos de uma sala específica.
+ * Este endpoint permite obter os detalhes completos de um espaço específico.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 * **Processo**:
-  1. Valida o ID da sala a ser consultada
-  2. Verifica se a sala existe no banco de dados
-  3. Retorna os detalhes completos da sala
+  1. Valida o ID do espaço a ser consultado
+  2. Verifica se o espaço existe no banco de dados
+  3. Retorna os detalhes completos do espaço
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
 - `validateUserRole`: Permite acesso aos perfis 'admin', 'dev' e 'user'
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Obter detalhes de uma sala
+ * @summary Obter detalhes de um espaço
  */
-export type getRoomResponse = {
-  data: GetRoom200
+export type getSpaceResponse = {
+  data: GetSpace200
   status: number
   headers: Headers
 }
 
-export const getGetRoomUrl = (id: string) => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/${id}`
+export const getGetSpaceUrl = (id: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/${id}`
 }
 
-export const getRoom = async (
+export const getSpace = async (
   id: string,
   options?: RequestInit,
-): Promise<getRoomResponse> => {
-  return customFetch<Promise<getRoomResponse>>(getGetRoomUrl(id), {
+): Promise<getSpaceResponse> => {
+  return customFetch<Promise<getSpaceResponse>>(getGetSpaceUrl(id), {
     ...options,
     method: 'GET',
   })
 }
 
-export const getGetRoomKey = (id: string) =>
-  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/${id}`] as const
+export const getGetSpaceKey = (id: string) =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/${id}`] as const
 
-export type GetRoomQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getRoom>>
+export type GetSpaceQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getSpace>>
 >
-export type GetRoomQueryError =
-  | GetRoom400
-  | GetRoom401
-  | GetRoom403
-  | GetRoom404
-  | GetRoom422
-  | GetRoom500
+export type GetSpaceQueryError =
+  | GetSpace400
+  | GetSpace401
+  | GetSpace403
+  | GetSpace404
+  | GetSpace422
+  | GetSpace500
 
 /**
- * @summary Obter detalhes de uma sala
+ * @summary Obter detalhes de um espaço
  */
-export const useGetRoom = <
+export const useGetSpace = <
   TError =
-    | GetRoom400
-    | GetRoom401
-    | GetRoom403
-    | GetRoom404
-    | GetRoom422
-    | GetRoom500,
+    | GetSpace400
+    | GetSpace401
+    | GetSpace403
+    | GetSpace404
+    | GetSpace422
+    | GetSpace500,
 >(
   id: string,
   options?: {
-    swr?: SWRConfiguration<Awaited<ReturnType<typeof getRoom>>, TError> & {
+    swr?: SWRConfiguration<Awaited<ReturnType<typeof getSpace>>, TError> & {
       swrKey?: Key
       enabled?: boolean
     }
@@ -432,8 +432,8 @@ export const useGetRoom = <
 
   const isEnabled = swrOptions?.enabled !== false && !!id
   const swrKey =
-    swrOptions?.swrKey ?? (() => (isEnabled ? getGetRoomKey(id) : null))
-  const swrFn = () => getRoom(id, requestOptions)
+    swrOptions?.swrKey ?? (() => (isEnabled ? getGetSpaceKey(id) : null))
+  const swrFn = () => getSpace(id, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
@@ -447,102 +447,102 @@ export const useGetRoom = <
   }
 }
 /**
- * Este endpoint permite atualizar parcialmente os dados de uma sala específica por meio de um PATCH.
+ * Este endpoint permite atualizar parcialmente os dados de um espaço específico por meio de um PATCH.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 * **Atualização parcial**: Implementa o conceito de PATCH, atualizando apenas os campos enviados na requisição.
 * **Processo**:
-  1. Valida o ID da sala a ser atualizada
-  2. Verifica se a sala existe no banco de dados
+  1. Valida o ID do espaço a ser atualizado
+  2. Verifica se o espaço existe no banco de dados
   3. Aplica apenas as alterações enviadas no corpo da requisição
-  4. Retorna a sala com os dados atualizados
+  4. Retorna o espaço com os dados atualizados
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
 - `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Atualizar dados parciais de uma sala
+ * @summary Atualizar dados parciais de um espaço
  */
-export type updateRoomResponse = {
-  data: UpdateRoom200
+export type updateSpaceResponse = {
+  data: UpdateSpace200
   status: number
   headers: Headers
 }
 
-export const getUpdateRoomUrl = (id: string) => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/${id}`
+export const getUpdateSpaceUrl = (id: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/${id}`
 }
 
-export const updateRoom = async (
+export const updateSpace = async (
   id: string,
-  updateRoomBody: UpdateRoomBody,
+  updateSpaceBody: UpdateSpaceBody,
   options?: RequestInit,
-): Promise<updateRoomResponse> => {
-  return customFetch<Promise<updateRoomResponse>>(getUpdateRoomUrl(id), {
+): Promise<updateSpaceResponse> => {
+  return customFetch<Promise<updateSpaceResponse>>(getUpdateSpaceUrl(id), {
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(updateRoomBody),
+    body: JSON.stringify(updateSpaceBody),
   })
 }
 
-export const getUpdateRoomMutationFetcher = (
+export const getUpdateSpaceMutationFetcher = (
   id: string,
   options?: SecondParameter<typeof customFetch>,
 ) => {
   return (
     _: Key,
-    { arg }: { arg: UpdateRoomBody },
-  ): Promise<updateRoomResponse> => {
-    return updateRoom(id, arg, options)
+    { arg }: { arg: UpdateSpaceBody },
+  ): Promise<updateSpaceResponse> => {
+    return updateSpace(id, arg, options)
   }
 }
-export const getUpdateRoomMutationKey = (id: string) =>
-  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/${id}`] as const
+export const getUpdateSpaceMutationKey = (id: string) =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/${id}`] as const
 
-export type UpdateRoomMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateRoom>>
+export type UpdateSpaceMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateSpace>>
 >
-export type UpdateRoomMutationError =
-  | UpdateRoom400
-  | UpdateRoom401
-  | UpdateRoom403
-  | UpdateRoom404
-  | UpdateRoom409
-  | UpdateRoom422
-  | UpdateRoom500
+export type UpdateSpaceMutationError =
+  | UpdateSpace400
+  | UpdateSpace401
+  | UpdateSpace403
+  | UpdateSpace404
+  | UpdateSpace409
+  | UpdateSpace422
+  | UpdateSpace500
 
 /**
- * @summary Atualizar dados parciais de uma sala
+ * @summary Atualizar dados parciais de um espaço
  */
-export const useUpdateRoom = <
+export const useUpdateSpace = <
   TError =
-    | UpdateRoom400
-    | UpdateRoom401
-    | UpdateRoom403
-    | UpdateRoom404
-    | UpdateRoom409
-    | UpdateRoom422
-    | UpdateRoom500,
+    | UpdateSpace400
+    | UpdateSpace401
+    | UpdateSpace403
+    | UpdateSpace404
+    | UpdateSpace409
+    | UpdateSpace422
+    | UpdateSpace500,
 >(
   id: string,
   options?: {
     swr?: SWRMutationConfiguration<
-      Awaited<ReturnType<typeof updateRoom>>,
+      Awaited<ReturnType<typeof updateSpace>>,
       TError,
       Key,
-      UpdateRoomBody,
-      Awaited<ReturnType<typeof updateRoom>>
+      UpdateSpaceBody,
+      Awaited<ReturnType<typeof updateSpace>>
     > & { swrKey?: string }
     request?: SecondParameter<typeof customFetch>
   },
 ) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getUpdateRoomMutationKey(id)
-  const swrFn = getUpdateRoomMutationFetcher(id, requestOptions)
+  const swrKey = swrOptions?.swrKey ?? getUpdateSpaceMutationKey(id)
+  const swrFn = getUpdateSpaceMutationFetcher(id, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
@@ -552,14 +552,14 @@ export const useUpdateRoom = <
   }
 }
 /**
- * Este endpoint permite gerar um código temporário para abrir a porta de uma sala específica, utilizando integração com a API DLOCK.
+ * Este endpoint permite gerar um código temporário para abrir a porta de um espaço específico, utilizando integração com a API DLOCK.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 * **Processo**:
-  1. Valida o nome da sala a ser aberta
-  2. Verifica se a sala existe no banco de dados
+  1. Valida o nome do espaço a ser aberto
+  2. Verifica se o espaço existe no banco de dados
   3. Verifica se existe uma conta DLOCK cadastrada no sistema
      - Caso não exista, cria uma nova conta usando as credenciais armazenadas no ambiente
      - Verifica se o usuário com o email configurado para DLOCK existe no sistema
@@ -568,7 +568,7 @@ export const useUpdateRoom = <
      - Realiza refresh automático do token quando necessário
      - Atualiza os dados da conta no banco de dados
   5. Consulta a API DLOCK para obter a lista de fechaduras cadastradas
-  6. Identifica a fechadura correspondente à sala solicitada através do nome normalizado
+  6. Identifica a fechadura correspondente ao espaço solicitado através do nome normalizado
   7. Gera um código temporário de acesso através da API DLOCK:
      - Se a solicitação ocorrer antes dos últimos 10 minutos da hora, gera um código válido por 1 hora
      - Se a solicitação ocorrer nos últimos 10 minutos da hora, gera um código válido por 2 horas
@@ -578,7 +578,7 @@ export const useUpdateRoom = <
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Gerar código para abertura de porta de uma sala
+ * @summary Gerar código para abertura de porta de um espaço
  */
 export type openDoorResponse = {
   data: OpenDoor200
@@ -596,8 +596,8 @@ export const getOpenDoorUrl = (params: OpenDoorParams) => {
   })
 
   return normalizedParams.size
-    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/open-door?${normalizedParams.toString()}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/open-door`
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/open-door?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/open-door`
 }
 
 export const openDoor = async (
@@ -620,7 +620,7 @@ export const getOpenDoorMutationFetcher = (
 }
 export const getOpenDoorMutationKey = (params: OpenDoorParams) =>
   [
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/room/open-door`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/open-door`,
     ...(params ? [params] : []),
   ] as const
 
@@ -636,7 +636,7 @@ export type OpenDoorMutationError =
   | OpenDoor500
 
 /**
- * @summary Gerar código para abertura de porta de uma sala
+ * @summary Gerar código para abertura de porta de um espaço
  */
 export const useOpenDoor = <
   TError =

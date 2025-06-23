@@ -61,7 +61,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
               variant: 'success',
               closeButton: false,
               redirect: {
-                path: `${webserver.host}/salas`,
+                path: `${webserver.host}/espacos`,
                 countdownSeconds: 2,
               },
             })

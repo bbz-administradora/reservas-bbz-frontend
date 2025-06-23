@@ -4,22 +4,22 @@ import { createContext, ReactNode, useContext, useState } from 'react'
 
 export type FormMode = 'add' | 'edit' | 'image'
 
-interface RoomFormModeContextValue {
+interface SpaceFormModeContextValue {
   mode: FormMode
   setMode: (mode: FormMode) => void
-  selectedRoomId: string | null
-  setSelectedRoomId: (id: string | null) => void
+  selectedSpaceId: string | null
+  setSelectedSpaceId: (id: string | null) => void
   resetForm: boolean
   toggleResetForm: () => void
 }
 
-const RoomFormModeContext = createContext<RoomFormModeContextValue | undefined>(
+const SpaceFormModeContext = createContext<SpaceFormModeContextValue | undefined>(
   undefined,
 )
 
-export function RoomFormModeProvider({ children }: { children: ReactNode }) {
+export function SpaceFormModeProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<FormMode>('add')
-  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null)
+  const [selectedSpaceId, setSelectedSpaceId] = useState<string | null>(null)
   const [resetForm, setResetForm] = useState<boolean>(false)
 
   // Função para alternar resetForm
@@ -28,26 +28,26 @@ export function RoomFormModeProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <RoomFormModeContext.Provider
+    <SpaceFormModeContext.Provider
       value={{
         mode,
         setMode,
-        selectedRoomId,
-        setSelectedRoomId,
+        selectedSpaceId,
+        setSelectedSpaceId,
         resetForm,
         toggleResetForm,
       }}
     >
       {children}
-    </RoomFormModeContext.Provider>
+    </SpaceFormModeContext.Provider>
   )
 }
 
-export function useRoomFormMode(): RoomFormModeContextValue {
-  const ctx = useContext(RoomFormModeContext)
+export function useSpaceFormMode(): SpaceFormModeContextValue {
+  const ctx = useContext(SpaceFormModeContext)
   if (!ctx) {
     throw new Error(
-      'useRoomFormMode must be used within a RoomFormModeProvider',
+      'useSpaceFormMode must be used within a SpaceFormModeProvider',
     )
   }
   return ctx

@@ -1,25 +1,25 @@
 import {
-  GetRoomReservationStats200,
-  ListRoomReservations200,
-  ListRoomReservationsParams,
+  GetSpaceReservationStats200,
+  ListSpaceReservations200,
+  ListSpaceReservationsParams,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { customFetch } from '@/api/mutator/custom-fetch'
 import { getHeadersServer } from '@/lib/cookie'
 
-export async function fetchRoomReservationStatsInServer() {
+export async function fetchSpaceReservationStatsInServer() {
   const headers = await getHeadersServer()
   if (!headers) {
     console.warn('CSRF token not found')
     return null
   }
 
-  const getGetRoomReservationStatsUrl = () => {
+  const getGetSpaceReservationStatsUrl = () => {
     return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/stats`
   }
 
-  const url = getGetRoomReservationStatsUrl()
+  const url = getGetSpaceReservationStatsUrl()
 
-  const response = await customFetch<GetRoomReservationStats200>(url, {
+  const response = await customFetch<GetSpaceReservationStats200>(url, {
     method: 'GET',
     credentials: 'include',
     cache: 'no-store',
@@ -36,16 +36,18 @@ export async function fetchRoomReservationStatsInServer() {
   return null
 }
 
-export async function fetchListRoomReservationsInServer(
-  params?: ListRoomReservationsParams,
-): Promise<ListRoomReservations200 | null> {
+export async function fetchListSpaceReservationsInServer(
+  params?: ListSpaceReservationsParams,
+): Promise<ListSpaceReservations200 | null> {
   const headers = await getHeadersServer()
   if (!headers) {
     console.warn('CSRF token not found')
     return null
   }
 
-  const getListRoomReservationsUrl = (params?: ListRoomReservationsParams) => {
+  const getListSpaceReservationsUrl = (
+    params?: ListSpaceReservationsParams,
+  ) => {
     const normalizedParams = new URLSearchParams()
     Object.entries(params || {}).forEach(([key, value]) => {
       if (value !== undefined) {
@@ -57,9 +59,9 @@ export async function fetchListRoomReservationsInServer(
       : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list`
   }
 
-  const url = getListRoomReservationsUrl(params)
+  const url = getListSpaceReservationsUrl(params)
 
-  const response = await customFetch<ListRoomReservations200>(url, {
+  const response = await customFetch<ListSpaceReservations200>(url, {
     method: 'GET',
     credentials: 'include',
     cache: 'no-store',
@@ -69,9 +71,9 @@ export async function fetchListRoomReservationsInServer(
         'create-reservation',
         'close-reservation',
         'cancel-reservation',
-        'delete-room',
-        'update-room',
-        'create-room',
+        'delete-space',
+        'update-space',
+        'create-space',
         'delete-user',
         'update-user',
         'create-user',
