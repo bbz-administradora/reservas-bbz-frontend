@@ -7,6 +7,7 @@ import {
   useUpdateSpace,
 } from '@/api/endpoints/space/space'
 import { Text } from '@/components/Text'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useSpaceFormMode } from '@/context/SpaceFormModeProvider'
 import { cn } from '@/utils/mergeClassNames'
 import { areStringArraysEqual } from '@/utils/textUtils'
@@ -52,6 +53,24 @@ const addUpdateSpaceFormSchema = z.object({
   isActive: z.boolean().default(true),
 
   type: z.enum(['room', 'workstation']).default('room'),
+
+  floor: z
+    .string()
+    .max(10, 'O andar deve ter no máximo 10 caracteres')
+    .nullable()
+    .optional(),
+
+  zone: z
+    .string()
+    .max(50, 'A zona/setor deve ter no máximo 50 caracteres')
+    .nullable()
+    .optional(),
+
+  position: z
+    .string()
+    .max(50, 'A posição deve ter no máximo 50 caracteres')
+    .nullable()
+    .optional(),
 })
 
 type SpaceAddUpdateFormSchemaProps = z.input<typeof addUpdateSpaceFormSchema>
@@ -75,6 +94,9 @@ export function SpaceAddUpdateForm({ className }: SpaceAddUpdateFormProps) {
       capacidade: 0,
       isActive: true,
       type: 'room',
+      floor: null,
+      zone: null,
+      position: null,
     },
   })
 
@@ -99,6 +121,9 @@ export function SpaceAddUpdateForm({ className }: SpaceAddUpdateFormProps) {
             capacidade: space.capacidade,
             isActive: space.isActive,
             type: space.type,
+            floor: space.floor,
+            zone: space.zone,
+            position: space.position,
           })
 
           setSelectedSpaceId(space.id)
@@ -255,6 +280,9 @@ export function SpaceAddUpdateForm({ className }: SpaceAddUpdateFormProps) {
       capacidade: 0,
       isActive: true,
       type: 'room',
+      floor: null,
+      zone: null,
+      position: null,
     })
 
     // Rola a página para o topo
@@ -310,6 +338,18 @@ export function SpaceAddUpdateForm({ className }: SpaceAddUpdateFormProps) {
         diff.type = values.type || 'room'
       }
 
+      if (original.floor !== values.floor) {
+        diff.floor = values.floor
+      }
+
+      if (original.zone !== values.zone) {
+        diff.zone = values.zone
+      }
+
+      if (original.position !== values.position) {
+        diff.position = values.position
+      }
+
       if (Object.keys(diff).length === 0) {
         showToast({
           message:
@@ -355,6 +395,44 @@ export function SpaceAddUpdateForm({ className }: SpaceAddUpdateFormProps) {
           onSubmit={form.handleSubmit(onSubmit)}
           className="mx-auto grid w-full max-w-2xl gap-5"
         >
+          {/* Type - Tipo do espaço */}
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem className="grid gap-2">
+                <FormLabel>Tipo do espaço</FormLabel>
+                <FormControl>
+                  <ToggleGroup
+                    type="single"
+                    size="sm"
+                    value={field.value}
+                    onValueChange={(value) => {
+                      field.onChange(value)
+                    }}
+                    className="flex items-center justify-start gap-2"
+                  >
+                    <ToggleGroupItem
+                      value="room"
+                      aria-label="room"
+                      className="rounded-full px-4 first:rounded-l-full"
+                    >
+                      Sala
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="workstation"
+                      aria-label="workstation"
+                      className="min-w-auto rounded-full px-4 last:rounded-r-full"
+                    >
+                      Estação de Trabalho
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* Name */}
           <FormField
             control={form.control}
@@ -489,6 +567,87 @@ export function SpaceAddUpdateForm({ className }: SpaceAddUpdateFormProps) {
               </FormItem>
             )}
           />
+
+          {/* Campos adicionais para estação de trabalho */}
+          {form.watch('type') === 'workstation' && (
+            <>
+              {/* Floor - Andar */}
+              <FormField
+                control={form.control}
+                name="floor"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    <FormLabel>Andar</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Ex: 1, 2, Térreo"
+                        value={field.value || ''}
+                        onChange={(e) => {
+                          field.onChange(e.target.value || null)
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
+                      Andar onde o espaço está localizado. Campo opcional.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Zone - Zona/Setor */}
+              <FormField
+                control={form.control}
+                name="zone"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    <FormLabel>Zona/Setor</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Ex: Ala Norte, Setor A"
+                        value={field.value || ''}
+                        onChange={(e) => {
+                          field.onChange(e.target.value || null)
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
+                      Zona ou setor onde o espaço está localizado. Campo
+                      opcional.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Position - Posição */}
+              <FormField
+                control={form.control}
+                name="position"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    <FormLabel>Posição</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Ex: Mesa 5, Posição B3"
+                        value={field.value || ''}
+                        onChange={(e) => {
+                          field.onChange(e.target.value || null)
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
+                      Posição específica do espaço. Campo opcional.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
 
           {/* Is Active */}
           <FormField
