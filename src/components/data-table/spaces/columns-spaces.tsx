@@ -25,12 +25,16 @@ import { DataTableColumnHeader } from '../data-table-column-header'
 export const spacesTitlesColumns = {
   name: 'Nome',
   description: 'Descrição',
+  type: 'Tipo',
   recursos: 'Recursos',
   capacidade: 'Capacidade',
   isActive: 'Status',
   createdAt: 'Criado em',
   userName: 'Criado por',
   imagens: 'Imagens',
+  floor: 'Andar',
+  zone: 'Zona',
+  position: 'Posição',
   actions: 'Ações',
 }
 
@@ -58,6 +62,34 @@ export const columnsSpaces: ColumnDef<ListSpaces200SpacesItem>[] = [
         {info.getValue<string>()}
       </span>
     ),
+  },
+  {
+    accessorKey: 'type',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={spacesTitlesColumns.type} />
+    ),
+    cell: ({ row }) => {
+      const type = row.original.type || 'N/A'
+      let displayType = 'N/A'
+
+      if (type === 'room') {
+        displayType = 'Sala'
+      } else if (type === 'workstation') {
+        displayType = 'Estação de Trabalho'
+      } else {
+        displayType = transformTextIntoCapitalizedWords(type)
+      }
+
+      return (
+        <span className="break-words whitespace-normal">{displayType}</span>
+      )
+    },
+    enableColumnFilter: true,
+    filterFn: (row, columnId, filterValue) => {
+      if (!filterValue || filterValue.length === 0) return true
+      const type = row.getValue(columnId) as string
+      return filterValue.includes(type)
+    },
   },
   {
     accessorKey: 'recursos',
@@ -192,6 +224,42 @@ export const columnsSpaces: ColumnDef<ListSpaces200SpacesItem>[] = [
 
       // exibe apenas a quantidade
       return <span>{items.length}</span>
+    },
+  },
+  {
+    accessorKey: 'floor',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={spacesTitlesColumns.floor}
+      />
+    ),
+    cell: ({ row }) => {
+      const floor = row.original.floor
+      return <span>{floor || '-'}</span>
+    },
+  },
+  {
+    accessorKey: 'zone',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title={spacesTitlesColumns.zone} />
+    ),
+    cell: ({ row }) => {
+      const zone = row.original.zone
+      return <span>{zone || '-'}</span>
+    },
+  },
+  {
+    accessorKey: 'position',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={spacesTitlesColumns.position}
+      />
+    ),
+    cell: ({ row }) => {
+      const position = row.original.position
+      return <span>{position || '-'}</span>
     },
   },
   {

@@ -21,6 +21,19 @@ export const status = [
   },
 ]
 
+export const spaceTypes = [
+  {
+    value: 'room',
+    label: 'Sala',
+    icon: Check,
+  },
+  {
+    value: 'workstation',
+    label: 'Estação de Trabalho',
+    icon: Check,
+  },
+]
+
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
 }
@@ -49,6 +62,7 @@ export function DataTableSpacesToolbar<TData>({
         }
         className="md:h-9"
       />
+
       <div className="flex gap-3">
         {table.getColumn('isActive') && (
           <DataTableFacetedFilter
@@ -57,6 +71,15 @@ export function DataTableSpacesToolbar<TData>({
             options={status}
           />
         )}
+
+        {table.getColumn('type') && (
+          <DataTableFacetedFilter
+            column={table.getColumn('type')}
+            title="Tipo"
+            options={spaceTypes}
+          />
+        )}
+
         {isFiltered && (
           <Button
             variant="ghost"
