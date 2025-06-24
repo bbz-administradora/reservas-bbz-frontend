@@ -48,6 +48,13 @@ import type {
   OpenDoor422,
   OpenDoor500,
   OpenDoorParams,
+  SpaceQrcode200,
+  SpaceQrcode400,
+  SpaceQrcode401,
+  SpaceQrcode403,
+  SpaceQrcode404,
+  SpaceQrcode422,
+  SpaceQrcode500,
   UpdateSpace200,
   UpdateSpace400,
   UpdateSpace401,
@@ -663,6 +670,107 @@ export const useOpenDoor = <
 
   const swrKey = swrOptions?.swrKey ?? getOpenDoorMutationKey(params)
   const swrFn = getOpenDoorMutationFetcher(params, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Gera um QR Code para um espaço específico, salva-o no S3 e atualiza a URL do QR Code no registro do espaço.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Restrito a usuários com perfil 'admin', 'dev'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Processo**:
+  1. Valida o ID do espaço fornecido
+  2. Verifica se o espaço já possui um QR Code
+  3. Se já existir, retorna o QR Code existente
+  4. Caso contrário, gera um QR Code com link para o espaço
+  5. Salva o novo QR Code no S3
+  6. Atualiza o registro do espaço com a URL do QR Code
+  7. Retorna a URL do QR Code
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserRole`: Restringe acesso aos perfis especificados
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Gerar QR Code para um espaço
+ */
+export type spaceQrcodeResponse = {
+  data: SpaceQrcode200
+  status: number
+  headers: Headers
+}
+
+export const getSpaceQrcodeUrl = (spaceId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/${spaceId}/qrcode`
+}
+
+export const spaceQrcode = async (
+  spaceId: string,
+  options?: RequestInit,
+): Promise<spaceQrcodeResponse> => {
+  return customFetch<Promise<spaceQrcodeResponse>>(getSpaceQrcodeUrl(spaceId), {
+    ...options,
+    method: 'PATCH',
+  })
+}
+
+export const getSpaceQrcodeMutationFetcher = (
+  spaceId: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (_: Key, __: { arg: Arguments }): Promise<spaceQrcodeResponse> => {
+    return spaceQrcode(spaceId, options)
+  }
+}
+export const getSpaceQrcodeMutationKey = (spaceId: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/space/${spaceId}/qrcode`,
+  ] as const
+
+export type SpaceQrcodeMutationResult = NonNullable<
+  Awaited<ReturnType<typeof spaceQrcode>>
+>
+export type SpaceQrcodeMutationError =
+  | SpaceQrcode400
+  | SpaceQrcode401
+  | SpaceQrcode403
+  | SpaceQrcode404
+  | SpaceQrcode422
+  | SpaceQrcode500
+
+/**
+ * @summary Gerar QR Code para um espaço
+ */
+export const useSpaceQrcode = <
+  TError =
+    | SpaceQrcode400
+    | SpaceQrcode401
+    | SpaceQrcode403
+    | SpaceQrcode404
+    | SpaceQrcode422
+    | SpaceQrcode500,
+>(
+  spaceId: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof spaceQrcode>>,
+      TError,
+      Key,
+      Arguments,
+      Awaited<ReturnType<typeof spaceQrcode>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getSpaceQrcodeMutationKey(spaceId)
+  const swrFn = getSpaceQrcodeMutationFetcher(spaceId, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 

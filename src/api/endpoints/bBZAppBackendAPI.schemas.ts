@@ -437,6 +437,71 @@ export const ListSpaceReservations200ReservationsItemStatus = {
 } as const
 
 /**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ListSpaceReservations200ReservationsItem = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /**
+   * Informações do slot de tempo reservado (ou null se não houver)
+   * @nullable
+   */
+  slot: ListSpaceReservations200ReservationsItemSlot
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ListSpaceReservations200ReservationsItemSpace
+  /** Status atual da reserva */
+  status: ListSpaceReservations200ReservationsItemStatus
+  /** Informações do usuário que fez a reserva */
+  user: ListSpaceReservations200ReservationsItemUser
+}
+
+/**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
+
+/**
  * Tipo do espaço
  */
 export type ListSpaceReservations200ReservationsItemSpaceType =
@@ -521,71 +586,6 @@ export type ListSpaceReservations200ReservationsItemCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ListSpaceReservations200ReservationsItem = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /**
-   * Informações do slot de tempo reservado (ou null se não houver)
-   * @nullable
-   */
-  slot: ListSpaceReservations200ReservationsItemSlot
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ListSpaceReservations200ReservationsItemSpace
-  /** Status atual da reserva */
-  status: ListSpaceReservations200ReservationsItemStatus
-  /** Informações do usuário que fez a reserva */
-  user: ListSpaceReservations200ReservationsItemUser
-}
-
-/**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
 
 export type ListSpaceReservationsParams = {
   /**
@@ -2324,11 +2324,6 @@ export type GetSpaceSlotAvailability400 = {
   status_code: GetSpaceSlotAvailability400StatusCode
 }
 
-export type GetSpaceSlotAvailability200 = {
-  slots: GetSpaceSlotAvailability200SlotsItem[]
-  space: GetSpaceSlotAvailability200Space
-}
-
 /**
  * Tipo de espaço: sala ou estação de trabalho
  */
@@ -2411,6 +2406,11 @@ export type GetSpaceSlotAvailability200SlotsItem = {
   status: GetSpaceSlotAvailability200SlotsItemStatus
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
   user: GetSpaceSlotAvailability200SlotsItemUser
+}
+
+export type GetSpaceSlotAvailability200 = {
+  slots: GetSpaceSlotAvailability200SlotsItem[]
+  space: GetSpaceSlotAvailability200Space
 }
 
 export type GetSpaceSlotAvailabilityParams = {
@@ -2697,6 +2697,251 @@ export type ListSpaceSlotsParams = {
    * Quantidade de resultados por página, entre 1 e 100 (padrão: 12)
    */
   pageSize?: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type SpaceQrcode500StatusCode =
+  (typeof SpaceQrcode500StatusCode)[keyof typeof SpaceQrcode500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SpaceQrcode500Name =
+  (typeof SpaceQrcode500Name)[keyof typeof SpaceQrcode500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type SpaceQrcode500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SpaceQrcode500Name
+  /** Código de status HTTP 500. */
+  status_code: SpaceQrcode500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type SpaceQrcode422StatusCode =
+  (typeof SpaceQrcode422StatusCode)[keyof typeof SpaceQrcode422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SpaceQrcode422Name =
+  (typeof SpaceQrcode422Name)[keyof typeof SpaceQrcode422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type SpaceQrcode422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type SpaceQrcode422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: SpaceQrcode422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SpaceQrcode422Name
+  /** Código de status HTTP 422. */
+  status_code: SpaceQrcode422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type SpaceQrcode404StatusCode =
+  (typeof SpaceQrcode404StatusCode)[keyof typeof SpaceQrcode404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SpaceQrcode404Name =
+  (typeof SpaceQrcode404Name)[keyof typeof SpaceQrcode404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type SpaceQrcode404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SpaceQrcode404Name
+  /** Código de status HTTP 404. */
+  status_code: SpaceQrcode404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type SpaceQrcode403StatusCode =
+  (typeof SpaceQrcode403StatusCode)[keyof typeof SpaceQrcode403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SpaceQrcode403Name =
+  (typeof SpaceQrcode403Name)[keyof typeof SpaceQrcode403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type SpaceQrcode403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SpaceQrcode403Name
+  /** Código de status HTTP 403. */
+  status_code: SpaceQrcode403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type SpaceQrcode401StatusCode =
+  (typeof SpaceQrcode401StatusCode)[keyof typeof SpaceQrcode401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SpaceQrcode401Name =
+  (typeof SpaceQrcode401Name)[keyof typeof SpaceQrcode401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type SpaceQrcode401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SpaceQrcode401Name
+  /** Código de status HTTP 401. */
+  status_code: SpaceQrcode401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type SpaceQrcode400StatusCode =
+  (typeof SpaceQrcode400StatusCode)[keyof typeof SpaceQrcode400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SpaceQrcode400Name =
+  (typeof SpaceQrcode400Name)[keyof typeof SpaceQrcode400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SpaceQrcode400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type SpaceQrcode400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SpaceQrcode400Name
+  /** Código de status HTTP 400. */
+  status_code: SpaceQrcode400StatusCode
+}
+
+/**
+ * QR code do espaço gerado com sucesso
+ */
+export type SpaceQrcode200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  /** URL para o QR code gerado do espaço. Campo obrigatório. */
+  qrcodeUrl: string
 }
 
 /**
@@ -6285,15 +6530,6 @@ export type UserCreate400 = {
 }
 
 /**
- * Detalhes do usuário criado com sucesso
- */
-export type UserCreate201 = {
-  /** Mensagem informativa sobre o resultado da operação de criação do usuário. Campo obrigatório. */
-  message: string
-  user: UserCreate201User
-}
-
-/**
  * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
  */
 export type UserCreate201UserRole =
@@ -6323,6 +6559,15 @@ export type UserCreate201User = {
   name: string
   /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
   role: UserCreate201UserRole
+}
+
+/**
+ * Detalhes do usuário criado com sucesso
+ */
+export type UserCreate201 = {
+  /** Mensagem informativa sobre o resultado da operação de criação do usuário. Campo obrigatório. */
+  message: string
+  user: UserCreate201User
 }
 
 /**
