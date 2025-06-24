@@ -458,6 +458,16 @@ export type ListSpaceReservations200ReservationsItem = {
    */
   cancelReason: string | null
   /**
+   * Data e hora do check-in da reserva, se houver
+   * @nullable
+   */
+  checkInAt: string | null
+  /**
+   * Data e hora do check-out da reserva, se houver
+   * @nullable
+   */
+  checkOutAt: string | null
+  /**
    * Data/hora do fechamento da reserva (ou null)
    * @nullable
    */
@@ -855,6 +865,16 @@ export type CancelSpaceReservation200Reservation = {
   cancelledBy: string
   /** Motivo do cancelamento */
   cancelReason: string
+  /**
+   * Data e hora do check-in da reserva, se houver
+   * @nullable
+   */
+  checkInAt: string | null
+  /**
+   * Data e hora do check-out da reserva, se houver
+   * @nullable
+   */
+  checkOutAt: string | null
   /** Lista de convidados externos */
   externalGuests: string[]
   /** Identificador único da reserva */
@@ -1148,6 +1168,16 @@ export const CloseSpaceReservation200ReservationStatus = {
 export type CloseSpaceReservation200Reservation = {
   /** Lista de colaboradores da BBZ */
   bbzCollaborators: string[]
+  /**
+   * Data e hora do check-in da reserva, se houver
+   * @nullable
+   */
+  checkInAt: string | null
+  /**
+   * Data e hora do check-out da reserva, se houver
+   * @nullable
+   */
+  checkOutAt: string | null
   /** Data e hora do fechamento da reserva */
   closedAt: string
   /** Lista de convidados externos */
@@ -1475,6 +1505,16 @@ export const CreateSpaceReservation201ReservationsItemStatus = {
 export type CreateSpaceReservation201ReservationsItem = {
   /** Lista de colaboradores da BBZ */
   bbzCollaborators: string[]
+  /**
+   * Data e hora do check-in da reserva, se houver
+   * @nullable
+   */
+  checkInAt: string | null
+  /**
+   * Data e hora do check-out da reserva, se houver
+   * @nullable
+   */
+  checkOutAt: string | null
   /** Lista de convidados externos */
   externalGuests: string[]
   /** Identificador único da reserva */

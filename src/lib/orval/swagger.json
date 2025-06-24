@@ -9674,6 +9674,16 @@
                               "closed"
                             ],
                             "description": "Status atual da reserva"
+                          },
+                          "checkInAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Data e hora do check-in da reserva, se houver"
+                          },
+                          "checkOutAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Data e hora do check-out da reserva, se houver"
                           }
                         },
                         "required": [
@@ -9686,7 +9696,9 @@
                           "bbzCollaborators",
                           "externalGuests",
                           "needsCopeira",
-                          "status"
+                          "status",
+                          "checkInAt",
+                          "checkOutAt"
                         ],
                         "additionalProperties": false
                       }
@@ -10153,6 +10165,16 @@
                         "closedAt": {
                           "type": "string",
                           "description": "Data e hora do fechamento da reserva"
+                        },
+                        "checkInAt": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Data e hora do check-in da reserva, se houver"
+                        },
+                        "checkOutAt": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Data e hora do check-out da reserva, se houver"
                         }
                       },
                       "required": [
@@ -10166,7 +10188,9 @@
                         "externalGuests",
                         "needsCopeira",
                         "status",
-                        "closedAt"
+                        "closedAt",
+                        "checkInAt",
+                        "checkOutAt"
                       ],
                       "additionalProperties": false
                     },
@@ -10606,6 +10630,16 @@
                         "cancelledAt": {
                           "type": "string",
                           "description": "Data e hora do cancelamento da reserva"
+                        },
+                        "checkInAt": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Data e hora do check-in da reserva, se houver"
+                        },
+                        "checkOutAt": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Data e hora do check-out da reserva, se houver"
                         }
                       },
                       "required": [
@@ -10621,7 +10655,9 @@
                         "status",
                         "cancelledBy",
                         "cancelReason",
-                        "cancelledAt"
+                        "cancelledAt",
+                        "checkInAt",
+                        "checkOutAt"
                       ],
                       "additionalProperties": false
                     },
@@ -11177,6 +11213,16 @@
                             "nullable": true,
                             "description": "Data/hora do fechamento da reserva (ou null)"
                           },
+                          "checkInAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Data e hora do check-in da reserva, se houver"
+                          },
+                          "checkOutAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Data e hora do check-out da reserva, se houver"
+                          },
                           "createdAt": {
                             "type": "string",
                             "description": "Data/hora de criação da reserva"
@@ -11197,6 +11243,8 @@
                           "cancelReason",
                           "cancelledAt",
                           "closedAt",
+                          "checkInAt",
+                          "checkOutAt",
                           "createdAt"
                         ],
                         "additionalProperties": false,
