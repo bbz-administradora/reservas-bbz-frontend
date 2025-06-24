@@ -3184,7 +3184,7 @@ export type OpenDoor200SpaceType =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OpenDoor200SpaceType = {
-  space: 'space',
+  room: 'room',
   workstation: 'workstation',
 } as const
 
@@ -3503,6 +3503,8 @@ export type UpdateSpace200Space = {
   name: string
   /** @nullable */
   position: string | null
+  /** @nullable */
+  qrcodeUrl: string | null
   recursos: string[]
   type: UpdateSpace200SpaceType
   updatedAt: string
@@ -3562,6 +3564,11 @@ export type UpdateSpaceBody = {
    * @nullable
    */
   position?: string | null
+  /**
+   * URL do QR Code do espaço
+   * @nullable
+   */
+  qrcodeUrl?: string | null
   recursos?: string[]
   /** Tipo do espaço: sala (room) ou estação de trabalho (workstation) */
   type?: UpdateSpaceBodyType
@@ -3830,6 +3837,8 @@ export type GetSpace200Space = {
   name: string
   /** @nullable */
   position: string | null
+  /** @nullable */
+  qrcodeUrl: string | null
   recursos: string[]
   type: GetSpace200SpaceType
   updatedAt: string
@@ -4307,6 +4316,8 @@ export type ListSpaces200SpacesItem = {
   name: string
   /** @nullable */
   position: string | null
+  /** @nullable */
+  qrcodeUrl: string | null
   recursos: string[]
   type: ListSpaces200SpacesItemType
   updatedAt: string
@@ -4594,6 +4605,8 @@ export type CreateSpace201Space = {
   name: string
   /** @nullable */
   position: string | null
+  /** @nullable */
+  qrcodeUrl: string | null
   recursos: string[]
   type: CreateSpace201SpaceType
   updatedAt: string

@@ -4992,6 +4992,10 @@
                           "type": "string",
                           "nullable": true
                         },
+                        "qrcodeUrl": {
+                          "type": "string",
+                          "nullable": true
+                        },
                         "isActive": {
                           "type": "boolean"
                         },
@@ -5017,6 +5021,7 @@
                         "floor",
                         "zone",
                         "position",
+                        "qrcodeUrl",
                         "isActive",
                         "createdAt",
                         "updatedAt",
@@ -5472,6 +5477,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "qrcodeUrl": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "isActive": {
                             "type": "boolean"
                           },
@@ -5497,6 +5506,7 @@
                           "floor",
                           "zone",
                           "position",
+                          "qrcodeUrl",
                           "isActive",
                           "createdAt",
                           "updatedAt",
@@ -6199,6 +6209,10 @@
                           "type": "string",
                           "nullable": true
                         },
+                        "qrcodeUrl": {
+                          "type": "string",
+                          "nullable": true
+                        },
                         "isActive": {
                           "type": "boolean"
                         },
@@ -6224,6 +6238,7 @@
                         "floor",
                         "zone",
                         "position",
+                        "qrcodeUrl",
                         "isActive",
                         "createdAt",
                         "updatedAt",
@@ -6602,6 +6617,11 @@
                     "nullable": true,
                     "description": "Posição específica do espaço"
                   },
+                  "qrcodeUrl": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "URL do QR Code do espaço"
+                  },
                   "isActive": {
                     "type": "boolean"
                   }
@@ -6687,6 +6707,10 @@
                           "type": "string",
                           "nullable": true
                         },
+                        "qrcodeUrl": {
+                          "type": "string",
+                          "nullable": true
+                        },
                         "isActive": {
                           "type": "boolean"
                         },
@@ -6709,6 +6733,7 @@
                         "floor",
                         "zone",
                         "position",
+                        "qrcodeUrl",
                         "isActive",
                         "createdAt",
                         "updatedAt"
@@ -7115,7 +7140,7 @@
                         "type": {
                           "type": "string",
                           "enum": [
-                            "space",
+                            "room",
                             "workstation"
                           ]
                         }
