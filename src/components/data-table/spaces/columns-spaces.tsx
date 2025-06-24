@@ -3,10 +3,15 @@
 import { revalidateTags } from '@/actions/revalidate-tags'
 import { ListSpaces200SpacesItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { useDeleteImage } from '@/api/endpoints/image/image'
-import { useDeleteSpace, useOpenDoor } from '@/api/endpoints/space/space'
+import {
+  useDeleteSpace,
+  useOpenDoor,
+  useSpaceQrcode,
+} from '@/api/endpoints/space/space'
 import { DoorCodeDialog } from '@/components/DoorCodeDialog'
 import { showToast } from '@/components/ShowToast'
 import { useSpaceFormMode } from '@/context/SpaceFormModeProvider'
+import { env } from '@/infra/env'
 import { cn } from '@/utils/mergeClassNames'
 import { transformTextIntoCapitalizedWords } from '@/utils/textUtils'
 import { ColumnDef } from '@tanstack/react-table'
@@ -16,6 +21,7 @@ import {
   ImagePlusIcon,
   LockOpenIcon,
   PencilIcon,
+  QrCodeIcon,
   TrashIcon,
 } from 'lucide-react'
 import { useState } from 'react'
@@ -35,6 +41,7 @@ export const spacesTitlesColumns = {
   floor: 'Andar',
   zone: 'Zona',
   position: 'Posição',
+  qrcodeUrl: 'QrCode',
   actions: 'Ações',
 }
 
@@ -263,6 +270,29 @@ export const columnsSpaces: ColumnDef<ListSpaces200SpacesItem>[] = [
     },
   },
   {
+    accessorKey: 'qrcodeUrl',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={spacesTitlesColumns.qrcodeUrl}
+      />
+    ),
+    cell: ({ row }) => {
+      const qrcodeUrl = row.original.qrcodeUrl
+      return (
+        <span className={cn(qrcodeUrl ? 'text-green-700' : 'text-destructive')}>
+          {qrcodeUrl ? 'Sim' : 'Não'}
+        </span>
+      )
+    },
+    enableColumnFilter: true,
+    filterFn: (row, columnId, filterValue) => {
+      if (!filterValue || filterValue.length === 0) return true
+      const hasQrCode = row.getValue(columnId) !== null
+      return filterValue.includes(hasQrCode ? 'sim' : 'não')
+    },
+  },
+  {
     id: 'actions', // Identificador único para a coluna
     cell: ({ row }) => {
       const {
@@ -400,6 +430,42 @@ export const columnsSpaces: ColumnDef<ListSpaces200SpacesItem>[] = [
           },
         )
 
+      // Hook para gerar QR Code para o espaço
+      const { trigger: generateQrCode, isMutating: isGeneratingQrCode } =
+        useSpaceQrcode(spaceId, {
+          swr: {
+            onSuccess: (response) => {
+              if (response?.status === 200 && response?.data?.qrcodeUrl) {
+                // Faz o download do QR Code gerado
+                downloadQrCode(response.data.qrcodeUrl)
+
+                // Revalidar para atualizar a informação na tabela
+                revalidateTags(['update-space-qr-code'])
+
+                showToast({
+                  message: 'QR Code gerado com sucesso!',
+                  duration: 3000,
+                  variant: 'success',
+                })
+              } else {
+                showToast({
+                  message: 'Não foi possível gerar o QR Code. Tente novamente.',
+                  duration: 5000,
+                  variant: 'error',
+                })
+              }
+            },
+            onError: (error) => {
+              console.error('💥 Erro ao gerar QR Code:', error)
+              showToast({
+                message: 'Erro ao gerar QR Code. Tente novamente.',
+                duration: 5000,
+                variant: 'error',
+              })
+            },
+          },
+        })
+
       // Função para lidar com a exclusão de imagens e do espaço
       const handleDelete = async () => {
         try {
@@ -511,6 +577,83 @@ export const columnsSpaces: ColumnDef<ListSpaces200SpacesItem>[] = [
         })
       }
 
+      // Função para fazer download do QR Code
+      const downloadQrCode = (url: string) => {
+        try {
+          // Extraindo o nome do arquivo da URL
+          // Formato da URL esperado: 'images/espacos/qrcode/qrcode-espaco-bbz-${spaceId}.png'
+          const fileName =
+            url.split('/').pop() || `qrcode-espaco-bbz-${spaceId}.png`
+
+          // Montando a URL completa com o bucket
+          const fullUrl = url.startsWith('http')
+            ? url
+            : `${env.NEXT_PUBLIC_BUCKET}/${url}`
+
+          // Cria um elemento de âncora temporário
+          const link = document.createElement('a')
+          link.href = fullUrl
+          link.target = '_blank'
+          link.download = fileName
+
+          // Adiciona ao DOM, clica e remove
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+
+          console.log('📥 Download iniciado:', fileName)
+        } catch (error) {
+          console.error('💥 Erro ao fazer download do QR Code:', error)
+          showToast({
+            message: 'Erro ao baixar o QR Code. Tente novamente.',
+            duration: 5000,
+            variant: 'error',
+          })
+        }
+      }
+
+      // Função para lidar com o clique no botão de QR Code
+      const handleQrCode = () => {
+        const qrcodeUrl = row.original.qrcodeUrl
+
+        if (qrcodeUrl) {
+          // Se já existe um QR Code, apenas faz o download
+          downloadQrCode(qrcodeUrl)
+
+          showToast({
+            message: 'Fazendo download do QR Code...',
+            duration: 3000,
+            variant: 'info',
+          })
+        } else {
+          // Se não existe, mostra confirmação para gerar
+          showToast({
+            message: 'Deseja gerar um QR Code para este espaço?',
+            duration: Infinity,
+            variant: 'warning',
+            firstButton: {
+              text: 'Cancelar',
+              variant: 'ghost',
+              onClick: () => ({}),
+            },
+            secondButton: {
+              text: 'Gerar',
+              variant: 'default',
+              onClick: () => {
+                showToast({
+                  message: 'Gerando QR Code...',
+                  duration: 3000,
+                  variant: 'info',
+                })
+
+                // Chama a API para gerar o QR Code
+                generateQrCode()
+              },
+            },
+          })
+        }
+      }
+
       return (
         <div className="flex min-w-[80px] flex-wrap items-center justify-end gap-2">
           <Button
@@ -543,6 +686,14 @@ export const columnsSpaces: ColumnDef<ListSpaces200SpacesItem>[] = [
             onClick={handleWarningOpenDoor}
           >
             <LockOpenIcon />
+          </Button>
+          <Button
+            disabled={isGeneratingQrCode || isDeletingImage || isDeletingSpace}
+            variant="ghost"
+            size="icon"
+            onClick={handleQrCode}
+          >
+            <QrCodeIcon />
           </Button>
           <Button
             disabled={isDeletingImage || isDeletingSpace}

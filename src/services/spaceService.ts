@@ -82,6 +82,7 @@ export async function fetchListSpacesInServer(
         'update-space',
         'create-space',
         'update-space-image',
+        'update-space-qr-code',
       ],
     },
   })
