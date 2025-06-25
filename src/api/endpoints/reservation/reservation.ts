@@ -54,28 +54,33 @@ import type {
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
 /**
- * Este endpoint permite que um usuário crie uma ou mais reservas de espaço a partir de slots pré-reservados.
+ * Este endpoint permite que um usuário crie uma reserva de espaço a partir de slots pré-reservados.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 
+* **Novo modelo de reservas**:
+  - Cada reserva agora possui somente uma linha na tabela independente de quantos slots estejam associados a ela
+  - Slots sequenciais (ex: de 08:00 até às 12:00) serão considerados uma única reserva
+  - Todos os IDs dos slots são armazenados em um array JSONB na reserva
+
 * **Funcionalidade**:
-  1. Converte uma ou mais pré-reservas (slots) em reservas confirmadas
+  1. Converte um conjunto de pré-reservas (slots) em uma única reserva confirmada
   2. Registra os detalhes adicionais da reserva (colaboradores, convidados externos, etc.)
-  3. Associa o usuário atual às reservas
+  3. Associa o usuário atual à reserva
   4. Verifica automaticamente se cada slot existe e está pré-reservado pelo mesmo usuário
   5. Cada slot deve estar dentro do período de pré-reserva (5 minutos)
 
 * **Fluxo de reserva**:
   1. O usuário faz uma ou mais pré-reservas (via endpoint de pré-reserva)
   2. O sistema reserva os slots por 5 minutos para o usuário
-  3. O usuário confirma as reservas com este endpoint, fornecendo detalhes adicionais
-  4. O sistema confirma as reservas e atualiza o status dos slots para 'reserved'
+  3. O usuário confirma a reserva com este endpoint, fornecendo detalhes adicionais
+  4. O sistema confirma a reserva e atualiza o status dos slots para 'reserved'
 
 * **Parâmetros no corpo**:
   - spaceId (obrigatório): Identificador UUID do espaço
-  - spaceSlotId (obrigatório): Lista de identificadores UUID dos slots pré-reservados
+  - spaceSlotIds (obrigatório): Lista de identificadores UUID dos slots pré-reservados
   - bbzCollaborators (opcional): Lista de colaboradores da BBZ que participarão da reunião
   - externalGuests (opcional): Lista de convidados externos que participarão da reunião
   - needsCopeira (opcional): Indica se a reserva necessita de serviço de copeira (padrão: false)
@@ -85,7 +90,7 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   ```json
   {
     "spaceId": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
-    "spaceSlotId": ["b2c3d4e5-f6a7-8901-bcde-2345678901cd", "c3d4e5f6-a789-0123-cdef-3456789012de"],
+    "spaceSlotIds": ["b2c3d4e5-f6a7-8901-bcde-2345678901cd", "c3d4e5f6-a789-0123-cdef-3456789012de"],
     "bbzCollaborators": ["João Silva", "Maria Oliveira"],
     "externalGuests": ["Carlos Santos - Empresa XYZ"],
     "needsCopeira": true
@@ -101,6 +106,8 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   - As reservas só podem ser criadas a partir de slots que já estejam pré-reservados pelo mesmo usuário
   - Cada pré-reserva deve estar dentro do período válido de 5 minutos
   - O status das reservas criadas será definido como 'reserved'
+  - Mesmo que sejam fornecidos múltiplos slots, será criada apenas UMA reserva contendo todos esses slots
+  - O slot_range armazenará o intervalo completo da reserva (hora inicial até hora final)
  * @summary Criar uma reserva de espaço
  */
 export type createSpaceReservationResponse = {
@@ -198,20 +205,21 @@ export const useCreateSpaceReservation = <
   1. Fecha uma reserva existente no status 'reserved'
   2. Atualiza o status para 'closed'
   3. Registra a data e hora de fechamento
+  4. Remove os slots de espaço associados (se ainda existirem)
 
 * **Regras de negócio**:
   1. Apenas o criador da reserva pode fechá-la
   2. A reserva deve estar no status 'reserved' (não pode estar já fechada ou cancelada)
   3. O fechamento é definitivo e não pode ser desfeito
+  4. Os slots de espaço associados serão excluídos se ainda existirem (podem ter sido removidos por um job agendado)
 
-* **Parâmetros da URL**:
-  - id (obrigatório): Identificador UUID da reserva a ser fechada
-
-* **Corpo da requisição**:
-  - Um objeto JSON vazio é necessário (seguindo o padrão REST para PATCH)
+* **Parâmetros da requisição**:
+  - id (opcional): Identificador UUID da reserva a ser fechada
+  - spaceSlotIds (opcional): Array de identificadores UUID dos slots associados à reserva
 
 * **Exemplo de uso**:
   - Requisição básica: `PATCH /v1/private/reservation/close` com corpo JSON `{ "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ab" }`
+  - Alternativa: `PATCH /v1/private/reservation/close` com corpo JSON `{ "spaceSlotIds": ["a1b2c3d4-e5f6-7890-abcd-1234567890ab"] }`
 
 * **Formato da resposta**:
   - reservation: Objeto com todas as informações da reserva fechada
@@ -221,6 +229,7 @@ export const useCreateSpaceReservation = <
   - O ID do usuário que fecha a reserva é automaticamente capturado do token JWT
   - O status da reserva será atualizado para 'closed'
   - A data e hora de fechamento (closedAt) serão registradas automaticamente
+  - Os slots de espaço serão excluídos apenas se ainda existirem no sistema
  * @summary Fechar uma reserva de espaço
  */
 export type closeSpaceReservationResponse = {
@@ -318,22 +327,32 @@ export const useCloseSpaceReservation = <
   3. Registra a data e hora de cancelamento
   4. Armazena o motivo do cancelamento
   5. Registra o usuário que realizou o cancelamento
+  6. Remove os slots de espaço associados (se ainda existirem)
 
 * **Regras de negócio**:
   1. Apenas usuários administradores ou desenvolvedores podem cancelar reservas
   2. A reserva deve estar no status 'reserved' (não pode estar já fechada ou cancelada)
   3. Um motivo de cancelamento deve ser fornecido
   4. O cancelamento é definitivo e não pode ser desfeito
+  5. Os slots de espaço associados serão excluídos se ainda existirem (podem ter sido removidos por um job agendado)
 
-* **Corpo da requisição**:
-  - id (obrigatório): Identificador UUID da reserva a ser cancelada
+* **Parâmetros da requisição**:
+  - id (opcional): Identificador UUID da reserva a ser cancelada
+  - spaceSlotIds (opcional): Array de identificadores UUID dos slots associados à reserva
   - cancelReason (obrigatório): Motivo do cancelamento (3 a 500 caracteres)
 
 * **Exemplo de uso**:
-  - Requisição básica: `PATCH /v1/private/reservation/cancel` com corpo JSON:
+  - Requisição usando ID: `PATCH /v1/private/reservation/cancel` com corpo JSON:
   ```json
   {
     "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+    "cancelReason": "Espaço em manutenção emergencial"
+  }
+  ```
+  - Alternativa: `PATCH /v1/private/reservation/cancel` com corpo JSON:
+  ```json
+  {
+    "spaceSlotIds": ["a1b2c3d4-e5f6-7890-abcd-1234567890ab"],
     "cancelReason": "Espaço em manutenção emergencial"
   }
   ```
@@ -346,6 +365,7 @@ export const useCloseSpaceReservation = <
   - O ID do usuário que cancela a reserva é automaticamente capturado do token JWT
   - O status da reserva será atualizado para 'cancelled'
   - A data e hora de cancelamento (cancelledAt) serão registradas automaticamente
+  - Os slots de espaço serão excluídos apenas se ainda existirem no sistema
  * @summary Cancelar uma reserva de espaço
  */
 export type cancelSpaceReservationResponse = {
@@ -431,36 +451,40 @@ export const useCancelSpaceReservation = <
   }
 }
 /**
- * Este endpoint permite listar todas as reservas de espaço do usuário autenticado.
+ * Este endpoint permite listar reservas de espaço, com opção de filtrar por usuário.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Acessível a usuários autenticados com conta ativa.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 
 * **Funcionalidade**:
-  1. Retorna todas as reservas do usuário autenticado, com paginação
+  1. Retorna reservas com paginação
   2. Permite definir parâmetros de paginação (page e pageSize)
-  3. Traz informações detalhadas de cada reserva, incluindo dados do espaço e do slot de tempo
+  3. Traz informações detalhadas de cada reserva, incluindo dados do espaço e lista de IDs dos slots
+  4. Permite filtrar por usuário específico (opcional)
 
 * **Parâmetros de query**:
   - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)
-  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 100 (padrão: 30)
+  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 10000 (padrão: 10000)
+  - userId (opcional): ID do usuário para filtrar reservas específicas
 
 * **Exemplo de uso**:
-  - Requisição básica: `GET /v1/private/reservation/list`
+  - Requisição básica: `GET /v1/private/reservation/list` (retorna todas as reservas)
   - Com paginação: `GET /v1/private/reservation/list?page=2&pageSize=15`
+  - Filtrar por usuário: `GET /v1/private/reservation/list?userId=123e4567-e89b-12d3-a456-426614174000`
 
 * **Formato da resposta**:
-  - reservations: Array com detalhes completos de cada reserva
+  - reservations: Array com detalhes completos de cada reserva, incluindo array spaceSlotIds
   - totalCount: Número total de reservas encontradas
   - totalPages: Número total de páginas disponíveis
   - currentPage: Número da página atual
 
 * **Notas**:
-  - O userId é automaticamente extraído do token JWT do usuário autenticado
-  - O endpoint sempre retorna apenas reservas do usuário autenticado, independente de outros filtros
+  - Sem o parâmetro userId, o endpoint retorna TODAS as reservas do sistema
+  - Com o parâmetro userId, retorna apenas as reservas do usuário especificado
   - As reservas são ordenadas da mais recente para a mais antiga
- * @summary Listar reservas de espaço do usuário
+  - Cada reserva agora contém um array spaceSlotIds com os IDs dos slots reservados
+ * @summary Listar reservas de espaço
  */
 export type listSpaceReservationsResponse = {
   data: ListSpaceReservations200
@@ -517,7 +541,7 @@ export type ListSpaceReservationsQueryError =
   | ListSpaceReservations500
 
 /**
- * @summary Listar reservas de espaço do usuário
+ * @summary Listar reservas de espaço
  */
 export const useListSpaceReservations = <
   TError =

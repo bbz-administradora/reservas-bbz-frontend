@@ -37,6 +37,17 @@ export const reservationStatuses = [
   },
 ]
 
+export const spaceTypes = [
+  {
+    value: 'room',
+    label: 'Sala',
+  },
+  {
+    value: 'workstation',
+    label: 'Estação de trabalho',
+  },
+]
+
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
 }
@@ -75,7 +86,6 @@ export function DataTableReservationsToolbar<TData>({
         }}
         className="md:h-9"
       />
-
       {/* Filtro de data */}
       <Popover>
         <PopoverTrigger asChild>
@@ -114,14 +124,20 @@ export function DataTableReservationsToolbar<TData>({
             autoFocus
           />
         </PopoverContent>
-      </Popover>
-
+      </Popover>{' '}
       <div className="flex w-full flex-wrap gap-3 lg:flex-nowrap">
         {table.getColumn('status') && (
           <DataTableFacetedFilter
             column={table.getColumn('status')}
             title="Status"
             options={reservationStatuses}
+          />
+        )}
+        {table.getColumn('type') && (
+          <DataTableFacetedFilter
+            column={table.getColumn('type')}
+            title="Tipo"
+            options={spaceTypes}
           />
         )}
         {isFiltered && (

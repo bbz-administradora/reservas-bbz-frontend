@@ -412,6 +412,20 @@ export type ListSpaceReservations400 = {
 }
 
 /**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
+
+/**
  * Informações do usuário que fez a reserva
  */
 export type ListSpaceReservations200ReservationsItemUser = {
@@ -435,6 +449,56 @@ export const ListSpaceReservations200ReservationsItemStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
+
+/**
+ * Tipo do espaço
+ */
+export type ListSpaceReservations200ReservationsItemSpaceType =
+  (typeof ListSpaceReservations200ReservationsItemSpaceType)[keyof typeof ListSpaceReservations200ReservationsItemSpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaceReservations200ReservationsItemSpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+/**
+ * Informações básicas do espaço
+ */
+export type ListSpaceReservations200ReservationsItemSpace = {
+  /**
+   * Andar do espaço
+   * @nullable
+   */
+  floor: string | null
+  /** Identificador único do espaço */
+  id: string
+  /** Nome do espaço */
+  name: string
+  /**
+   * Posição do espaço
+   * @nullable
+   */
+  position: string | null
+  /** Tipo do espaço */
+  type: ListSpaceReservations200ReservationsItemSpaceType
+  /**
+   * Zona do espaço
+   * @nullable
+   */
+  zone: string | null
+}
+
+/**
+ * Usuário que cancelou a reserva (ou null)
+ * @nullable
+ */
+export type ListSpaceReservations200ReservationsItemCancelledBy = {
+  /** ID do usuário que cancelou */
+  id: string
+  /** Nome do usuário que cancelou */
+  name: string
+} | null
 
 /**
  * Detalhes completos de uma reserva paginada
@@ -480,122 +544,19 @@ export type ListSpaceReservations200ReservationsItem = {
   id: string
   /** Indica se a reserva necessita de serviço de copeira */
   needsCopeira: boolean
-  /**
-   * Informações do slot de tempo reservado (ou null se não houver)
-   * @nullable
-   */
-  slot: ListSpaceReservations200ReservationsItemSlot
   /** Horário de término do slot no formato ISO com timezone do usuário */
   slotEnd: string
   /** Horário de início do slot no formato ISO com timezone do usuário */
   slotStart: string
   /** Informações básicas do espaço */
   space: ListSpaceReservations200ReservationsItemSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
   /** Status atual da reserva */
   status: ListSpaceReservations200ReservationsItemStatus
   /** Informações do usuário que fez a reserva */
   user: ListSpaceReservations200ReservationsItemUser
 }
-
-/**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
-
-/**
- * Tipo do espaço
- */
-export type ListSpaceReservations200ReservationsItemSpaceType =
-  (typeof ListSpaceReservations200ReservationsItemSpaceType)[keyof typeof ListSpaceReservations200ReservationsItemSpaceType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListSpaceReservations200ReservationsItemSpaceType = {
-  room: 'room',
-  workstation: 'workstation',
-} as const
-
-/**
- * Informações básicas do espaço
- */
-export type ListSpaceReservations200ReservationsItemSpace = {
-  /**
-   * Andar do espaço
-   * @nullable
-   */
-  floor: string | null
-  /** Identificador único do espaço */
-  id: string
-  /** Nome do espaço */
-  name: string
-  /**
-   * Posição do espaço
-   * @nullable
-   */
-  position: string | null
-  /** Tipo do espaço */
-  type: ListSpaceReservations200ReservationsItemSpaceType
-  /**
-   * Zona do espaço
-   * @nullable
-   */
-  zone: string | null
-}
-
-/**
- * Status do slot
- */
-export type ListSpaceReservations200ReservationsItemSlotStatus =
-  (typeof ListSpaceReservations200ReservationsItemSlotStatus)[keyof typeof ListSpaceReservations200ReservationsItemSlotStatus]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListSpaceReservations200ReservationsItemSlotStatus = {
-  pre_reserved: 'pre_reserved',
-  reserved: 'reserved',
-} as const
-
-/**
- * Informações do slot de tempo reservado (ou null se não houver)
- * @nullable
- */
-export type ListSpaceReservations200ReservationsItemSlot = {
-  /** Data/hora de criação do slot */
-  createdAt: string
-  /** Identificador único do slot de tempo */
-  id: string
-  /**
-   * Data/hora até quando o slot está pré-reservado (ou null)
-   * @nullable
-   */
-  preReservedUntil: string | null
-  /**
-   * Intervalo de datas do slot no formato [início, fim]
-   * @minItems 2
-   * @maxItems 2
-   */
-  slotRange: string[]
-  /** Status do slot */
-  status: ListSpaceReservations200ReservationsItemSlotStatus
-} | null
-
-/**
- * Usuário que cancelou a reserva (ou null)
- * @nullable
- */
-export type ListSpaceReservations200ReservationsItemCancelledBy = {
-  /** ID do usuário que cancelou */
-  id: string
-  /** Nome do usuário que cancelou */
-  name: string
-} | null
 
 export type ListSpaceReservationsParams = {
   /**
@@ -603,9 +564,13 @@ export type ListSpaceReservationsParams = {
    */
   page?: string
   /**
-   * Quantidade de resultados por página, entre 1 e 1000 (padrão: 1000)
+   * Quantidade de resultados por página, entre 1 e 10000 (padrão: 10000)
    */
   pageSize?: string
+  /**
+   * ID do usuário para filtrar reservas (opcional)
+   */
+  userId?: string
 }
 
 /**
@@ -887,8 +852,8 @@ export type CancelSpaceReservation200Reservation = {
   slotStart: string
   /** Identificador único do espaço */
   spaceId: string
-  /** Identificador único do slot de tempo */
-  spaceSlotId: string
+  /** Array de identificadores únicos dos slots de tempo */
+  spaceSlotIds: string[]
   /** Status atual da reserva */
   status: CancelSpaceReservation200ReservationStatus
   /** Identificador único do usuário que fez a reserva */
@@ -913,8 +878,8 @@ export type CancelSpaceReservationBody = {
   cancelReason: string
   /** Identificador único da reserva a ser cancelada */
   id?: string
-  /** Identificador único do slot de tempo associado à reserva */
-  spaceSlotId?: string
+  /** Array de identificadores únicos dos slots de tempo associados à reserva */
+  spaceSlotIds?: string[]
 }
 
 /**
@@ -1192,8 +1157,8 @@ export type CloseSpaceReservation200Reservation = {
   slotStart: string
   /** Identificador único do espaço */
   spaceId: string
-  /** Identificador único do slot de tempo */
-  spaceSlotId: string
+  /** Array de identificadores únicos dos slots de tempo */
+  spaceSlotIds: string[]
   /** Status atual da reserva */
   status: CloseSpaceReservation200ReservationStatus
   /** Identificador único do usuário que fez a reserva */
@@ -1212,8 +1177,8 @@ export type CloseSpaceReservation200 = {
 export type CloseSpaceReservationBody = {
   /** Identificador único da reserva a ser fechada */
   id?: string
-  /** Identificador único do slot de tempo associado à reserva */
-  spaceSlotId?: string
+  /** Array de identificadores únicos dos slots de tempo associados à reserva */
+  spaceSlotIds?: string[]
 }
 
 /**
@@ -1527,8 +1492,8 @@ export type CreateSpaceReservation201ReservationsItem = {
   slotStart: string
   /** Identificador único do espaço */
   spaceId: string
-  /** Identificador único do slot de tempo */
-  spaceSlotId: string
+  /** Array de identificadores únicos dos slots de tempo */
+  spaceSlotIds: string[]
   /** Status atual da reserva */
   status: CreateSpaceReservation201ReservationsItemStatus
   /** Identificador único do usuário que fez a reserva */

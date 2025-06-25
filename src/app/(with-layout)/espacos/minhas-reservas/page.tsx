@@ -2,13 +2,17 @@ import { DataTableReservations } from '@/components/data-table/reservations/tabl
 import { Text } from '@/components/Text'
 import { webserver } from '@/infra/webserver'
 import { fetchListSpaceReservationsInServer } from '@/services/reservationService'
+import { fetchCurrentUserInServer } from '@/services/userService'
 import { ChevronLeftIcon } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function MySpaceReservations() {
+  const { user } = await fetchCurrentUserInServer()
+
   const reservationsList = await fetchListSpaceReservationsInServer({
     page: '1',
     pageSize: '1000',
+    userId: user?.id,
   })
 
   return (
