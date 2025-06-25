@@ -67,7 +67,7 @@ export function SelectedPreReservation({
         )}
         onClick={() => {
           if (!isDeleting) {
-            deletePreReserve({ slotId: slot.id })
+            deletePreReserve()
           }
         }}
       >

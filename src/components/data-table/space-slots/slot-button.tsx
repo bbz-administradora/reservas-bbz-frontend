@@ -354,8 +354,20 @@ export function SlotButton({
       return
     }
 
+    if (!slot.id) {
+      showToast({
+        message: 'Erro: Não foi possível identificar a reserva',
+        variant: 'error',
+        duration: 3000,
+      })
+
+      setIsDialogOpen(false)
+      setIsSheetOpen(false)
+      return
+    }
+
     cancelReservation({
-      spaceSlotId: slot.id,
+      spaceSlotIds: [slot.id], // Usando array com um único elemento
       cancelReason: cancelReason.trim(),
     })
     // Dialog e Sheet serão fechados no callback de sucesso/erro
@@ -374,7 +386,7 @@ export function SlotButton({
       return
     }
 
-    closeReservation({ spaceSlotId: slot.id })
+    closeReservation({ spaceSlotIds: [slot.id] })
     // Dialog e Sheet serão fechados no callback de sucesso/erro
   }
 
