@@ -5,7 +5,7 @@
  * API documentation for BBZ App Backend
  * OpenAPI spec version: 1.0.0
  */
-import type { Key, SWRConfiguration } from 'swr'
+import type { Arguments, Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
 import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
@@ -49,6 +49,13 @@ import type {
   ListSpaceReservations422,
   ListSpaceReservations500,
   ListSpaceReservationsParams,
+  ReservationCheckInOut200,
+  ReservationCheckInOut400,
+  ReservationCheckInOut401,
+  ReservationCheckInOut403,
+  ReservationCheckInOut404,
+  ReservationCheckInOut422,
+  ReservationCheckInOut500,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
@@ -678,6 +685,111 @@ export const useGetSpaceReservationStats = <
     swrFn,
     swrOptions,
   )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Endpoint para realizar check-in ou check-out em uma reserva existente.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Restrito a usuários com perfil 'admin', 'dev', 'user'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Processo**:
+  1. Verifica se a reserva existe e pertence ao usuário atual
+  2. Determina automaticamente se deve realizar check-in ou check-out
+  3. Valida regras de negócio (ex: check-in apenas 15 minutos antes do início)
+  4. Atualiza o registro da reserva com a data e hora da operação
+  5. Retorna os detalhes da reserva atualizada
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserRole`: Restringe acesso aos perfis especificados
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Realizar check-in ou check-out em uma reserva
+ */
+export type reservationCheckInOutResponse = {
+  data: ReservationCheckInOut200
+  status: number
+  headers: Headers
+}
+
+export const getReservationCheckInOutUrl = (id: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/check-in-out/${id}`
+}
+
+export const reservationCheckInOut = async (
+  id: string,
+  options?: RequestInit,
+): Promise<reservationCheckInOutResponse> => {
+  return customFetch<Promise<reservationCheckInOutResponse>>(
+    getReservationCheckInOutUrl(id),
+    {
+      ...options,
+      method: 'PATCH',
+    },
+  )
+}
+
+export const getReservationCheckInOutMutationFetcher = (
+  id: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    __: { arg: Arguments },
+  ): Promise<reservationCheckInOutResponse> => {
+    return reservationCheckInOut(id, options)
+  }
+}
+export const getReservationCheckInOutMutationKey = (id: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/check-in-out/${id}`,
+  ] as const
+
+export type ReservationCheckInOutMutationResult = NonNullable<
+  Awaited<ReturnType<typeof reservationCheckInOut>>
+>
+export type ReservationCheckInOutMutationError =
+  | ReservationCheckInOut400
+  | ReservationCheckInOut401
+  | ReservationCheckInOut403
+  | ReservationCheckInOut404
+  | ReservationCheckInOut422
+  | ReservationCheckInOut500
+
+/**
+ * @summary Realizar check-in ou check-out em uma reserva
+ */
+export const useReservationCheckInOut = <
+  TError =
+    | ReservationCheckInOut400
+    | ReservationCheckInOut401
+    | ReservationCheckInOut403
+    | ReservationCheckInOut404
+    | ReservationCheckInOut422
+    | ReservationCheckInOut500,
+>(
+  id: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof reservationCheckInOut>>,
+      TError,
+      Key,
+      Arguments,
+      Awaited<ReturnType<typeof reservationCheckInOut>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getReservationCheckInOutMutationKey(id)
+  const swrFn = getReservationCheckInOutMutationFetcher(id, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
   return {
     swrKey,

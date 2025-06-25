@@ -8,6 +8,284 @@
 /**
  * Código de status HTTP 500.
  */
+export type ReservationCheckInOut500StatusCode =
+  (typeof ReservationCheckInOut500StatusCode)[keyof typeof ReservationCheckInOut500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ReservationCheckInOut500Name =
+  (typeof ReservationCheckInOut500Name)[keyof typeof ReservationCheckInOut500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type ReservationCheckInOut500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ReservationCheckInOut500Name
+  /** Código de status HTTP 500. */
+  status_code: ReservationCheckInOut500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type ReservationCheckInOut422StatusCode =
+  (typeof ReservationCheckInOut422StatusCode)[keyof typeof ReservationCheckInOut422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ReservationCheckInOut422Name =
+  (typeof ReservationCheckInOut422Name)[keyof typeof ReservationCheckInOut422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type ReservationCheckInOut422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type ReservationCheckInOut422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: ReservationCheckInOut422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ReservationCheckInOut422Name
+  /** Código de status HTTP 422. */
+  status_code: ReservationCheckInOut422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type ReservationCheckInOut404StatusCode =
+  (typeof ReservationCheckInOut404StatusCode)[keyof typeof ReservationCheckInOut404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ReservationCheckInOut404Name =
+  (typeof ReservationCheckInOut404Name)[keyof typeof ReservationCheckInOut404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type ReservationCheckInOut404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ReservationCheckInOut404Name
+  /** Código de status HTTP 404. */
+  status_code: ReservationCheckInOut404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type ReservationCheckInOut403StatusCode =
+  (typeof ReservationCheckInOut403StatusCode)[keyof typeof ReservationCheckInOut403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ReservationCheckInOut403Name =
+  (typeof ReservationCheckInOut403Name)[keyof typeof ReservationCheckInOut403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type ReservationCheckInOut403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ReservationCheckInOut403Name
+  /** Código de status HTTP 403. */
+  status_code: ReservationCheckInOut403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type ReservationCheckInOut401StatusCode =
+  (typeof ReservationCheckInOut401StatusCode)[keyof typeof ReservationCheckInOut401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ReservationCheckInOut401Name =
+  (typeof ReservationCheckInOut401Name)[keyof typeof ReservationCheckInOut401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type ReservationCheckInOut401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ReservationCheckInOut401Name
+  /** Código de status HTTP 401. */
+  status_code: ReservationCheckInOut401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type ReservationCheckInOut400StatusCode =
+  (typeof ReservationCheckInOut400StatusCode)[keyof typeof ReservationCheckInOut400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ReservationCheckInOut400Name =
+  (typeof ReservationCheckInOut400Name)[keyof typeof ReservationCheckInOut400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type ReservationCheckInOut400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ReservationCheckInOut400Name
+  /** Código de status HTTP 400. */
+  status_code: ReservationCheckInOut400StatusCode
+}
+
+/**
+ * Status atual da reserva. Campo obrigatório.
+ */
+export type ReservationCheckInOut200ReservationStatus =
+  (typeof ReservationCheckInOut200ReservationStatus)[keyof typeof ReservationCheckInOut200ReservationStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOut200ReservationStatus = {
+  reserved: 'reserved',
+  cancelled: 'cancelled',
+  closed: 'closed',
+} as const
+
+/**
+ * Informações da reserva após a operação de check-in ou check-out
+ */
+export type ReservationCheckInOut200Reservation = {
+  /**
+   * Data e hora do check-in no formato ISO 8601. Pode ser nulo se apenas o check-out foi realizado. Campo obrigatório.
+   * @nullable
+   */
+  checkInAt: string | null
+  /**
+   * Data e hora do check-out no formato ISO 8601. Pode ser nulo se apenas o check-in foi realizado. Campo obrigatório.
+   * @nullable
+   */
+  checkOutAt: string | null
+  /** Identificador único da reserva no formato UUID v4. Campo obrigatório. */
+  id: string
+  /** Status atual da reserva. Campo obrigatório. */
+  status: ReservationCheckInOut200ReservationStatus
+}
+
+/**
+ * Operação de check-in/check-out realizada com sucesso
+ */
+export type ReservationCheckInOut200 = {
+  /** Mensagem informativa sobre o resultado da operação (check-in ou check-out). Campo obrigatório. */
+  message: string
+  /** Informações da reserva após a operação de check-in ou check-out */
+  reservation: ReservationCheckInOut200Reservation
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type GetSpaceReservationStats500StatusCode =
   (typeof GetSpaceReservationStats500StatusCode)[keyof typeof GetSpaceReservationStats500StatusCode]
 
@@ -412,20 +690,6 @@ export type ListSpaceReservations400 = {
 }
 
 /**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
-
-/**
  * Informações do usuário que fez a reserva
  */
 export type ListSpaceReservations200ReservationsItemUser = {
@@ -449,56 +713,6 @@ export const ListSpaceReservations200ReservationsItemStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
-
-/**
- * Tipo do espaço
- */
-export type ListSpaceReservations200ReservationsItemSpaceType =
-  (typeof ListSpaceReservations200ReservationsItemSpaceType)[keyof typeof ListSpaceReservations200ReservationsItemSpaceType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListSpaceReservations200ReservationsItemSpaceType = {
-  room: 'room',
-  workstation: 'workstation',
-} as const
-
-/**
- * Informações básicas do espaço
- */
-export type ListSpaceReservations200ReservationsItemSpace = {
-  /**
-   * Andar do espaço
-   * @nullable
-   */
-  floor: string | null
-  /** Identificador único do espaço */
-  id: string
-  /** Nome do espaço */
-  name: string
-  /**
-   * Posição do espaço
-   * @nullable
-   */
-  position: string | null
-  /** Tipo do espaço */
-  type: ListSpaceReservations200ReservationsItemSpaceType
-  /**
-   * Zona do espaço
-   * @nullable
-   */
-  zone: string | null
-}
-
-/**
- * Usuário que cancelou a reserva (ou null)
- * @nullable
- */
-export type ListSpaceReservations200ReservationsItemCancelledBy = {
-  /** ID do usuário que cancelou */
-  id: string
-  /** Nome do usuário que cancelou */
-  name: string
-} | null
 
 /**
  * Detalhes completos de uma reserva paginada
@@ -557,6 +771,70 @@ export type ListSpaceReservations200ReservationsItem = {
   /** Informações do usuário que fez a reserva */
   user: ListSpaceReservations200ReservationsItemUser
 }
+
+/**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
+
+/**
+ * Tipo do espaço
+ */
+export type ListSpaceReservations200ReservationsItemSpaceType =
+  (typeof ListSpaceReservations200ReservationsItemSpaceType)[keyof typeof ListSpaceReservations200ReservationsItemSpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaceReservations200ReservationsItemSpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+/**
+ * Informações básicas do espaço
+ */
+export type ListSpaceReservations200ReservationsItemSpace = {
+  /**
+   * Andar do espaço
+   * @nullable
+   */
+  floor: string | null
+  /** Identificador único do espaço */
+  id: string
+  /** Nome do espaço */
+  name: string
+  /**
+   * Posição do espaço
+   * @nullable
+   */
+  position: string | null
+  /** Tipo do espaço */
+  type: ListSpaceReservations200ReservationsItemSpaceType
+  /**
+   * Zona do espaço
+   * @nullable
+   */
+  zone: string | null
+}
+
+/**
+ * Usuário que cancelou a reserva (ou null)
+ * @nullable
+ */
+export type ListSpaceReservations200ReservationsItemCancelledBy = {
+  /** ID do usuário que cancelou */
+  id: string
+  /** Nome do usuário que cancelou */
+  name: string
+} | null
 
 export type ListSpaceReservationsIncludeUserAsGuest =
   (typeof ListSpaceReservationsIncludeUserAsGuest)[keyof typeof ListSpaceReservationsIncludeUserAsGuest]
@@ -1467,12 +1745,6 @@ export type CreateSpaceReservation400 = {
   status_code: CreateSpaceReservation400StatusCode
 }
 
-export type CreateSpaceReservation201 = {
-  /** Mensagem de sucesso */
-  message: string
-  reservations: CreateSpaceReservation201ReservationsItem[]
-}
-
 /**
  * Status atual da reserva
  */
@@ -1517,6 +1789,12 @@ export type CreateSpaceReservation201ReservationsItem = {
   status: CreateSpaceReservation201ReservationsItemStatus
   /** Identificador único do usuário que fez a reserva */
   userId: string
+}
+
+export type CreateSpaceReservation201 = {
+  /** Mensagem de sucesso */
+  message: string
+  reservations: CreateSpaceReservation201ReservationsItem[]
 }
 
 export type CreateSpaceReservationBody = {
