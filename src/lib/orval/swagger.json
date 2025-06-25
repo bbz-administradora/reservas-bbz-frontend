@@ -7823,7 +7823,7 @@
         "tags": [
           "Space Slot"
         ],
-        "description": "Este endpoint permite listar espaços disponíveis para uma data e, opcionalmente, um horário específico, com suporte a paginação.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Regras de busca**:\n  1. Quando a data é fornecida com hora zerada (00:00:00), retorna espaços com pelo menos um horário livre entre 07:00 e 20:00\n  2. Quando data e hora específica são fornecidos, retorna espaços disponíveis nesse horário específico\n  3. Apenas espaços ativos (is_active = true) são considerados\n  4. Espaços pré-reservados ou reservados para o horário solicitado são excluídos dos resultados\n\n* **Parâmetros**:\n  - datetime (obrigatório): String ISO com timezone para data/hora\n  - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)\n  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 100 (padrão: 12)\n\n* **Exemplo de uso**:\n  - Consulta por data: `GET /v1/private/space-slot/list?datetime=2025-05-22T00:00:00-03:00`\n  - Consulta por horário específico: `GET /v1/private/space-slot/list?datetime=2025-05-22T14:30:00-03:00`\n  - Com paginação: `GET /v1/private/space-slot/list?datetime=2025-05-22T00:00:00-03:00&page=2&pageSize=10`\n\n* **Formato da resposta**:\n  - spaces: Array de objetos representando os espaços disponíveis com suas propriedades\n  - totalCount: Número total de espaços disponíveis\n  - totalPages: Número total de páginas disponíveis\n  - currentPage: Página atual sendo exibida\n  - message: Mensagem de sucesso ou informação adicional\n\n* **Notas**:\n  - O parâmetro datetime deve ser uma string ISO com timezone (exemplo: \"2025-05-22T00:00:00-03:00\")\n  - Se a hora for 00:00:00, o sistema busca espaços com pelo menos um horário livre no dia\n  - Se a hora for diferente de 00:00:00 (ex: 14:30:00), o sistema busca espaços livres especificamente nesse horário\n  - A duração padrão de cada slot é de 1 hora\n  - A capacidade máxima de um espaço pode afetar sua disponibilidade",
+        "description": "Este endpoint permite listar espaços disponíveis para uma data e, opcionalmente, um horário específico, com suporte a paginação.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Regras de busca**:\n  1. Quando a data é fornecida com hora zerada (00:00:00), retorna espaços com pelo menos um horário livre entre 07:00 e 20:00\n  2. Quando data e hora específica são fornecidos, retorna espaços disponíveis nesse horário específico\n  3. Apenas espaços ativos (is_active = true) são considerados\n  4. Espaços pré-reservados ou reservados para o horário solicitado são excluídos dos resultados\n\n* **Parâmetros**:\n  - datetime (obrigatório): String ISO com timezone para data/hora\n  - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)\n  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 100 (padrão: 12)\n  - type (opcional): Tipo de espaço, 'room' para salas ou 'workstation' para estações de trabalho (padrão: 'room')\n\n* **Exemplo de uso**:\n  - Consulta por data: `GET /v1/private/space-slot/list?datetime=2025-05-22T00:00:00-03:00`\n  - Consulta por horário específico: `GET /v1/private/space-slot/list?datetime=2025-05-22T14:30:00-03:00`\n  - Com paginação: `GET /v1/private/space-slot/list?datetime=2025-05-22T00:00:00-03:00&page=2&pageSize=10`\n  - Filtro por tipo: `GET /v1/private/space-slot/list?datetime=2025-05-22T00:00:00-03:00&type=workstation`\n\n* **Formato da resposta**:\n  - spaces: Array de objetos representando os espaços disponíveis com suas propriedades\n  - totalCount: Número total de espaços disponíveis\n  - totalPages: Número total de páginas disponíveis\n  - currentPage: Página atual sendo exibida\n  - message: Mensagem de sucesso ou informação adicional\n\n* **Notas**:\n  - O parâmetro datetime deve ser uma string ISO com timezone (exemplo: \"2025-05-22T00:00:00-03:00\")\n  - Se a hora for 00:00:00, o sistema busca espaços com pelo menos um horário livre no dia\n  - Se a hora for diferente de 00:00:00 (ex: 14:30:00), o sistema busca espaços livres especificamente nesse horário\n  - A duração padrão de cada slot é de 1 hora\n  - A capacidade máxima de um espaço pode afetar sua disponibilidade",
         "parameters": [
           {
             "schema": {
@@ -7852,6 +7852,20 @@
             "name": "pageSize",
             "required": false,
             "description": "Quantidade de resultados por página, entre 1 e 100 (padrão: 12)"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "room",
+                "workstation"
+              ],
+              "default": "room"
+            },
+            "in": "query",
+            "name": "type",
+            "required": false,
+            "description": "Tipo de espaço: sala ou estação de trabalho (padrão: room)"
           }
         ],
         "security": [

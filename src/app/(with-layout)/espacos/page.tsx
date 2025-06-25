@@ -24,6 +24,7 @@ export default async function SpacesHome() {
     page: '1',
     pageSize: '9',
     datetime: today,
+    type: 'room', // ou 'workstation' se necessário
   })
 
   // Buscar estatísticas de reservas do usuário

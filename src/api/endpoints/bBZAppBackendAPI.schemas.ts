@@ -1454,6 +1454,12 @@ export type CreateSpaceReservation400 = {
   status_code: CreateSpaceReservation400StatusCode
 }
 
+export type CreateSpaceReservation201 = {
+  /** Mensagem de sucesso */
+  message: string
+  reservations: CreateSpaceReservation201ReservationsItem[]
+}
+
 /**
  * Status atual da reserva
  */
@@ -1498,12 +1504,6 @@ export type CreateSpaceReservation201ReservationsItem = {
   status: CreateSpaceReservation201ReservationsItemStatus
   /** Identificador único do usuário que fez a reserva */
   userId: string
-}
-
-export type CreateSpaceReservation201 = {
-  /** Mensagem de sucesso */
-  message: string
-  reservations: CreateSpaceReservation201ReservationsItem[]
 }
 
 export type CreateSpaceReservationBody = {
@@ -2378,6 +2378,11 @@ export type GetSpaceSlotAvailability200Space = {
   zone: string | null
 }
 
+export type GetSpaceSlotAvailability200 = {
+  slots: GetSpaceSlotAvailability200SlotsItem[]
+  space: GetSpaceSlotAvailability200Space
+}
+
 /**
  * Usuário que fez a pré-reserva (null quando não há pré-reserva)
  */
@@ -2411,11 +2416,6 @@ export type GetSpaceSlotAvailability200SlotsItem = {
   status: GetSpaceSlotAvailability200SlotsItemStatus
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
   user: GetSpaceSlotAvailability200SlotsItemUser
-}
-
-export type GetSpaceSlotAvailability200 = {
-  slots: GetSpaceSlotAvailability200SlotsItem[]
-  space: GetSpaceSlotAvailability200Space
 }
 
 export type GetSpaceSlotAvailabilityParams = {
@@ -2689,6 +2689,15 @@ export type ListSpaceSlots200 = {
   totalPages: number
 }
 
+export type ListSpaceSlotsType =
+  (typeof ListSpaceSlotsType)[keyof typeof ListSpaceSlotsType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaceSlotsType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
 export type ListSpaceSlotsParams = {
   /**
    * Data/hora no formato ISO com timezone (suporta formatos como -03:00, +00:00 ou Z). Se enviar apenas a data com hora zerada (00:00:00), retorna espaços com pelo menos um horário disponível nessa data. Se enviar data com uma hora específica, retorna espaços disponíveis nesse horário específico. Exemplo para data: "2025-05-22T00:00:00-03:00", exemplo para hora específica: "2025-05-22T14:00:00-03:00"
@@ -2702,6 +2711,10 @@ export type ListSpaceSlotsParams = {
    * Quantidade de resultados por página, entre 1 e 100 (padrão: 12)
    */
   pageSize?: string
+  /**
+   * Tipo de espaço: sala ou estação de trabalho (padrão: room)
+   */
+  type?: ListSpaceSlotsType
 }
 
 /**

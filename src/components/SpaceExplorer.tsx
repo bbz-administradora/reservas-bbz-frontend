@@ -59,6 +59,13 @@ export function SpaceExplorer({
     ensureDateIsNotPast(new Date()),
   )
   const [timeSlot, setTimeSlot] = useState<string>('')
+  const [spaceType, setSpaceType] = useState<'room' | 'workstation'>(
+    initialData?.spaces &&
+      initialData.spaces.length > 0 &&
+      initialData.spaces[0].type === 'workstation'
+      ? 'workstation'
+      : 'room',
+  )
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 9
 
@@ -113,6 +120,7 @@ export function SpaceExplorer({
     datetime: datetimeWithTimeSlot,
     page: currentPage.toString(),
     pageSize: itemsPerPage.toString(),
+    type: spaceType,
   }
 
   // Use the hook with initial data to avoid flickering

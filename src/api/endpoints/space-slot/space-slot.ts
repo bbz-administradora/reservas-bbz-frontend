@@ -62,11 +62,13 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   - datetime (obrigatório): String ISO com timezone para data/hora
   - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)
   - pageSize (opcional): Quantidade de resultados por página, entre 1 e 100 (padrão: 12)
+  - type (opcional): Tipo de espaço, 'room' para salas ou 'workstation' para estações de trabalho (padrão: 'room')
 
 * **Exemplo de uso**:
   - Consulta por data: `GET /v1/private/space-slot/list?datetime=2025-05-22T00:00:00-03:00`
   - Consulta por horário específico: `GET /v1/private/space-slot/list?datetime=2025-05-22T14:30:00-03:00`
   - Com paginação: `GET /v1/private/space-slot/list?datetime=2025-05-22T00:00:00-03:00&page=2&pageSize=10`
+  - Filtro por tipo: `GET /v1/private/space-slot/list?datetime=2025-05-22T00:00:00-03:00&type=workstation`
 
 * **Formato da resposta**:
   - spaces: Array de objetos representando os espaços disponíveis com suas propriedades
