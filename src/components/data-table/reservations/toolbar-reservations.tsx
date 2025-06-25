@@ -48,6 +48,17 @@ export const spaceTypes = [
   },
 ]
 
+export const userRoleOptions = [
+  {
+    value: 'responsible',
+    label: 'Responsável',
+  },
+  {
+    value: 'guest',
+    label: 'Convidado',
+  },
+]
+
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
 }
@@ -59,7 +70,7 @@ export function DataTableReservationsToolbar<TData>({
   const [date, setDate] = useState<Date | undefined>(undefined)
 
   return (
-    <div className="grid grid-rows-2 gap-3 lg:grid-cols-[.3fr_.2fr_.5fr] lg:grid-rows-1">
+    <div className="grid grid-rows-2 gap-3 lg:grid-cols-[minmax(0,_0.3fr)_minmax(0,_0.2fr)_minmax(0,_0.5fr)] lg:grid-rows-1">
       <Input
         placeholder="Filtrar por espaço..."
         value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
@@ -84,7 +95,7 @@ export function DataTableReservationsToolbar<TData>({
             })
           }
         }}
-        className="md:h-9"
+        className="w-full md:h-9"
       />
       {/* Filtro de data */}
       <Popover>
@@ -92,7 +103,7 @@ export function DataTableReservationsToolbar<TData>({
           <Button
             variant="outline"
             className={cn(
-              'justify-start text-left font-normal md:h-9',
+              'w-full justify-start text-left font-normal md:h-9',
               !date && 'text-muted-foreground',
             )}
           >
@@ -126,38 +137,49 @@ export function DataTableReservationsToolbar<TData>({
         </PopoverContent>
       </Popover>{' '}
       <div className="flex w-full flex-wrap gap-3 lg:flex-nowrap">
-        {table.getColumn('status') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('status')}
-            title="Status"
-            options={reservationStatuses}
+        <div className="flex flex-wrap gap-3 lg:flex-nowrap">
+          {table.getColumn('status') && (
+            <DataTableFacetedFilter
+              column={table.getColumn('status')}
+              title="Status"
+              options={reservationStatuses}
+            />
+          )}
+          {table.getColumn('type') && (
+            <DataTableFacetedFilter
+              column={table.getColumn('type')}
+              title="Tipo"
+              options={spaceTypes}
+            />
+          )}
+          {table.getColumn('userRole') && (
+            <DataTableFacetedFilter
+              column={table.getColumn('userRole')}
+              title="Papel"
+              options={userRoleOptions}
+            />
+          )}
+        </div>
+        <div className="ml-auto flex gap-2">
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                table.resetColumnFilters()
+                setDate(undefined)
+              }}
+              className="text-destructive h-9 px-2 lg:px-3"
+            >
+              Reset
+              <XCircle className="ml-2 h-4 w-4" />
+            </Button>
+          )}
+          <DataTableViewOptions
+            titles={reservationsTitlesColumns}
+            table={table}
           />
-        )}
-        {table.getColumn('type') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('type')}
-            title="Tipo"
-            options={spaceTypes}
-          />
-        )}
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              table.resetColumnFilters()
-              setDate(undefined)
-            }}
-            className="text-destructive h-9 px-2 lg:px-3"
-          >
-            Reset
-            <XCircle className="ml-2 h-4 w-4" />
-          </Button>
-        )}
-        <DataTableViewOptions
-          titles={reservationsTitlesColumns}
-          table={table}
-        />
+        </div>
       </div>
     </div>
   )

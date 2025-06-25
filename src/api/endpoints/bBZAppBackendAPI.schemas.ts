@@ -558,6 +558,15 @@ export type ListSpaceReservations200ReservationsItem = {
   user: ListSpaceReservations200ReservationsItemUser
 }
 
+export type ListSpaceReservationsIncludeUserAsGuest =
+  (typeof ListSpaceReservationsIncludeUserAsGuest)[keyof typeof ListSpaceReservationsIncludeUserAsGuest]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaceReservationsIncludeUserAsGuest = {
+  true: 'true',
+  false: 'false',
+} as const
+
 export type ListSpaceReservationsParams = {
   /**
    * Número da página para paginação, começando em 1 (padrão: 1)
@@ -571,6 +580,10 @@ export type ListSpaceReservationsParams = {
    * ID do usuário para filtrar reservas (opcional)
    */
   userId?: string
+  /**
+   * Inclui reservas onde o usuário é convidado (email em bbz_collaborators ou external_guests)
+   */
+  includeUserAsGuest?: ListSpaceReservationsIncludeUserAsGuest
 }
 
 /**

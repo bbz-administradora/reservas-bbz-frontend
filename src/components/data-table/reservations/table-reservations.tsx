@@ -1,6 +1,9 @@
 'use client'
 
-import { ListSpaceReservations200ReservationsItem } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import {
+  ListSpaceReservations200ReservationsItem,
+  UserMe200User,
+} from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { FilterFn } from '@tanstack/react-table'
 import { DataTable } from '../data-table'
 import { columnsReservations } from './columns-reservations'
@@ -9,6 +12,7 @@ import { DataTableReservationsToolbar } from './toolbar-reservations'
 interface DataTableReservationsProps {
   initialData?: ListSpaceReservations200ReservationsItem[]
   className?: string
+  currentUser?: UserMe200User | null
 }
 
 // Custom filter function for space name (nested property)
@@ -34,11 +38,12 @@ const spaceNameFilter: FilterFn<ListSpaceReservations200ReservationsItem> = (
 export function DataTableReservations({
   initialData,
   className,
+  currentUser,
 }: DataTableReservationsProps) {
   return (
     <DataTable
       data={initialData || []}
-      columns={columnsReservations as any[]}
+      columns={columnsReservations(currentUser)}
       Toolbar={DataTableReservationsToolbar}
       className={className}
       globalFilterFn={spaceNameFilter}

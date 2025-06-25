@@ -13,6 +13,7 @@ export default async function MySpaceReservations() {
     page: '1',
     pageSize: '1000',
     userId: user?.id,
+    includeUserAsGuest: 'true',
   })
 
   return (
@@ -33,6 +34,7 @@ export default async function MySpaceReservations() {
         <DataTableReservations
           initialData={reservationsList?.reservations}
           className="mb-5"
+          currentUser={user}
         />
       </div>
     </div>
