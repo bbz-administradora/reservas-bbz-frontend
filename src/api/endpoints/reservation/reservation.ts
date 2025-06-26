@@ -56,6 +56,13 @@ import type {
   ReservationCheckInOut404,
   ReservationCheckInOut422,
   ReservationCheckInOut500,
+  ReservationGetDetail200,
+  ReservationGetDetail400,
+  ReservationGetDetail401,
+  ReservationGetDetail403,
+  ReservationGetDetail404,
+  ReservationGetDetail422,
+  ReservationGetDetail500,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
@@ -790,6 +797,100 @@ export const useReservationCheckInOut = <
   const swrFn = getReservationCheckInOutMutationFetcher(id, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Retorna os detalhes completos de uma reserva específica, incluindo informações do espaço, usuário, status e timestamps.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Restrito a usuários com perfil 'admin', 'dev', 'user'.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Processo**:
+  1. Valida o ID da reserva fornecido nos parâmetros
+  2. Busca os detalhes completos da reserva no banco de dados
+  3. Retorna os dados detalhados da reserva, incluindo informações do espaço e usuário
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserRole`: Restringe acesso aos perfis especificados
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Obter detalhes de uma reserva
+ */
+export type reservationGetDetailResponse = {
+  data: ReservationGetDetail200
+  status: number
+  headers: Headers
+}
+
+export const getReservationGetDetailUrl = (id: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/${id}`
+}
+
+export const reservationGetDetail = async (
+  id: string,
+  options?: RequestInit,
+): Promise<reservationGetDetailResponse> => {
+  return customFetch<Promise<reservationGetDetailResponse>>(
+    getReservationGetDetailUrl(id),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getReservationGetDetailKey = (id: string) =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/${id}`] as const
+
+export type ReservationGetDetailQueryResult = NonNullable<
+  Awaited<ReturnType<typeof reservationGetDetail>>
+>
+export type ReservationGetDetailQueryError =
+  | ReservationGetDetail400
+  | ReservationGetDetail401
+  | ReservationGetDetail403
+  | ReservationGetDetail404
+  | ReservationGetDetail422
+  | ReservationGetDetail500
+
+/**
+ * @summary Obter detalhes de uma reserva
+ */
+export const useReservationGetDetail = <
+  TError =
+    | ReservationGetDetail400
+    | ReservationGetDetail401
+    | ReservationGetDetail403
+    | ReservationGetDetail404
+    | ReservationGetDetail422
+    | ReservationGetDetail500,
+>(
+  id: string,
+  options?: {
+    swr?: SWRConfiguration<
+      Awaited<ReturnType<typeof reservationGetDetail>>,
+      TError
+    > & { swrKey?: Key; enabled?: boolean }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false && !!id
+  const swrKey =
+    swrOptions?.swrKey ??
+    (() => (isEnabled ? getReservationGetDetailKey(id) : null))
+  const swrFn = () => reservationGetDetail(id, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
 
   return {
     swrKey,
