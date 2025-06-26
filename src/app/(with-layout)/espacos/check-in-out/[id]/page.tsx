@@ -1,5 +1,6 @@
 import { Text } from '@/components/Text'
 import { webserver } from '@/infra/webserver'
+import { fetchListSpaceReservationsInServer } from '@/services/reservationService'
 import { fetchSpaceInServer } from '@/services/spaceService'
 import { fetchCurrentUserInServer } from '@/services/userService'
 import { ChevronLeftIcon } from 'lucide-react'
@@ -29,7 +30,15 @@ export default async function SpaceCheckInOutPage(props: { params: Params }) {
     return redirect(`${webserver.host}/espacos`)
   }
 
-  console.log('🚀 ~ SpaceCheckInOutPage ~ space:', space)
+  const reservationsList = await fetchListSpaceReservationsInServer({
+    page: '1',
+    pageSize: '10',
+    userId: user?.id,
+    includeUserAsGuest: 'true',
+    spaceId: space.id,
+  })
+
+  console.log('🚀 ~ SpaceCheckInOutPage ~ reservationsList:', reservationsList)
 
   return (
     <div
@@ -41,7 +50,7 @@ export default async function SpaceCheckInOutPage(props: { params: Params }) {
           <ChevronLeftIcon className="text-accent size-10" />
         </Link>
         <Text as="h1" variant={'title-22-32-700'}>
-          Check-In e Check-Out
+          {`Check-in / Check-out – Sala ${space.name}`}
         </Text>
       </div>
     </div>

@@ -1237,6 +1237,10 @@ export type ListSpaceReservationsParams = {
    */
   userId?: string
   /**
+   * ID do espaço para filtrar reservas (opcional)
+   */
+  spaceId?: string
+  /**
    * Inclui reservas onde o usuário é convidado (email em bbz_collaborators ou external_guests)
    */
   includeUserAsGuest?: ListSpaceReservationsIncludeUserAsGuest

@@ -476,18 +476,21 @@ export const useCancelSpaceReservation = <
   2. Permite definir parâmetros de paginação (page e pageSize)
   3. Traz informações detalhadas de cada reserva, incluindo dados do espaço e lista de IDs dos slots
   4. Permite filtrar por usuário específico (opcional)
-  5. Permite incluir reservas onde o usuário é convidado (email está em bbz_collaborators ou external_guests)
+  5. Permite filtrar por espaço específico (opcional)
+  6. Permite incluir reservas onde o usuário é convidado (email está em bbz_collaborators ou external_guests)
 
 * **Parâmetros de query**:
   - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)
   - pageSize (opcional): Quantidade de resultados por página, entre 1 e 10000 (padrão: 10000)
   - userId (opcional): ID do usuário para filtrar reservas específicas
+  - spaceId (opcional): ID do espaço para filtrar reservas específicas
   - includeUserAsGuest (opcional): Se "true", inclui reservas onde o usuário é convidado
 
 * **Exemplo de uso**:
   - Requisição básica: `GET /v1/private/reservation/list` (retorna todas as reservas)
   - Com paginação: `GET /v1/private/reservation/list?page=2&pageSize=15`
   - Filtrar por usuário: `GET /v1/private/reservation/list?userId=123e4567-e89b-12d3-a456-426614174000`
+  - Filtrar por espaço: `GET /v1/private/reservation/list?spaceId=123e4567-e89b-12d3-a456-426614174000`
   - Filtrar por usuário incluindo convites: `GET /v1/private/reservation/list?userId=123e4567-e89b-12d3-a456-426614174000&includeUserAsGuest=true`
 
 * **Formato da resposta**:
@@ -497,8 +500,9 @@ export const useCancelSpaceReservation = <
   - currentPage: Número da página atual
 
 * **Notas**:
-  - Sem o parâmetro userId, o endpoint retorna TODAS as reservas do sistema
+  - Sem nenhum parâmetro de filtro, o endpoint retorna TODAS as reservas do sistema
   - Com o parâmetro userId, retorna apenas as reservas do usuário especificado
+  - Com o parâmetro spaceId, retorna apenas as reservas do espaço especificado
   - Com userId e includeUserAsGuest=true, também retorna reservas onde o usuário é convidado
   - As reservas são ordenadas da mais recente para a mais antiga
   - Cada reserva agora contém um array spaceSlotIds com os IDs dos slots reservados
