@@ -2,8 +2,10 @@ import {
   GetSpaceReservationStats200,
   ListSpaceReservations200,
   ListSpaceReservationsParams,
+  ReservationCheckInOut200,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { customFetch } from '@/api/mutator/custom-fetch'
+import { env } from '@/infra/env'
 import { getHeadersServer } from '@/lib/cookie'
 
 export async function fetchSpaceReservationStatsInServer() {
@@ -14,7 +16,7 @@ export async function fetchSpaceReservationStatsInServer() {
   }
 
   const getGetSpaceReservationStatsUrl = () => {
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/stats`
+    return `${env.NEXT_PUBLIC_API_URL}/v1/private/reservation/stats`
   }
 
   const url = getGetSpaceReservationStatsUrl()
@@ -55,8 +57,8 @@ export async function fetchListSpaceReservationsInServer(
       }
     })
     return normalizedParams.size
-      ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list?${normalizedParams.toString()}`
-      : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list`
+      ? `${env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list?${normalizedParams.toString()}`
+      : `${env.NEXT_PUBLIC_API_URL}/v1/private/reservation/list`
   }
 
   const url = getListSpaceReservationsUrl(params)
@@ -86,4 +88,29 @@ export async function fetchListSpaceReservationsInServer(
   }
 
   return null
+}
+
+export async function fetchReservationCheckInOutInServer(
+  spaceId: string,
+): Promise<ReservationCheckInOut200 | null> {
+  const headers = await getHeadersServer()
+  if (!headers) {
+    console.warn('CSRF token not found')
+    return null
+  }
+
+  const getReservationCheckInOutUrl = (spaceId: string) => {
+    return `${env.NEXT_PUBLIC_API_URL}/v1/private/reservation/check-in-out/${spaceId}`
+  }
+
+  const url = getReservationCheckInOutUrl(spaceId)
+
+  const response = await customFetch<ReservationCheckInOut200>(url, {
+    method: 'POST',
+    credentials: 'include',
+    cache: 'no-store',
+    headers,
+  })
+
+  return response.data
 }
