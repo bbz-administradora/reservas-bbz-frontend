@@ -1,4 +1,4 @@
-import { SpaceExplorer } from '@/components/SpaceExplorer'
+import { SpaceExplorerSection } from '@/components/SpaceExplorerSection'
 import { CardDecoration } from '@/components/svg/card-decoration'
 import { Text } from '@/components/Text'
 import { Separator } from '@/components/ui/separator'
@@ -122,20 +122,11 @@ export default async function SpacesHome() {
         </div>
       </div>
       <Separator className="bg-primary w-full" />
-      <div className="my-4 w-full">
-        <Text variant={'title-22-32-700'}>Explorar Espaços</Text>
-        <Text className="mt-2.5 max-w-3xl">
-          Filtre os espaços por data e horário disponível, toque em um de seus
-          períodos mais usados para agilizar ou simplesmente role os cards
-          abaixo e clique no espaço desejado para reservar.
-        </Text>
 
-        <SpaceExplorer
-          initialData={listAvailableSpaces}
-          mostUsedTimes={spaceReservationStats?.mostUsedStartTimes || []}
-          className="pt-5"
-        />
-      </div>
+      <SpaceExplorerSection
+        initialData={listAvailableSpaces}
+        mostUsedTimes={spaceReservationStats?.mostUsedStartTimes || []}
+      />
     </div>
   )
 }

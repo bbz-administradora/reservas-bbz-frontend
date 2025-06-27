@@ -30,17 +30,17 @@ import { ClockIcon, XIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Text } from './Text'
 
-interface SpaceExplorerProps {
+interface SpaceRoomExplorerProps {
   initialData: ListSpaceSlots200 | null
   className?: string
   mostUsedTimes?: string[]
 }
 
-export function SpaceExplorer({
+export function SpaceRoomExplorer({
   initialData,
   className,
   mostUsedTimes = ['10:00', '14:00', '16:00'],
-}: SpaceExplorerProps) {
+}: SpaceRoomExplorerProps) {
   // Função para garantir que a data seja sempre hoje ou no futuro
   const ensureDateIsNotPast = (date: Date | undefined): Date => {
     if (!date) return new Date()
@@ -59,13 +59,6 @@ export function SpaceExplorer({
     ensureDateIsNotPast(new Date()),
   )
   const [timeSlot, setTimeSlot] = useState<string>('')
-  const [spaceType, setSpaceType] = useState<'room' | 'workstation'>(
-    initialData?.spaces &&
-      initialData.spaces.length > 0 &&
-      initialData.spaces[0].type === 'workstation'
-      ? 'workstation'
-      : 'room',
-  )
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 9
 
@@ -120,7 +113,7 @@ export function SpaceExplorer({
     datetime: datetimeWithTimeSlot,
     page: currentPage.toString(),
     pageSize: itemsPerPage.toString(),
-    type: spaceType,
+    type: 'room',
   }
 
   // Use the hook with initial data to avoid flickering
