@@ -82,10 +82,7 @@ export function SpaceExplorerSection({
             por local. Escolha a estação ideal para seu momento e toque para
             reservar com rapidez.
           </Text>
-          <SpaceWorkstationExplorer
-            initialData={initialData}
-            className="pt-5"
-          />
+          <SpaceWorkstationExplorer className="pt-5" />
         </>
       )}
     </div>
