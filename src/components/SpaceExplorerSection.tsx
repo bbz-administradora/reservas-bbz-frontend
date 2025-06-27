@@ -3,6 +3,7 @@
 
 import { ListSpaceSlots200 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { SpaceRoomExplorer } from '@/components/SpaceRoomExplorer'
+import { SpaceWorkstationExplorer } from '@/components/SpaceWorkstationExplorer'
 import { Text } from '@/components/Text'
 import { useSpaceType } from '@/context/SpaceTypeProvider'
 import { cn } from '@/utils/mergeClassNames'
@@ -61,24 +62,32 @@ export function SpaceExplorerSection({
         </button>
       </div>
       {type === 'room' ? (
-        <Text className="mt-2.5 max-w-3xl">
-          Filtre as salas por data e horário disponível, toque em um de seus
-          períodos mais usados para agilizar ou simplesmente role os cards
-          abaixo e clique na sala desejada para reservar.
-        </Text>
+        <>
+          <Text className="mt-2.5 max-w-3xl">
+            Filtre as salas por data e horário disponível, toque em um de seus
+            períodos mais usados para agilizar ou simplesmente role os cards
+            abaixo e clique na sala desejada para reservar.
+          </Text>
+          <SpaceRoomExplorer
+            initialData={initialData}
+            mostUsedTimes={mostUsedTimes}
+            className="pt-5"
+          />
+        </>
       ) : (
-        <Text className="mt-2.5 max-w-3xl">
-          Filtre por data e andar desejado, depois navegue entre as zonas
-          disponíveis e visualize todas as posições de trabalho organizadas por
-          local. Escolha a estação ideal para seu momento e toque para reservar
-          com rapidez.
-        </Text>
+        <>
+          <Text className="mt-2.5 max-w-3xl">
+            Filtre por data e andar desejado, depois navegue entre as zonas
+            disponíveis e visualize todas as posições de trabalho organizadas
+            por local. Escolha a estação ideal para seu momento e toque para
+            reservar com rapidez.
+          </Text>
+          <SpaceWorkstationExplorer
+            initialData={initialData}
+            className="pt-5"
+          />
+        </>
       )}
-      <SpaceRoomExplorer
-        initialData={initialData}
-        mostUsedTimes={mostUsedTimes}
-        className="pt-5"
-      />
     </div>
   )
 }
