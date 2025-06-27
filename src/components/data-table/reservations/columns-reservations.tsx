@@ -409,13 +409,19 @@ export const columnsReservations = (
       />
     ),
     cell: ({ row }) => {
-      const date = row.original.checkInAt
-      if (!date) return <span>-</span>
-
+      if (!currentUser) return <span>-</span>
+      const checkIn = row.original.checkInOuts?.find(
+        (item) => item.userId === currentUser.id && item.type === 'check-in',
+      )
+      if (!checkIn) return <span>-</span>
       try {
-        const formattedDate = format(new Date(date), 'dd/MM/yyyy HH:mm', {
-          locale: ptBR,
-        })
+        const formattedDate = format(
+          new Date(checkIn.createdAt),
+          'dd/MM/yyyy HH:mm',
+          {
+            locale: ptBR,
+          },
+        )
         return <span>{formattedDate}</span>
       } catch {
         return <span>Data inválida</span>
@@ -431,13 +437,19 @@ export const columnsReservations = (
       />
     ),
     cell: ({ row }) => {
-      const date = row.original.checkOutAt
-      if (!date) return <span>-</span>
-
+      if (!currentUser) return <span>-</span>
+      const checkOut = row.original.checkInOuts?.find(
+        (item) => item.userId === currentUser.id && item.type === 'check-out',
+      )
+      if (!checkOut) return <span>-</span>
       try {
-        const formattedDate = format(new Date(date), 'dd/MM/yyyy HH:mm', {
-          locale: ptBR,
-        })
+        const formattedDate = format(
+          new Date(checkOut.createdAt),
+          'dd/MM/yyyy HH:mm',
+          {
+            locale: ptBR,
+          },
+        )
         return <span>{formattedDate}</span>
       } catch {
         return <span>Data inválida</span>
