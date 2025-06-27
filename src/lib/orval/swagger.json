@@ -9691,16 +9691,6 @@
                               "closed"
                             ],
                             "description": "Status atual da reserva"
-                          },
-                          "checkInAt": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "Data e hora do check-in da reserva, se houver"
-                          },
-                          "checkOutAt": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "Data e hora do check-out da reserva, se houver"
                           }
                         },
                         "required": [
@@ -9713,9 +9703,7 @@
                           "bbzCollaborators",
                           "externalGuests",
                           "needsCopeira",
-                          "status",
-                          "checkInAt",
-                          "checkOutAt"
+                          "status"
                         ],
                         "additionalProperties": false
                       }
@@ -10188,16 +10176,6 @@
                         "closedAt": {
                           "type": "string",
                           "description": "Data e hora do fechamento da reserva"
-                        },
-                        "checkInAt": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "Data e hora do check-in da reserva, se houver"
-                        },
-                        "checkOutAt": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "Data e hora do check-out da reserva, se houver"
                         }
                       },
                       "required": [
@@ -10211,9 +10189,7 @@
                         "externalGuests",
                         "needsCopeira",
                         "status",
-                        "closedAt",
-                        "checkInAt",
-                        "checkOutAt"
+                        "closedAt"
                       ],
                       "additionalProperties": false
                     },
@@ -10659,16 +10635,6 @@
                         "cancelledAt": {
                           "type": "string",
                           "description": "Data e hora do cancelamento da reserva"
-                        },
-                        "checkInAt": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "Data e hora do check-in da reserva, se houver"
-                        },
-                        "checkOutAt": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "Data e hora do check-out da reserva, se houver"
                         }
                       },
                       "required": [
@@ -10684,9 +10650,7 @@
                         "status",
                         "cancelledBy",
                         "cancelReason",
-                        "cancelledAt",
-                        "checkInAt",
-                        "checkOutAt"
+                        "cancelledAt"
                       ],
                       "additionalProperties": false
                     },
@@ -11006,7 +10970,7 @@
         "tags": [
           "Reservation"
         ],
-        "description": "Este endpoint permite listar reservas de espaço, com opção de filtrar por usuário.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários autenticados com conta ativa.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Retorna reservas com paginação\n  2. Permite definir parâmetros de paginação (page e pageSize)\n  3. Traz informações detalhadas de cada reserva, incluindo dados do espaço e lista de IDs dos slots\n  4. Permite filtrar por usuário específico (opcional)\n  5. Permite filtrar por espaço específico (opcional)\n  6. Permite incluir reservas onde o usuário é convidado (email está em bbz_collaborators ou external_guests)\n\n* **Parâmetros de query**:\n  - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)\n  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 10000 (padrão: 10000)\n  - userId (opcional): ID do usuário para filtrar reservas específicas\n  - spaceId (opcional): ID do espaço para filtrar reservas específicas\n  - includeUserAsGuest (opcional): Se \"true\", inclui reservas onde o usuário é convidado\n\n* **Exemplo de uso**:\n  - Requisição básica: `GET /v1/private/reservation/list` (retorna todas as reservas)\n  - Com paginação: `GET /v1/private/reservation/list?page=2&pageSize=15`\n  - Filtrar por usuário: `GET /v1/private/reservation/list?userId=123e4567-e89b-12d3-a456-426614174000`\n  - Filtrar por espaço: `GET /v1/private/reservation/list?spaceId=123e4567-e89b-12d3-a456-426614174000`\n  - Filtrar por usuário incluindo convites: `GET /v1/private/reservation/list?userId=123e4567-e89b-12d3-a456-426614174000&includeUserAsGuest=true`\n\n* **Formato da resposta**:\n  - reservations: Array com detalhes completos de cada reserva, incluindo array spaceSlotIds\n  - totalCount: Número total de reservas encontradas\n  - totalPages: Número total de páginas disponíveis\n  - currentPage: Número da página atual\n\n* **Notas**:\n  - Sem nenhum parâmetro de filtro, o endpoint retorna TODAS as reservas do sistema\n  - Com o parâmetro userId, retorna apenas as reservas do usuário especificado\n  - Com o parâmetro spaceId, retorna apenas as reservas do espaço especificado\n  - Com userId e includeUserAsGuest=true, também retorna reservas onde o usuário é convidado\n  - As reservas são ordenadas da mais recente para a mais antiga\n  - Cada reserva agora contém um array spaceSlotIds com os IDs dos slots reservados",
+        "description": "Este endpoint permite listar reservas de espaço, com opção de filtrar por usuário.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários autenticados com conta ativa.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Retorna reservas com paginação\n  2. Permite definir parâmetros de paginação (page e pageSize)\n  3. Traz informações detalhadas de cada reserva, incluindo dados do espaço e lista de IDs dos slots\n  4. Permite filtrar por usuário específico (opcional)\n  5. Permite filtrar por espaço específico (opcional)\n  6. Permite incluir reservas onde o usuário é convidado (email está em bbz_collaborators ou external_guests)\n\n* **Parâmetros de query**:\n  - page (opcional): Número da página para paginação, começando em 1 (padrão: 1)\n  - pageSize (opcional): Quantidade de resultados por página, entre 1 e 10000 (padrão: 10000)\n  - userId (opcional): ID do usuário para filtrar reservas específicas\n  - spaceId (opcional): ID do espaço para filtrar reservas específicas\n  - includeUserAsGuest (opcional): Se \"true\", inclui reservas onde o usuário é convidado\n\n* **Exemplo de uso**:\n  - Requisição básica: `GET /v1/private/reservation/list` (retorna todas as reservas)\n  - Com paginação: `GET /v1/private/reservation/list?page=2&pageSize=15`\n  - Filtrar por usuário: `GET /v1/private/reservation/list?userId=123e4567-e89b-12d3-a456-426614174000`\n  - Filtrar por espaço: `GET /v1/private/reservation/list?spaceId=123e4567-e89b-12d3-a456-426614174000`\n  - Filtrar por usuário incluindo convites: `GET /v1/private/reservation/list?userId=123e4567-e89b-12d3-a456-426614174000&includeUserAsGuest=true`\n\n* **Formato da resposta**:\n  - reservations: Array com detalhes completos de cada reserva, incluindo array spaceSlotIds e checkInOuts\n  - totalCount: Número total de reservas encontradas\n  - totalPages: Número total de páginas disponíveis\n  - currentPage: Número da página atual\n\n* **Notas**:\n  - Sem nenhum parâmetro de filtro, o endpoint retorna TODAS as reservas do sistema\n  - Com o parâmetro userId, retorna apenas as reservas do usuário especificado\n  - Com o parâmetro spaceId, retorna apenas as reservas do espaço especificado\n  - Com userId e includeUserAsGuest=true, também retorna reservas onde o usuário é convidado\n  - As reservas são ordenadas da mais recente para a mais antiga\n  - Cada reserva agora contém um array spaceSlotIds com os IDs dos slots reservados\n  - Cada reserva inclui um array checkInOuts com todos os registros de check-in e check-out relacionados",
         "parameters": [
           {
             "schema": {
@@ -11237,19 +11201,60 @@
                             "nullable": true,
                             "description": "Data/hora do fechamento da reserva (ou null)"
                           },
-                          "checkInAt": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "Data e hora do check-in da reserva, se houver"
-                          },
-                          "checkOutAt": {
-                            "type": "string",
-                            "nullable": true,
-                            "description": "Data e hora do check-out da reserva, se houver"
-                          },
                           "createdAt": {
                             "type": "string",
                             "description": "Data/hora de criação da reserva"
+                          },
+                          "checkInOuts": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid",
+                                  "description": "Identificador único do registro de check-in/check-out"
+                                },
+                                "spaceId": {
+                                  "type": "string",
+                                  "format": "uuid",
+                                  "description": "Identificador único do espaço"
+                                },
+                                "userId": {
+                                  "type": "string",
+                                  "format": "uuid",
+                                  "description": "Identificador único do usuário"
+                                },
+                                "reservationId": {
+                                  "type": "string",
+                                  "format": "uuid",
+                                  "description": "Identificador único da reserva"
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "check-in",
+                                    "check-out"
+                                  ],
+                                  "description": "Tipo do registro (check-in ou check-out)"
+                                },
+                                "createdAt": {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "description": "Data/hora do registro"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "spaceId",
+                                "userId",
+                                "reservationId",
+                                "type",
+                                "createdAt"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "description": "Registros de check-in/check-out relacionados à reserva"
                           }
                         },
                         "required": [
@@ -11267,9 +11272,8 @@
                           "cancelReason",
                           "cancelledAt",
                           "closedAt",
-                          "checkInAt",
-                          "checkOutAt",
-                          "createdAt"
+                          "createdAt",
+                          "checkInOuts"
                         ],
                         "additionalProperties": false,
                         "description": "Detalhes completos de uma reserva paginada"
@@ -11831,14 +11835,14 @@
         }
       }
     },
-    "/v1/private/reservation/check-in-out/{id}": {
-      "patch": {
+    "/v1/private/reservation/check-in-out/{spaceId}": {
+      "post": {
         "operationId": "reservationCheckInOut",
         "summary": "Realizar check-in ou check-out em uma reserva",
         "tags": [
           "Reservation"
         ],
-        "description": "Endpoint para realizar check-in ou check-out em uma reserva existente.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin', 'dev', 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Verifica se a reserva existe e pertence ao usuário atual\n  2. Determina automaticamente se deve realizar check-in ou check-out\n  3. Valida regras de negócio (ex: check-in apenas 15 minutos antes do início)\n  4. Atualiza o registro da reserva com a data e hora da operação\n  5. Retorna os detalhes da reserva atualizada\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserRole`: Restringe acesso aos perfis especificados\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "description": "Endpoint para realizar check-in ou check-out em uma reserva existente.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin', 'dev', 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Verifica se o espaço existe\n  2. Busca reservas do usuário para o espaço e dia atual\n  3. Determina automaticamente se deve realizar check-in ou check-out\n  4. Registra a operação na tabela space_check_in_out\n  5. Atualiza o registro da reserva com a data e hora da operação\n  6. Retorna os detalhes da reserva atualizada\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "parameters": [
           {
             "schema": {
@@ -11846,9 +11850,9 @@
               "format": "uuid"
             },
             "in": "path",
-            "name": "id",
+            "name": "spaceId",
             "required": true,
-            "description": "Identificador único da reserva no formato UUID v4. Campo obrigatório."
+            "description": "Identificador único do espaço no formato UUID v4. Campo obrigatório."
           }
         ],
         "security": [
@@ -12406,16 +12410,6 @@
                           "nullable": true,
                           "description": "Data/hora do fechamento da reserva (ou null)"
                         },
-                        "checkInAt": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "Data e hora do check-in da reserva, se houver"
-                        },
-                        "checkOutAt": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "Data e hora do check-out da reserva, se houver"
-                        },
                         "createdAt": {
                           "type": "string",
                           "description": "Data/hora de criação da reserva"
@@ -12436,8 +12430,6 @@
                         "cancelReason",
                         "cancelledAt",
                         "closedAt",
-                        "checkInAt",
-                        "checkOutAt",
                         "createdAt"
                       ],
                       "additionalProperties": false,

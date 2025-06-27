@@ -347,16 +347,6 @@ export type ReservationGetDetail200Reservation = {
    */
   cancelReason: string | null
   /**
-   * Data e hora do check-in da reserva, se houver
-   * @nullable
-   */
-  checkInAt: string | null
-  /**
-   * Data e hora do check-out da reserva, se houver
-   * @nullable
-   */
-  checkOutAt: string | null
-  /**
    * Data/hora do fechamento da reserva (ou null)
    * @nullable
    */
@@ -1068,20 +1058,6 @@ export type ListSpaceReservations400 = {
 }
 
 /**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
-
-/**
  * Informações do usuário que fez a reserva
  */
 export type ListSpaceReservations200ReservationsItemUser = {
@@ -1105,6 +1081,70 @@ export const ListSpaceReservations200ReservationsItemStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
+
+/**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ListSpaceReservations200ReservationsItem = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /** Registros de check-in/check-out relacionados à reserva */
+  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ListSpaceReservations200ReservationsItemSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ListSpaceReservations200ReservationsItemStatus
+  /** Informações do usuário que fez a reserva */
+  user: ListSpaceReservations200ReservationsItemUser
+}
+
+/**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
 
 /**
  * Tipo do espaço
@@ -1146,6 +1186,33 @@ export type ListSpaceReservations200ReservationsItemSpace = {
 }
 
 /**
+ * Tipo do registro (check-in ou check-out)
+ */
+export type ListSpaceReservations200ReservationsItemCheckInOutsItemType =
+  (typeof ListSpaceReservations200ReservationsItemCheckInOutsItemType)[keyof typeof ListSpaceReservations200ReservationsItemCheckInOutsItemType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaceReservations200ReservationsItemCheckInOutsItemType = {
+  'check-in': 'check-in',
+  'check-out': 'check-out',
+} as const
+
+export type ListSpaceReservations200ReservationsItemCheckInOutsItem = {
+  /** Data/hora do registro */
+  createdAt: string
+  /** Identificador único do registro de check-in/check-out */
+  id: string
+  /** Identificador único da reserva */
+  reservationId: string
+  /** Identificador único do espaço */
+  spaceId: string
+  /** Tipo do registro (check-in ou check-out) */
+  type: ListSpaceReservations200ReservationsItemCheckInOutsItemType
+  /** Identificador único do usuário */
+  userId: string
+}
+
+/**
  * Usuário que cancelou a reserva (ou null)
  * @nullable
  */
@@ -1155,64 +1222,6 @@ export type ListSpaceReservations200ReservationsItemCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ListSpaceReservations200ReservationsItem = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /**
-   * Data e hora do check-in da reserva, se houver
-   * @nullable
-   */
-  checkInAt: string | null
-  /**
-   * Data e hora do check-out da reserva, se houver
-   * @nullable
-   */
-  checkOutAt: string | null
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ListSpaceReservations200ReservationsItemSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ListSpaceReservations200ReservationsItemStatus
-  /** Informações do usuário que fez a reserva */
-  user: ListSpaceReservations200ReservationsItemUser
-}
 
 export type ListSpaceReservationsIncludeUserAsGuest =
   (typeof ListSpaceReservationsIncludeUserAsGuest)[keyof typeof ListSpaceReservationsIncludeUserAsGuest]
@@ -1503,16 +1512,6 @@ export type CancelSpaceReservation200Reservation = {
   cancelledBy: string
   /** Motivo do cancelamento */
   cancelReason: string
-  /**
-   * Data e hora do check-in da reserva, se houver
-   * @nullable
-   */
-  checkInAt: string | null
-  /**
-   * Data e hora do check-out da reserva, se houver
-   * @nullable
-   */
-  checkOutAt: string | null
   /** Lista de convidados externos */
   externalGuests: string[]
   /** Identificador único da reserva */
@@ -1806,16 +1805,6 @@ export const CloseSpaceReservation200ReservationStatus = {
 export type CloseSpaceReservation200Reservation = {
   /** Lista de colaboradores da BBZ */
   bbzCollaborators: string[]
-  /**
-   * Data e hora do check-in da reserva, se houver
-   * @nullable
-   */
-  checkInAt: string | null
-  /**
-   * Data e hora do check-out da reserva, se houver
-   * @nullable
-   */
-  checkOutAt: string | null
   /** Data e hora do fechamento da reserva */
   closedAt: string
   /** Lista de convidados externos */
@@ -2143,16 +2132,6 @@ export const CreateSpaceReservation201ReservationsItemStatus = {
 export type CreateSpaceReservation201ReservationsItem = {
   /** Lista de colaboradores da BBZ */
   bbzCollaborators: string[]
-  /**
-   * Data e hora do check-in da reserva, se houver
-   * @nullable
-   */
-  checkInAt: string | null
-  /**
-   * Data e hora do check-out da reserva, se houver
-   * @nullable
-   */
-  checkOutAt: string | null
   /** Lista de convidados externos */
   externalGuests: string[]
   /** Identificador único da reserva */

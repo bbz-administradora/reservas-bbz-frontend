@@ -494,7 +494,7 @@ export const useCancelSpaceReservation = <
   - Filtrar por usuário incluindo convites: `GET /v1/private/reservation/list?userId=123e4567-e89b-12d3-a456-426614174000&includeUserAsGuest=true`
 
 * **Formato da resposta**:
-  - reservations: Array com detalhes completos de cada reserva, incluindo array spaceSlotIds
+  - reservations: Array com detalhes completos de cada reserva, incluindo array spaceSlotIds e checkInOuts
   - totalCount: Número total de reservas encontradas
   - totalPages: Número total de páginas disponíveis
   - currentPage: Número da página atual
@@ -506,6 +506,7 @@ export const useCancelSpaceReservation = <
   - Com userId e includeUserAsGuest=true, também retorna reservas onde o usuário é convidado
   - As reservas são ordenadas da mais recente para a mais antiga
   - Cada reserva agora contém um array spaceSlotIds com os IDs dos slots reservados
+  - Cada reserva inclui um array checkInOuts com todos os registros de check-in e check-out relacionados
  * @summary Listar reservas de espaço
  */
 export type listSpaceReservationsResponse = {
@@ -709,15 +710,15 @@ export const useGetSpaceReservationStats = <
 * **Autorização**: Restrito a usuários com perfil 'admin', 'dev', 'user'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 * **Processo**:
-  1. Verifica se a reserva existe e pertence ao usuário atual
-  2. Determina automaticamente se deve realizar check-in ou check-out
-  3. Valida regras de negócio (ex: check-in apenas 15 minutos antes do início)
-  4. Atualiza o registro da reserva com a data e hora da operação
-  5. Retorna os detalhes da reserva atualizada
+  1. Verifica se o espaço existe
+  2. Busca reservas do usuário para o espaço e dia atual
+  3. Determina automaticamente se deve realizar check-in ou check-out
+  4. Registra a operação na tabela space_check_in_out
+  5. Atualiza o registro da reserva com a data e hora da operação
+  6. Retorna os detalhes da reserva atualizada
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
-- `validateUserRole`: Restringe acesso aos perfis especificados
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
  * @summary Realizar check-in ou check-out em uma reserva
  */
@@ -727,37 +728,37 @@ export type reservationCheckInOutResponse = {
   headers: Headers
 }
 
-export const getReservationCheckInOutUrl = (id: string) => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/check-in-out/${id}`
+export const getReservationCheckInOutUrl = (spaceId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/check-in-out/${spaceId}`
 }
 
 export const reservationCheckInOut = async (
-  id: string,
+  spaceId: string,
   options?: RequestInit,
 ): Promise<reservationCheckInOutResponse> => {
   return customFetch<Promise<reservationCheckInOutResponse>>(
-    getReservationCheckInOutUrl(id),
+    getReservationCheckInOutUrl(spaceId),
     {
       ...options,
-      method: 'PATCH',
+      method: 'POST',
     },
   )
 }
 
 export const getReservationCheckInOutMutationFetcher = (
-  id: string,
+  spaceId: string,
   options?: SecondParameter<typeof customFetch>,
 ) => {
   return (
     _: Key,
     __: { arg: Arguments },
   ): Promise<reservationCheckInOutResponse> => {
-    return reservationCheckInOut(id, options)
+    return reservationCheckInOut(spaceId, options)
   }
 }
-export const getReservationCheckInOutMutationKey = (id: string) =>
+export const getReservationCheckInOutMutationKey = (spaceId: string) =>
   [
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/check-in-out/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/check-in-out/${spaceId}`,
   ] as const
 
 export type ReservationCheckInOutMutationResult = NonNullable<
@@ -783,7 +784,7 @@ export const useReservationCheckInOut = <
     | ReservationCheckInOut422
     | ReservationCheckInOut500,
 >(
-  id: string,
+  spaceId: string,
   options?: {
     swr?: SWRMutationConfiguration<
       Awaited<ReturnType<typeof reservationCheckInOut>>,
@@ -797,8 +798,9 @@ export const useReservationCheckInOut = <
 ) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getReservationCheckInOutMutationKey(id)
-  const swrFn = getReservationCheckInOutMutationFetcher(id, requestOptions)
+  const swrKey =
+    swrOptions?.swrKey ?? getReservationCheckInOutMutationKey(spaceId)
+  const swrFn = getReservationCheckInOutMutationFetcher(spaceId, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
