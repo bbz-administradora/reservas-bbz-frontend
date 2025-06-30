@@ -7,6 +7,7 @@ import { webserver } from '@/infra/webserver'
 import { fetchCurrentUserInServer } from '@/services/userService'
 import {
   CalendarCheck2Icon,
+  CalendarDaysIcon,
   DoorOpenIcon,
   HomeIcon,
   Users2Icon,
@@ -114,6 +115,21 @@ export default async function Layout({
                     <DoorOpenIcon className="size-5" />
                   </Button>
                 </Link>
+
+                <Link
+                  href={`${webserver.host}/admin/reservas`}
+                  title="Ir para a página administrativa de reservas"
+                  className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  <Button
+                    tabIndex={-1}
+                    variant="ghost"
+                    size="icon"
+                    className="lg:cursor-pointer"
+                  >
+                    <CalendarDaysIcon className="size-5" />
+                  </Button>
+                </Link>
               </>
             )}
 
@@ -162,6 +178,14 @@ export default async function Layout({
                 href={`${webserver.host}/admin/espacos`}
               >
                 <DoorOpenIcon className="size-6" />
+              </BottomTabButton>
+
+              <BottomTabButton
+                label="Adm Reservas"
+                href={`${webserver.host}/admin/reservas`}
+                className="hidden md:flex"
+              >
+                <CalendarDaysIcon className="size-6" />
               </BottomTabButton>
             </>
           )}
