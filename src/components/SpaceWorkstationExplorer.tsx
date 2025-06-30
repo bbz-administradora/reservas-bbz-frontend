@@ -76,8 +76,6 @@ export function SpaceWorkstationExplorer({
     return { floor, zones }
   })
 
-  console.log('🚀 ~ floorsWithZones:', floorsWithZones)
-
   const baseDate = date ?? new Date()
   const startDate = format(baseDate, 'yyyy-MM-dd')
   const endDate = format(addDays(baseDate, 6), 'yyyy-MM-dd')
