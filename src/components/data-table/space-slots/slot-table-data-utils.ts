@@ -134,3 +134,80 @@ export function prepareSlotTableData(rawSlots: any[]): SlotRow[] {
     return row
   })
 }
+
+/**
+ * Prepara os dados de slots para workstations agrupando em períodos de manhã (07:00-12:00) e tarde (13:00-20:00).
+ * Para cada data, garante que ambos os períodos existam, preenchendo como 'available' se não houver slot correspondente.
+ */
+export function prepareWorkstationSlotTableData(rawSlots: any[]): SlotRow[] {
+  // Extrair datas únicas dos slots
+  const uniqueDates = new Set<string>()
+  rawSlots.forEach((slot) => {
+    if (slot.slotStart) {
+      const date = new Date(slot.slotStart).toISOString().split('T')[0]
+      uniqueDates.add(date)
+    } else if (slot.date) {
+      uniqueDates.add(slot.date)
+    }
+  })
+  const dates = Array.from(uniqueDates).sort((a, b) => a.localeCompare(b))
+
+  // Para cada data, criar uma linha na tabela
+  return dates.map((date) => {
+    // Iniciar com ambos os períodos disponíveis
+    const row: SlotRow = {
+      date,
+      slots: {
+        morning: { status: 'available' },
+        afternoon: { status: 'available' },
+      },
+    }
+
+    // Filtrar slots para a data atual
+    const slotsForThisDate = rawSlots.filter((slot) => {
+      if (slot.date) return slot.date === date
+      if (slot.slotStart) {
+        return new Date(slot.slotStart).toISOString().split('T')[0] === date
+      }
+      return false
+    })
+
+    // Preencher slot da manhã, se existir
+    const morningSlot = slotsForThisDate.find((slot) => {
+      if (!slot.slotStart || !slot.slotEnd) return false
+      const start = new Date(slot.slotStart)
+      const end = new Date(slot.slotEnd)
+      return start.getHours() === 7 && end.getHours() === 12
+    })
+    if (morningSlot) {
+      row.slots.morning = {
+        id: morningSlot.id,
+        status: morningSlot.status,
+        preReservedUntil: morningSlot.preReservedUntil,
+        slotStart: morningSlot.slotStart,
+        slotEnd: morningSlot.slotEnd,
+        user: morningSlot.user,
+      }
+    }
+
+    // Preencher slot da tarde, se existir
+    const afternoonSlot = slotsForThisDate.find((slot) => {
+      if (!slot.slotStart || !slot.slotEnd) return false
+      const start = new Date(slot.slotStart)
+      const end = new Date(slot.slotEnd)
+      return start.getHours() === 13 && end.getHours() === 18
+    })
+    if (afternoonSlot) {
+      row.slots.afternoon = {
+        id: afternoonSlot.id,
+        status: afternoonSlot.status,
+        preReservedUntil: afternoonSlot.preReservedUntil,
+        slotStart: afternoonSlot.slotStart,
+        slotEnd: afternoonSlot.slotEnd,
+        user: afternoonSlot.user,
+      }
+    }
+
+    return row
+  })
+}

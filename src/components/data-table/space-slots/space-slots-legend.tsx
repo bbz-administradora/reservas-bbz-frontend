@@ -1,5 +1,6 @@
 import { UserMe200User } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { Text } from '@/components/Text'
+import { cn } from '@/utils/mergeClassNames'
 import {
   CalendarCheck2Icon,
   CalendarClockIcon,
@@ -9,11 +10,17 @@ import {
 
 interface LegendProps {
   user: UserMe200User | null
+  className?: string
 }
 
-export function SpaceSlotsLegend({ user }: LegendProps) {
+export function SpaceSlotsLegend({ user, className }: LegendProps) {
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2.5 lg:justify-end">
+    <div
+      className={cn(
+        'flex flex-wrap items-center justify-center gap-2.5 lg:justify-end',
+        className,
+      )}
+    >
       {user?.role !== 'user' ? (
         <div className="flex h-10 items-center justify-center gap-2.5 rounded-lg px-2">
           <CalendarX2Icon className="text-destructive" />

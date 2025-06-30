@@ -58,6 +58,10 @@ interface SlotButtonProps {
   user: UserMe200User | null
   onDataChange?: () => void
   spaceId?: string
+  /**
+   * Duração do slot em horas. Default: 1 (room). Para workstation, use 6 (manhã) ou 7 (tarde).
+   */
+  slotDurationHours?: number
 }
 
 type SlotVariant =
@@ -110,6 +114,7 @@ export function SlotButton({
   user,
   onDataChange,
   spaceId,
+  slotDurationHours = 1,
 }: SlotButtonProps) {
   // Estado para controlar a abertura do Dialog e Sheet
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -418,10 +423,10 @@ export function SlotButton({
     // A data está no formato 'YYYY-MM-DD' e o tempo no formato 'HH:MM'
     const slotStart = `${date}T${time}:00-03:00` // Adiciona segundos e timezone
 
-    // Calcula o horário de término (1 hora depois)
+    // Calcula o horário de término (slotDurationHours depois)
     const slotStartDate = parseISO(slotStart)
     const slotEndDate = new Date(slotStartDate)
-    slotEndDate.setHours(slotEndDate.getHours() + 1)
+    slotEndDate.setHours(slotEndDate.getHours() + slotDurationHours)
 
     // Formata o slotEnd com o mesmo padrão do slotStart (com timezone -03:00)
     const slotEnd = `${date}T${format(slotEndDate, 'HH:mm:ss')}-03:00`
@@ -539,12 +544,18 @@ export function SlotButton({
       slot.preReservedUntil &&
       new Date(slot.preReservedUntil) < new Date()
 
+    // Calcular horário final do slot
+    const slotStartDate = parseISO(`${date}T${time}:00`)
+    const slotEndDate = new Date(slotStartDate)
+    slotEndDate.setHours(slotEndDate.getHours() + slotDurationHours)
+
     return (
       <div className="space-y-4 lg:space-y-2">
         <p className="text-primary lg:text-primary-foreground text-xl font-semibold lg:text-xs">
-          {format(new Date(date + 'T' + time), 'dd/MM/yyyy - HH:mm', {
+          {format(slotStartDate, 'dd/MM/yyyy - HH:mm', {
             locale: ptBR,
-          })}
+          })}{' '}
+          até {format(slotEndDate, 'HH:mm', { locale: ptBR })}
         </p>
 
         {variant !== 'available' && (
@@ -590,7 +601,8 @@ export function SlotButton({
                 {format(
                   new Date(
                     new Date(`${date}T${time}:00`).setHours(
-                      new Date(`${date}T${time}:00`).getHours() + 1,
+                      new Date(`${date}T${time}:00`).getHours() +
+                        slotDurationHours,
                     ),
                   ),
                   'HH:mm',
@@ -635,7 +647,8 @@ export function SlotButton({
                 {format(
                   new Date(
                     new Date(`${date}T${time}:00`).setHours(
-                      new Date(`${date}T${time}:00`).getHours() + 1,
+                      new Date(`${date}T${time}:00`).getHours() +
+                        slotDurationHours,
                     ),
                   ),
                   'HH:mm',
@@ -682,7 +695,8 @@ export function SlotButton({
                 {format(
                   new Date(
                     new Date(`${date}T${time}:00`).setHours(
-                      new Date(`${date}T${time}:00`).getHours() + 1,
+                      new Date(`${date}T${time}:00`).getHours() +
+                        slotDurationHours,
                     ),
                   ),
                   'HH:mm',

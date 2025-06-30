@@ -1,4 +1,5 @@
-import { DataTableSpaceSlots } from '@/components/data-table/space-slots/table-space-slots'
+import { DataTableSpaceRoomSlots } from '@/components/data-table/space-slots/table-space-room-slots'
+import { DataTableSpaceWorkstationSlots } from '@/components/data-table/space-slots/table-space-workstation-slots'
 import { InviteParticipantsForm } from '@/components/forms/InviteParticipantsForm'
 import { ImageGallery } from '@/components/ImageGallery'
 import { Text } from '@/components/Text'
@@ -105,7 +106,9 @@ export default async function SpaceDetailsAndReservation(props: {
       </div>
 
       {/* Componente de galeria de imagens */}
-      <ImageGallery images={spaceData.space.imagens} />
+      {spaceData.space.type === 'room' && (
+        <ImageGallery images={spaceData.space.imagens} />
+      )}
 
       {/* Componente de descrição do espaço */}
       <Text variant={'body-16-18-400'} className="my-5 max-w-3xl">
@@ -131,24 +134,40 @@ export default async function SpaceDetailsAndReservation(props: {
       </div>
 
       <div className="container mx-auto pt-10">
-        <DataTableSpaceSlots
-          startDate={startDate}
-          endDate={endDate}
-          spaceId={id}
-          user={user}
-          spaceData={spaceData}
-          className="mb-5"
-        />
+        {spaceData.space.type === 'room' ? (
+          <DataTableSpaceRoomSlots
+            startDate={startDate}
+            endDate={endDate}
+            spaceId={id}
+            user={user}
+            spaceData={spaceData}
+            className="mb-5"
+          />
+        ) : (
+          <DataTableSpaceWorkstationSlots
+            startDate={startDate}
+            endDate={endDate}
+            spaceId={id}
+            user={user}
+            spaceData={spaceData}
+            className="mb-5"
+          />
+        )}
       </div>
 
-      <Separator className="bg-primary my-5" />
+      {spaceData.space.type === 'room' && (
+        <Separator className="bg-primary my-5" />
+      )}
 
       <div className="flex flex-col gap-2">
-        <Text variant="title-16-18-700" className="mb-2">
-          Convidar participantes:
-        </Text>
+        {spaceData.space.type === 'room' && (
+          <Text variant="title-16-18-700" className="mb-2">
+            Convidar participantes:
+          </Text>
+        )}
         <InviteParticipantsForm
           spaceId={id}
+          spaceType={spaceData.space.type}
           startDate={startDate}
           endDate={endDate}
           user={user}

@@ -27,12 +27,11 @@ import { SelectedPreReservation } from './selected-pre-reservations'
 import { SlotButton } from './slot-button'
 import {
   SlotCell,
-  TIME_SLOTS,
-  prepareSlotTableData,
+  prepareWorkstationSlotTableData,
 } from './slot-table-data-utils'
 import { SpaceSlotsLegend } from './space-slots-legend'
 
-interface DataTableSpaceSlotsProps {
+interface DataTableSpaceWorkstationSlotsProps {
   startDate: string
   endDate: string
   className?: string
@@ -41,14 +40,14 @@ interface DataTableSpaceSlotsProps {
   spaceId: string
 }
 
-export function DataTableSpaceSlots({
+export function DataTableSpaceWorkstationSlots({
   startDate,
   endDate,
   className,
   user,
   spaceData: initialSpaceData,
   spaceId,
-}: DataTableSpaceSlotsProps) {
+}: DataTableSpaceWorkstationSlotsProps) {
   // Obter a função mutate do SWR para força revalidação
   const { mutate } = useSWRConfig()
 
@@ -80,7 +79,7 @@ export function DataTableSpaceSlots({
   const slotData = spaceData?.slots || []
 
   // Processar os dados em um formato adequado para nossa tabela
-  let processedData = prepareSlotTableData(slotData)
+  let processedData = prepareWorkstationSlotTableData(slotData)
 
   // Se não temos 7 dias de dados, preencher com dias vazios (todos disponíveis)
   if (processedData.length < 7) {
@@ -91,17 +90,12 @@ export function DataTableSpaceSlots({
       const currentDate = format(addDays(startDateObj, i), 'yyyy-MM-dd')
 
       if (!existingDates.has(currentDate)) {
-        const emptySlots = TIME_SLOTS.reduce(
-          (acc, time) => {
-            acc[time] = { status: 'available' }
-            return acc
-          },
-          {} as Record<string, SlotCell>,
-        )
-
         processedData.push({
           date: currentDate,
-          slots: emptySlots,
+          slots: {
+            morning: { status: 'available' },
+            afternoon: { status: 'available' },
+          },
         })
       }
     }
@@ -114,7 +108,13 @@ export function DataTableSpaceSlots({
   }
 
   // Função simplificada para renderizar o componente do cliente
-  const renderSlot = (date: string, time: string, cell: SlotCell) => {
+  const renderSlot = (
+    date: string,
+    period: 'morning' | 'afternoon',
+    cell: SlotCell,
+  ) => {
+    // Para workstation, time deve ser o horário real do início do período
+    const time = period === 'morning' ? '07:00' : '13:00'
     return (
       <SlotButton
         date={date}
@@ -122,6 +122,7 @@ export function DataTableSpaceSlots({
         slot={cell}
         user={user}
         spaceId={spaceId}
+        slotDurationHours={5}
         onDataChange={() => {
           // Forçar revalidação dos dados quando houver alteração (cancelamento da pré-reserva)
           const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
@@ -133,27 +134,25 @@ export function DataTableSpaceSlots({
       />
     )
   }
-
+  // TODO: temos que preparar a api de pre reserva de slots para receber tempo maior que 1 hora "O horário de término
+  // deve ser exatamente 1 hora após o início"
   return (
     <div className={className}>
-      <div className="flex flex-col items-center justify-end lg:flex-row">
+      <div className="flex flex-col items-center justify-start gap-5 lg:flex-row">
+        <SpaceSlotsLegend user={user} className="lg:justify-start" />
         {isLoading && (
           <p className="text-muted-foreground hidden animate-pulse text-left text-xs lg:block lg:flex-1">
             Atualizando...
           </p>
         )}
-        <SpaceSlotsLegend user={user} />
       </div>
-      <div className="mt-4 rounded-md border">
+      <div className="mt-4 rounded-md border lg:max-w-[631px]">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Data</TableHead>
-              {TIME_SLOTS.map((time) => (
-                <TableHead key={time} className="text-center">
-                  {time}
-                </TableHead>
-              ))}
+              <TableHead className="text-center">Manhã</TableHead>
+              <TableHead className="text-center">Tarde</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -164,14 +163,12 @@ export function DataTableSpaceSlots({
                     locale: ptBR,
                   })}
                 </TableCell>
-                {TIME_SLOTS.map((time) => (
-                  <TableCell
-                    key={`${dayRow.date}-${time}`}
-                    className="text-center"
-                  >
-                    {renderSlot(dayRow.date, time, dayRow.slots[time])}
-                  </TableCell>
-                ))}
+                <TableCell className="text-center">
+                  {renderSlot(dayRow.date, 'morning', dayRow.slots.morning)}
+                </TableCell>
+                <TableCell className="text-center">
+                  {renderSlot(dayRow.date, 'afternoon', dayRow.slots.afternoon)}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

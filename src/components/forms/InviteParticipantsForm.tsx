@@ -46,6 +46,7 @@ type FormData = z.infer<typeof participantsSchema>
 interface InviteParticipantsFormProps {
   className?: string
   spaceId: string // ID do espaço
+  spaceType?: 'workstation' | 'room' // Tipo de espaço (opcional)
   startDate: string // Data inicial para buscar os slots
   endDate: string // Data final para buscar os slots
   user: UserMe200User | null // Dados do usuário logado
@@ -54,6 +55,7 @@ interface InviteParticipantsFormProps {
 export function InviteParticipantsForm({
   className,
   spaceId,
+  spaceType = 'room', // Padrão para 'room'
   startDate,
   endDate,
   user = null,
@@ -340,171 +342,179 @@ export function InviteParticipantsForm({
     <div className={cn('w-full max-w-2xl', className)}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onFormSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="participants"
-            render={({ field }) => (
-              <FormItem className="grid gap-2">
-                {/* Seção de participantes internos */}
-                <FormLabel>Colaboradores BBZ</FormLabel>
+          {spaceType === 'room' && (
+            <>
+              <FormField
+                control={form.control}
+                name="participants"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    {/* Seção de participantes internos */}
+                    <FormLabel>Colaboradores BBZ</FormLabel>
 
-                {/* Input + botão para colaboradores internos */}
-                <div className="flex flex-col gap-2 md:flex-row">
-                  <FormControl>
-                    <Input
-                      placeholder="Digite o nome ou e-mail do colaborador"
-                      value={internalInput}
-                      onChange={(e) => {
-                        setInternalInput(e.target.value)
-                        setInternalError(null)
-                      }}
-                      onKeyDown={(e) =>
-                        e.key === 'Enter' &&
-                        (e.preventDefault(), handleAddInternalParticipant())
-                      }
-                      className="h-9 min-h-[36px]"
-                    />
-                  </FormControl>
-                  <Button
-                    size="sm"
-                    type="button"
-                    variant="secondary"
-                    onClick={handleAddInternalParticipant}
-                    className="h-9"
-                  >
-                    Adicionar
-                  </Button>
-                </div>
-
-                {/* Mensagem de erro do input interno */}
-                {internalError && (
-                  <p className="text-destructive text-sm">{internalError}</p>
-                )}
-
-                {/* Lista de participantes internos */}
-                <div
-                  className={cn(
-                    'flex flex-wrap gap-3',
-                    internalParticipants.length > 0 && 'my-5 md:mt-2.5',
-                  )}
-                >
-                  {internalParticipants.map((email, idx) => (
-                    <Badge
-                      key={idx}
-                      className="bg-accent text-accent-foreground hover:bg-accent/80 relative h-8 overflow-visible rounded-full px-4"
-                    >
-                      {email}
-                      <div
-                        className="bg-destructive text-destructive-foreground border-destructive-foreground absolute top-[-10px] right-[-10px] cursor-pointer rounded-full border-1 p-0.5"
-                        onClick={() => handleRemoveInternalParticipant(idx)}
+                    {/* Input + botão para colaboradores internos */}
+                    <div className="flex flex-col gap-2 md:flex-row">
+                      <FormControl>
+                        <Input
+                          placeholder="Digite o nome ou e-mail do colaborador"
+                          value={internalInput}
+                          onChange={(e) => {
+                            setInternalInput(e.target.value)
+                            setInternalError(null)
+                          }}
+                          onKeyDown={(e) =>
+                            e.key === 'Enter' &&
+                            (e.preventDefault(), handleAddInternalParticipant())
+                          }
+                          className="h-9 min-h-[36px]"
+                        />
+                      </FormControl>
+                      <Button
+                        size="sm"
+                        type="button"
+                        variant="secondary"
+                        onClick={handleAddInternalParticipant}
+                        className="h-9"
                       >
-                        <X size={14} />
-                      </div>
-                    </Badge>
-                  ))}
-                </div>
+                        Adicionar
+                      </Button>
+                    </div>
 
-                <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
-                  Adicione cada colaborador por vez, ou clique no "X" para
-                  remover.
-                </FormDescription>
+                    {/* Mensagem de erro do input interno */}
+                    {internalError && (
+                      <p className="text-destructive text-sm">
+                        {internalError}
+                      </p>
+                    )}
 
-                {/* Seção de participantes externos */}
-                <FormLabel className="mt-4">
-                  E-mails de convidados externos
-                </FormLabel>
-
-                {/* Input + botão para convidados externos */}
-                <div className="flex flex-col gap-2 md:flex-row">
-                  <FormControl>
-                    <Input
-                      placeholder="Digite e-mail do convidado externo"
-                      value={externalInput}
-                      onChange={(e) => {
-                        setExternalInput(e.target.value)
-                        setExternalError(null)
-                      }}
-                      onKeyDown={(e) =>
-                        e.key === 'Enter' &&
-                        (e.preventDefault(), handleAddExternalParticipant())
-                      }
-                      className="h-9 min-h-[36px]"
-                    />
-                  </FormControl>
-                  <Button
-                    size="sm"
-                    type="button"
-                    variant="secondary"
-                    onClick={handleAddExternalParticipant}
-                    className="h-9"
-                  >
-                    Adicionar
-                  </Button>
-                </div>
-
-                {/* Mensagem de erro do input externo */}
-                {externalError && (
-                  <p className="text-destructive text-sm">{externalError}</p>
-                )}
-
-                {/* Lista de participantes externos */}
-                <div
-                  className={cn(
-                    'flex flex-wrap gap-3',
-                    externalParticipants.length > 0 && 'my-5 md:mt-2.5',
-                  )}
-                >
-                  {externalParticipants.map((email, idx) => (
-                    <Badge
-                      key={idx}
-                      className="bg-accent text-accent-foreground hover:bg-accent/80 relative h-8 overflow-visible rounded-full px-4"
+                    {/* Lista de participantes internos */}
+                    <div
+                      className={cn(
+                        'flex flex-wrap gap-3',
+                        internalParticipants.length > 0 && 'my-5 md:mt-2.5',
+                      )}
                     >
-                      {email}
-                      <div
-                        className="bg-destructive text-destructive-foreground border-destructive-foreground absolute top-[-10px] right-[-10px] cursor-pointer rounded-full border-1 p-0.5"
-                        onClick={() => handleRemoveExternalParticipant(idx)}
+                      {internalParticipants.map((email, idx) => (
+                        <Badge
+                          key={idx}
+                          className="bg-accent text-accent-foreground hover:bg-accent/80 relative h-8 overflow-visible rounded-full px-4"
+                        >
+                          {email}
+                          <div
+                            className="bg-destructive text-destructive-foreground border-destructive-foreground absolute top-[-10px] right-[-10px] cursor-pointer rounded-full border-1 p-0.5"
+                            onClick={() => handleRemoveInternalParticipant(idx)}
+                          >
+                            <X size={14} />
+                          </div>
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
+                      Adicione cada colaborador por vez, ou clique no "X" para
+                      remover.
+                    </FormDescription>
+
+                    {/* Seção de participantes externos */}
+                    <FormLabel className="mt-4">
+                      E-mails de convidados externos
+                    </FormLabel>
+
+                    {/* Input + botão para convidados externos */}
+                    <div className="flex flex-col gap-2 md:flex-row">
+                      <FormControl>
+                        <Input
+                          placeholder="Digite e-mail do convidado externo"
+                          value={externalInput}
+                          onChange={(e) => {
+                            setExternalInput(e.target.value)
+                            setExternalError(null)
+                          }}
+                          onKeyDown={(e) =>
+                            e.key === 'Enter' &&
+                            (e.preventDefault(), handleAddExternalParticipant())
+                          }
+                          className="h-9 min-h-[36px]"
+                        />
+                      </FormControl>
+                      <Button
+                        size="sm"
+                        type="button"
+                        variant="secondary"
+                        onClick={handleAddExternalParticipant}
+                        className="h-9"
                       >
-                        <X size={14} />
-                      </div>
-                    </Badge>
-                  ))}
-                </div>
+                        Adicionar
+                      </Button>
+                    </div>
 
-                <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
-                  Adicione cada convidado por vez, ou clique no "X" para
-                  remover.
-                </FormDescription>
+                    {/* Mensagem de erro do input externo */}
+                    {externalError && (
+                      <p className="text-destructive text-sm">
+                        {externalError}
+                      </p>
+                    )}
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    {/* Lista de participantes externos */}
+                    <div
+                      className={cn(
+                        'flex flex-wrap gap-3',
+                        externalParticipants.length > 0 && 'my-5 md:mt-2.5',
+                      )}
+                    >
+                      {externalParticipants.map((email, idx) => (
+                        <Badge
+                          key={idx}
+                          className="bg-accent text-accent-foreground hover:bg-accent/80 relative h-8 overflow-visible rounded-full px-4"
+                        >
+                          {email}
+                          <div
+                            className="bg-destructive text-destructive-foreground border-destructive-foreground absolute top-[-10px] right-[-10px] cursor-pointer rounded-full border-1 p-0.5"
+                            onClick={() => handleRemoveExternalParticipant(idx)}
+                          >
+                            <X size={14} />
+                          </div>
+                        </Badge>
+                      ))}
+                    </div>
 
-          <FormDescription className="text-muted-foreground bg-warning/10 flex items-center gap-2 rounded-md p-3 text-[14px] leading-[20px] tracking-[0.25px]">
-            <TriangleAlertIcon />
-            Máximo de 10 convidados por agendamento. Caso deseje convidar mais
-            pessoas, reencaminhe o e-mail de confirmação manualmente após o
-            envio.
-          </FormDescription>
+                    <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
+                      Adicione cada convidado por vez, ou clique no "X" para
+                      remover.
+                    </FormDescription>
 
-          <FormField
-            control={form.control}
-            name="needsWaitress"
-            render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-center space-y-0 space-x-3">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel>Necessidades adicionais:</FormLabel>
-                  <FormDescription>Precisa de Copeira?</FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormDescription className="text-muted-foreground bg-warning/10 flex items-center gap-2 rounded-md p-3 text-[14px] leading-[20px] tracking-[0.25px]">
+                <TriangleAlertIcon />
+                Máximo de 10 convidados por agendamento. Caso deseje convidar
+                mais pessoas, reencaminhe o e-mail de confirmação manualmente
+                após o envio.
+              </FormDescription>
+
+              <FormField
+                control={form.control}
+                name="needsWaitress"
+                render={({ field }) => (
+                  <FormItem className="mt-4 flex flex-row items-center space-y-0 space-x-3">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>Necessidades adicionais:</FormLabel>
+                      <FormDescription>Precisa de Copeira?</FormDescription>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
 
           <Button
             type="submit"
