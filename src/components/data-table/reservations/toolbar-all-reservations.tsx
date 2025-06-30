@@ -1,0 +1,168 @@
+'use client'
+
+import { cn } from '@/utils/mergeClassNames'
+import { Table } from '@tanstack/react-table'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale/pt-BR'
+import { CalendarIcon, XCircle } from 'lucide-react'
+import { useState } from 'react'
+import { Button } from '../../ui/button'
+import { Calendar } from '../../ui/calendar'
+import { Input } from '../../ui/input'
+import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover'
+import { DataTableFacetedFilter } from '../data-table-faceted-filter'
+import { DataTableViewOptions } from '../data-table-view-options'
+import { reservationsTitlesColumns } from './columns-reservations'
+
+export const reservationStatuses = [
+  {
+    value: 'reserved',
+    label: 'Ativo',
+    color: 'bg-yellow-500',
+  },
+  {
+    value: 'cancelled',
+    label: 'Cancelado',
+    color: 'bg-red-500',
+  },
+  {
+    value: 'closed',
+    label: 'Encerrada',
+    color: 'bg-red-500',
+  },
+  {
+    value: 'realized',
+    label: 'Realizado',
+    color: 'bg-green-500',
+  },
+]
+
+export const spaceTypes = [
+  {
+    value: 'room',
+    label: 'Sala',
+  },
+  {
+    value: 'workstation',
+    label: 'Estação de trabalho',
+  },
+]
+
+interface DataTableToolbarProps<TData> {
+  table: Table<TData>
+}
+
+export function DataTableAllReservationsToolbar<TData>({
+  table,
+}: DataTableToolbarProps<TData>) {
+  const isFiltered = table.getState().columnFilters.length > 0
+  const [date, setDate] = useState<Date | undefined>(undefined)
+
+  return (
+    <div className="grid grid-rows-2 gap-3 lg:grid-cols-[minmax(0,_0.3fr)_minmax(0,_0.2fr)_minmax(0,_0.5fr)] lg:grid-rows-1">
+      <Input
+        placeholder="Filtrar por espaço..."
+        value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+        onChange={(event) => {
+          // Custom filtering for space name
+          const value = event.target.value
+
+          if (table.getColumn('name')) {
+            table.setColumnFilters((prev) => {
+              // Remove any existing filter for 'name'
+              const filtered = prev.filter((f) => f.id !== 'name')
+
+              // Only add if there's a value
+              if (value) {
+                filtered.push({
+                  id: 'name',
+                  value: value,
+                })
+              }
+
+              return filtered
+            })
+          }
+        }}
+        className="w-full md:h-9"
+      />
+      {/* Filtro de data */}
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn(
+              'w-full justify-start text-left font-normal md:h-9',
+              !date && 'text-muted-foreground',
+            )}
+          >
+            <CalendarIcon className="text-muted-foreground group-hover:text-accent-foreground mr-2 h-4 w-4 transition-colors" />
+            {date ? (
+              format(date, 'dd/MM/yyyy', { locale: ptBR })
+            ) : (
+              <span>Filtrar por data</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(selectedDate) => {
+              setDate(selectedDate)
+
+              // Aplicar ou remover o filtro com base na data selecionada
+              if (selectedDate && table.getColumn('dateTime')) {
+                // Adicionar filtro com a data selecionada
+                table.getColumn('dateTime')?.setFilterValue(selectedDate)
+              } else if (table.getColumn('dateTime')) {
+                // Remover filtro se a data for desmarcada
+                table.getColumn('dateTime')?.setFilterValue(undefined)
+              }
+            }}
+            locale={ptBR}
+            autoFocus
+          />
+        </PopoverContent>
+      </Popover>{' '}
+      <div className="flex w-full flex-wrap gap-3 lg:flex-nowrap">
+        <div className="flex flex-wrap gap-3 lg:flex-nowrap">
+          {table.getColumn('status') && (
+            <DataTableFacetedFilter
+              column={table.getColumn('status')}
+              title="Status"
+              options={reservationStatuses}
+            />
+          )}
+          {table.getColumn('type') && (
+            <DataTableFacetedFilter
+              column={table.getColumn('type')}
+              title="Tipo"
+              options={spaceTypes}
+            />
+          )}
+        </div>
+        <div className="ml-auto flex gap-2">
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                table.resetColumnFilters()
+                setDate(undefined)
+              }}
+              className="text-destructive h-9 px-2 lg:px-3"
+            >
+              Reset
+              <XCircle className="ml-2 h-4 w-4" />
+            </Button>
+          )}
+          <DataTableViewOptions
+            titles={reservationsTitlesColumns}
+            table={table}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -6,7 +6,9 @@ import {
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { FilterFn } from '@tanstack/react-table'
 import { DataTable } from '../data-table'
+import { columnsAllReservations } from './columns-all-reservations'
 import { columnsReservations } from './columns-reservations'
+import { DataTableAllReservationsToolbar } from './toolbar-all-reservations'
 import { DataTableReservationsToolbar } from './toolbar-reservations'
 
 interface DataTableReservationsProps {
@@ -40,11 +42,19 @@ export function DataTableReservations({
   className,
   currentUser,
 }: DataTableReservationsProps) {
+  const columns = currentUser
+    ? columnsReservations(currentUser)
+    : columnsAllReservations()
+
+  const toolbar = currentUser
+    ? DataTableReservationsToolbar
+    : DataTableAllReservationsToolbar
+
   return (
     <DataTable
       data={initialData || []}
-      columns={columnsReservations(currentUser)}
-      Toolbar={DataTableReservationsToolbar}
+      columns={columns}
+      Toolbar={toolbar}
       className={className}
       globalFilterFn={spaceNameFilter}
       initialSorting={[{ id: 'dateTime', desc: true }]} // Ordenar por data/hora, mais recente primeiro
