@@ -11225,6 +11225,10 @@
                                   "format": "uuid",
                                   "description": "Identificador único do usuário"
                                 },
+                                "userName": {
+                                  "type": "string",
+                                  "description": "Nome do usuário que fez o check-in/check-out"
+                                },
                                 "reservationId": {
                                   "type": "string",
                                   "format": "uuid",
@@ -11248,6 +11252,7 @@
                                 "id",
                                 "spaceId",
                                 "userId",
+                                "userName",
                                 "reservationId",
                                 "type",
                                 "createdAt"

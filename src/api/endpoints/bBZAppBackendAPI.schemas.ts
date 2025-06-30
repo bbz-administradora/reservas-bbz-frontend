@@ -1210,6 +1210,8 @@ export type ListSpaceReservations200ReservationsItemCheckInOutsItem = {
   type: ListSpaceReservations200ReservationsItemCheckInOutsItemType
   /** Identificador único do usuário */
   userId: string
+  /** Nome do usuário que fez o check-in/check-out */
+  userName: string
 }
 
 /**
