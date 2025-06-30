@@ -59,7 +59,8 @@ export function DataTableAllReservationsToolbar<TData>({
   const [date, setDate] = useState<Date | undefined>(undefined)
 
   return (
-    <div className="grid grid-rows-2 gap-3 lg:grid-cols-[minmax(0,_0.3fr)_minmax(0,_0.2fr)_minmax(0,_0.5fr)] lg:grid-rows-1">
+    <div className="grid grid-rows-2 gap-3 lg:grid-cols-[minmax(0,_0.4fr)_minmax(0,_0.4fr)_minmax(0,_0.2fr)] lg:grid-rows-2">
+      {/* Filtro de espaço */}
       <Input
         placeholder="Filtrar por espaço..."
         value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
@@ -76,6 +77,33 @@ export function DataTableAllReservationsToolbar<TData>({
               if (value) {
                 filtered.push({
                   id: 'name',
+                  value: value,
+                })
+              }
+
+              return filtered
+            })
+          }
+        }}
+        className="w-full md:h-9"
+      />
+      {/* Filtro por usuário */}
+      <Input
+        placeholder="Filtrar por usuário..."
+        value={(table.getColumn('createdBy')?.getFilterValue() as string) ?? ''}
+        onChange={(event) => {
+          // Custom filtering for user
+          const value = event.target.value
+
+          if (table.getColumn('createdBy')) {
+            table.setColumnFilters((prev) => {
+              // Remove any existing filter for 'createdBy'
+              const filtered = prev.filter((f) => f.id !== 'createdBy')
+
+              // Only add if there's a value
+              if (value) {
+                filtered.push({
+                  id: 'createdBy',
                   value: value,
                 })
               }
@@ -125,7 +153,7 @@ export function DataTableAllReservationsToolbar<TData>({
           />
         </PopoverContent>
       </Popover>{' '}
-      <div className="flex w-full flex-wrap gap-3 lg:flex-nowrap">
+      <div className="flex w-full flex-wrap gap-3 lg:col-span-3 lg:flex-nowrap">
         <div className="flex flex-wrap gap-3 lg:flex-nowrap">
           {table.getColumn('status') && (
             <DataTableFacetedFilter

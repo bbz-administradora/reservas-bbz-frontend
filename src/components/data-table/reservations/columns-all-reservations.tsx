@@ -263,6 +263,11 @@ export const columnsAllReservations =
           {transformTextIntoCapitalizedWords(row.original.user.name || 'N/A')}
         </span>
       ),
+      // Filtro customizado para buscar pelo nome do usuário
+      filterFn: (row, id, value) => {
+        const userName = row.original.user?.name || ''
+        return userName.toLowerCase().includes((value as string).toLowerCase())
+      },
     },
     {
       accessorKey: 'bbzCollaborators',
