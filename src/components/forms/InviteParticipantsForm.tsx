@@ -82,10 +82,10 @@ export function InviteParticipantsForm({
     useCreateSpaceReservation({
       swr: {
         onSuccess: (response) => {
+          console.log('🚀 ~ response:', response)
           // Verificar se a resposta contém mensagem de sucesso
           if (response.status === 201) {
             revalidateTags(['create-reservation'])
-
             return
           } else if (response.status === 409) {
             showToast({
@@ -94,6 +94,22 @@ export function InviteParticipantsForm({
               variant: 'warning',
               duration: 4000,
             })
+          } else if (
+            response.status === 400 &&
+            response.data &&
+            response.data.message &&
+            response.data.message.includes(
+              'Não é possível solicitar serviço de copeira com menos de 24 horas',
+            )
+          ) {
+            // Erro específico para serviço de copeira com menos de 24h
+            showToast({
+              message:
+                'Não é possível solicitar serviço de copeira com menos de 24 horas de antecedência. Por favor, remova esta opção ou escolha um horário futuro.',
+              variant: 'warning',
+              duration: 6000,
+            })
+            return false // Indica que houve um erro
           } else {
             console.error(
               '💥 Erro ao confirmar a reserva',
@@ -108,7 +124,6 @@ export function InviteParticipantsForm({
         },
         onError: (error) => {
           console.error('💥 Erro ao criar reserva:', error)
-
           showToast({
             message: 'Ops! Ocorreu um erro ao confirmar a reserva.',
             variant: 'error',
@@ -260,7 +275,7 @@ export function InviteParticipantsForm({
   const createReservationsForSlots = async (
     slots: GetSpaceSlotAvailability200SlotsItem[],
     formData: FormData,
-  ) => {
+  ): Promise<boolean> => {
     const reservationData = {
       spaceId: spaceId,
       spaceSlotIds: slots.map((slot) => slot.id),
@@ -268,7 +283,9 @@ export function InviteParticipantsForm({
       externalGuests: externalParticipants,
       needsCopeira: formData.needsWaitress,
     }
-    await createSpaceReservation(reservationData)
+    const result = await createSpaceReservation(reservationData)
+    // Retorna true se a criação foi bem-sucedida (status 201)
+    return result.status === 201
   }
 
   const onFormSubmit: SubmitHandler<FormData> = async (data) => {
@@ -308,24 +325,30 @@ export function InviteParticipantsForm({
       }
 
       // Enviar todos os slots em uma única chamada
-      await createReservationsForSlots(userPreReservedSlots, data)
+      const reservationCreated = await createReservationsForSlots(
+        userPreReservedSlots,
+        data,
+      )
 
-      // Forçar revalidação dos dados após o sucesso
-      const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
-        startDate,
-        endDate,
-      })
-      mutate(swrKey)
+      // Se a reserva foi criada com sucesso, revalidar os dados e mostrar mensagem
+      if (reservationCreated) {
+        // Forçar revalidação dos dados após o sucesso
+        const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
+          startDate,
+          endDate,
+        })
+        mutate(swrKey)
 
-      // Limpar formulário após sucesso
-      resetFormState()
+        // Limpar formulário após sucesso
+        resetFormState()
 
-      // Notificar o usuário do sucesso
-      showToast({
-        message: `Reserva${userPreReservedSlots.length > 1 ? 's' : ''} confirmada${userPreReservedSlots.length > 1 ? 's' : ''} com sucesso! Um e-mail será enviado com os detalhes.`,
-        variant: 'success',
-        duration: 5000,
-      })
+        // Notificar o usuário do sucesso
+        showToast({
+          message: `Reserva${userPreReservedSlots.length > 1 ? 's' : ''} confirmada${userPreReservedSlots.length > 1 ? 's' : ''} com sucesso! Um e-mail será enviado com os detalhes.`,
+          variant: 'success',
+          duration: 5000,
+        })
+      }
     } catch (error) {
       console.error('❌ Erro ao processar as pré-reservas:', error)
       showToast({
@@ -508,7 +531,13 @@ export function InviteParticipantsForm({
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>Necessidades adicionais:</FormLabel>
-                      <FormDescription>Precisa de Copeira?</FormDescription>
+                      <FormDescription>
+                        Precisa de Copeira?
+                        <span className="text-muted-foreground ml-1 text-[12px] italic">
+                          (disponível apenas para reservas com mais de 24h de
+                          antecedência)
+                        </span>
+                      </FormDescription>
                     </div>
                   </FormItem>
                 )}
