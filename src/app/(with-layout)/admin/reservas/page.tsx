@@ -1,12 +1,27 @@
 import { DataTableReservations } from '@/components/data-table/reservations/table-reservations'
 import { Text } from '@/components/Text'
+import { webserver } from '@/infra/webserver'
 import { fetchListSpaceReservationsInServer } from '@/services/reservationService'
+import { fetchCurrentUserInServer } from '@/services/userService'
+import { redirect } from 'next/navigation'
 
 export default async function AdminReserves() {
-  const reservationsList = await fetchListSpaceReservationsInServer({
-    page: '1',
-    pageSize: '10000',
-  })
+  const [userResponse, reservationsListResponse] = await Promise.all([
+    fetchCurrentUserInServer(),
+    fetchListSpaceReservationsInServer({
+      page: '1',
+      pageSize: '10000',
+    }),
+  ])
+
+  const user = userResponse.user
+
+  // Verifica se o usuário está autenticado e tem a função de admin
+  if (user?.role === 'user') {
+    redirect(`${webserver.host}/espacos`)
+  }
+
+  const reservationsList = reservationsListResponse?.reservations
 
   return (
     <div
@@ -19,9 +34,10 @@ export default async function AdminReserves() {
 
       <div className="container mx-auto py-10">
         <DataTableReservations
-          initialData={reservationsList?.reservations}
+          initialData={reservationsList}
           className="mb-5"
-          currentUser={null}
+          currentUser={user}
+          allList={true}
         />
       </div>
     </div>

@@ -15,6 +15,7 @@ interface DataTableReservationsProps {
   initialData?: ListSpaceReservations200ReservationsItem[]
   className?: string
   currentUser?: UserMe200User | null
+  allList?: boolean // Optional prop to indicate if it's an all reservations list
 }
 
 // Custom filter function for space name (nested property)
@@ -41,12 +42,13 @@ export function DataTableReservations({
   initialData,
   className,
   currentUser,
+  allList = false,
 }: DataTableReservationsProps) {
-  const columns = currentUser
+  const columns = !allList
     ? columnsReservations(currentUser)
-    : columnsAllReservations()
+    : columnsAllReservations(currentUser)
 
-  const toolbar = currentUser
+  const toolbar = !allList
     ? DataTableReservationsToolbar
     : DataTableAllReservationsToolbar
 

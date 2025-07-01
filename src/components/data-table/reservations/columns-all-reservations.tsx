@@ -4,13 +4,27 @@ import { revalidateTags } from '@/actions/revalidate-tags'
 import {
   ListSpaceReservations200ReservationsItem,
   ListSpaceReservations200ReservationsItemStatus,
+  UserMe200User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
-import { useCloseSpaceReservation } from '@/api/endpoints/reservation/reservation'
+import {
+  useCancelSpaceReservation,
+  useCloseSpaceReservation,
+} from '@/api/endpoints/reservation/reservation'
 import { useOpenDoor } from '@/api/endpoints/space/space'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import { DoorCodeDialog } from '@/components/DoorCodeDialog'
 import { showToast } from '@/components/ShowToast'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/utils/mergeClassNames'
 import { transformTextIntoCapitalizedWords } from '@/utils/textUtils'
 import { ColumnDef } from '@tanstack/react-table'
@@ -118,462 +132,440 @@ const getStatusDisplay = (
 
 // Formatar lista de emails
 const formatEmailList = (emails: string[] | undefined) => {
-  if (!emails || emails.length === 0) return 'Nenhum'
+  if (!emails || emails.length === 0) return '-'
   return emails.join(', ')
 }
 
-export const columnsAllReservations =
-  (): ColumnDef<ListSpaceReservations200ReservationsItem>[] => [
-    {
-      accessorKey: 'name',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.name}
-        />
-      ),
-      cell: ({ row }) => (
-        <span className="break-words whitespace-normal">
-          {transformTextIntoCapitalizedWords(row.original.space.name || 'N/A')}
-        </span>
-      ),
-      // Custom filter function to handle the nested space.name property
-      filterFn: (row, id, value) => {
-        const spaceName = row.original.space.name || ''
-        return spaceName.toLowerCase().includes(value.toLowerCase())
-      },
+export const columnsAllReservations = (
+  currentUser?: UserMe200User | null,
+): ColumnDef<ListSpaceReservations200ReservationsItem>[] => [
+  {
+    accessorKey: 'name',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.name}
+      />
+    ),
+    cell: ({ row }) => (
+      <span className="break-words whitespace-normal">
+        {transformTextIntoCapitalizedWords(row.original.space.name || 'N/A')}
+      </span>
+    ),
+    // Custom filter function to handle the nested space.name property
+    filterFn: (row, id, value) => {
+      const spaceName = row.original.space.name || ''
+      return spaceName.toLowerCase().includes(value.toLowerCase())
     },
-    {
-      // Usando accessorFn para acessar space.type diretamente
-      id: 'type',
-      accessorFn: (row) => row.space.type,
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.type}
-        />
-      ),
-      cell: ({ row }) => {
-        const spaceType = row.original.space.type
-        let typeText = 'N/A'
+  },
+  {
+    // Usando accessorFn para acessar space.type diretamente
+    id: 'type',
+    accessorFn: (row) => row.space.type,
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.type}
+      />
+    ),
+    cell: ({ row }) => {
+      const spaceType = row.original.space.type
+      let typeText = 'N/A'
 
-        if (spaceType === 'room') {
-          typeText = 'Sala'
-        } else if (spaceType === 'workstation') {
-          typeText = 'Estação de trabalho'
-        }
+      if (spaceType === 'room') {
+        typeText = 'Sala'
+      } else if (spaceType === 'workstation') {
+        typeText = 'Estação de trabalho'
+      }
 
-        return <span>{typeText}</span>
-      },
-      filterFn: (row, id, value) => {
-        const spaceType = row.getValue(id) as string
-        return value.includes(spaceType)
-      },
+      return <span>{typeText}</span>
     },
-    {
-      accessorKey: 'dateTime',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.dateTime}
-        />
-      ),
-      cell: ({ row }) => {
-        const slotStart = row.original.slotStart
-        const slotEnd = row.original.slotEnd
+    filterFn: (row, id, value) => {
+      const spaceType = row.getValue(id) as string
+      return value.includes(spaceType)
+    },
+  },
+  {
+    accessorKey: 'dateTime',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.dateTime}
+      />
+    ),
+    cell: ({ row }) => {
+      const slotStart = row.original.slotStart
+      const slotEnd = row.original.slotEnd
 
-        if (!slotStart || !slotEnd) return <span>-</span>
+      if (!slotStart || !slotEnd) return <span>-</span>
 
-        const timeRange = formatTimeRange(slotStart, slotEnd)
+      const timeRange = formatTimeRange(slotStart, slotEnd)
 
-        if (typeof timeRange === 'string') {
-          return <span className="whitespace-nowrap">{timeRange}</span>
-        }
+      if (typeof timeRange === 'string') {
+        return <span className="whitespace-nowrap">{timeRange}</span>
+      }
+      return (
+        <div className="flex flex-col">
+          <span className="font-medium">{timeRange.date}</span>
+          <span className="text-sm text-gray-600">{timeRange.time}</span>
+        </div>
+      )
+    },
+    sortingFn: (rowA, rowB) => {
+      const dateA = rowA.original.slotStart || ''
+      const dateB = rowB.original.slotStart || ''
+      return new Date(dateA).getTime() - new Date(dateB).getTime()
+    },
+    filterFn: (row, id, value) => {
+      if (!value || !(value instanceof Date)) return true
+      if (!row.original.slotStart) return false
+
+      try {
+        const reservationDate = new Date(row.original.slotStart)
+        // Comparar apenas a data (dia, mês e ano), ignorando o horário
         return (
-          <div className="flex flex-col">
-            <span className="font-medium">{timeRange.date}</span>
-            <span className="text-sm text-gray-600">{timeRange.time}</span>
-          </div>
+          reservationDate.getFullYear() === value.getFullYear() &&
+          reservationDate.getMonth() === value.getMonth() &&
+          reservationDate.getDate() === value.getDate()
         )
-      },
-      sortingFn: (rowA, rowB) => {
-        const dateA = rowA.original.slotStart || ''
-        const dateB = rowB.original.slotStart || ''
-        return new Date(dateA).getTime() - new Date(dateB).getTime()
-      },
-      filterFn: (row, id, value) => {
-        if (!value || !(value instanceof Date)) return true
-        if (!row.original.slotStart) return false
-
-        try {
-          const reservationDate = new Date(row.original.slotStart)
-          // Comparar apenas a data (dia, mês e ano), ignorando o horário
-          return (
-            reservationDate.getFullYear() === value.getFullYear() &&
-            reservationDate.getMonth() === value.getMonth() &&
-            reservationDate.getDate() === value.getDate()
-          )
-        } catch (error) {
-          console.error('Error filtering by date:', error)
-          return false
-        }
-      },
+      } catch (error) {
+        console.error('Error filtering by date:', error)
+        return false
+      }
     },
-    {
-      accessorKey: 'status',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.status}
-        />
-      ),
-      cell: ({ row }) => {
-        const status = getStatusDisplay(
-          row.original.status,
-          row.original.slotEnd || '',
-        )
-        return (
-          <div className="flex items-center gap-2">
-            <div className={cn('h-2.5 w-2.5 rounded-full', status.dotColor)} />
-            <span className={cn(status.color)}>{status.text}</span>
-          </div>
-        )
-      },
-      filterFn: (row, id, value) => {
-        if (value.includes('realized')) {
-          const isRealized =
-            row.original.status === 'reserved' &&
-            isReservationPast(row.original.slotEnd || '')
-          if (isRealized) return true
-          if (value.length === 1) return false
-        }
-        return value.includes(row.original.status)
-      },
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.status}
+      />
+    ),
+    cell: ({ row }) => {
+      const status = getStatusDisplay(
+        row.original.status,
+        row.original.slotEnd || '',
+      )
+      return (
+        <div className="flex items-center gap-2">
+          <div className={cn('h-2.5 w-2.5 rounded-full', status.dotColor)} />
+          <span className={cn(status.color)}>{status.text}</span>
+        </div>
+      )
     },
-    {
-      accessorKey: 'createdBy',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.createdBy}
-        />
-      ),
-      cell: ({ row }) => (
-        <span className="break-words whitespace-normal">
-          {transformTextIntoCapitalizedWords(row.original.user.name || 'N/A')}
-        </span>
-      ),
-      // Filtro customizado para buscar pelo nome do usuário
-      filterFn: (row, id, value) => {
-        const userName = row.original.user?.name || ''
-        return userName.toLowerCase().includes((value as string).toLowerCase())
-      },
+    filterFn: (row, id, value) => {
+      if (value.includes('realized')) {
+        const isRealized =
+          row.original.status === 'reserved' &&
+          isReservationPast(row.original.slotEnd || '')
+        if (isRealized) return true
+        if (value.length === 1) return false
+      }
+      return value.includes(row.original.status)
     },
-    {
-      accessorKey: 'bbzCollaborators',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.bbzCollaborators}
-        />
-      ),
-      cell: ({ row }) => (
-        <span className="break-words whitespace-normal">
-          {formatEmailList(row.original.bbzCollaborators)}
-        </span>
-      ),
+  },
+  {
+    accessorKey: 'createdBy',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.createdBy}
+      />
+    ),
+    cell: ({ row }) => (
+      <span className="break-words whitespace-normal">
+        {transformTextIntoCapitalizedWords(row.original.user.name || 'N/A')}
+      </span>
+    ),
+    // Filtro customizado para buscar pelo nome do usuário
+    filterFn: (row, id, value) => {
+      const userName = row.original.user?.name || ''
+      return userName.toLowerCase().includes((value as string).toLowerCase())
     },
-    {
-      accessorKey: 'externalGuests',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.externalGuests}
-        />
-      ),
-      cell: ({ row }) => (
-        <span className="break-words whitespace-normal">
-          {formatEmailList(row.original.externalGuests)}
-        </span>
-      ),
-    },
-    {
-      accessorKey: 'needsCopeira',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.needsCopeira}
-        />
-      ),
-      cell: ({ row }) => (
-        <span>{row.original.needsCopeira ? 'Sim' : 'Não'}</span>
-      ),
-    },
-    {
-      accessorKey: 'floor',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.floor}
-        />
-      ),
-      cell: ({ row }) => <span>{row.original.space.floor || '-'}</span>,
-    },
-    {
-      accessorKey: 'zone',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.zone}
-        />
-      ),
-      cell: ({ row }) => <span>{row.original.space.zone || '-'}</span>,
-    },
-    {
-      accessorKey: 'position',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.position}
-        />
-      ),
-      cell: ({ row }) => <span>{row.original.space.position || '-'}</span>,
-    },
-    {
-      accessorKey: 'checkInAt',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.checkInAt}
-        />
-      ),
-      cell: ({ row }) => {
-        const checkIns =
-          row.original.checkInOuts?.filter(
-            (item) => item.type === 'check-in',
-          ) || []
-        if (checkIns.length === 0) return <span>-</span>
-        return (
-          <div className="flex flex-col gap-1">
-            {checkIns.map((checkIn) => {
-              const firstName = checkIn.userName?.split(' ')[0] || ''
-              let formattedDate = 'Data inválida'
-              try {
-                formattedDate = format(
-                  new Date(checkIn.createdAt),
-                  'dd/MM/yyyy HH:mm',
-                  { locale: ptBR },
-                )
-              } catch {}
-              return (
-                <span
-                  key={checkIn.id}
-                  className="break-words whitespace-normal"
-                >
-                  {firstName} - {formattedDate}
-                </span>
+  },
+  {
+    accessorKey: 'bbzCollaborators',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.bbzCollaborators}
+      />
+    ),
+    cell: ({ row }) => (
+      <span className="break-words whitespace-normal">
+        {formatEmailList(row.original.bbzCollaborators)}
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'externalGuests',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.externalGuests}
+      />
+    ),
+    cell: ({ row }) => (
+      <span className="break-words whitespace-normal">
+        {formatEmailList(row.original.externalGuests)}
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'needsCopeira',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.needsCopeira}
+      />
+    ),
+    cell: ({ row }) => <span>{row.original.needsCopeira ? 'Sim' : 'Não'}</span>,
+  },
+  {
+    accessorKey: 'floor',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.floor}
+      />
+    ),
+    cell: ({ row }) => <span>{row.original.space.floor || '-'}</span>,
+  },
+  {
+    accessorKey: 'zone',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.zone}
+      />
+    ),
+    cell: ({ row }) => <span>{row.original.space.zone || '-'}</span>,
+  },
+  {
+    accessorKey: 'position',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.position}
+      />
+    ),
+    cell: ({ row }) => <span>{row.original.space.position || '-'}</span>,
+  },
+  {
+    accessorKey: 'checkInAt',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.checkInAt}
+      />
+    ),
+    cell: ({ row }) => {
+      const checkIns =
+        row.original.checkInOuts?.filter((item) => item.type === 'check-in') ||
+        []
+      if (checkIns.length === 0) return <span>-</span>
+      return (
+        <div className="flex flex-col gap-1">
+          {checkIns.map((checkIn) => {
+            const firstName = checkIn.userName?.split(' ')[0] || ''
+            let formattedDate = 'Data inválida'
+            try {
+              formattedDate = format(
+                new Date(checkIn.createdAt),
+                'dd/MM/yyyy HH:mm',
+                { locale: ptBR },
               )
-            })}
-          </div>
-        )
-      },
+            } catch {}
+            return (
+              <span key={checkIn.id} className="break-words whitespace-normal">
+                {firstName} - {formattedDate}
+              </span>
+            )
+          })}
+        </div>
+      )
     },
-    {
-      accessorKey: 'checkOutAt',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.checkOutAt}
-        />
-      ),
-      cell: ({ row }) => {
-        const checkOuts =
-          row.original.checkInOuts?.filter(
-            (item) => item.type === 'check-out',
-          ) || []
-        if (checkOuts.length === 0) return <span>-</span>
-        return (
-          <div className="flex flex-col gap-1">
-            {checkOuts.map((checkOut) => {
-              const firstName = checkOut.userName?.split(' ')[0] || ''
-              let formattedDate = 'Data inválida'
-              try {
-                formattedDate = format(
-                  new Date(checkOut.createdAt),
-                  'dd/MM/yyyy HH:mm',
-                  { locale: ptBR },
-                )
-              } catch {}
-              return (
-                <span
-                  key={checkOut.id}
-                  className="break-words whitespace-normal"
-                >
-                  {firstName} - {formattedDate}
-                </span>
+  },
+  {
+    accessorKey: 'checkOutAt',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.checkOutAt}
+      />
+    ),
+    cell: ({ row }) => {
+      const checkOuts =
+        row.original.checkInOuts?.filter((item) => item.type === 'check-out') ||
+        []
+      if (checkOuts.length === 0) return <span>-</span>
+      return (
+        <div className="flex flex-col gap-1">
+          {checkOuts.map((checkOut) => {
+            const firstName = checkOut.userName?.split(' ')[0] || ''
+            let formattedDate = 'Data inválida'
+            try {
+              formattedDate = format(
+                new Date(checkOut.createdAt),
+                'dd/MM/yyyy HH:mm',
+                { locale: ptBR },
               )
-            })}
-          </div>
-        )
-      },
+            } catch {}
+            return (
+              <span key={checkOut.id} className="break-words whitespace-normal">
+                {firstName} - {formattedDate}
+              </span>
+            )
+          })}
+        </div>
+      )
     },
-    {
-      accessorKey: 'createdAt',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.createdAt}
-        />
-      ),
-      cell: ({ row }) => {
-        const date = row.original.createdAt || ''
-        try {
-          const formattedDate = format(new Date(date), 'dd/MM/yyyy', {
-            locale: ptBR,
-          })
-          return <span>{formattedDate}</span>
-        } catch {
-          return <span>Data inválida</span>
-        }
-      },
-      sortingFn: (rowA, rowB) => {
-        return (
-          new Date(rowA.original.createdAt).getTime() -
-          new Date(rowB.original.createdAt).getTime()
-        )
-      },
-    },
-    {
-      accessorKey: 'closedAt',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.closedAt}
-        />
-      ),
-      cell: ({ row }) => {
-        const date = row.original.closedAt
-        if (!date) return <span>-</span>
-
-        try {
-          const formattedDate = format(new Date(date), 'dd/MM/yyyy', {
-            locale: ptBR,
-          })
-          return <span>{formattedDate}</span>
-        } catch {
-          return <span>Data inválida</span>
-        }
-      },
-    },
-    {
-      accessorKey: 'cancelledBy',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.cancelledBy}
-        />
-      ),
-      cell: ({ row }) => {
-        if (!row.original.cancelledBy) return <span>-</span>
-        return (
-          <span className="break-words whitespace-normal">
-            {transformTextIntoCapitalizedWords(
-              row.original.cancelledBy.name || 'N/A',
-            )}
-          </span>
-        )
-      },
-    },
-    {
-      accessorKey: 'cancelReason',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.cancelReason}
-        />
-      ),
-      cell: ({ row }) => {
-        if (!row.original.cancelReason) return <span>-</span>
-        return (
-          <span className="line-clamp-6 w-[300px] break-words whitespace-normal lg:line-clamp-none">
-            {row.original.cancelReason}
-          </span>
-        )
-      },
-    },
-    {
-      accessorKey: 'cancelledAt',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={reservationsTitlesColumns.cancelledAt}
-        />
-      ),
-      cell: ({ row }) => {
-        const date = row.original.cancelledAt
-        if (!date) return <span>-</span>
-
-        try {
-          const formattedDate = format(new Date(date), 'dd/MM/yyyy', {
-            locale: ptBR,
-          })
-          return <span>{formattedDate}</span>
-        } catch {
-          return <span>Data inválida</span>
-        }
-      },
-    },
-    {
-      id: 'actions',
-      cell: ({ row }) => {
-        const reservationId = row.original.id
-        const status = row.original.status
-        const isPast = isReservationPast(row.original.slotEnd || '')
-        const spaceName = row.original.space.name || 'Espaço'
-
-        // Estado para controlar o diálogo do código de abertura
-        const [isDoorCodeDialogOpen, setIsDoorCodeDialogOpen] = useState(false)
-        const [doorCodeInfo, setDoorCodeInfo] = useState<{
-          doorCode?: string
-          expiresAt?: string
-          isLoading: boolean
-        }>({
-          doorCode: undefined,
-          expiresAt: undefined,
-          isLoading: false,
+  },
+  {
+    accessorKey: 'createdAt',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.createdAt}
+      />
+    ),
+    cell: ({ row }) => {
+      const date = row.original.createdAt || ''
+      try {
+        const formattedDate = format(new Date(date), 'dd/MM/yyyy', {
+          locale: ptBR,
         })
+        return <span>{formattedDate}</span>
+      } catch {
+        return <span>Data inválida</span>
+      }
+    },
+    sortingFn: (rowA, rowB) => {
+      return (
+        new Date(rowA.original.createdAt).getTime() -
+        new Date(rowB.original.createdAt).getTime()
+      )
+    },
+  },
+  {
+    accessorKey: 'closedAt',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.closedAt}
+      />
+    ),
+    cell: ({ row }) => {
+      const date = row.original.closedAt
+      if (!date) return <span>-</span>
 
-        // Hook para gerar código de abertura da porta
-        const { trigger: generateDoorCode, isMutating: isGeneratingCode } =
-          useOpenDoor(
-            { spaceName },
-            {
-              swr: {
-                onSuccess: (response) => {
-                  if (response?.status === 200 && response?.data?.doorCode) {
-                    // Atualizar os dados do código e manter o diálogo aberto
-                    setDoorCodeInfo({
-                      doorCode: response.data.doorCode,
-                      expiresAt: response.data.expiresAt,
-                      isLoading: false,
-                    })
-                  } else {
-                    // Esconder o diálogo e mostrar toast de erro
-                    setIsDoorCodeDialogOpen(false)
-                    setDoorCodeInfo({
-                      doorCode: undefined,
-                      expiresAt: undefined,
-                      isLoading: false,
-                    })
-                    showToast({
-                      message:
-                        'Não foi possível gerar o código de abertura. Tente novamente.',
-                      duration: 5000,
-                      variant: 'error',
-                    })
-                  }
-                },
-                onError: (error) => {
+      try {
+        const formattedDate = format(new Date(date), 'dd/MM/yyyy', {
+          locale: ptBR,
+        })
+        return <span>{formattedDate}</span>
+      } catch {
+        return <span>Data inválida</span>
+      }
+    },
+  },
+  {
+    accessorKey: 'cancelledBy',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.cancelledBy}
+      />
+    ),
+    cell: ({ row }) => {
+      if (!row.original.cancelledBy) return <span>-</span>
+      return (
+        <span className="break-words whitespace-normal">
+          {transformTextIntoCapitalizedWords(
+            row.original.cancelledBy.name || 'N/A',
+          )}
+        </span>
+      )
+    },
+  },
+  {
+    accessorKey: 'cancelReason',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.cancelReason}
+      />
+    ),
+    cell: ({ row }) => {
+      if (!row.original.cancelReason) return <span>-</span>
+      return (
+        <span className="line-clamp-6 w-[300px] break-words whitespace-normal lg:line-clamp-none">
+          {row.original.cancelReason}
+        </span>
+      )
+    },
+  },
+  {
+    accessorKey: 'cancelledAt',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={reservationsTitlesColumns.cancelledAt}
+      />
+    ),
+    cell: ({ row }) => {
+      const date = row.original.cancelledAt
+      if (!date) return <span>-</span>
+
+      try {
+        const formattedDate = format(new Date(date), 'dd/MM/yyyy', {
+          locale: ptBR,
+        })
+        return <span>{formattedDate}</span>
+      } catch {
+        return <span>Data inválida</span>
+      }
+    },
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const reservationId = row.original.id
+      const status = row.original.status
+      const isPast = isReservationPast(row.original.slotEnd || '')
+      const spaceName = row.original.space.name || 'Espaço'
+
+      // Estado para controlar o diálogo do código de abertura
+      const [isDoorCodeDialogOpen, setIsDoorCodeDialogOpen] = useState(false)
+      const [doorCodeInfo, setDoorCodeInfo] = useState<{
+        doorCode?: string
+        expiresAt?: string
+        isLoading: boolean
+      }>({
+        doorCode: undefined,
+        expiresAt: undefined,
+        isLoading: false,
+      })
+
+      const [cancelReason, setCancelReason] = useState('')
+      const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false)
+
+      // Hook para gerar código de abertura da porta
+      const { trigger: generateDoorCode, isMutating: isGeneratingCode } =
+        useOpenDoor(
+          { spaceName },
+          {
+            swr: {
+              onSuccess: (response) => {
+                if (response?.status === 200 && response?.data?.doorCode) {
+                  // Atualizar os dados do código e manter o diálogo aberto
+                  setDoorCodeInfo({
+                    doorCode: response.data.doorCode,
+                    expiresAt: response.data.expiresAt,
+                    isLoading: false,
+                  })
+                } else {
                   // Esconder o diálogo e mostrar toast de erro
                   setIsDoorCodeDialogOpen(false)
                   setDoorCodeInfo({
@@ -581,122 +573,187 @@ export const columnsAllReservations =
                     expiresAt: undefined,
                     isLoading: false,
                   })
-                  console.error('💥 Erro ao gerar código de abertura:', error)
                   showToast({
                     message:
-                      'Erro ao gerar código de abertura. Tente novamente.',
+                      'Não foi possível gerar o código de abertura. Tente novamente.',
                     duration: 5000,
                     variant: 'error',
                   })
-                },
+                }
               },
-            },
-          )
-
-        const handleWarningOpenDoor = () => {
-          showToast({
-            message:
-              'Você pode gerar um código de abertura para este espaço baseado na sua reserva.',
-            duration: Infinity,
-            variant: 'warning',
-            firstButton: {
-              text: 'Cancelar',
-              variant: 'ghost',
-              onClick: () => ({}),
-            },
-            secondButton: {
-              text: 'Gerar Código',
-              variant: 'default',
-              onClick: () => {
-                // Mostrar diálogo imediatamente com estado de loading
+              onError: (error) => {
+                // Esconder o diálogo e mostrar toast de erro
+                setIsDoorCodeDialogOpen(false)
                 setDoorCodeInfo({
                   doorCode: undefined,
                   expiresAt: undefined,
-                  isLoading: true,
+                  isLoading: false,
                 })
-                setIsDoorCodeDialogOpen(true)
-
-                generateDoorCode()
-              },
-            },
-          })
-        }
-
-        const { isMutating, trigger: closeReservation } =
-          useCloseSpaceReservation({
-            swr: {
-              onSuccess: (response) => {
-                switch (response.status) {
-                  case 200: {
-                    showToast({
-                      message: 'Reserva encerrada com sucesso.',
-                      duration: 5000,
-                      variant: 'success',
-                    })
-
-                    revalidateTags(['close-reservation'])
-                    break
-                  }
-                  default: {
-                    showToast({
-                      message:
-                        'Ops... Falha ao encerrar reserva, tente novamente.',
-                      duration: 5000,
-                      variant: 'error',
-                    })
-                    break
-                  }
-                }
-              },
-              onError: () => {
+                console.error('💥 Erro ao gerar código de abertura:', error)
                 showToast({
-                  message: 'Ops... Falha ao encerrar reserva, tente novamente.',
+                  message: 'Erro ao gerar código de abertura. Tente novamente.',
                   duration: 5000,
                   variant: 'error',
                 })
               },
             },
-          })
+          },
+        )
 
-        const handleCloseReservation = () => {
-          showToast({
-            message: `Você tem certeza que deseja encerrar esta reserva? Esta ação não pode ser desfeita e o horário ficará disponível para outros usuários.`,
-            duration: Infinity,
-            variant: 'warning',
-            firstButton: {
-              text: 'Cancelar',
-              variant: 'ghost',
-              onClick: () => ({}),
-            },
-            secondButton: {
-              text: 'Encerrar',
-              variant: 'destructive',
-              onClick: () => {
-                closeReservation({
-                  id: reservationId,
-                })
-              },
-            },
-          })
-        }
+      const handleWarningOpenDoor = () => {
+        showToast({
+          message:
+            'Você pode gerar um código de abertura para este espaço baseado na sua reserva.',
+          duration: Infinity,
+          variant: 'warning',
+          firstButton: {
+            text: 'Cancelar',
+            variant: 'ghost',
+            onClick: () => ({}),
+          },
+          secondButton: {
+            text: 'Gerar Código',
+            variant: 'default',
+            onClick: () => {
+              // Mostrar diálogo imediatamente com estado de loading
+              setDoorCodeInfo({
+                doorCode: undefined,
+                expiresAt: undefined,
+                isLoading: true,
+              })
+              setIsDoorCodeDialogOpen(true)
 
-        return (
-          <div className="flex justify-end gap-2">
+              generateDoorCode()
+            },
+          },
+        })
+      }
+
+      const { isMutating: isMutatingClose, trigger: closeReservation } =
+        useCloseSpaceReservation({
+          swr: {
+            onSuccess: (response) => {
+              switch (response.status) {
+                case 200: {
+                  showToast({
+                    message: 'Reserva encerrada com sucesso.',
+                    duration: 5000,
+                    variant: 'success',
+                  })
+
+                  revalidateTags(['close-reservation'])
+                  break
+                }
+                default: {
+                  showToast({
+                    message:
+                      'Ops... Falha ao encerrar reserva, tente novamente.',
+                    duration: 5000,
+                    variant: 'error',
+                  })
+                  break
+                }
+              }
+            },
+            onError: () => {
+              showToast({
+                message: 'Ops... Falha ao encerrar reserva, tente novamente.',
+                duration: 5000,
+                variant: 'error',
+              })
+            },
+          },
+        })
+
+      const { isMutating: isMutatingCancel, trigger: cancelReservation } =
+        useCancelSpaceReservation({
+          swr: {
+            onSuccess: (response) => {
+              switch (response.status) {
+                case 200: {
+                  showToast({
+                    message: 'Reserva cancelada com sucesso.',
+                    duration: 5000,
+                    variant: 'success',
+                  })
+
+                  revalidateTags(['cancel-reservation'])
+                  break
+                }
+                default: {
+                  showToast({
+                    message:
+                      'Ops... Falha ao cancelar reserva, tente novamente.',
+                    duration: 5000,
+                    variant: 'error',
+                  })
+                  break
+                }
+              }
+            },
+            onError: () => {
+              showToast({
+                message: 'Ops... Falha ao cancelar reserva, tente novamente.',
+                duration: 5000,
+                variant: 'error',
+              })
+            },
+          },
+        })
+
+      const handleCloseReservation = () => {
+        showToast({
+          message: `Você tem certeza que deseja encerrar esta reserva? Esta ação não pode ser desfeita e o horário ficará disponível para outros usuários.`,
+          duration: Infinity,
+          variant: 'warning',
+          firstButton: {
+            text: 'Cancelar',
+            variant: 'ghost',
+            onClick: () => ({}),
+          },
+          secondButton: {
+            text: 'Encerrar',
+            variant: 'destructive',
+            onClick: () => {
+              closeReservation({
+                id: reservationId,
+              })
+            },
+          },
+        })
+      }
+
+      const handleCancelReservation = () => {
+        // Abre o dialog de cancelamento
+        setIsCancelDialogOpen(true)
+      }
+
+      return (
+        <div className="flex justify-end gap-2">
+          <Button
+            disabled={
+              isGeneratingCode ||
+              isMutatingClose ||
+              isMutatingCancel ||
+              status !== 'reserved' ||
+              isPast
+            }
+            variant="ghost"
+            size="icon"
+            onClick={handleWarningOpenDoor}
+          >
+            <LockOpenIcon />
+          </Button>
+
+          {/* Verificar se o usuário logado é o mesmo que criou a reserva */}
+          {currentUser?.name === row.original.user.name ? (
             <Button
               disabled={
-                isGeneratingCode ||
-                isMutating ||
+                isMutatingClose ||
+                isMutatingCancel ||
                 status !== 'reserved' ||
                 isPast
               }
-              variant="ghost"
-              size="icon"
-              onClick={handleWarningOpenDoor}
-            >
-              <LockOpenIcon />
-            </Button>
-            <Button
-              disabled={isMutating || status !== 'reserved' || isPast}
               variant="ghost"
               size="icon"
               onClick={handleCloseReservation}
@@ -705,16 +762,106 @@ export const columnsAllReservations =
             >
               <TrashIcon />
             </Button>
-            <DoorCodeDialog
-              isOpen={isDoorCodeDialogOpen}
-              onOpenChange={setIsDoorCodeDialogOpen}
-              doorCode={doorCodeInfo?.doorCode}
-              expiresAt={doorCodeInfo?.expiresAt}
-              spaceName={spaceName}
-              isLoading={doorCodeInfo?.isLoading}
-            />
-          </div>
-        )
-      },
+          ) : (
+            <Button
+              disabled={
+                isMutatingClose ||
+                isMutatingCancel ||
+                status !== 'reserved' ||
+                isPast
+              }
+              variant="ghost"
+              size="icon"
+              onClick={handleCancelReservation}
+              className="group hover:bg-destructive hover:text-destructive-foreground text-destructive"
+              title={'Cancelar reserva'}
+            >
+              <TrashIcon />
+            </Button>
+          )}
+
+          {/* Dialog para cancelar reserva */}
+          <Dialog
+            open={isCancelDialogOpen}
+            onOpenChange={setIsCancelDialogOpen}
+          >
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Cancelar Reserva</DialogTitle>
+                <DialogDescription>
+                  Você está prestes a cancelar uma reserva de outro usuário.
+                  Esta ação não pode ser desfeita e o horário ficará disponível
+                  para outros usuários.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-4 py-2">
+                <div className="space-y-2">
+                  <Label htmlFor="cancelReason">Motivo do cancelamento</Label>
+                  <Textarea
+                    id="cancelReason"
+                    placeholder="Informe o motivo do cancelamento (obrigatório, mínimo 3 e máximo 500 caracteres)"
+                    value={cancelReason}
+                    onChange={(e) => setCancelReason(e.target.value)}
+                    className="resize-none"
+                  />
+                  <DialogDescription>
+                    {cancelReason.length}/500 caracteres
+                  </DialogDescription>
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setIsCancelDialogOpen(false)
+                    setCancelReason('') // Limpa o campo quando cancela
+                  }}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    if (!cancelReason.trim()) {
+                      showToast({
+                        message:
+                          'É necessário informar o motivo do cancelamento.',
+                        duration: 5000,
+                        variant: 'error',
+                      })
+                      return
+                    }
+
+                    cancelReservation({
+                      id: reservationId,
+                      cancelReason: cancelReason.trim(),
+                    })
+
+                    setIsCancelDialogOpen(false)
+                    setCancelReason('') // Limpa o campo após confirmar
+                  }}
+                  disabled={isMutatingCancel}
+                >
+                  {isMutatingCancel
+                    ? 'Cancelando...'
+                    : 'Confirmar Cancelamento'}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <DoorCodeDialog
+            isOpen={isDoorCodeDialogOpen}
+            onOpenChange={setIsDoorCodeDialogOpen}
+            doorCode={doorCodeInfo?.doorCode}
+            expiresAt={doorCodeInfo?.expiresAt}
+            spaceName={spaceName}
+            isLoading={doorCodeInfo?.isLoading}
+          />
+        </div>
+      )
     },
-  ]
+  },
+]
