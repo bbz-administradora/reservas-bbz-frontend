@@ -3878,6 +3878,10 @@ export type OpenDoor200 = {
 
 export type OpenDoorParams = {
   spaceName: string
+  /**
+   * ID da reserva para a qual o código de abertura é gerado
+   */
+  reservationId: string
 }
 
 /**

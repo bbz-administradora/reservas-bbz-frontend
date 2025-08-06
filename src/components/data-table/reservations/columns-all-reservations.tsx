@@ -554,7 +554,7 @@ export const columnsAllReservations = (
       // Hook para gerar código de abertura da porta
       const { trigger: generateDoorCode, isMutating: isGeneratingCode } =
         useOpenDoor(
-          { spaceName },
+          { spaceName, reservationId: row.original.id },
           {
             swr: {
               onSuccess: (response) => {

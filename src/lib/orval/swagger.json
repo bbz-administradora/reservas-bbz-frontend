@@ -7101,7 +7101,7 @@
         "tags": [
           "Space"
         ],
-        "description": "Este endpoint permite gerar um código temporário para abrir a porta de um espaço específico, utilizando integração com a API DLOCK.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Valida o nome do espaço a ser aberto\n  2. Verifica se o espaço existe no banco de dados\n  3. Verifica se existe uma conta DLOCK cadastrada no sistema\n     - Caso não exista, cria uma nova conta usando as credenciais armazenadas no ambiente\n     - Verifica se o usuário com o email configurado para DLOCK existe no sistema\n  4. Gerencia o token de acesso à API DLOCK automaticamente:\n     - Verifica se o token está próximo de expirar (menos de 30 dias)\n     - Realiza refresh automático do token quando necessário\n     - Atualiza os dados da conta no banco de dados\n  5. Consulta a API DLOCK para obter a lista de fechaduras cadastradas\n  6. Identifica a fechadura correspondente ao espaço solicitado através do nome normalizado\n  7. Gera um código temporário de acesso através da API DLOCK:\n     - Se a solicitação ocorrer antes dos últimos 10 minutos da hora, gera um código válido por 1 hora\n     - Se a solicitação ocorrer nos últimos 10 minutos da hora, gera um código válido por 2 horas\n  8. Formata a data de expiração no fuso horário de São Paulo\n  9. Retorna o código de acesso temporário e informações de expiração\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "description": "Este endpoint permite gerar um código temporário para abrir a porta de um espaço específico, utilizando integração com a API DLOCK.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user' (com validação adicional para usuários comuns).\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Parâmetros de consulta**:\n  - `spaceName` (obrigatório): Nome do espaço para abrir a porta\n  - `reservationId` (opcional): ID da reserva relacionada (obrigatório para usuários comuns)\n* **Processo**:\n  1. Valida o nome do espaço a ser aberto e o ID da reserva (quando aplicável)\n  2. Verifica a role do usuário autenticado:\n     - Para usuários 'admin' ou 'dev': acesso liberado sem verificações adicionais\n     - Para usuários comuns ('user'): verifica a existência da reserva e do check-in\n  3. Para usuários comuns, valida:\n     - Se o usuário é proprietário ou convidado da reserva informada\n     - Se existe um check-in ativo para esta reserva\n     - Se não houver check-in ou o usuário não estiver associado à reserva, não gera o código\n  4. Verifica se o espaço existe no banco de dados\n  5. Verifica se existe uma conta DLOCK cadastrada no sistema\n     - Caso não exista, cria uma nova conta usando as credenciais armazenadas no ambiente\n     - Verifica se o usuário com o email configurado para DLOCK existe no sistema\n  6. Gerencia o token de acesso à API DLOCK automaticamente:\n     - Verifica se o token está próximo de expirar (menos de 30 dias)\n     - Realiza refresh automático do token quando necessário\n     - Atualiza os dados da conta no banco de dados\n  7. Consulta a API DLOCK para obter a lista de fechaduras cadastradas\n  8. Identifica a fechadura correspondente ao espaço solicitado através do nome normalizado\n  9. Gera um código temporário de acesso através da API DLOCK:\n     - Se a solicitação ocorrer antes dos últimos 10 minutos da hora, gera um código válido por 1 hora\n     - Se a solicitação ocorrer nos últimos 10 minutos da hora, gera um código válido por 2 horas\n  10. Formata a data de expiração no fuso horário de São Paulo\n  11. Retorna o código de acesso temporário e informações de expiração\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "parameters": [
           {
             "schema": {
@@ -7112,6 +7112,16 @@
             "in": "query",
             "name": "spaceName",
             "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "query",
+            "name": "reservationId",
+            "required": true,
+            "description": "ID da reserva para a qual o código de abertura é gerado"
           }
         ],
         "security": [

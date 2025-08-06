@@ -585,7 +585,7 @@ export const columnsReservations = (
       // Hook para gerar código de abertura da porta
       const { trigger: generateDoorCode, isMutating: isGeneratingCode } =
         useOpenDoor(
-          { spaceName },
+          { spaceName, reservationId: row.original.id },
           {
             swr: {
               onSuccess: (response) => {
@@ -604,12 +604,22 @@ export const columnsReservations = (
                     expiresAt: undefined,
                     isLoading: false,
                   })
-                  showToast({
-                    message:
-                      'Não foi possível gerar o código de abertura. Tente novamente.',
-                    duration: 5000,
-                    variant: 'error',
-                  })
+
+                  if (response.data.message === 'Check-in não encontrado') {
+                    showToast({
+                      message:
+                        'Você precisa fazer check-in para gerar o código de abertura.',
+                      duration: 5000,
+                      variant: 'error',
+                    })
+                  } else {
+                    showToast({
+                      message:
+                        'Não foi possível gerar o código de abertura. Tente novamente.',
+                      duration: 5000,
+                      variant: 'error',
+                    })
+                  }
                 }
               },
               onError: (error) => {

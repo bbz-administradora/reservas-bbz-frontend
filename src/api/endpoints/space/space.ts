@@ -562,25 +562,35 @@ export const useUpdateSpace = <
  * Este endpoint permite gerar um código temporário para abrir a porta de um espaço específico, utilizando integração com a API DLOCK.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.
+* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user' (com validação adicional para usuários comuns).
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
+* **Parâmetros de consulta**:
+  - `spaceName` (obrigatório): Nome do espaço para abrir a porta
+  - `reservationId` (opcional): ID da reserva relacionada (obrigatório para usuários comuns)
 * **Processo**:
-  1. Valida o nome do espaço a ser aberto
-  2. Verifica se o espaço existe no banco de dados
-  3. Verifica se existe uma conta DLOCK cadastrada no sistema
+  1. Valida o nome do espaço a ser aberto e o ID da reserva (quando aplicável)
+  2. Verifica a role do usuário autenticado:
+     - Para usuários 'admin' ou 'dev': acesso liberado sem verificações adicionais
+     - Para usuários comuns ('user'): verifica a existência da reserva e do check-in
+  3. Para usuários comuns, valida:
+     - Se o usuário é proprietário ou convidado da reserva informada
+     - Se existe um check-in ativo para esta reserva
+     - Se não houver check-in ou o usuário não estiver associado à reserva, não gera o código
+  4. Verifica se o espaço existe no banco de dados
+  5. Verifica se existe uma conta DLOCK cadastrada no sistema
      - Caso não exista, cria uma nova conta usando as credenciais armazenadas no ambiente
      - Verifica se o usuário com o email configurado para DLOCK existe no sistema
-  4. Gerencia o token de acesso à API DLOCK automaticamente:
+  6. Gerencia o token de acesso à API DLOCK automaticamente:
      - Verifica se o token está próximo de expirar (menos de 30 dias)
      - Realiza refresh automático do token quando necessário
      - Atualiza os dados da conta no banco de dados
-  5. Consulta a API DLOCK para obter a lista de fechaduras cadastradas
-  6. Identifica a fechadura correspondente ao espaço solicitado através do nome normalizado
-  7. Gera um código temporário de acesso através da API DLOCK:
+  7. Consulta a API DLOCK para obter a lista de fechaduras cadastradas
+  8. Identifica a fechadura correspondente ao espaço solicitado através do nome normalizado
+  9. Gera um código temporário de acesso através da API DLOCK:
      - Se a solicitação ocorrer antes dos últimos 10 minutos da hora, gera um código válido por 1 hora
      - Se a solicitação ocorrer nos últimos 10 minutos da hora, gera um código válido por 2 horas
-  8. Formata a data de expiração no fuso horário de São Paulo
-  9. Retorna o código de acesso temporário e informações de expiração
+  10. Formata a data de expiração no fuso horário de São Paulo
+  11. Retorna o código de acesso temporário e informações de expiração
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado

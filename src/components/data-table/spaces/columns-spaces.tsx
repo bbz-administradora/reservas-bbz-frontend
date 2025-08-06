@@ -384,7 +384,7 @@ export const columnsSpaces: ColumnDef<ListSpaces200SpacesItem>[] = [
       // Hook para gerar código de abertura da porta
       const { trigger: generateDoorCode, isMutating: isGeneratingCode } =
         useOpenDoor(
-          { spaceName: row.original.name },
+          { spaceName: row.original.name, reservationId: row.original.id },
           {
             swr: {
               onSuccess: (response) => {
