@@ -714,8 +714,9 @@ export const useGetSpaceReservationStats = <
   2. Busca reservas do usuário para o espaço e dia atual
   3. Determina automaticamente se deve realizar check-in ou check-out
   4. Registra a operação na tabela space_check_in_out
-  5. Atualiza o registro da reserva com a data e hora da operação
-  6. Retorna os detalhes da reserva atualizada
+  5. Após o primeiro check-out, a reserva é automaticamente fechada/encerrada, liberando a sala
+  6. Atualiza o registro da reserva com a data e hora da operação
+  7. Retorna os detalhes da reserva atualizada
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
