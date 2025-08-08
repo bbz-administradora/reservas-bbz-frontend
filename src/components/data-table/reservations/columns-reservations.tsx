@@ -81,8 +81,14 @@ const isReservationPast = (slotEnd: string) => {
 const getStatusDisplay = (
   status: ListSpaceReservations200ReservationsItemStatus,
   slotEnd: string,
+  checkInOuts?: Array<{ type: 'check-in' | 'check-out' }>,
 ) => {
-  if (status === 'reserved' && isReservationPast(slotEnd)) {
+  const isPast = isReservationPast(slotEnd)
+  const hasCheckIn = checkInOuts?.some((item) => item.type === 'check-in')
+  const hasCheckOut = checkInOuts?.some((item) => item.type === 'check-out')
+
+  // Se a reserva foi realizada completamente (check-in e check-out)
+  if (hasCheckIn && hasCheckOut) {
     return {
       text: 'Realizado',
       color: 'text-foreground',
@@ -90,12 +96,40 @@ const getStatusDisplay = (
     }
   }
 
+  // Se a reserva já passou mas não teve check-in ou check-out completos
+  if (status === 'reserved' && isPast && (!hasCheckIn || !hasCheckOut)) {
+    // Se tem check-in mas não tem check-out
+    if (hasCheckIn && !hasCheckOut) {
+      return {
+        text: 'Check-out Pendente',
+        color: 'text-foreground',
+        dotColor: 'bg-orange-500',
+      }
+    }
+    // Se não tem nem check-in nem check-out
+    return {
+      text: 'Incompleta',
+      color: 'text-foreground',
+      dotColor: 'bg-orange-500',
+    }
+  }
+
+  // Para as demais regras
   switch (status) {
     case 'reserved':
+      // Se não está no passado, está ativa
+      if (!isPast) {
+        return {
+          text: 'Ativo',
+          color: 'text-foreground',
+          dotColor: 'bg-yellow-500',
+        }
+      }
+      // Se chegou aqui é porque é reserva no passado sem check-in/check-out que não foi tratada acima
       return {
-        text: 'Ativo',
+        text: 'Incompleta',
         color: 'text-foreground',
-        dotColor: 'bg-yellow-500',
+        dotColor: 'bg-orange-500',
       }
     case 'cancelled':
       return {
@@ -234,6 +268,7 @@ export const columnsReservations = (
       const status = getStatusDisplay(
         row.original.status,
         row.original.slotEnd || '',
+        row.original.checkInOuts,
       )
       return (
         <div className="flex items-center gap-2">
@@ -243,14 +278,46 @@ export const columnsReservations = (
       )
     },
     filterFn: (row, id, value) => {
+      // Status real do banco
+      const dbStatus = row.original.status
+      const isPast = isReservationPast(row.original.slotEnd || '')
+      const hasCheckIn = row.original.checkInOuts?.some(
+        (item) => item.type === 'check-in',
+      )
+      const hasCheckOut = row.original.checkInOuts?.some(
+        (item) => item.type === 'check-out',
+      )
+
+      // Filtro para "Realizado" (check-in e check-out completos)
       if (value.includes('realized')) {
-        const isRealized =
-          row.original.status === 'reserved' &&
-          isReservationPast(row.original.slotEnd || '')
-        if (isRealized) return true
+        if (hasCheckIn && hasCheckOut) return true
         if (value.length === 1) return false
       }
-      return value.includes(row.original.status)
+
+      // Filtro para "Incompleta" (sem check-in e sem check-out)
+      if (value.includes('incomplete')) {
+        const isIncomplete = dbStatus === 'reserved' && isPast && !hasCheckIn
+        if (isIncomplete) return true
+        if (value.length === 1) return false
+      }
+
+      // Filtro para "Check-out Pendente" (com check-in mas sem check-out)
+      if (value.includes('checkout-pending')) {
+        const isCheckoutPending =
+          dbStatus === 'reserved' && isPast && hasCheckIn && !hasCheckOut
+        if (isCheckoutPending) return true
+        if (value.length === 1) return false
+      }
+
+      // Filtro para "Ativo" (reservado e no futuro)
+      if (value.includes('reserved')) {
+        const isActive = dbStatus === 'reserved' && !isPast
+        if (isActive) return true
+        if (value.length === 1) return false
+      }
+
+      // Filtros para status diretos do banco (closed, cancelled)
+      return value.includes(dbStatus)
     },
   },
   {

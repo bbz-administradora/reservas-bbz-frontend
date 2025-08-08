@@ -21,9 +21,19 @@ export const reservationStatuses = [
     color: 'bg-yellow-500',
   },
   {
-    value: 'cancelled',
-    label: 'Cancelado',
-    color: 'bg-red-500',
+    value: 'realized',
+    label: 'Realizado',
+    color: 'bg-green-500',
+  },
+  {
+    value: 'incomplete',
+    label: 'Incompleta',
+    color: 'bg-orange-500',
+  },
+  {
+    value: 'checkout-pending',
+    label: 'Check-out Pendente',
+    color: 'bg-orange-500',
   },
   {
     value: 'closed',
@@ -31,9 +41,9 @@ export const reservationStatuses = [
     color: 'bg-red-500',
   },
   {
-    value: 'realized',
-    label: 'Realizado',
-    color: 'bg-green-500',
+    value: 'cancelled',
+    label: 'Cancelado',
+    color: 'bg-red-500',
   },
 ]
 
