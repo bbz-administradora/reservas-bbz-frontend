@@ -153,6 +153,7 @@ export function DataTableReservationsToolbar<TData>({
               column={table.getColumn('status')}
               title="Status"
               options={reservationStatuses}
+              showCount={false}
             />
           )}
           {table.getColumn('type') && (
@@ -160,6 +161,7 @@ export function DataTableReservationsToolbar<TData>({
               column={table.getColumn('type')}
               title="Tipo"
               options={spaceTypes}
+              showCount={true}
             />
           )}
           {table.getColumn('userRole') && (
@@ -167,6 +169,7 @@ export function DataTableReservationsToolbar<TData>({
               column={table.getColumn('userRole')}
               title="Papel"
               options={userRoleOptions}
+              showCount={true}
             />
           )}
         </div>

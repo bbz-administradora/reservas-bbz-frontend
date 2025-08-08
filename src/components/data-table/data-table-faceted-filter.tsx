@@ -25,12 +25,14 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     icon?: React.ComponentType<{ className?: string }>
     color?: string
   }[]
+  showCount?: boolean
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
+  showCount = true,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set<string | boolean>(
@@ -46,27 +48,44 @@ export function DataTableFacetedFilter<TData, TValue>({
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
-              <Badge
-                variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
-              >
-                {selectedValues.size}
-              </Badge>
+              {showCount && (
+                <Badge
+                  variant="secondary"
+                  className="rounded-sm px-1 font-normal lg:hidden"
+                >
+                  {selectedValues.size}
+                </Badge>
+              )}
               <div className="hidden space-x-1 lg:flex">
-                {selectedValues.size > 2 ? (
-                  <Badge
-                    variant="secondary"
-                    className="rounded-sm px-1 font-normal"
-                  >
-                    {selectedValues.size} selected
-                  </Badge>
+                {showCount ? (
+                  selectedValues.size > 2 ? (
+                    <Badge
+                      variant="secondary"
+                      className="rounded-sm px-1 font-normal"
+                    >
+                      {selectedValues.size} selected
+                    </Badge>
+                  ) : (
+                    options
+                      .filter((option) => selectedValues.has(option.value))
+                      .map((option) => (
+                        <Badge
+                          variant="secondary"
+                          key={option.value.toString()} // Garantir que a chave seja string
+                          className="rounded-sm px-1 font-normal"
+                        >
+                          {option.label}
+                        </Badge>
+                      ))
+                  )
                 ) : (
+                  // Quando showCount é falso, apenas mostrar os nomes das opções selecionadas
                   options
                     .filter((option) => selectedValues.has(option.value))
                     .map((option) => (
                       <Badge
                         variant="secondary"
-                        key={option.value.toString()} // Garantir que a chave seja string
+                        key={option.value.toString()}
                         className="rounded-sm px-1 font-normal"
                       >
                         {option.label}
@@ -123,7 +142,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                       />
                     )}
                     <span>{option.label}</span>
-                    {facets?.get(option.value) && (
+                    {showCount && facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                         {facets.get(option.value)}
                       </span>

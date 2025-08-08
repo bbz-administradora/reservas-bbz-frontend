@@ -170,6 +170,7 @@ export function DataTableAllReservationsToolbar<TData>({
               column={table.getColumn('status')}
               title="Status"
               options={reservationStatuses}
+              showCount={false}
             />
           )}
           {table.getColumn('type') && (
@@ -177,6 +178,7 @@ export function DataTableAllReservationsToolbar<TData>({
               column={table.getColumn('type')}
               title="Tipo"
               options={spaceTypes}
+              showCount={true}
             />
           )}
         </div>
