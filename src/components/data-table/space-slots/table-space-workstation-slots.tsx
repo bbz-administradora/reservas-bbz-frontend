@@ -6,9 +6,11 @@ import {
   UserMe200User,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import {
+  createSpaceSlotPreReserve,
   getGetSpaceSlotAvailabilityKey,
   useGetSpaceSlotAvailability,
 } from '@/api/endpoints/space-slot/space-slot'
+import { showToast } from '@/components/ShowToast'
 import { Text } from '@/components/Text'
 import {
   Table,
@@ -20,6 +22,7 @@ import {
 } from '@/components/ui/table'
 import { addDays, format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { CalendarIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useSWRConfig } from 'swr'
 import { PreReservationCountdown } from './pre-reservation-countdown'
@@ -107,7 +110,7 @@ export function DataTableSpaceWorkstationSlots({
     processedData = processedData.slice(0, 7)
   }
 
-  // Função simplificada para renderizar o componente do cliente
+  // Função simplificada para renderizar o componente do cliente e criar pré-reserva
   const renderSlot = (
     date: string,
     period: 'morning' | 'afternoon',
@@ -115,6 +118,7 @@ export function DataTableSpaceWorkstationSlots({
   ) => {
     // Para workstation, time deve ser o horário real do início do período
     const time = period === 'morning' ? '07:00' : '13:00'
+
     return (
       <SlotButton
         date={date}
@@ -133,6 +137,54 @@ export function DataTableSpaceWorkstationSlots({
         }}
       />
     )
+  }
+
+  // Função que cria reserva para um período específico
+  const createReservation = async (
+    date: string,
+    period: 'morning' | 'afternoon',
+  ) => {
+    if (!spaceId || !user) {
+      if (!user) {
+        window.location.href = '/login'
+      }
+      return
+    }
+
+    const time = period === 'morning' ? '07:00' : '13:00'
+    const slotStart = `${date}T${time}:00-03:00`
+
+    // Calcular o horário de término (5 horas depois)
+    const startDateTime = parseISO(slotStart)
+    const endDateTime = new Date(startDateTime)
+    endDateTime.setHours(endDateTime.getHours() + 5)
+
+    const slotEnd = format(endDateTime, `yyyy-MM-dd'T'HH:mm:ss-03:00`)
+
+    try {
+      await createSpaceSlotPreReserve({
+        spaceId,
+        slotStart,
+        slotEnd,
+      })
+
+      // Atualizar os dados após a criação bem-sucedida
+      const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
+        startDate,
+        endDate,
+      })
+      mutate(swrKey)
+
+      return true
+    } catch (error) {
+      console.error(`Erro ao criar reserva para ${period}:`, error)
+      showToast({
+        message: `Erro ao criar reserva para ${period === 'morning' ? 'manhã' : 'tarde'}`,
+        variant: 'error',
+        duration: 3000,
+      })
+      return false
+    }
   }
   // TODO: temos que preparar a api de pre reserva de slots para receber tempo maior que 1 hora "O horário de término
   // deve ser exatamente 1 hora após o início"
@@ -153,6 +205,7 @@ export function DataTableSpaceWorkstationSlots({
               <TableHead>Data</TableHead>
               <TableHead className="text-center">Manhã</TableHead>
               <TableHead className="text-center">Tarde</TableHead>
+              <TableHead className="text-center">Dia Inteiro</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -168,6 +221,58 @@ export function DataTableSpaceWorkstationSlots({
                 </TableCell>
                 <TableCell className="text-center">
                   {renderSlot(dayRow.date, 'afternoon', dayRow.slots.afternoon)}
+                </TableCell>
+                <TableCell className="text-center">
+                  <button
+                    className={`rounded-full p-2 ${
+                      dayRow.slots.morning.status === 'available' &&
+                      dayRow.slots.afternoon.status === 'available'
+                        ? 'cursor-pointer bg-blue-600 text-white hover:bg-blue-700'
+                        : 'cursor-not-allowed bg-gray-300 text-gray-500'
+                    }`}
+                    disabled={
+                      !(
+                        dayRow.slots.morning.status === 'available' &&
+                        dayRow.slots.afternoon.status === 'available'
+                      )
+                    }
+                    onClick={async () => {
+                      if (
+                        dayRow.slots.morning.status === 'available' &&
+                        dayRow.slots.afternoon.status === 'available'
+                      ) {
+                        try {
+                          // Criar reserva para manhã e tarde em sequência
+                          const morningSuccess = await createReservation(
+                            dayRow.date,
+                            'morning',
+                          )
+
+                          if (morningSuccess) {
+                            const afternoonSuccess = await createReservation(
+                              dayRow.date,
+                              'afternoon',
+                            )
+
+                            // Apenas mostrar mensagem de sucesso se ambas as reservas foram bem-sucedidas
+                            if (morningSuccess && afternoonSuccess) {
+                              showToast({
+                                message:
+                                  'Dia inteiro pré-reservado com sucesso!',
+                                variant: 'success',
+                                duration: 3000,
+                              })
+                            }
+                          }
+                        } catch (error) {
+                          console.error('Erro ao reservar dia inteiro:', error)
+                        }
+                      }
+                    }}
+                    title="Selecionar Dia Inteiro"
+                  >
+                    <CalendarIcon className="size-5" />
+                  </button>
                 </TableCell>
               </TableRow>
             ))}
