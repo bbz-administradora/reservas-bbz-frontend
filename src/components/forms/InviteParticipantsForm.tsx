@@ -82,7 +82,6 @@ export function InviteParticipantsForm({
     useCreateSpaceReservation({
       swr: {
         onSuccess: (response) => {
-          console.log('🚀 ~ response:', response)
           // Verificar se a resposta contém mensagem de sucesso
           if (response.status === 201) {
             revalidateTags(['create-reservation'])
