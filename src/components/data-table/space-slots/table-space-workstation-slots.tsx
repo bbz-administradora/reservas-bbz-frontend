@@ -162,21 +162,71 @@ export function DataTableSpaceWorkstationSlots({
     const slotEnd = format(endDateTime, `yyyy-MM-dd'T'HH:mm:ss-03:00`)
 
     try {
-      await createSpaceSlotPreReserve({
+      const response = await createSpaceSlotPreReserve({
         spaceId,
         slotStart,
         slotEnd,
       })
 
-      // Atualizar os dados após a criação bem-sucedida
-      const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
-        startDate,
-        endDate,
-      })
-      mutate(swrKey)
-
-      return true
-    } catch (error) {
+      // Verificar o status da resposta
+      if (response.status === 201) {
+        // Sucesso na criação
+        const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
+          startDate,
+          endDate,
+        })
+        mutate(swrKey)
+        return true
+      } else if (response.status === 400) {
+        // Verificar mensagens específicas de erros controlados
+        if (
+          response.data?.message?.includes(
+            'Não é possível reservar estações de trabalho com mais de 14 dias de antecedência',
+          )
+        ) {
+          showToast({
+            message:
+              'Não é possível reservar estações de trabalho com mais de 14 dias de antecedência',
+            variant: 'warning',
+            duration: 5000,
+          })
+        } else if (
+          response.data?.message?.includes(
+            'Não é possível fazer reservas para mais de',
+          )
+        ) {
+          showToast({
+            message: 'Não é possível fazer reservas para datas muito distantes',
+            variant: 'warning',
+            duration: 5000,
+          })
+        } else if (
+          response.data?.message ===
+          'Não é possível pré-reservar para horários que já começaram'
+        ) {
+          showToast({
+            message: 'Não é possível reservar horários que já passaram',
+            variant: 'warning',
+            duration: 5000,
+          })
+        } else {
+          showToast({
+            message:
+              response.data?.message ||
+              `Erro ao criar reserva para ${period === 'morning' ? 'manhã' : 'tarde'}`,
+            variant: 'warning',
+            duration: 5000,
+          })
+        }
+      } else if (response.status === 409) {
+        showToast({
+          message: 'Este horário já está reservado ou pré-reservado',
+          variant: 'warning',
+          duration: 4000,
+        })
+      }
+      return false
+    } catch (error: any) {
       console.error(`Erro ao criar reserva para ${period}:`, error)
       showToast({
         message: `Erro ao criar reserva para ${period === 'morning' ? 'manhã' : 'tarde'}`,
@@ -263,6 +313,7 @@ export function DataTableSpaceWorkstationSlots({
                                 duration: 3000,
                               })
                             }
+                            // Não mostramos uma mensagem de erro aqui porque já mostramos nos tratamentos específicos
                           }
                         } catch (error) {
                           console.error('Erro ao reservar dia inteiro:', error)

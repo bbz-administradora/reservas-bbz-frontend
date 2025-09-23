@@ -220,6 +220,19 @@ export function SlotButton({
           } else if (
             response.status === 400 &&
             response.data.message.includes(
+              'Não é possível reservar estações de trabalho com mais de 14 dias de antecedência',
+            )
+          ) {
+            // Erro específico para workstations com limite de 14 dias
+            showToast({
+              message:
+                'Não é possível reservar estações de trabalho com mais de 14 dias de antecedência',
+              variant: 'warning',
+              duration: 5000,
+            })
+          } else if (
+            response.status === 400 &&
+            response.data.message.includes(
               'Não é possível fazer reservas para mais de',
             )
           ) {
