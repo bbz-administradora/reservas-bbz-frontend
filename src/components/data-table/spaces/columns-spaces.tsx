@@ -39,7 +39,7 @@ export const spacesTitlesColumns = {
   userName: 'Criado por',
   imagens: 'Imagens',
   floor: 'Andar',
-  zone: 'Zona',
+  zone: 'Seção',
   position: 'Posição',
   qrcodeUrl: 'QrCode',
   actions: 'Ações',

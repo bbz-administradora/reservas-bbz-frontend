@@ -77,7 +77,7 @@ export function SpaceExplorerSection({
       ) : (
         <>
           <Text className="mt-2.5 max-w-3xl">
-            Filtre por data e andar desejado, depois navegue entre as zonas
+            Filtre por data e andar desejado, depois navegue entre as seções
             disponíveis e visualize todas as posições de trabalho organizadas
             por local. Escolha a estação ideal para seu momento e toque para
             reservar com rapidez.

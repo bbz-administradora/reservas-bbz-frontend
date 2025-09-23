@@ -43,7 +43,7 @@ export const reservationsTitlesColumns = {
   externalGuests: 'Convidados externos',
   needsCopeira: 'Copeira?',
   floor: 'Andar',
-  zone: 'Zona',
+  zone: 'Seção',
   position: 'Posição',
   checkInAt: 'Check-in',
   checkOutAt: 'Check-out',

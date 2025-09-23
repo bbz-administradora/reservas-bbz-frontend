@@ -596,13 +596,13 @@ export function SpaceAddUpdateForm({ className }: SpaceAddUpdateFormProps) {
                 )}
               />
 
-              {/* Zone - Zona/Setor */}
+              {/* Zone - Seção */}
               <FormField
                 control={form.control}
                 name="zone"
                 render={({ field }) => (
                   <FormItem className="grid gap-2">
-                    <FormLabel>Zona/Setor</FormLabel>
+                    <FormLabel>Seção</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -614,8 +614,7 @@ export function SpaceAddUpdateForm({ className }: SpaceAddUpdateFormProps) {
                       />
                     </FormControl>
                     <FormDescription className="text-muted-foreground text-[14px] leading-[20px] tracking-[0.25px]">
-                      Zona ou setor onde o espaço está localizado. Campo
-                      opcional.
+                      Seção onde o espaço está localizado. Campo opcional.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

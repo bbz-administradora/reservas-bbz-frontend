@@ -102,7 +102,7 @@ export function SpaceWorkstationExplorer({
           {Object.entries(zones).map(([zone, positions]) => (
             <div key={zone} className="mb-4">
               <Text variant="title-16-18-500" className="mt-2 mb-1">
-                Zona {zone}
+                Seção {zone}
               </Text>
               <div className="flex flex-wrap gap-3">
                 {positions.map((space) => (
