@@ -320,6 +320,19 @@ export function SlotButton({
             }
 
             revalidateTags(['close-reservation'])
+          } else if (
+            response.status === 400 &&
+            response.data?.message?.includes(
+              'Workstations só podem ser fechadas com 24h de antecedência',
+            )
+          ) {
+            // Erro específico para workstations com menos de 24h de antecedência
+            showToast({
+              message:
+                'Workstations só podem ser fechadas com 24 horas de antecedência',
+              variant: 'warning',
+              duration: 5000,
+            })
           } else {
             // Outros erros específicos da API
             showToast({

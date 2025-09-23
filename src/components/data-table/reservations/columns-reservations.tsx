@@ -752,6 +752,30 @@ export const columnsReservations = (
                   revalidateTags(['close-reservation'])
                   break
                 }
+                case 400: {
+                  // Verificar se é o erro específico de workstation com menos de 24h
+                  if (
+                    response.data?.message?.includes(
+                      'Workstations só podem ser fechadas com 24h de antecedência',
+                    )
+                  ) {
+                    showToast({
+                      message:
+                        'Workstations só podem ser fechadas com 24 horas de antecedência',
+                      duration: 5000,
+                      variant: 'warning',
+                    })
+                  } else {
+                    // Outros erros 400
+                    showToast({
+                      message:
+                        'Ops... Falha ao encerrar reserva, tente novamente.',
+                      duration: 5000,
+                      variant: 'error',
+                    })
+                  }
+                  break
+                }
                 default: {
                   showToast({
                     message:
