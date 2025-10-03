@@ -51,29 +51,55 @@ export function SpaceWorkstationExplorer({
     },
   })
 
-  // Organizar os dados por floor > zone > positions
+  // Organizar os dados por zone > positions (ignorando floor)
   const spaces = data?.data?.spaces || []
 
-  // Agrupar por andar (floor)
-  const floors = spaces.reduce<Record<string, typeof spaces>>((acc, space) => {
-    if (!space.floor) return acc
-    if (!acc[space.floor]) acc[space.floor] = []
-    acc[space.floor].push(space)
+  // Função auxiliar para extrair o nome de exibição (tudo após o primeiro traço)
+  function extractDisplayName(name: string): string {
+    const firstDashIndex = name.indexOf('-')
+    if (firstDashIndex === -1) return name // Se não houver traço, retorna o nome completo
+
+    const displayName = name.substring(firstDashIndex + 1).trim()
+
+    // Capitalizar: primeira letra maiúscula, restante minúscula
+    if (!displayName) return displayName
+    return (
+      displayName.charAt(0).toUpperCase() + displayName.slice(1).toLowerCase()
+    )
+  }
+
+  // Função auxiliar para converter string em número (zone e position já virão como números ou strings numéricas)
+  function toNumber(value: string | number | null | undefined): number {
+    if (typeof value === 'number') return value
+    if (!value) return 0
+    const num = parseInt(String(value), 10)
+    return isNaN(num) ? 0 : num
+  }
+
+  // Agrupar apenas por zona (ignorando o andar)
+  const zones = spaces.reduce<Record<string, typeof spaces>>((acc, space) => {
+    if (!space.zone) return acc
+    const zoneKey = String(space.zone).trim()
+    if (!acc[zoneKey]) acc[zoneKey] = []
+    acc[zoneKey].push(space)
     return acc
   }, {})
 
-  // Para cada andar, agrupar por zona
-  const floorsWithZones = Object.entries(floors).map(([floor, floorSpaces]) => {
-    const zones = floorSpaces.reduce<Record<string, typeof floorSpaces>>(
-      (acc, space) => {
-        if (!space.zone) return acc
-        if (!acc[space.zone]) acc[space.zone] = []
-        acc[space.zone].push(space)
-        return acc
-      },
-      {},
-    )
-    return { floor, zones }
+  // Ordenar as posições dentro de cada zona por position numérica
+  const sortedZones = Object.entries(zones).map(([zone, positions]) => {
+    const sortedPositions = [...positions].sort((a, b) => {
+      const numA = toNumber(a.position)
+      const numB = toNumber(b.position)
+      return numA - numB
+    })
+    return { zone, positions: sortedPositions }
+  })
+
+  // Ordenar as zonas numericamente
+  sortedZones.sort((a, b) => {
+    const numA = toNumber(a.zone)
+    const numB = toNumber(b.zone)
+    return numA - numB
   })
 
   const baseDate = date ?? new Date()
@@ -88,42 +114,35 @@ export function SpaceWorkstationExplorer({
         className="mt-4 w-full lg:w-min"
       />
 
-      {floorsWithZones.length === 0 && (
+      {sortedZones.length === 0 && (
         <Text className="text-muted-foreground mt-4">
           Nenhuma estação disponível para a data selecionada.
         </Text>
       )}
 
-      {floorsWithZones.map(({ floor, zones }) => (
-        <div key={floor} className="mb-8">
+      {sortedZones.map(({ zone, positions }) => (
+        <div key={zone} className="mb-6">
           <Text variant="title-18-24-700" className="mt-4 mb-2">
-            Andar {floor}
+            Seção {zone}
           </Text>
-          {Object.entries(zones).map(([zone, positions]) => (
-            <div key={zone} className="mb-4">
-              <Text variant="title-16-18-500" className="mt-2 mb-1">
-                Seção {zone}
-              </Text>
-              <div className="flex flex-wrap gap-3">
-                {positions.map((space) => (
-                  <Link
-                    key={space.id}
-                    href={`${webserver.host}/espacos/${space.id}?startDate=${startDate}&endDate=${endDate}`}
-                    className="no-underline"
-                  >
-                    <div className="group text-card-foreground bg-background flex max-w-[160px] min-w-[120px] flex-col items-center rounded-lg border px-4 py-3 shadow-sm transition-all hover:bg-linear-[330deg,#0664E4_0%,#04193B_80%]">
-                      <Text className="text-primary group-hover:text-background text-center font-semibold transition-all">
-                        {space.name}
-                      </Text>
-                      <Text className="text-muted-foreground group-hover:text-background mt-1 text-center text-xs transition-all">
-                        Posição {space.position}
-                      </Text>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
+          <div className="flex flex-wrap gap-3">
+            {positions.map((space) => (
+              <Link
+                key={space.id}
+                href={`${webserver.host}/espacos/${space.id}?startDate=${startDate}&endDate=${endDate}`}
+                className="no-underline"
+              >
+                <div className="group text-card-foreground bg-background flex max-w-[160px] min-w-[120px] flex-col items-center rounded-lg border px-4 py-3 shadow-sm transition-all hover:bg-linear-[330deg,#0664E4_0%,#04193B_80%]">
+                  <Text className="text-primary group-hover:text-background text-center font-semibold transition-all">
+                    {extractDisplayName(space.name)}
+                  </Text>
+                  <Text className="text-muted-foreground group-hover:text-background mt-1 text-center text-xs transition-all">
+                    Posição {space.position}
+                  </Text>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       ))}
     </div>
