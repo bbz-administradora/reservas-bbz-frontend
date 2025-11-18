@@ -17,12 +17,16 @@ interface DatePickerProps {
   date: Date | undefined
   setDate: (date: Date | undefined) => void
   className?: string
+  fromDate?: Date // Data mínima permitida (padrão: hoje)
+  toDate?: Date // Data máxima permitida (padrão: sem limite)
 }
 
 export function DatePickerWithButton({
   date,
   setDate,
   className,
+  fromDate,
+  toDate,
 }: DatePickerProps) {
   const [open, setOpen] = useState(false)
 
@@ -61,10 +65,26 @@ export function DatePickerWithButton({
             onSelect={handleSelect}
             autoFocus
             locale={ptBR}
-            startMonth={new Date()} // Desabilita dias anteriores à data atual
-            disabled={(date) =>
-              date < new Date(new Date().setHours(0, 0, 0, 0))
-            } // Garante que não seja possível selecionar datas passadas
+            startMonth={fromDate || new Date()}
+            disabled={(date) => {
+              const today = new Date()
+              today.setHours(0, 0, 0, 0)
+
+              const minDate = fromDate || today
+              minDate.setHours(0, 0, 0, 0)
+
+              // Bloqueia datas passadas
+              if (date < minDate) return true
+
+              // Bloqueia datas além do limite máximo, se definido
+              if (toDate) {
+                const maxDate = new Date(toDate)
+                maxDate.setHours(23, 59, 59, 999)
+                if (date > maxDate) return true
+              }
+
+              return false
+            }}
           />
         </PopoverContent>
       </Popover>

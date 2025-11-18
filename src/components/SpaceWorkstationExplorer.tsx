@@ -17,20 +17,38 @@ interface SpaceWorkstationExplorerProps {
 export function SpaceWorkstationExplorer({
   className,
 }: SpaceWorkstationExplorerProps) {
-  // Função para garantir que a data seja sempre hoje ou no futuro
-  function ensureDateIsNotPast(date: Date | undefined): Date {
+  // Função para garantir que a data esteja dentro do período permitido (hoje até hoje + 6 dias)
+  function ensureDateWithinAllowedRange(date: Date | undefined): Date {
     if (!date) return new Date()
+
     const today = new Date()
     today.setHours(0, 0, 0, 0)
+
+    const maxDate = addDays(today, 6) // Máximo: hoje + 6 dias (total de 7 dias)
+    maxDate.setHours(23, 59, 59, 999)
+
+    // Se a data for anterior a hoje, retorna hoje
     if (date < today) {
       return today
     }
+
+    // Se a data for maior que o máximo permitido (hoje + 6), retorna o máximo
+    if (date > maxDate) {
+      return maxDate
+    }
+
     return date
   }
 
   const [date, setDate] = useState<Date | undefined>(
-    ensureDateIsNotPast(new Date()),
+    ensureDateWithinAllowedRange(new Date()),
   )
+
+  // Handler personalizado para interceptar a mudança de data e aplicar validação
+  function handleDateChange(newDate: Date | undefined) {
+    const validatedDate = ensureDateWithinAllowedRange(newDate)
+    setDate(validatedDate)
+  }
 
   const formattedDateTime = date
     ? format(date, "yyyy-MM-dd'T'00:00:00.000XXX")
@@ -102,16 +120,20 @@ export function SpaceWorkstationExplorer({
     return numA - numB
   })
 
-  const baseDate = date ?? new Date()
-  const startDate = format(baseDate, 'yyyy-MM-dd')
-  const endDate = format(addDays(baseDate, 6), 'yyyy-MM-dd')
+  // Para a URL, sempre usar hoje como startDate e hoje + 6 como endDate (fixo)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const startDate = format(today, 'yyyy-MM-dd')
+  const endDate = format(addDays(today, 6), 'yyyy-MM-dd')
 
   return (
     <div className={cn('flex w-full flex-col gap-6', className)}>
       <DatePickerWithButton
         date={date}
-        setDate={setDate}
+        setDate={handleDateChange}
         className="mt-4 w-full lg:w-min"
+        fromDate={new Date()} // Bloqueia datas passadas
+        toDate={addDays(new Date(), 6)} // Bloqueia datas além de hoje + 6 dias
       />
 
       {sortedZones.length === 0 && (
