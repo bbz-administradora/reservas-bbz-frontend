@@ -62,9 +62,11 @@ export function DataTableUsersToolbar<TData>({
       <Input
         placeholder="Filtrar por email..."
         value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-        onChange={(event) =>
-          table.getColumn('email')?.setFilterValue(event.target.value)
-        }
+        onChange={(event) => {
+          // 📌 Normaliza o email: remove espaços e converte para lowercase
+          const normalizedEmail = event.target.value.trim().toLowerCase()
+          table.getColumn('email')?.setFilterValue(normalizedEmail)
+        }}
         className="md:h-9"
       />
       <div className="flex flex-wrap gap-3">
