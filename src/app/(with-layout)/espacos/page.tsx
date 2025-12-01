@@ -11,7 +11,9 @@ import {
   CalendarClockIcon,
   DoorOpenIcon,
   UserRoundIcon,
+  UsersIcon,
 } from 'lucide-react'
+import Link from 'next/link'
 
 export default async function SpacesHome() {
   // criando a data de hoje com hora, minutos e segundos zerados para garantir que a consulta seja feita apenas com a data
@@ -120,6 +122,40 @@ export default async function SpacesHome() {
               : 'Nenhuma reserva futura'}
           </Text>
         </div>
+
+        {/* Gerenciar sua Equipe - visível para admin, dev, managers e supervisors */}
+        {(user?.role === 'admin' ||
+          user?.role === 'dev' ||
+          user?.teamPosition === 'manager' ||
+          user?.teamPosition === 'supervisor') && (
+          <Link
+            href="/gestao-equipe"
+            className="bg-primary hover:bg-primary/90 flex flex-col items-center gap-2.5 rounded-lg p-5 shadow-xl transition-colors"
+          >
+            <div className="relative flex items-center justify-center">
+              <CardDecoration className="text-accent absolute bottom-[-15px] left-[-15px]" />
+              <UsersIcon size={56} className="text-primary-foreground z-10" />
+            </div>
+            <Text
+              variant="title-16-18-500"
+              className="text-primary-foreground mt-4 text-center break-words"
+            >
+              Gerenciar sua Equipe
+            </Text>
+            <Text
+              variant="title-18-24-700"
+              className="text-primary-foreground text-center break-words"
+            >
+              {user?.role === 'admin'
+                ? 'Administrador'
+                : user?.role === 'dev'
+                  ? 'Desenvolvedor'
+                  : user?.teamPosition === 'manager'
+                    ? 'Manager'
+                    : 'Supervisor'}
+            </Text>
+          </Link>
+        )}
       </div>
       <Separator className="bg-primary w-full" />
 
