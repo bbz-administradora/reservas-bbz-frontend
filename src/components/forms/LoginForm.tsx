@@ -53,8 +53,11 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
   const { trigger: loginUser, isMutating: isLoggingIn } =
     useAuthLoginCredential({
       swr: {
-        onSuccess: (response) => {
+        onSuccess: async (response) => {
           if (response.status === 200) {
+            // Revalidar o cache ANTES de redirecionar
+            await revalidateTag()
+
             showToast({
               message: 'Login efetuado com sucesso!',
               duration: 3000,
@@ -65,8 +68,6 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
                 countdownSeconds: 2,
               },
             })
-
-            revalidateTag()
           } else if (response.status === 403) {
             showToast({
               message:
