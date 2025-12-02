@@ -151,7 +151,7 @@ export default async function SpacesHome() {
                 : user?.role === 'dev'
                   ? 'Desenvolvedor'
                   : user?.teamPosition === 'manager'
-                    ? 'Manager'
+                    ? 'Gerente'
                     : 'Supervisor'}
             </Text>
           </Link>
