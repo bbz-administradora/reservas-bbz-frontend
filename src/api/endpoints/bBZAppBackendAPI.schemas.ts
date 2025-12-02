@@ -8,6 +8,786 @@
 /**
  * Código de status HTTP 500.
  */
+export type ListSupervisors500StatusCode =
+  (typeof ListSupervisors500StatusCode)[keyof typeof ListSupervisors500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSupervisors500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListSupervisors500Name =
+  (typeof ListSupervisors500Name)[keyof typeof ListSupervisors500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSupervisors500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type ListSupervisors500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListSupervisors500Name
+  /** Código de status HTTP 500. */
+  status_code: ListSupervisors500StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type ListSupervisors403StatusCode =
+  (typeof ListSupervisors403StatusCode)[keyof typeof ListSupervisors403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSupervisors403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListSupervisors403Name =
+  (typeof ListSupervisors403Name)[keyof typeof ListSupervisors403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSupervisors403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type ListSupervisors403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListSupervisors403Name
+  /** Código de status HTTP 403. */
+  status_code: ListSupervisors403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type ListSupervisors401StatusCode =
+  (typeof ListSupervisors401StatusCode)[keyof typeof ListSupervisors401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSupervisors401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListSupervisors401Name =
+  (typeof ListSupervisors401Name)[keyof typeof ListSupervisors401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSupervisors401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type ListSupervisors401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListSupervisors401Name
+  /** Código de status HTTP 401. */
+  status_code: ListSupervisors401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type ListSupervisors400StatusCode =
+  (typeof ListSupervisors400StatusCode)[keyof typeof ListSupervisors400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSupervisors400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListSupervisors400Name =
+  (typeof ListSupervisors400Name)[keyof typeof ListSupervisors400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSupervisors400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type ListSupervisors400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListSupervisors400Name
+  /** Código de status HTTP 400. */
+  status_code: ListSupervisors400StatusCode
+}
+
+/**
+ * Tipo da posição. Sempre será "supervisor". Campo obrigatório.
+ */
+export type ListSupervisors200SupervisorsItemPosition =
+  (typeof ListSupervisors200SupervisorsItemPosition)[keyof typeof ListSupervisors200SupervisorsItemPosition]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSupervisors200SupervisorsItemPosition = {
+  supervisor: 'supervisor',
+} as const
+
+export type ListSupervisors200SupervisorsItem = {
+  /** ID do usuário que fez a nomeação no formato UUID v4. Campo obrigatório. */
+  assignedBy: string
+  /** Email do usuário que fez a nomeação. Campo obrigatório. */
+  assignedByEmail: string
+  /**
+   * Nome do usuário que fez a nomeação. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  assignedByName: string | null
+  /** Data e hora da nomeação no formato ISO 8601. Campo obrigatório. */
+  createdAt: string
+  /** Identificador único da posição no formato UUID v4. Campo obrigatório. */
+  id: string
+  /** Tipo da posição. Sempre será "supervisor". Campo obrigatório. */
+  position: ListSupervisors200SupervisorsItemPosition
+  /** Data e hora da última atualização no formato ISO 8601. Campo obrigatório. */
+  updatedAt: string
+  /**
+   * URL do avatar do usuário supervisor. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  userAvatar: string | null
+  /** Email do usuário supervisor. Campo obrigatório. */
+  userEmail: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  userId: string
+  /**
+   * Nome do usuário supervisor. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  userName: string | null
+}
+
+/**
+ * Lista de supervisores retornada com sucesso
+ */
+export type ListSupervisors200 = {
+  /** Lista de supervisores da equipe de atendimento. */
+  supervisors: ListSupervisors200SupervisorsItem[]
+  /**
+   * Número total de supervisores. Campo obrigatório.
+   * @minimum 0
+   */
+  totalCount: number
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type RemoveSupervisor500StatusCode =
+  (typeof RemoveSupervisor500StatusCode)[keyof typeof RemoveSupervisor500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveSupervisor500Name =
+  (typeof RemoveSupervisor500Name)[keyof typeof RemoveSupervisor500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type RemoveSupervisor500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveSupervisor500Name
+  /** Código de status HTTP 500. */
+  status_code: RemoveSupervisor500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type RemoveSupervisor422StatusCode =
+  (typeof RemoveSupervisor422StatusCode)[keyof typeof RemoveSupervisor422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveSupervisor422Name =
+  (typeof RemoveSupervisor422Name)[keyof typeof RemoveSupervisor422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type RemoveSupervisor422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type RemoveSupervisor422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: RemoveSupervisor422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveSupervisor422Name
+  /** Código de status HTTP 422. */
+  status_code: RemoveSupervisor422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type RemoveSupervisor404StatusCode =
+  (typeof RemoveSupervisor404StatusCode)[keyof typeof RemoveSupervisor404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveSupervisor404Name =
+  (typeof RemoveSupervisor404Name)[keyof typeof RemoveSupervisor404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type RemoveSupervisor404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveSupervisor404Name
+  /** Código de status HTTP 404. */
+  status_code: RemoveSupervisor404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type RemoveSupervisor403StatusCode =
+  (typeof RemoveSupervisor403StatusCode)[keyof typeof RemoveSupervisor403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveSupervisor403Name =
+  (typeof RemoveSupervisor403Name)[keyof typeof RemoveSupervisor403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type RemoveSupervisor403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveSupervisor403Name
+  /** Código de status HTTP 403. */
+  status_code: RemoveSupervisor403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type RemoveSupervisor401StatusCode =
+  (typeof RemoveSupervisor401StatusCode)[keyof typeof RemoveSupervisor401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveSupervisor401Name =
+  (typeof RemoveSupervisor401Name)[keyof typeof RemoveSupervisor401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type RemoveSupervisor401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveSupervisor401Name
+  /** Código de status HTTP 401. */
+  status_code: RemoveSupervisor401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type RemoveSupervisor400StatusCode =
+  (typeof RemoveSupervisor400StatusCode)[keyof typeof RemoveSupervisor400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveSupervisor400Name =
+  (typeof RemoveSupervisor400Name)[keyof typeof RemoveSupervisor400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveSupervisor400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type RemoveSupervisor400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveSupervisor400Name
+  /** Código de status HTTP 400. */
+  status_code: RemoveSupervisor400StatusCode
+}
+
+/**
+ * Supervisor removido com sucesso
+ */
+export type RemoveSupervisor200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  /** Identificador único do usuário que teve a posição de supervisor removida. Campo obrigatório. */
+  userId: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type SetSupervisor500StatusCode =
+  (typeof SetSupervisor500StatusCode)[keyof typeof SetSupervisor500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetSupervisor500Name =
+  (typeof SetSupervisor500Name)[keyof typeof SetSupervisor500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type SetSupervisor500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetSupervisor500Name
+  /** Código de status HTTP 500. */
+  status_code: SetSupervisor500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type SetSupervisor422StatusCode =
+  (typeof SetSupervisor422StatusCode)[keyof typeof SetSupervisor422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetSupervisor422Name =
+  (typeof SetSupervisor422Name)[keyof typeof SetSupervisor422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type SetSupervisor422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type SetSupervisor422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: SetSupervisor422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetSupervisor422Name
+  /** Código de status HTTP 422. */
+  status_code: SetSupervisor422StatusCode
+}
+
+/**
+ * Código de status HTTP 409.
+ */
+export type SetSupervisor409StatusCode =
+  (typeof SetSupervisor409StatusCode)[keyof typeof SetSupervisor409StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor409StatusCode = {
+  NUMBER_409: 409,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetSupervisor409Name =
+  (typeof SetSupervisor409Name)[keyof typeof SetSupervisor409Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor409Name = {
+  ConflictError: 'ConflictError',
+} as const
+
+/**
+ * Schema to represent Conflict errors (HTTP 409)
+ */
+export type SetSupervisor409 = {
+  /** Ação recomendada para resolver o conflito. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que houve um conflito. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetSupervisor409Name
+  /** Código de status HTTP 409. */
+  status_code: SetSupervisor409StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type SetSupervisor404StatusCode =
+  (typeof SetSupervisor404StatusCode)[keyof typeof SetSupervisor404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetSupervisor404Name =
+  (typeof SetSupervisor404Name)[keyof typeof SetSupervisor404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type SetSupervisor404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetSupervisor404Name
+  /** Código de status HTTP 404. */
+  status_code: SetSupervisor404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type SetSupervisor403StatusCode =
+  (typeof SetSupervisor403StatusCode)[keyof typeof SetSupervisor403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetSupervisor403Name =
+  (typeof SetSupervisor403Name)[keyof typeof SetSupervisor403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type SetSupervisor403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetSupervisor403Name
+  /** Código de status HTTP 403. */
+  status_code: SetSupervisor403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type SetSupervisor401StatusCode =
+  (typeof SetSupervisor401StatusCode)[keyof typeof SetSupervisor401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetSupervisor401Name =
+  (typeof SetSupervisor401Name)[keyof typeof SetSupervisor401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type SetSupervisor401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetSupervisor401Name
+  /** Código de status HTTP 401. */
+  status_code: SetSupervisor401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type SetSupervisor400StatusCode =
+  (typeof SetSupervisor400StatusCode)[keyof typeof SetSupervisor400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetSupervisor400Name =
+  (typeof SetSupervisor400Name)[keyof typeof SetSupervisor400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type SetSupervisor400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetSupervisor400Name
+  /** Código de status HTTP 400. */
+  status_code: SetSupervisor400StatusCode
+}
+
+/**
+ * Tipo da posição. Sempre será "supervisor". Campo obrigatório.
+ */
+export type SetSupervisor201SupervisorPosition =
+  (typeof SetSupervisor201SupervisorPosition)[keyof typeof SetSupervisor201SupervisorPosition]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetSupervisor201SupervisorPosition = {
+  supervisor: 'supervisor',
+} as const
+
+export type SetSupervisor201Supervisor = {
+  /**
+   * Nome do gerente que fez a nomeação. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  assignedByName: string | null
+  /** Data e hora da nomeação no formato ISO 8601. Campo obrigatório. */
+  createdAt: string
+  /** Identificador único da posição no formato UUID v4. Campo obrigatório. */
+  id: string
+  /** Tipo da posição. Sempre será "supervisor". Campo obrigatório. */
+  position: SetSupervisor201SupervisorPosition
+  /** Email do usuário nomeado supervisor. Campo obrigatório. */
+  userEmail: string
+  /** Identificador único do usuário nomeado no formato UUID v4. Campo obrigatório. */
+  userId: string
+  /**
+   * Nome do usuário nomeado supervisor. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  userName: string | null
+}
+
+/**
+ * Supervisor nomeado com sucesso
+ */
+export type SetSupervisor201 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  supervisor: SetSupervisor201Supervisor
+}
+
+export type SetSupervisorBody = {
+  /**
+   * Email do usuário que será nomeado supervisor. Deve ser um email válido de um usuário cadastrado no sistema. Campo obrigatório.
+   * @minLength 3
+   * @maxLength 254
+   */
+  email: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type ListManagers500StatusCode =
   (typeof ListManagers500StatusCode)[keyof typeof ListManagers500StatusCode]
 
@@ -4930,15 +5710,6 @@ export type UpdateSpace400 = {
   status_code: UpdateSpace400StatusCode
 }
 
-export type UpdateSpace200SpaceType =
-  (typeof UpdateSpace200SpaceType)[keyof typeof UpdateSpace200SpaceType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateSpace200SpaceType = {
-  room: 'room',
-  workstation: 'workstation',
-} as const
-
 export type UpdateSpace200Space = {
   capacidade: number
   createdAt: string
@@ -4969,6 +5740,15 @@ export type UpdateSpace200 = {
   message: string
   space: UpdateSpace200Space
 }
+
+export type UpdateSpace200SpaceType =
+  (typeof UpdateSpace200SpaceType)[keyof typeof UpdateSpace200SpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSpace200SpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
 
 /**
  * Tipo do espaço: sala (room) ou estação de trabalho (workstation)

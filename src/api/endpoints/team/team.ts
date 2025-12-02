@@ -16,6 +16,11 @@ import type {
   ListManagers401,
   ListManagers403,
   ListManagers500,
+  ListSupervisors200,
+  ListSupervisors400,
+  ListSupervisors401,
+  ListSupervisors403,
+  ListSupervisors500,
   RemoveManager200,
   RemoveManager400,
   RemoveManager401,
@@ -23,6 +28,13 @@ import type {
   RemoveManager404,
   RemoveManager422,
   RemoveManager500,
+  RemoveSupervisor200,
+  RemoveSupervisor400,
+  RemoveSupervisor401,
+  RemoveSupervisor403,
+  RemoveSupervisor404,
+  RemoveSupervisor422,
+  RemoveSupervisor500,
   SetManager201,
   SetManager400,
   SetManager401,
@@ -32,6 +44,15 @@ import type {
   SetManager422,
   SetManager500,
   SetManagerBody,
+  SetSupervisor201,
+  SetSupervisor400,
+  SetSupervisor401,
+  SetSupervisor403,
+  SetSupervisor404,
+  SetSupervisor409,
+  SetSupervisor422,
+  SetSupervisor500,
+  SetSupervisorBody,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
@@ -306,6 +327,298 @@ export const useListManagers = <
   const swrKey =
     swrOptions?.swrKey ?? (() => (isEnabled ? getListManagersKey() : null))
   const swrFn = () => listManagers(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite que um gerente (ou admin/dev) nomeie um usuário como supervisor da equipe de atendimento.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**:
+  - Usuários com perfil 'admin' ou 'dev' podem nomear supervisores diretamente
+  - Usuários com perfil 'user' só podem nomear se possuírem posição de gerente (manager)
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+* **Regras de negócio**:
+  1. O usuário deve existir no sistema (busca por email)
+  2. O usuário deve ter conta ativa
+  3. O usuário não pode ter perfil 'dev'
+  4. O usuário não pode já possuir uma posição na equipe
+  5. Se nomeado por um gerente, cria-se automaticamente o vínculo hierárquico
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Nomear um supervisor para a equipe de atendimento
+ */
+export type setSupervisorResponse = {
+  data: SetSupervisor201
+  status: number
+  headers: Headers
+}
+
+export const getSetSupervisorUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisor`
+}
+
+export const setSupervisor = async (
+  setSupervisorBody: SetSupervisorBody,
+  options?: RequestInit,
+): Promise<setSupervisorResponse> => {
+  return customFetch<Promise<setSupervisorResponse>>(getSetSupervisorUrl(), {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(setSupervisorBody),
+  })
+}
+
+export const getSetSupervisorMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: SetSupervisorBody },
+  ): Promise<setSupervisorResponse> => {
+    return setSupervisor(arg, options)
+  }
+}
+export const getSetSupervisorMutationKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisor`] as const
+
+export type SetSupervisorMutationResult = NonNullable<
+  Awaited<ReturnType<typeof setSupervisor>>
+>
+export type SetSupervisorMutationError =
+  | SetSupervisor400
+  | SetSupervisor401
+  | SetSupervisor403
+  | SetSupervisor404
+  | SetSupervisor409
+  | SetSupervisor422
+  | SetSupervisor500
+
+/**
+ * @summary Nomear um supervisor para a equipe de atendimento
+ */
+export const useSetSupervisor = <
+  TError =
+    | SetSupervisor400
+    | SetSupervisor401
+    | SetSupervisor403
+    | SetSupervisor404
+    | SetSupervisor409
+    | SetSupervisor422
+    | SetSupervisor500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof setSupervisor>>,
+    TError,
+    Key,
+    SetSupervisorBody,
+    Awaited<ReturnType<typeof setSupervisor>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getSetSupervisorMutationKey()
+  const swrFn = getSetSupervisorMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite que um gerente (ou admin/dev) remova a posição de supervisor de um usuário.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**:
+  - Usuários com perfil 'admin' ou 'dev' podem remover qualquer supervisor
+  - Usuários com perfil 'user' só podem remover se possuírem posição de gerente (manager)
+  - Gerentes só podem remover supervisores vinculados a eles
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+* **Regras de negócio**:
+  1. O usuário deve possuir uma posição de supervisor na equipe
+  2. Ao remover, o usuário volta a ser um usuário comum (sem posição)
+  3. Os vínculos hierárquicos são removidos automaticamente
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Remover um supervisor da equipe de atendimento
+ */
+export type removeSupervisorResponse = {
+  data: RemoveSupervisor200
+  status: number
+  headers: Headers
+}
+
+export const getRemoveSupervisorUrl = (userId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisor/${userId}`
+}
+
+export const removeSupervisor = async (
+  userId: string,
+  options?: RequestInit,
+): Promise<removeSupervisorResponse> => {
+  return customFetch<Promise<removeSupervisorResponse>>(
+    getRemoveSupervisorUrl(userId),
+    {
+      ...options,
+      method: 'DELETE',
+    },
+  )
+}
+
+export const getRemoveSupervisorMutationFetcher = (
+  userId: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    __: { arg: Arguments },
+  ): Promise<removeSupervisorResponse> => {
+    return removeSupervisor(userId, options)
+  }
+}
+export const getRemoveSupervisorMutationKey = (userId: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisor/${userId}`,
+  ] as const
+
+export type RemoveSupervisorMutationResult = NonNullable<
+  Awaited<ReturnType<typeof removeSupervisor>>
+>
+export type RemoveSupervisorMutationError =
+  | RemoveSupervisor400
+  | RemoveSupervisor401
+  | RemoveSupervisor403
+  | RemoveSupervisor404
+  | RemoveSupervisor422
+  | RemoveSupervisor500
+
+/**
+ * @summary Remover um supervisor da equipe de atendimento
+ */
+export const useRemoveSupervisor = <
+  TError =
+    | RemoveSupervisor400
+    | RemoveSupervisor401
+    | RemoveSupervisor403
+    | RemoveSupervisor404
+    | RemoveSupervisor422
+    | RemoveSupervisor500,
+>(
+  userId: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof removeSupervisor>>,
+      TError,
+      Key,
+      Arguments,
+      Awaited<ReturnType<typeof removeSupervisor>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getRemoveSupervisorMutationKey(userId)
+  const swrFn = getRemoveSupervisorMutationFetcher(userId, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint retorna a lista de supervisores da equipe de atendimento.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**:
+  - Usuários com perfil 'admin' ou 'dev' veem TODOS os supervisores do sistema
+  - Usuários com perfil 'user' que são gerentes (manager) veem apenas os supervisores vinculados a eles
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+* **Retorno**:
+  - Lista de supervisores com dados do usuário (nome, email, avatar)
+  - Informações de quem nomeou cada supervisor
+  - Data de nomeação
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Listar supervisores da equipe de atendimento
+ */
+export type listSupervisorsResponse = {
+  data: ListSupervisors200
+  status: number
+  headers: Headers
+}
+
+export const getListSupervisorsUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisors`
+}
+
+export const listSupervisors = async (
+  options?: RequestInit,
+): Promise<listSupervisorsResponse> => {
+  return customFetch<Promise<listSupervisorsResponse>>(
+    getListSupervisorsUrl(),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getListSupervisorsKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisors`] as const
+
+export type ListSupervisorsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listSupervisors>>
+>
+export type ListSupervisorsQueryError =
+  | ListSupervisors400
+  | ListSupervisors401
+  | ListSupervisors403
+  | ListSupervisors500
+
+/**
+ * @summary Listar supervisores da equipe de atendimento
+ */
+export const useListSupervisors = <
+  TError =
+    | ListSupervisors400
+    | ListSupervisors401
+    | ListSupervisors403
+    | ListSupervisors500,
+>(options?: {
+  swr?: SWRConfiguration<
+    Awaited<ReturnType<typeof listSupervisors>>,
+    TError
+  > & { swrKey?: Key; enabled?: boolean }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ?? (() => (isEnabled ? getListSupervisorsKey() : null))
+  const swrFn = () => listSupervisors(requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
