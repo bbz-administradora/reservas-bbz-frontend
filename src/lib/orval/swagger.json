@@ -14971,6 +14971,11 @@
                     "minLength": 3,
                     "maxLength": 254,
                     "description": "Email do usuário que será nomeado membro. Deve ser um email válido de um usuário cadastrado no sistema. Campo obrigatório."
+                  },
+                  "supervisorId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "ID do supervisor ao qual o membro será vinculado. Quando Admin/Dev/Manager adiciona via página de gestão de equipe de um supervisor específico, este campo deve ser informado. Campo opcional."
                   }
                 },
                 "required": [

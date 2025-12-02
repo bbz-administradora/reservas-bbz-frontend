@@ -845,6 +845,8 @@ export type SetMemberBody = {
    * @maxLength 254
    */
   email: string
+  /** ID do supervisor ao qual o membro será vinculado. Quando Admin/Dev/Manager adiciona via página de gestão de equipe de um supervisor específico, este campo deve ser informado. Campo opcional. */
+  supervisorId?: string
 }
 
 /**

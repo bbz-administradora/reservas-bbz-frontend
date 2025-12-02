@@ -8,6 +8,7 @@
 
 import type {
   ListManagers200,
+  ListMembers200,
   ListSupervisors200,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { customFetch } from '@/api/mutator/custom-fetch'
@@ -125,6 +126,75 @@ export async function fetchListSupervisorsInServer(): Promise<ListSupervisors200
     cache: 'no-store',
     headers,
     next: { tags: ['list-supervisors'] },
+  })
+
+  if (response.status === 200) {
+    return response.data
+  }
+
+  return null
+}
+
+/**
+ * fetchListMembersInServer
+ *
+ * Lista membros da equipe de atendimento no servidor,
+ * garantindo envio de CSRF token e cookies de sessão.
+ *
+ * Fluxo:
+ * 1) Chama getHeadersServer() para obter cabeçalhos de autenticação.
+ * 2) Se getHeadersServer() retornar null, encerra retornando null.
+ * 3) Executa listMembers() com RequestInit personalizado:
+ *    - method: 'GET'
+ *    - credentials: 'include'
+ *    - cache: 'no-store'
+ *    - headers: resultado de getHeadersServer()
+ *    - next.tags: ['list-members'] (invalidação de cache)
+ * 4) Se status === 200, retorna ListMembers200 (lista de membros).
+ *    Caso contrário, registra erro e retorna null.
+ *
+ * Obs: Para usuários com role 'user' (supervisors), retorna apenas membros vinculados.
+ *      Para admin/dev, retorna todos os membros do sistema.
+ *      Para managers, retorna membros da sua equipe e de seus supervisores.
+ *
+ * @param supervisorId - ID opcional do supervisor para filtrar membros
+ * @returns {Promise<ListMembers200 | null>} Objeto com dados da listagem ou null
+ *
+ * @example
+ * ```ts
+ * import { fetchListMembersInServer } from '@/services/teamService'
+ *
+ * async function handleMembers() {
+ *   const membersList = await fetchListMembersInServer()
+ *   if (membersList) {
+ *     console.log('Total de membros:', membersList.totalCount)
+ *     console.table(membersList.members)
+ *   } else {
+ *     console.log('Falha ao buscar lista de membros')
+ *   }
+ * }
+ * ```
+ */
+export async function fetchListMembersInServer(
+  supervisorId?: string,
+): Promise<ListMembers200 | null> {
+  const headers = await getHeadersServer()
+  if (!headers) {
+    console.warn('CSRF token not found')
+    return null
+  }
+
+  let url = `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/members`
+  if (supervisorId) {
+    url += `?supervisorId=${supervisorId}`
+  }
+
+  const response = await customFetch<ListMembers200>(url, {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+    headers,
+    next: { tags: ['list-members'] },
   })
 
   if (response.status === 200) {

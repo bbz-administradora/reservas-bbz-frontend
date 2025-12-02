@@ -123,6 +123,31 @@ export default async function SpacesHome() {
           </Text>
         </div>
 
+        {/* Gerenciar Gerentes - visível apenas para admin e dev */}
+        {(user?.role === 'admin' || user?.role === 'dev') && (
+          <Link
+            href="/admin/usuarios/gerentes-equipe"
+            className="bg-chart-1 hover:bg-chart-1/90 flex flex-col items-center gap-2.5 rounded-lg p-5 shadow-xl transition-colors"
+          >
+            <div className="relative flex items-center justify-center">
+              <CardDecoration className="text-accent absolute bottom-[-15px] left-[-15px]" />
+              <UsersIcon size={56} className="text-primary-foreground z-10" />
+            </div>
+            <Text
+              variant="title-16-18-500"
+              className="text-primary-foreground mt-4 text-center break-words"
+            >
+              Gerenciar Gerentes
+            </Text>
+            <Text
+              variant="title-18-24-700"
+              className="text-primary-foreground text-center break-words"
+            >
+              {user?.role === 'admin' ? 'Administrador' : 'Desenvolvedor'}
+            </Text>
+          </Link>
+        )}
+
         {/* Gerenciar Supervisores - visível para admin, dev e managers */}
         {(user?.role === 'admin' ||
           user?.role === 'dev' ||
