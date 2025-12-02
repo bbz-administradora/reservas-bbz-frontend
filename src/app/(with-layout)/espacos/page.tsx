@@ -123,11 +123,10 @@ export default async function SpacesHome() {
           </Text>
         </div>
 
-        {/* Gerenciar sua Equipe - visível para admin, dev, managers e supervisors */}
+        {/* Gerenciar Supervisores - visível para admin, dev e managers */}
         {(user?.role === 'admin' ||
           user?.role === 'dev' ||
-          user?.teamPosition === 'manager' ||
-          user?.teamPosition === 'supervisor') && (
+          user?.teamPosition === 'manager') && (
           <Link
             href="/gestao-equipe"
             className="bg-primary hover:bg-primary/90 flex flex-col items-center gap-2.5 rounded-lg p-5 shadow-xl transition-colors"
@@ -140,11 +139,43 @@ export default async function SpacesHome() {
               variant="title-16-18-500"
               className="text-primary-foreground mt-4 text-center break-words"
             >
-              Gerenciar sua Equipe
+              Gerenciar Supervisores
             </Text>
             <Text
               variant="title-18-24-700"
               className="text-primary-foreground text-center break-words"
+            >
+              {user?.role === 'admin'
+                ? 'Administrador'
+                : user?.role === 'dev'
+                  ? 'Desenvolvedor'
+                  : 'Gerente'}
+            </Text>
+          </Link>
+        )}
+
+        {/* Gerenciar Equipe de Membros - visível para admin, dev, managers e supervisors */}
+        {(user?.role === 'admin' ||
+          user?.role === 'dev' ||
+          user?.teamPosition === 'manager' ||
+          user?.teamPosition === 'supervisor') && (
+          <Link
+            href="/minha-equipe"
+            className="bg-accent hover:bg-accent/90 flex flex-col items-center gap-2.5 rounded-lg p-5 shadow-xl transition-colors"
+          >
+            <div className="relative flex items-center justify-center">
+              <CardDecoration className="text-primary absolute bottom-[-15px] left-[-15px]" />
+              <UsersIcon size={56} className="text-accent-foreground z-10" />
+            </div>
+            <Text
+              variant="title-16-18-500"
+              className="text-accent-foreground mt-4 text-center break-words"
+            >
+              Gerenciar Membros
+            </Text>
+            <Text
+              variant="title-18-24-700"
+              className="text-accent-foreground text-center break-words"
             >
               {user?.role === 'admin'
                 ? 'Administrador'
