@@ -9,6 +9,7 @@ import type {
   UserList200,
   UserListParams,
   UserMe200User,
+  UserMe200UserTeamPosition,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { customFetch } from '@/api/mutator/custom-fetch'
 import { webserver } from '@/infra/webserver'
@@ -20,10 +21,12 @@ import { getHeadersServer } from '@/lib/cookie'
  * Interface de retorno para dados do usuário autenticado.
  * @property user            Dados do usuário (UserMe200User) ou null
  * @property isAuthenticated Indica se o usuário está autenticado
+ * @property teamPosition    Posição do usuário na equipe (manager, supervisor, member) ou null
  */
 export interface CurrentUser {
   user: UserMe200User | null
   isAuthenticated: boolean
+  teamPosition: UserMe200UserTeamPosition | null
 }
 
 /**
@@ -65,7 +68,7 @@ export async function fetchCurrentUserInServer(): Promise<CurrentUser> {
   const headers = await getHeadersServer()
   if (!headers) {
     console.warn('CSRF token not found')
-    return { user: null, isAuthenticated: false }
+    return { user: null, isAuthenticated: false, teamPosition: null }
   }
 
   const response = await customFetch<{ user: UserMe200User }>(
@@ -80,10 +83,15 @@ export async function fetchCurrentUserInServer(): Promise<CurrentUser> {
   )
 
   if (response.status === 200) {
-    return { user: response.data.user as UserMe200User, isAuthenticated: true }
+    const user = response.data.user as UserMe200User
+    return {
+      user,
+      isAuthenticated: true,
+      teamPosition: user.teamPosition ?? null,
+    }
   }
 
-  return { user: null, isAuthenticated: false }
+  return { user: null, isAuthenticated: false, teamPosition: null }
 }
 
 /**
