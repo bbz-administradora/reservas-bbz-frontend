@@ -14950,6 +14950,1193 @@
           }
         }
       }
+    },
+    "/v1/private/team/member": {
+      "post": {
+        "operationId": "setMember",
+        "summary": "Adicionar um membro à equipe de atendimento",
+        "tags": [
+          "Team"
+        ],
+        "description": "Este endpoint permite que um supervisor/gerente (ou admin/dev) adicione um usuário como membro da equipe de atendimento.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**:\n  - Usuários com perfil 'admin' ou 'dev' podem adicionar membros diretamente\n  - Usuários com perfil 'user' só podem adicionar se possuírem posição de gerente (manager) ou supervisor\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n* **Regras de negócio**:\n  1. O usuário deve existir no sistema (busca por email)\n  2. O usuário deve ter conta ativa\n  3. O usuário não pode ter perfil 'dev'\n  4. O usuário não pode já possuir uma posição na equipe\n  5. Cria-se automaticamente o vínculo hierárquico entre o membro e quem o nomeou\n  6. Um email é enviado ao novo membro informando sua equipe (supervisor e gerente)\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "minLength": 3,
+                    "maxLength": 254,
+                    "description": "Email do usuário que será nomeado membro. Deve ser um email válido de um usuário cadastrado no sistema. Campo obrigatório."
+                  }
+                },
+                "required": [
+                  "email"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Membro nomeado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "member": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Identificador único da posição no formato UUID v4. Campo obrigatório."
+                        },
+                        "userId": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Identificador único do usuário nomeado no formato UUID v4. Campo obrigatório."
+                        },
+                        "position": {
+                          "type": "string",
+                          "enum": [
+                            "member"
+                          ],
+                          "description": "Tipo da posição. Sempre será \"member\". Campo obrigatório."
+                        },
+                        "userName": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Nome do usuário nomeado membro. Pode ser nulo se não definido. Campo obrigatório."
+                        },
+                        "userEmail": {
+                          "type": "string",
+                          "format": "email",
+                          "description": "Email do usuário nomeado membro. Campo obrigatório."
+                        },
+                        "assignedByName": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Nome de quem fez a nomeação. Pode ser nulo se não definido. Campo obrigatório."
+                        },
+                        "supervisorName": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Nome do supervisor/manager imediato. Pode ser nulo se não definido. Campo obrigatório."
+                        },
+                        "managerName": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Nome do gerente da equipe. Pode ser nulo se não aplicável. Campo obrigatório."
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "Data e hora da nomeação no formato ISO 8601. Campo obrigatório."
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "userId",
+                        "position",
+                        "userName",
+                        "userEmail",
+                        "assignedByName",
+                        "supervisorName",
+                        "managerName",
+                        "createdAt"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
+                    }
+                  },
+                  "required": [
+                    "member",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Membro nomeado com sucesso"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Schema to represent Not Found errors (HTTP 404)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "NotFoundError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o recurso não foi encontrado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para o recurso não encontrado."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        404
+                      ],
+                      "description": "Código de status HTTP 404."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Not Found errors (HTTP 404)"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Schema to represent Conflict errors (HTTP 409)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ConflictError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que houve um conflito."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para resolver o conflito."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        409
+                      ],
+                      "description": "Código de status HTTP 409."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Conflict errors (HTTP 409)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Caminho para o campo com erro."
+                          },
+                          "message": {
+                            "type": "string",
+                            "description": "Mensagem de validação para o campo."
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Detalhes adicionais sobre os erros de validação."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/private/team/member/{userId}": {
+      "delete": {
+        "operationId": "removeMember",
+        "summary": "Remover um membro da equipe de atendimento",
+        "tags": [
+          "Team"
+        ],
+        "description": "Este endpoint permite que um supervisor/gerente (ou admin/dev) remova a posição de membro de um usuário.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**:\n  - Usuários com perfil 'admin' ou 'dev' podem remover qualquer membro\n  - Usuários com perfil 'user' só podem remover se possuírem posição de gerente (manager) ou supervisor\n  - Supervisores só podem remover membros vinculados a eles\n  - Gerentes podem remover membros vinculados diretamente ou via seus supervisores\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n* **Regras de negócio**:\n  1. O usuário deve possuir uma posição de membro na equipe\n  2. Ao remover, o usuário volta a ser um usuário comum (sem posição)\n  3. Os vínculos hierárquicos são removidos automaticamente\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "description": "Identificador único do usuário (membro) a ser removido no formato UUID v4. Campo obrigatório."
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Membro removido com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
+                    },
+                    "userId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Identificador único do usuário que teve a posição de membro removida. Campo obrigatório."
+                    }
+                  },
+                  "required": [
+                    "message",
+                    "userId"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Membro removido com sucesso"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Schema to represent Not Found errors (HTTP 404)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "NotFoundError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o recurso não foi encontrado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para o recurso não encontrado."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        404
+                      ],
+                      "description": "Código de status HTTP 404."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Not Found errors (HTTP 404)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Caminho para o campo com erro."
+                          },
+                          "message": {
+                            "type": "string",
+                            "description": "Mensagem de validação para o campo."
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Detalhes adicionais sobre os erros de validação."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/private/team/members": {
+      "get": {
+        "operationId": "listMembers",
+        "summary": "Listar membros da equipe de atendimento",
+        "tags": [
+          "Team"
+        ],
+        "description": "Este endpoint retorna a lista de membros da equipe de atendimento.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**:\n  - Usuários com perfil 'admin' ou 'dev' veem TODOS os membros do sistema\n  - Usuários com perfil 'user' que são gerentes (manager) veem membros vinculados diretamente ou via seus supervisores\n  - Usuários com perfil 'user' que são supervisores veem apenas os membros vinculados a eles\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n* **Filtros**:\n  - `supervisorId`: Filtra membros por supervisor específico (opcional)\n* **Retorno**:\n  - Lista de membros com dados do usuário (nome, email, avatar)\n  - Informações de quem nomeou cada membro\n  - Data de nomeação\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "query",
+            "name": "supervisorId",
+            "required": false,
+            "description": "Filtrar membros por supervisor específico. Se não informado, retorna todos os membros visíveis. Campo opcional."
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de membros retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Identificador único da posição no formato UUID v4. Campo obrigatório."
+                          },
+                          "userId": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
+                          },
+                          "position": {
+                            "type": "string",
+                            "enum": [
+                              "member"
+                            ],
+                            "description": "Tipo da posição. Sempre será \"member\". Campo obrigatório."
+                          },
+                          "userName": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Nome do usuário membro. Pode ser nulo se não definido. Campo obrigatório."
+                          },
+                          "userEmail": {
+                            "type": "string",
+                            "format": "email",
+                            "description": "Email do usuário membro. Campo obrigatório."
+                          },
+                          "userAvatar": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "URL do avatar do usuário membro. Pode ser nulo se não definido. Campo obrigatório."
+                          },
+                          "assignedBy": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "ID do usuário que fez a nomeação no formato UUID v4. Campo obrigatório."
+                          },
+                          "assignedByName": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Nome do usuário que fez a nomeação. Pode ser nulo se não definido. Campo obrigatório."
+                          },
+                          "assignedByEmail": {
+                            "type": "string",
+                            "format": "email",
+                            "description": "Email do usuário que fez a nomeação. Campo obrigatório."
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "description": "Data e hora da nomeação no formato ISO 8601. Campo obrigatório."
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "description": "Data e hora da última atualização no formato ISO 8601. Campo obrigatório."
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "userId",
+                          "position",
+                          "userName",
+                          "userEmail",
+                          "userAvatar",
+                          "assignedBy",
+                          "assignedByName",
+                          "assignedByEmail",
+                          "createdAt",
+                          "updatedAt"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Lista de membros da equipe de atendimento."
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Número total de membros. Campo obrigatório."
+                    }
+                  },
+                  "required": [
+                    "members",
+                    "totalCount"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Lista de membros retornada com sucesso"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Caminho para o campo com erro."
+                          },
+                          "message": {
+                            "type": "string",
+                            "description": "Mensagem de validação para o campo."
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Detalhes adicionais sobre os erros de validação."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "servers": [

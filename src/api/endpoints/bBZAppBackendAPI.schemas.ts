@@ -8,6 +8,848 @@
 /**
  * Código de status HTTP 500.
  */
+export type ListMembers500StatusCode =
+  (typeof ListMembers500StatusCode)[keyof typeof ListMembers500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListMembers500Name =
+  (typeof ListMembers500Name)[keyof typeof ListMembers500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type ListMembers500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListMembers500Name
+  /** Código de status HTTP 500. */
+  status_code: ListMembers500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type ListMembers422StatusCode =
+  (typeof ListMembers422StatusCode)[keyof typeof ListMembers422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListMembers422Name =
+  (typeof ListMembers422Name)[keyof typeof ListMembers422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type ListMembers422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type ListMembers422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: ListMembers422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListMembers422Name
+  /** Código de status HTTP 422. */
+  status_code: ListMembers422StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type ListMembers403StatusCode =
+  (typeof ListMembers403StatusCode)[keyof typeof ListMembers403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListMembers403Name =
+  (typeof ListMembers403Name)[keyof typeof ListMembers403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type ListMembers403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListMembers403Name
+  /** Código de status HTTP 403. */
+  status_code: ListMembers403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type ListMembers401StatusCode =
+  (typeof ListMembers401StatusCode)[keyof typeof ListMembers401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListMembers401Name =
+  (typeof ListMembers401Name)[keyof typeof ListMembers401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type ListMembers401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListMembers401Name
+  /** Código de status HTTP 401. */
+  status_code: ListMembers401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type ListMembers400StatusCode =
+  (typeof ListMembers400StatusCode)[keyof typeof ListMembers400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListMembers400Name =
+  (typeof ListMembers400Name)[keyof typeof ListMembers400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type ListMembers400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListMembers400Name
+  /** Código de status HTTP 400. */
+  status_code: ListMembers400StatusCode
+}
+
+/**
+ * Tipo da posição. Sempre será "member". Campo obrigatório.
+ */
+export type ListMembers200MembersItemPosition =
+  (typeof ListMembers200MembersItemPosition)[keyof typeof ListMembers200MembersItemPosition]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListMembers200MembersItemPosition = {
+  member: 'member',
+} as const
+
+export type ListMembers200MembersItem = {
+  /** ID do usuário que fez a nomeação no formato UUID v4. Campo obrigatório. */
+  assignedBy: string
+  /** Email do usuário que fez a nomeação. Campo obrigatório. */
+  assignedByEmail: string
+  /**
+   * Nome do usuário que fez a nomeação. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  assignedByName: string | null
+  /** Data e hora da nomeação no formato ISO 8601. Campo obrigatório. */
+  createdAt: string
+  /** Identificador único da posição no formato UUID v4. Campo obrigatório. */
+  id: string
+  /** Tipo da posição. Sempre será "member". Campo obrigatório. */
+  position: ListMembers200MembersItemPosition
+  /** Data e hora da última atualização no formato ISO 8601. Campo obrigatório. */
+  updatedAt: string
+  /**
+   * URL do avatar do usuário membro. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  userAvatar: string | null
+  /** Email do usuário membro. Campo obrigatório. */
+  userEmail: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  userId: string
+  /**
+   * Nome do usuário membro. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  userName: string | null
+}
+
+/**
+ * Lista de membros retornada com sucesso
+ */
+export type ListMembers200 = {
+  /** Lista de membros da equipe de atendimento. */
+  members: ListMembers200MembersItem[]
+  /**
+   * Número total de membros. Campo obrigatório.
+   * @minimum 0
+   */
+  totalCount: number
+}
+
+export type ListMembersParams = {
+  /**
+   * Filtrar membros por supervisor específico. Se não informado, retorna todos os membros visíveis. Campo opcional.
+   */
+  supervisorId?: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type RemoveMember500StatusCode =
+  (typeof RemoveMember500StatusCode)[keyof typeof RemoveMember500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveMember500Name =
+  (typeof RemoveMember500Name)[keyof typeof RemoveMember500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type RemoveMember500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveMember500Name
+  /** Código de status HTTP 500. */
+  status_code: RemoveMember500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type RemoveMember422StatusCode =
+  (typeof RemoveMember422StatusCode)[keyof typeof RemoveMember422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveMember422Name =
+  (typeof RemoveMember422Name)[keyof typeof RemoveMember422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type RemoveMember422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type RemoveMember422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: RemoveMember422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveMember422Name
+  /** Código de status HTTP 422. */
+  status_code: RemoveMember422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type RemoveMember404StatusCode =
+  (typeof RemoveMember404StatusCode)[keyof typeof RemoveMember404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveMember404Name =
+  (typeof RemoveMember404Name)[keyof typeof RemoveMember404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type RemoveMember404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveMember404Name
+  /** Código de status HTTP 404. */
+  status_code: RemoveMember404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type RemoveMember403StatusCode =
+  (typeof RemoveMember403StatusCode)[keyof typeof RemoveMember403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveMember403Name =
+  (typeof RemoveMember403Name)[keyof typeof RemoveMember403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type RemoveMember403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveMember403Name
+  /** Código de status HTTP 403. */
+  status_code: RemoveMember403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type RemoveMember401StatusCode =
+  (typeof RemoveMember401StatusCode)[keyof typeof RemoveMember401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveMember401Name =
+  (typeof RemoveMember401Name)[keyof typeof RemoveMember401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type RemoveMember401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveMember401Name
+  /** Código de status HTTP 401. */
+  status_code: RemoveMember401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type RemoveMember400StatusCode =
+  (typeof RemoveMember400StatusCode)[keyof typeof RemoveMember400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type RemoveMember400Name =
+  (typeof RemoveMember400Name)[keyof typeof RemoveMember400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const RemoveMember400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type RemoveMember400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: RemoveMember400Name
+  /** Código de status HTTP 400. */
+  status_code: RemoveMember400StatusCode
+}
+
+/**
+ * Membro removido com sucesso
+ */
+export type RemoveMember200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  /** Identificador único do usuário que teve a posição de membro removida. Campo obrigatório. */
+  userId: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type SetMember500StatusCode =
+  (typeof SetMember500StatusCode)[keyof typeof SetMember500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetMember500Name =
+  (typeof SetMember500Name)[keyof typeof SetMember500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type SetMember500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetMember500Name
+  /** Código de status HTTP 500. */
+  status_code: SetMember500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type SetMember422StatusCode =
+  (typeof SetMember422StatusCode)[keyof typeof SetMember422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetMember422Name =
+  (typeof SetMember422Name)[keyof typeof SetMember422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+export type SetMember422DetailsItem = {
+  /** Mensagem de validação para o campo. */
+  message: string
+  /** Caminho para o campo com erro. */
+  path: string[]
+}
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type SetMember422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Detalhes adicionais sobre os erros de validação. */
+  details?: SetMember422DetailsItem[]
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetMember422Name
+  /** Código de status HTTP 422. */
+  status_code: SetMember422StatusCode
+}
+
+/**
+ * Código de status HTTP 409.
+ */
+export type SetMember409StatusCode =
+  (typeof SetMember409StatusCode)[keyof typeof SetMember409StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember409StatusCode = {
+  NUMBER_409: 409,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetMember409Name =
+  (typeof SetMember409Name)[keyof typeof SetMember409Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember409Name = {
+  ConflictError: 'ConflictError',
+} as const
+
+/**
+ * Schema to represent Conflict errors (HTTP 409)
+ */
+export type SetMember409 = {
+  /** Ação recomendada para resolver o conflito. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que houve um conflito. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetMember409Name
+  /** Código de status HTTP 409. */
+  status_code: SetMember409StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type SetMember404StatusCode =
+  (typeof SetMember404StatusCode)[keyof typeof SetMember404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetMember404Name =
+  (typeof SetMember404Name)[keyof typeof SetMember404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type SetMember404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetMember404Name
+  /** Código de status HTTP 404. */
+  status_code: SetMember404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type SetMember403StatusCode =
+  (typeof SetMember403StatusCode)[keyof typeof SetMember403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetMember403Name =
+  (typeof SetMember403Name)[keyof typeof SetMember403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type SetMember403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetMember403Name
+  /** Código de status HTTP 403. */
+  status_code: SetMember403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type SetMember401StatusCode =
+  (typeof SetMember401StatusCode)[keyof typeof SetMember401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetMember401Name =
+  (typeof SetMember401Name)[keyof typeof SetMember401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type SetMember401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetMember401Name
+  /** Código de status HTTP 401. */
+  status_code: SetMember401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type SetMember400StatusCode =
+  (typeof SetMember400StatusCode)[keyof typeof SetMember400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type SetMember400Name =
+  (typeof SetMember400Name)[keyof typeof SetMember400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type SetMember400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: SetMember400Name
+  /** Código de status HTTP 400. */
+  status_code: SetMember400StatusCode
+}
+
+/**
+ * Tipo da posição. Sempre será "member". Campo obrigatório.
+ */
+export type SetMember201MemberPosition =
+  (typeof SetMember201MemberPosition)[keyof typeof SetMember201MemberPosition]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const SetMember201MemberPosition = {
+  member: 'member',
+} as const
+
+export type SetMember201Member = {
+  /**
+   * Nome de quem fez a nomeação. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  assignedByName: string | null
+  /** Data e hora da nomeação no formato ISO 8601. Campo obrigatório. */
+  createdAt: string
+  /** Identificador único da posição no formato UUID v4. Campo obrigatório. */
+  id: string
+  /**
+   * Nome do gerente da equipe. Pode ser nulo se não aplicável. Campo obrigatório.
+   * @nullable
+   */
+  managerName: string | null
+  /** Tipo da posição. Sempre será "member". Campo obrigatório. */
+  position: SetMember201MemberPosition
+  /**
+   * Nome do supervisor/manager imediato. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  supervisorName: string | null
+  /** Email do usuário nomeado membro. Campo obrigatório. */
+  userEmail: string
+  /** Identificador único do usuário nomeado no formato UUID v4. Campo obrigatório. */
+  userId: string
+  /**
+   * Nome do usuário nomeado membro. Pode ser nulo se não definido. Campo obrigatório.
+   * @nullable
+   */
+  userName: string | null
+}
+
+/**
+ * Membro nomeado com sucesso
+ */
+export type SetMember201 = {
+  member: SetMember201Member
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+}
+
+export type SetMemberBody = {
+  /**
+   * Email do usuário que será nomeado membro. Deve ser um email válido de um usuário cadastrado no sistema. Campo obrigatório.
+   * @minLength 3
+   * @maxLength 254
+   */
+  email: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type ListSupervisors500StatusCode =
   (typeof ListSupervisors500StatusCode)[keyof typeof ListSupervisors500StatusCode]
 
@@ -1794,6 +2636,54 @@ export type ReservationGetDetail400 = {
 }
 
 /**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ReservationGetDetail200Reservation = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ReservationGetDetail200ReservationCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ReservationGetDetail200ReservationSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ReservationGetDetail200ReservationStatus
+  /** Informações do usuário que fez a reserva */
+  user: ReservationGetDetail200ReservationUser
+}
+
+/**
  * Detalhes da reserva recuperados com sucesso.
  */
 export type ReservationGetDetail200 = {
@@ -1877,54 +2767,6 @@ export type ReservationGetDetail200ReservationCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ReservationGetDetail200Reservation = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ReservationGetDetail200ReservationCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ReservationGetDetail200ReservationSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ReservationGetDetail200ReservationStatus
-  /** Informações do usuário que fez a reserva */
-  user: ReservationGetDetail200ReservationUser
-}
 
 /**
  * Código de status HTTP 500.
@@ -2611,6 +3453,20 @@ export type ListSpaceReservations400 = {
 }
 
 /**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
+
+/**
  * Informações do usuário que fez a reserva
  */
 export type ListSpaceReservations200ReservationsItemUser = {
@@ -2634,70 +3490,6 @@ export const ListSpaceReservations200ReservationsItemStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ListSpaceReservations200ReservationsItem = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /** Registros de check-in/check-out relacionados à reserva */
-  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ListSpaceReservations200ReservationsItemSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ListSpaceReservations200ReservationsItemStatus
-  /** Informações do usuário que fez a reserva */
-  user: ListSpaceReservations200ReservationsItemUser
-}
-
-/**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
 
 /**
  * Tipo do espaço
@@ -2777,6 +3569,56 @@ export type ListSpaceReservations200ReservationsItemCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
+
+/**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ListSpaceReservations200ReservationsItem = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /** Registros de check-in/check-out relacionados à reserva */
+  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ListSpaceReservations200ReservationsItemSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ListSpaceReservations200ReservationsItemStatus
+  /** Informações do usuário que fez a reserva */
+  user: ListSpaceReservations200ReservationsItemUser
+}
 
 export type ListSpaceReservationsIncludeUserAsGuest =
   (typeof ListSpaceReservationsIncludeUserAsGuest)[keyof typeof ListSpaceReservationsIncludeUserAsGuest]
@@ -5710,6 +6552,15 @@ export type UpdateSpace400 = {
   status_code: UpdateSpace400StatusCode
 }
 
+export type UpdateSpace200SpaceType =
+  (typeof UpdateSpace200SpaceType)[keyof typeof UpdateSpace200SpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSpace200SpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
 export type UpdateSpace200Space = {
   capacidade: number
   createdAt: string
@@ -5740,15 +6591,6 @@ export type UpdateSpace200 = {
   message: string
   space: UpdateSpace200Space
 }
-
-export type UpdateSpace200SpaceType =
-  (typeof UpdateSpace200SpaceType)[keyof typeof UpdateSpace200SpaceType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateSpace200SpaceType = {
-  room: 'room',
-  workstation: 'workstation',
-} as const
 
 /**
  * Tipo do espaço: sala (room) ou estação de trabalho (workstation)
@@ -9005,15 +9847,6 @@ export type UserMe400 = {
 }
 
 /**
- * Dados do usuário recuperados com sucesso
- */
-export type UserMe200 = {
-  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
-  message: string
-  user: UserMe200User
-}
-
-/**
  * Posição do usuário na equipe de atendimento. Pode ser manager, supervisor, member ou null se não faz parte da equipe. Campo obrigatório.
  * @nullable
  */
@@ -9066,6 +9899,15 @@ export type UserMe200User = {
    * @nullable
    */
   teamPosition: UserMe200UserTeamPosition
+}
+
+/**
+ * Dados do usuário recuperados com sucesso
+ */
+export type UserMe200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  user: UserMe200User
 }
 
 /**

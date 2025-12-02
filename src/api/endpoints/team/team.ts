@@ -16,6 +16,13 @@ import type {
   ListManagers401,
   ListManagers403,
   ListManagers500,
+  ListMembers200,
+  ListMembers400,
+  ListMembers401,
+  ListMembers403,
+  ListMembers422,
+  ListMembers500,
+  ListMembersParams,
   ListSupervisors200,
   ListSupervisors400,
   ListSupervisors401,
@@ -28,6 +35,13 @@ import type {
   RemoveManager404,
   RemoveManager422,
   RemoveManager500,
+  RemoveMember200,
+  RemoveMember400,
+  RemoveMember401,
+  RemoveMember403,
+  RemoveMember404,
+  RemoveMember422,
+  RemoveMember500,
   RemoveSupervisor200,
   RemoveSupervisor400,
   RemoveSupervisor401,
@@ -44,6 +58,15 @@ import type {
   SetManager422,
   SetManager500,
   SetManagerBody,
+  SetMember201,
+  SetMember400,
+  SetMember401,
+  SetMember403,
+  SetMember404,
+  SetMember409,
+  SetMember422,
+  SetMember500,
+  SetMemberBody,
   SetSupervisor201,
   SetSupervisor400,
   SetSupervisor401,
@@ -619,6 +642,316 @@ export const useListSupervisors = <
   const swrKey =
     swrOptions?.swrKey ?? (() => (isEnabled ? getListSupervisorsKey() : null))
   const swrFn = () => listSupervisors(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite que um supervisor/gerente (ou admin/dev) adicione um usuário como membro da equipe de atendimento.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**:
+  - Usuários com perfil 'admin' ou 'dev' podem adicionar membros diretamente
+  - Usuários com perfil 'user' só podem adicionar se possuírem posição de gerente (manager) ou supervisor
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+* **Regras de negócio**:
+  1. O usuário deve existir no sistema (busca por email)
+  2. O usuário deve ter conta ativa
+  3. O usuário não pode ter perfil 'dev'
+  4. O usuário não pode já possuir uma posição na equipe
+  5. Cria-se automaticamente o vínculo hierárquico entre o membro e quem o nomeou
+  6. Um email é enviado ao novo membro informando sua equipe (supervisor e gerente)
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Adicionar um membro à equipe de atendimento
+ */
+export type setMemberResponse = {
+  data: SetMember201
+  status: number
+  headers: Headers
+}
+
+export const getSetMemberUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/member`
+}
+
+export const setMember = async (
+  setMemberBody: SetMemberBody,
+  options?: RequestInit,
+): Promise<setMemberResponse> => {
+  return customFetch<Promise<setMemberResponse>>(getSetMemberUrl(), {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(setMemberBody),
+  })
+}
+
+export const getSetMemberMutationFetcher = (
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: SetMemberBody },
+  ): Promise<setMemberResponse> => {
+    return setMember(arg, options)
+  }
+}
+export const getSetMemberMutationKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/member`] as const
+
+export type SetMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof setMember>>
+>
+export type SetMemberMutationError =
+  | SetMember400
+  | SetMember401
+  | SetMember403
+  | SetMember404
+  | SetMember409
+  | SetMember422
+  | SetMember500
+
+/**
+ * @summary Adicionar um membro à equipe de atendimento
+ */
+export const useSetMember = <
+  TError =
+    | SetMember400
+    | SetMember401
+    | SetMember403
+    | SetMember404
+    | SetMember409
+    | SetMember422
+    | SetMember500,
+>(options?: {
+  swr?: SWRMutationConfiguration<
+    Awaited<ReturnType<typeof setMember>>,
+    TError,
+    Key,
+    SetMemberBody,
+    Awaited<ReturnType<typeof setMember>>
+  > & { swrKey?: string }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getSetMemberMutationKey()
+  const swrFn = getSetMemberMutationFetcher(requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite que um supervisor/gerente (ou admin/dev) remova a posição de membro de um usuário.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**:
+  - Usuários com perfil 'admin' ou 'dev' podem remover qualquer membro
+  - Usuários com perfil 'user' só podem remover se possuírem posição de gerente (manager) ou supervisor
+  - Supervisores só podem remover membros vinculados a eles
+  - Gerentes podem remover membros vinculados diretamente ou via seus supervisores
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+* **Regras de negócio**:
+  1. O usuário deve possuir uma posição de membro na equipe
+  2. Ao remover, o usuário volta a ser um usuário comum (sem posição)
+  3. Os vínculos hierárquicos são removidos automaticamente
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Remover um membro da equipe de atendimento
+ */
+export type removeMemberResponse = {
+  data: RemoveMember200
+  status: number
+  headers: Headers
+}
+
+export const getRemoveMemberUrl = (userId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/member/${userId}`
+}
+
+export const removeMember = async (
+  userId: string,
+  options?: RequestInit,
+): Promise<removeMemberResponse> => {
+  return customFetch<Promise<removeMemberResponse>>(
+    getRemoveMemberUrl(userId),
+    {
+      ...options,
+      method: 'DELETE',
+    },
+  )
+}
+
+export const getRemoveMemberMutationFetcher = (
+  userId: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (_: Key, __: { arg: Arguments }): Promise<removeMemberResponse> => {
+    return removeMember(userId, options)
+  }
+}
+export const getRemoveMemberMutationKey = (userId: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/member/${userId}`,
+  ] as const
+
+export type RemoveMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof removeMember>>
+>
+export type RemoveMemberMutationError =
+  | RemoveMember400
+  | RemoveMember401
+  | RemoveMember403
+  | RemoveMember404
+  | RemoveMember422
+  | RemoveMember500
+
+/**
+ * @summary Remover um membro da equipe de atendimento
+ */
+export const useRemoveMember = <
+  TError =
+    | RemoveMember400
+    | RemoveMember401
+    | RemoveMember403
+    | RemoveMember404
+    | RemoveMember422
+    | RemoveMember500,
+>(
+  userId: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof removeMember>>,
+      TError,
+      Key,
+      Arguments,
+      Awaited<ReturnType<typeof removeMember>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getRemoveMemberMutationKey(userId)
+  const swrFn = getRemoveMemberMutationFetcher(userId, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint retorna a lista de membros da equipe de atendimento.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**:
+  - Usuários com perfil 'admin' ou 'dev' veem TODOS os membros do sistema
+  - Usuários com perfil 'user' que são gerentes (manager) veem membros vinculados diretamente ou via seus supervisores
+  - Usuários com perfil 'user' que são supervisores veem apenas os membros vinculados a eles
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+* **Filtros**:
+  - `supervisorId`: Filtra membros por supervisor específico (opcional)
+* **Retorno**:
+  - Lista de membros com dados do usuário (nome, email, avatar)
+  - Informações de quem nomeou cada membro
+  - Data de nomeação
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Listar membros da equipe de atendimento
+ */
+export type listMembersResponse = {
+  data: ListMembers200
+  status: number
+  headers: Headers
+}
+
+export const getListMembersUrl = (params?: ListMembersParams) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  return normalizedParams.size
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/members?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/members`
+}
+
+export const listMembers = async (
+  params?: ListMembersParams,
+  options?: RequestInit,
+): Promise<listMembersResponse> => {
+  return customFetch<Promise<listMembersResponse>>(getListMembersUrl(params), {
+    ...options,
+    method: 'GET',
+  })
+}
+
+export const getListMembersKey = (params?: ListMembersParams) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/members`,
+    ...(params ? [params] : []),
+  ] as const
+
+export type ListMembersQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listMembers>>
+>
+export type ListMembersQueryError =
+  | ListMembers400
+  | ListMembers401
+  | ListMembers403
+  | ListMembers422
+  | ListMembers500
+
+/**
+ * @summary Listar membros da equipe de atendimento
+ */
+export const useListMembers = <
+  TError =
+    | ListMembers400
+    | ListMembers401
+    | ListMembers403
+    | ListMembers422
+    | ListMembers500,
+>(
+  params?: ListMembersParams,
+  options?: {
+    swr?: SWRConfiguration<Awaited<ReturnType<typeof listMembers>>, TError> & {
+      swrKey?: Key
+      enabled?: boolean
+    }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ?? (() => (isEnabled ? getListMembersKey(params) : null))
+  const swrFn = () => listMembers(params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
