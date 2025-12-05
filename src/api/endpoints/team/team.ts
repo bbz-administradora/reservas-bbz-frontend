@@ -11,267 +11,180 @@ import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
-  ListManagers200,
-  ListManagers400,
-  ListManagers401,
-  ListManagers403,
-  ListManagers500,
-  ListMembers200,
-  ListMembers400,
-  ListMembers401,
-  ListMembers403,
-  ListMembers422,
-  ListMembers500,
-  ListMembersParams,
-  ListSupervisors200,
-  ListSupervisors400,
-  ListSupervisors401,
-  ListSupervisors403,
-  ListSupervisors500,
-  RemoveManager200,
-  RemoveManager400,
-  RemoveManager401,
-  RemoveManager403,
-  RemoveManager404,
-  RemoveManager422,
-  RemoveManager500,
-  RemoveMember200,
-  RemoveMember400,
-  RemoveMember401,
-  RemoveMember403,
-  RemoveMember404,
-  RemoveMember422,
-  RemoveMember500,
-  RemoveSupervisor200,
-  RemoveSupervisor400,
-  RemoveSupervisor401,
-  RemoveSupervisor403,
-  RemoveSupervisor404,
-  RemoveSupervisor422,
-  RemoveSupervisor500,
-  SetManager201,
-  SetManager400,
-  SetManager401,
-  SetManager403,
-  SetManager404,
-  SetManager409,
-  SetManager422,
-  SetManager500,
-  SetManagerBody,
-  SetMember201,
-  SetMember400,
-  SetMember401,
-  SetMember403,
-  SetMember404,
-  SetMember409,
-  SetMember422,
-  SetMember500,
-  SetMemberBody,
-  SetSupervisor201,
-  SetSupervisor400,
-  SetSupervisor401,
-  SetSupervisor403,
-  SetSupervisor404,
-  SetSupervisor409,
-  SetSupervisor422,
-  SetSupervisor500,
-  SetSupervisorBody,
+  CreatePosition201,
+  CreatePosition400,
+  CreatePosition401,
+  CreatePosition403,
+  CreatePosition404,
+  CreatePosition409,
+  CreatePosition422,
+  CreatePosition500,
+  CreatePositionBody,
+  GetPosition200,
+  GetPosition400,
+  GetPosition401,
+  GetPosition403,
+  GetPosition422,
+  GetPosition500,
+  ListPositions200,
+  ListPositions400,
+  ListPositions401,
+  ListPositions403,
+  ListPositions422,
+  ListPositions500,
+  RemovePosition200,
+  RemovePosition400,
+  RemovePosition401,
+  RemovePosition403,
+  RemovePosition404,
+  RemovePosition422,
+  RemovePosition500,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
 
 /**
- * Este endpoint permite que um administrador nomeie um usuário como gerente da equipe de atendimento.
+ * Este endpoint permite nomear um usuário para uma posição na equipe de atendimento.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
+* **Autorização**: Baseada na hierarquia da equipe:
+  - Admin/Dev → pode nomear Director
+  - Director → pode nomear Supervisor
+  - Supervisor → pode nomear Manager
+  - Manager → pode nomear Assistant Manager e Assistant
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
-* **Regras de negócio**:
-  1. O usuário deve existir no sistema (busca por email)
-  2. O usuário deve ter conta ativa
-  3. O usuário não pode ter perfil 'dev'
-  4. O usuário não pode já possuir uma posição na equipe
-  5. Múltiplos gerentes são permitidos no sistema
+
+**Posições disponíveis**:
+- `director`: Diretor (nível 1) - Apenas 1
+- `supervisor`: Supervisor (nível 2) - Máximo 7
+- `manager`: Gerente (nível 3) - Máximo 56
+- `assistant_manager`: Subgerente (nível 4) - Máximo 20
+- `assistant`: Assistente (nível 5) - Máximo 54
+
+**Regras de negócio**:
+1. Verificação de permissão baseada na hierarquia
+2. O usuário deve existir no sistema (busca por email)
+3. O usuário deve ter conta ativa
+4. O usuário não pode ter perfil 'dev'
+5. O usuário não pode já possuir uma posição na equipe
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
-- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Nomear um gerente para a equipe de atendimento
+ * @summary Nomear um membro para uma posição na equipe de atendimento
  */
-export type setManagerResponse = {
-  data: SetManager201
+export type createPositionResponse = {
+  data: CreatePosition201
   status: number
   headers: Headers
 }
 
-export const getSetManagerUrl = () => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/manager`
-}
-
-export const setManager = async (
-  setManagerBody: SetManagerBody,
-  options?: RequestInit,
-): Promise<setManagerResponse> => {
-  return customFetch<Promise<setManagerResponse>>(getSetManagerUrl(), {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(setManagerBody),
-  })
-}
-
-export const getSetManagerMutationFetcher = (
-  options?: SecondParameter<typeof customFetch>,
+export const getCreatePositionUrl = (
+  position:
+    | 'director'
+    | 'supervisor'
+    | 'manager'
+    | 'assistant_manager'
+    | 'assistant',
 ) => {
-  return (
-    _: Key,
-    { arg }: { arg: SetManagerBody },
-  ): Promise<setManagerResponse> => {
-    return setManager(arg, options)
-  }
-}
-export const getSetManagerMutationKey = () =>
-  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/manager`] as const
-
-export type SetManagerMutationResult = NonNullable<
-  Awaited<ReturnType<typeof setManager>>
->
-export type SetManagerMutationError =
-  | SetManager400
-  | SetManager401
-  | SetManager403
-  | SetManager404
-  | SetManager409
-  | SetManager422
-  | SetManager500
-
-/**
- * @summary Nomear um gerente para a equipe de atendimento
- */
-export const useSetManager = <
-  TError =
-    | SetManager400
-    | SetManager401
-    | SetManager403
-    | SetManager404
-    | SetManager409
-    | SetManager422
-    | SetManager500,
->(options?: {
-  swr?: SWRMutationConfiguration<
-    Awaited<ReturnType<typeof setManager>>,
-    TError,
-    Key,
-    SetManagerBody,
-    Awaited<ReturnType<typeof setManager>>
-  > & { swrKey?: string }
-  request?: SecondParameter<typeof customFetch>
-}) => {
-  const { swr: swrOptions, request: requestOptions } = options ?? {}
-
-  const swrKey = swrOptions?.swrKey ?? getSetManagerMutationKey()
-  const swrFn = getSetManagerMutationFetcher(requestOptions)
-
-  const query = useSWRMutation(swrKey, swrFn, swrOptions)
-
-  return {
-    swrKey,
-    ...query,
-  }
-}
-/**
- * Este endpoint permite que um administrador remova a posição de gerente de um usuário.
-
-* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
-* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
-* **Regras de negócio**:
-  1. O usuário deve possuir uma posição de gerente na equipe
-  2. Ao remover, o usuário volta a ser um usuário comum (sem posição)
-  3. Não é mantido histórico da remoção
-
-**Middlewares aplicados**:
-- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
-- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
-- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Remover um gerente da equipe de atendimento
- */
-export type removeManagerResponse = {
-  data: RemoveManager200
-  status: number
-  headers: Headers
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/${position}`
 }
 
-export const getRemoveManagerUrl = (userId: string) => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/manager/${userId}`
-}
-
-export const removeManager = async (
-  userId: string,
+export const createPosition = async (
+  position:
+    | 'director'
+    | 'supervisor'
+    | 'manager'
+    | 'assistant_manager'
+    | 'assistant',
+  createPositionBody: CreatePositionBody,
   options?: RequestInit,
-): Promise<removeManagerResponse> => {
-  return customFetch<Promise<removeManagerResponse>>(
-    getRemoveManagerUrl(userId),
+): Promise<createPositionResponse> => {
+  return customFetch<Promise<createPositionResponse>>(
+    getCreatePositionUrl(position),
     {
       ...options,
-      method: 'DELETE',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(createPositionBody),
     },
   )
 }
 
-export const getRemoveManagerMutationFetcher = (
-  userId: string,
+export const getCreatePositionMutationFetcher = (
+  position:
+    | 'director'
+    | 'supervisor'
+    | 'manager'
+    | 'assistant_manager'
+    | 'assistant',
   options?: SecondParameter<typeof customFetch>,
 ) => {
-  return (_: Key, __: { arg: Arguments }): Promise<removeManagerResponse> => {
-    return removeManager(userId, options)
+  return (
+    _: Key,
+    { arg }: { arg: CreatePositionBody },
+  ): Promise<createPositionResponse> => {
+    return createPosition(position, arg, options)
   }
 }
-export const getRemoveManagerMutationKey = (userId: string) =>
+export const getCreatePositionMutationKey = (
+  position:
+    | 'director'
+    | 'supervisor'
+    | 'manager'
+    | 'assistant_manager'
+    | 'assistant',
+) =>
   [
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/manager/${userId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/${position}`,
   ] as const
 
-export type RemoveManagerMutationResult = NonNullable<
-  Awaited<ReturnType<typeof removeManager>>
+export type CreatePositionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createPosition>>
 >
-export type RemoveManagerMutationError =
-  | RemoveManager400
-  | RemoveManager401
-  | RemoveManager403
-  | RemoveManager404
-  | RemoveManager422
-  | RemoveManager500
+export type CreatePositionMutationError =
+  | CreatePosition400
+  | CreatePosition401
+  | CreatePosition403
+  | CreatePosition404
+  | CreatePosition409
+  | CreatePosition422
+  | CreatePosition500
 
 /**
- * @summary Remover um gerente da equipe de atendimento
+ * @summary Nomear um membro para uma posição na equipe de atendimento
  */
-export const useRemoveManager = <
+export const useCreatePosition = <
   TError =
-    | RemoveManager400
-    | RemoveManager401
-    | RemoveManager403
-    | RemoveManager404
-    | RemoveManager422
-    | RemoveManager500,
+    | CreatePosition400
+    | CreatePosition401
+    | CreatePosition403
+    | CreatePosition404
+    | CreatePosition409
+    | CreatePosition422
+    | CreatePosition500,
 >(
-  userId: string,
+  position:
+    | 'director'
+    | 'supervisor'
+    | 'manager'
+    | 'assistant_manager'
+    | 'assistant',
   options?: {
     swr?: SWRMutationConfiguration<
-      Awaited<ReturnType<typeof removeManager>>,
+      Awaited<ReturnType<typeof createPosition>>,
       TError,
       Key,
-      Arguments,
-      Awaited<ReturnType<typeof removeManager>>
+      CreatePositionBody,
+      Awaited<ReturnType<typeof createPosition>>
     > & { swrKey?: string }
     request?: SecondParameter<typeof customFetch>
   },
 ) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const swrKey = swrOptions?.swrKey ?? getRemoveManagerMutationKey(userId)
-  const swrFn = getRemoveManagerMutationFetcher(userId, requestOptions)
+  const swrKey = swrOptions?.swrKey ?? getCreatePositionMutationKey(position)
+  const swrFn = getCreatePositionMutationFetcher(position, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
@@ -281,326 +194,62 @@ export const useRemoveManager = <
   }
 }
 /**
- * Este endpoint retorna a lista de todos os gerentes nomeados na equipe de atendimento.
+ * Este endpoint retorna a lista de todos os membros de uma posição específica na equipe de atendimento.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.
+* **Autorização**: Baseada na hierarquia da equipe:
+  - Admin/Dev → pode listar todas as posições
+  - Director → pode listar todas as posições
+  - Supervisor → pode listar Manager, Assistant Manager e Assistant
+  - Manager → pode listar Assistant Manager e Assistant
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
-* **Retorno**:
-  - Lista de gerentes com dados do usuário (nome, email, avatar)
-  - Informações de quem nomeou cada gerente
-  - Data de nomeação
 
-**Middlewares aplicados**:
-- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
-- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'
-- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Listar todos os gerentes da equipe de atendimento
- */
-export type listManagersResponse = {
-  data: ListManagers200
-  status: number
-  headers: Headers
-}
+**Posições disponíveis**:
+- `director`: Diretores
+- `supervisor`: Supervisores
+- `manager`: Gerentes
+- `assistant_manager`: Subgerentes
+- `assistant`: Assistentes
 
-export const getListManagersUrl = () => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/managers`
-}
-
-export const listManagers = async (
-  options?: RequestInit,
-): Promise<listManagersResponse> => {
-  return customFetch<Promise<listManagersResponse>>(getListManagersUrl(), {
-    ...options,
-    method: 'GET',
-  })
-}
-
-export const getListManagersKey = () =>
-  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/managers`] as const
-
-export type ListManagersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof listManagers>>
->
-export type ListManagersQueryError =
-  | ListManagers400
-  | ListManagers401
-  | ListManagers403
-  | ListManagers500
-
-/**
- * @summary Listar todos os gerentes da equipe de atendimento
- */
-export const useListManagers = <
-  TError =
-    | ListManagers400
-    | ListManagers401
-    | ListManagers403
-    | ListManagers500,
->(options?: {
-  swr?: SWRConfiguration<Awaited<ReturnType<typeof listManagers>>, TError> & {
-    swrKey?: Key
-    enabled?: boolean
-  }
-  request?: SecondParameter<typeof customFetch>
-}) => {
-  const { swr: swrOptions, request: requestOptions } = options ?? {}
-
-  const isEnabled = swrOptions?.enabled !== false
-  const swrKey =
-    swrOptions?.swrKey ?? (() => (isEnabled ? getListManagersKey() : null))
-  const swrFn = () => listManagers(requestOptions)
-
-  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
-    swrKey,
-    swrFn,
-    swrOptions,
-  )
-
-  return {
-    swrKey,
-    ...query,
-  }
-}
-/**
- * Este endpoint permite que um gerente (ou admin/dev) nomeie um usuário como supervisor da equipe de atendimento.
-
-* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**:
-  - Usuários com perfil 'admin' ou 'dev' podem nomear supervisores diretamente
-  - Usuários com perfil 'user' só podem nomear se possuírem posição de gerente (manager)
-* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
-* **Regras de negócio**:
-  1. O usuário deve existir no sistema (busca por email)
-  2. O usuário deve ter conta ativa
-  3. O usuário não pode ter perfil 'dev'
-  4. O usuário não pode já possuir uma posição na equipe
-  5. Se nomeado por um gerente, cria-se automaticamente o vínculo hierárquico
+**Retorno**:
+- Lista de membros com dados do usuário (nome, email, avatar)
+- Informações de quem nomeou cada membro
+- Data de nomeação
+- Nível hierárquico
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Nomear um supervisor para a equipe de atendimento
+ * @summary Listar todos os membros de uma posição na equipe
  */
-export type setSupervisorResponse = {
-  data: SetSupervisor201
+export type listPositionsResponse = {
+  data: ListPositions200
   status: number
   headers: Headers
 }
 
-export const getSetSupervisorUrl = () => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisor`
-}
-
-export const setSupervisor = async (
-  setSupervisorBody: SetSupervisorBody,
-  options?: RequestInit,
-): Promise<setSupervisorResponse> => {
-  return customFetch<Promise<setSupervisorResponse>>(getSetSupervisorUrl(), {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(setSupervisorBody),
-  })
-}
-
-export const getSetSupervisorMutationFetcher = (
-  options?: SecondParameter<typeof customFetch>,
+export const getListPositionsUrl = (
+  position:
+    | 'director'
+    | 'supervisor'
+    | 'manager'
+    | 'assistant_manager'
+    | 'assistant',
 ) => {
-  return (
-    _: Key,
-    { arg }: { arg: SetSupervisorBody },
-  ): Promise<setSupervisorResponse> => {
-    return setSupervisor(arg, options)
-  }
-}
-export const getSetSupervisorMutationKey = () =>
-  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisor`] as const
-
-export type SetSupervisorMutationResult = NonNullable<
-  Awaited<ReturnType<typeof setSupervisor>>
->
-export type SetSupervisorMutationError =
-  | SetSupervisor400
-  | SetSupervisor401
-  | SetSupervisor403
-  | SetSupervisor404
-  | SetSupervisor409
-  | SetSupervisor422
-  | SetSupervisor500
-
-/**
- * @summary Nomear um supervisor para a equipe de atendimento
- */
-export const useSetSupervisor = <
-  TError =
-    | SetSupervisor400
-    | SetSupervisor401
-    | SetSupervisor403
-    | SetSupervisor404
-    | SetSupervisor409
-    | SetSupervisor422
-    | SetSupervisor500,
->(options?: {
-  swr?: SWRMutationConfiguration<
-    Awaited<ReturnType<typeof setSupervisor>>,
-    TError,
-    Key,
-    SetSupervisorBody,
-    Awaited<ReturnType<typeof setSupervisor>>
-  > & { swrKey?: string }
-  request?: SecondParameter<typeof customFetch>
-}) => {
-  const { swr: swrOptions, request: requestOptions } = options ?? {}
-
-  const swrKey = swrOptions?.swrKey ?? getSetSupervisorMutationKey()
-  const swrFn = getSetSupervisorMutationFetcher(requestOptions)
-
-  const query = useSWRMutation(swrKey, swrFn, swrOptions)
-
-  return {
-    swrKey,
-    ...query,
-  }
-}
-/**
- * Este endpoint permite que um gerente (ou admin/dev) remova a posição de supervisor de um usuário.
-
-* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**:
-  - Usuários com perfil 'admin' ou 'dev' podem remover qualquer supervisor
-  - Usuários com perfil 'user' só podem remover se possuírem posição de gerente (manager)
-  - Gerentes só podem remover supervisores vinculados a eles
-* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
-* **Regras de negócio**:
-  1. O usuário deve possuir uma posição de supervisor na equipe
-  2. Ao remover, o usuário volta a ser um usuário comum (sem posição)
-  3. Os vínculos hierárquicos são removidos automaticamente
-
-**Middlewares aplicados**:
-- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
-- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Remover um supervisor da equipe de atendimento
- */
-export type removeSupervisorResponse = {
-  data: RemoveSupervisor200
-  status: number
-  headers: Headers
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/${position}`
 }
 
-export const getRemoveSupervisorUrl = (userId: string) => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisor/${userId}`
-}
-
-export const removeSupervisor = async (
-  userId: string,
+export const listPositions = async (
+  position:
+    | 'director'
+    | 'supervisor'
+    | 'manager'
+    | 'assistant_manager'
+    | 'assistant',
   options?: RequestInit,
-): Promise<removeSupervisorResponse> => {
-  return customFetch<Promise<removeSupervisorResponse>>(
-    getRemoveSupervisorUrl(userId),
-    {
-      ...options,
-      method: 'DELETE',
-    },
-  )
-}
-
-export const getRemoveSupervisorMutationFetcher = (
-  userId: string,
-  options?: SecondParameter<typeof customFetch>,
-) => {
-  return (
-    _: Key,
-    __: { arg: Arguments },
-  ): Promise<removeSupervisorResponse> => {
-    return removeSupervisor(userId, options)
-  }
-}
-export const getRemoveSupervisorMutationKey = (userId: string) =>
-  [
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisor/${userId}`,
-  ] as const
-
-export type RemoveSupervisorMutationResult = NonNullable<
-  Awaited<ReturnType<typeof removeSupervisor>>
->
-export type RemoveSupervisorMutationError =
-  | RemoveSupervisor400
-  | RemoveSupervisor401
-  | RemoveSupervisor403
-  | RemoveSupervisor404
-  | RemoveSupervisor422
-  | RemoveSupervisor500
-
-/**
- * @summary Remover um supervisor da equipe de atendimento
- */
-export const useRemoveSupervisor = <
-  TError =
-    | RemoveSupervisor400
-    | RemoveSupervisor401
-    | RemoveSupervisor403
-    | RemoveSupervisor404
-    | RemoveSupervisor422
-    | RemoveSupervisor500,
->(
-  userId: string,
-  options?: {
-    swr?: SWRMutationConfiguration<
-      Awaited<ReturnType<typeof removeSupervisor>>,
-      TError,
-      Key,
-      Arguments,
-      Awaited<ReturnType<typeof removeSupervisor>>
-    > & { swrKey?: string }
-    request?: SecondParameter<typeof customFetch>
-  },
-) => {
-  const { swr: swrOptions, request: requestOptions } = options ?? {}
-
-  const swrKey = swrOptions?.swrKey ?? getRemoveSupervisorMutationKey(userId)
-  const swrFn = getRemoveSupervisorMutationFetcher(userId, requestOptions)
-
-  const query = useSWRMutation(swrKey, swrFn, swrOptions)
-
-  return {
-    swrKey,
-    ...query,
-  }
-}
-/**
- * Este endpoint retorna a lista de supervisores da equipe de atendimento.
-
-* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**:
-  - Usuários com perfil 'admin' ou 'dev' veem TODOS os supervisores do sistema
-  - Usuários com perfil 'user' que são gerentes (manager) veem apenas os supervisores vinculados a eles
-* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
-* **Retorno**:
-  - Lista de supervisores com dados do usuário (nome, email, avatar)
-  - Informações de quem nomeou cada supervisor
-  - Data de nomeação
-
-**Middlewares aplicados**:
-- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
-- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Listar supervisores da equipe de atendimento
- */
-export type listSupervisorsResponse = {
-  data: ListSupervisors200
-  status: number
-  headers: Headers
-}
-
-export const getListSupervisorsUrl = () => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisors`
-}
-
-export const listSupervisors = async (
-  options?: RequestInit,
-): Promise<listSupervisorsResponse> => {
-  return customFetch<Promise<listSupervisorsResponse>>(
-    getListSupervisorsUrl(),
+): Promise<listPositionsResponse> => {
+  return customFetch<Promise<listPositionsResponse>>(
+    getListPositionsUrl(position),
     {
       ...options,
       method: 'GET',
@@ -608,40 +257,60 @@ export const listSupervisors = async (
   )
 }
 
-export const getListSupervisorsKey = () =>
-  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/supervisors`] as const
+export const getListPositionsKey = (
+  position:
+    | 'director'
+    | 'supervisor'
+    | 'manager'
+    | 'assistant_manager'
+    | 'assistant',
+) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/${position}`,
+  ] as const
 
-export type ListSupervisorsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof listSupervisors>>
+export type ListPositionsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listPositions>>
 >
-export type ListSupervisorsQueryError =
-  | ListSupervisors400
-  | ListSupervisors401
-  | ListSupervisors403
-  | ListSupervisors500
+export type ListPositionsQueryError =
+  | ListPositions400
+  | ListPositions401
+  | ListPositions403
+  | ListPositions422
+  | ListPositions500
 
 /**
- * @summary Listar supervisores da equipe de atendimento
+ * @summary Listar todos os membros de uma posição na equipe
  */
-export const useListSupervisors = <
+export const useListPositions = <
   TError =
-    | ListSupervisors400
-    | ListSupervisors401
-    | ListSupervisors403
-    | ListSupervisors500,
->(options?: {
-  swr?: SWRConfiguration<
-    Awaited<ReturnType<typeof listSupervisors>>,
-    TError
-  > & { swrKey?: Key; enabled?: boolean }
-  request?: SecondParameter<typeof customFetch>
-}) => {
+    | ListPositions400
+    | ListPositions401
+    | ListPositions403
+    | ListPositions422
+    | ListPositions500,
+>(
+  position:
+    | 'director'
+    | 'supervisor'
+    | 'manager'
+    | 'assistant_manager'
+    | 'assistant',
+  options?: {
+    swr?: SWRConfiguration<
+      Awaited<ReturnType<typeof listPositions>>,
+      TError
+    > & { swrKey?: Key; enabled?: boolean }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const isEnabled = swrOptions?.enabled !== false
+  const isEnabled = swrOptions?.enabled !== false && !!position
   const swrKey =
-    swrOptions?.swrKey ?? (() => (isEnabled ? getListSupervisorsKey() : null))
-  const swrFn = () => listSupervisors(requestOptions)
+    swrOptions?.swrKey ??
+    (() => (isEnabled ? getListPositionsKey(position) : null))
+  const swrFn = () => listPositions(position, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
@@ -655,291 +324,73 @@ export const useListSupervisors = <
   }
 }
 /**
- * Este endpoint permite que um supervisor/gerente (ou admin/dev) adicione um usuário como membro da equipe de atendimento.
+ * Este endpoint retorna a posição de um usuário específico na equipe de atendimento.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**:
-  - Usuários com perfil 'admin' ou 'dev' podem adicionar membros diretamente
-  - Usuários com perfil 'user' só podem adicionar se possuírem posição de gerente (manager) ou supervisor
+* **Autorização**: Qualquer usuário autenticado pode consultar.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
-* **Regras de negócio**:
-  1. O usuário deve existir no sistema (busca por email)
-  2. O usuário deve ter conta ativa
-  3. O usuário não pode ter perfil 'dev'
-  4. O usuário não pode já possuir uma posição na equipe
-  5. Cria-se automaticamente o vínculo hierárquico entre o membro e quem o nomeou
-  6. Um email é enviado ao novo membro informando sua equipe (supervisor e gerente)
+
+**Retorno**:
+- Dados da posição do usuário (ou null se não tiver posição)
+- Tipo da posição
+- Nível hierárquico
+- Informações de quem nomeou
+- Data de nomeação
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
 - `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Adicionar um membro à equipe de atendimento
+ * @summary Buscar a posição de um usuário específico
  */
-export type setMemberResponse = {
-  data: SetMember201
+export type getPositionResponse = {
+  data: GetPosition200
   status: number
   headers: Headers
 }
 
-export const getSetMemberUrl = () => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/member`
+export const getGetPositionUrl = (userId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/user/${userId}`
 }
 
-export const setMember = async (
-  setMemberBody: SetMemberBody,
-  options?: RequestInit,
-): Promise<setMemberResponse> => {
-  return customFetch<Promise<setMemberResponse>>(getSetMemberUrl(), {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(setMemberBody),
-  })
-}
-
-export const getSetMemberMutationFetcher = (
-  options?: SecondParameter<typeof customFetch>,
-) => {
-  return (
-    _: Key,
-    { arg }: { arg: SetMemberBody },
-  ): Promise<setMemberResponse> => {
-    return setMember(arg, options)
-  }
-}
-export const getSetMemberMutationKey = () =>
-  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/member`] as const
-
-export type SetMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof setMember>>
->
-export type SetMemberMutationError =
-  | SetMember400
-  | SetMember401
-  | SetMember403
-  | SetMember404
-  | SetMember409
-  | SetMember422
-  | SetMember500
-
-/**
- * @summary Adicionar um membro à equipe de atendimento
- */
-export const useSetMember = <
-  TError =
-    | SetMember400
-    | SetMember401
-    | SetMember403
-    | SetMember404
-    | SetMember409
-    | SetMember422
-    | SetMember500,
->(options?: {
-  swr?: SWRMutationConfiguration<
-    Awaited<ReturnType<typeof setMember>>,
-    TError,
-    Key,
-    SetMemberBody,
-    Awaited<ReturnType<typeof setMember>>
-  > & { swrKey?: string }
-  request?: SecondParameter<typeof customFetch>
-}) => {
-  const { swr: swrOptions, request: requestOptions } = options ?? {}
-
-  const swrKey = swrOptions?.swrKey ?? getSetMemberMutationKey()
-  const swrFn = getSetMemberMutationFetcher(requestOptions)
-
-  const query = useSWRMutation(swrKey, swrFn, swrOptions)
-
-  return {
-    swrKey,
-    ...query,
-  }
-}
-/**
- * Este endpoint permite que um supervisor/gerente (ou admin/dev) remova a posição de membro de um usuário.
-
-* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**:
-  - Usuários com perfil 'admin' ou 'dev' podem remover qualquer membro
-  - Usuários com perfil 'user' só podem remover se possuírem posição de gerente (manager) ou supervisor
-  - Supervisores só podem remover membros vinculados a eles
-  - Gerentes podem remover membros vinculados diretamente ou via seus supervisores
-* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
-* **Regras de negócio**:
-  1. O usuário deve possuir uma posição de membro na equipe
-  2. Ao remover, o usuário volta a ser um usuário comum (sem posição)
-  3. Os vínculos hierárquicos são removidos automaticamente
-
-**Middlewares aplicados**:
-- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
-- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Remover um membro da equipe de atendimento
- */
-export type removeMemberResponse = {
-  data: RemoveMember200
-  status: number
-  headers: Headers
-}
-
-export const getRemoveMemberUrl = (userId: string) => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/member/${userId}`
-}
-
-export const removeMember = async (
+export const getPosition = async (
   userId: string,
   options?: RequestInit,
-): Promise<removeMemberResponse> => {
-  return customFetch<Promise<removeMemberResponse>>(
-    getRemoveMemberUrl(userId),
-    {
-      ...options,
-      method: 'DELETE',
-    },
-  )
-}
-
-export const getRemoveMemberMutationFetcher = (
-  userId: string,
-  options?: SecondParameter<typeof customFetch>,
-) => {
-  return (_: Key, __: { arg: Arguments }): Promise<removeMemberResponse> => {
-    return removeMember(userId, options)
-  }
-}
-export const getRemoveMemberMutationKey = (userId: string) =>
-  [
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/member/${userId}`,
-  ] as const
-
-export type RemoveMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof removeMember>>
->
-export type RemoveMemberMutationError =
-  | RemoveMember400
-  | RemoveMember401
-  | RemoveMember403
-  | RemoveMember404
-  | RemoveMember422
-  | RemoveMember500
-
-/**
- * @summary Remover um membro da equipe de atendimento
- */
-export const useRemoveMember = <
-  TError =
-    | RemoveMember400
-    | RemoveMember401
-    | RemoveMember403
-    | RemoveMember404
-    | RemoveMember422
-    | RemoveMember500,
->(
-  userId: string,
-  options?: {
-    swr?: SWRMutationConfiguration<
-      Awaited<ReturnType<typeof removeMember>>,
-      TError,
-      Key,
-      Arguments,
-      Awaited<ReturnType<typeof removeMember>>
-    > & { swrKey?: string }
-    request?: SecondParameter<typeof customFetch>
-  },
-) => {
-  const { swr: swrOptions, request: requestOptions } = options ?? {}
-
-  const swrKey = swrOptions?.swrKey ?? getRemoveMemberMutationKey(userId)
-  const swrFn = getRemoveMemberMutationFetcher(userId, requestOptions)
-
-  const query = useSWRMutation(swrKey, swrFn, swrOptions)
-
-  return {
-    swrKey,
-    ...query,
-  }
-}
-/**
- * Este endpoint retorna a lista de membros da equipe de atendimento.
-
-* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**:
-  - Usuários com perfil 'admin' ou 'dev' veem TODOS os membros do sistema
-  - Usuários com perfil 'user' que são gerentes (manager) veem membros vinculados diretamente ou via seus supervisores
-  - Usuários com perfil 'user' que são supervisores veem apenas os membros vinculados a eles
-* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
-* **Filtros**:
-  - `supervisorId`: Filtra membros por supervisor específico (opcional)
-* **Retorno**:
-  - Lista de membros com dados do usuário (nome, email, avatar)
-  - Informações de quem nomeou cada membro
-  - Data de nomeação
-
-**Middlewares aplicados**:
-- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
-- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Listar membros da equipe de atendimento
- */
-export type listMembersResponse = {
-  data: ListMembers200
-  status: number
-  headers: Headers
-}
-
-export const getListMembersUrl = (params?: ListMembersParams) => {
-  const normalizedParams = new URLSearchParams()
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
-    }
-  })
-
-  return normalizedParams.size
-    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/members?${normalizedParams.toString()}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/members`
-}
-
-export const listMembers = async (
-  params?: ListMembersParams,
-  options?: RequestInit,
-): Promise<listMembersResponse> => {
-  return customFetch<Promise<listMembersResponse>>(getListMembersUrl(params), {
+): Promise<getPositionResponse> => {
+  return customFetch<Promise<getPositionResponse>>(getGetPositionUrl(userId), {
     ...options,
     method: 'GET',
   })
 }
 
-export const getListMembersKey = (params?: ListMembersParams) =>
+export const getGetPositionKey = (userId: string) =>
   [
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/members`,
-    ...(params ? [params] : []),
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/user/${userId}`,
   ] as const
 
-export type ListMembersQueryResult = NonNullable<
-  Awaited<ReturnType<typeof listMembers>>
+export type GetPositionQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getPosition>>
 >
-export type ListMembersQueryError =
-  | ListMembers400
-  | ListMembers401
-  | ListMembers403
-  | ListMembers422
-  | ListMembers500
+export type GetPositionQueryError =
+  | GetPosition400
+  | GetPosition401
+  | GetPosition403
+  | GetPosition422
+  | GetPosition500
 
 /**
- * @summary Listar membros da equipe de atendimento
+ * @summary Buscar a posição de um usuário específico
  */
-export const useListMembers = <
+export const useGetPosition = <
   TError =
-    | ListMembers400
-    | ListMembers401
-    | ListMembers403
-    | ListMembers422
-    | ListMembers500,
+    | GetPosition400
+    | GetPosition401
+    | GetPosition403
+    | GetPosition422
+    | GetPosition500,
 >(
-  params?: ListMembersParams,
+  userId: string,
   options?: {
-    swr?: SWRConfiguration<Awaited<ReturnType<typeof listMembers>>, TError> & {
+    swr?: SWRConfiguration<Awaited<ReturnType<typeof getPosition>>, TError> & {
       swrKey?: Key
       enabled?: boolean
     }
@@ -948,16 +399,120 @@ export const useListMembers = <
 ) => {
   const { swr: swrOptions, request: requestOptions } = options ?? {}
 
-  const isEnabled = swrOptions?.enabled !== false
+  const isEnabled = swrOptions?.enabled !== false && !!userId
   const swrKey =
-    swrOptions?.swrKey ?? (() => (isEnabled ? getListMembersKey(params) : null))
-  const swrFn = () => listMembers(params, requestOptions)
+    swrOptions?.swrKey ?? (() => (isEnabled ? getGetPositionKey(userId) : null))
+  const swrFn = () => getPosition(userId, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
     swrFn,
     swrOptions,
   )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite remover a posição de um usuário na equipe de atendimento.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Baseada na hierarquia da equipe:
+  - Admin/Dev → pode remover qualquer posição
+  - Quem nomeou → pode remover quem nomeou
+  - Superiores → podem remover inferiores na hierarquia
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+**Regras de negócio**:
+1. Verificação de permissão baseada na hierarquia
+2. O usuário deve possuir uma posição na equipe
+3. Ao remover, o usuário volta a ser um usuário comum (sem posição)
+4. Não é mantido histórico da remoção
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Remover a posição de um membro da equipe
+ */
+export type removePositionResponse = {
+  data: RemovePosition200
+  status: number
+  headers: Headers
+}
+
+export const getRemovePositionUrl = (userId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/${userId}`
+}
+
+export const removePosition = async (
+  userId: string,
+  options?: RequestInit,
+): Promise<removePositionResponse> => {
+  return customFetch<Promise<removePositionResponse>>(
+    getRemovePositionUrl(userId),
+    {
+      ...options,
+      method: 'DELETE',
+    },
+  )
+}
+
+export const getRemovePositionMutationFetcher = (
+  userId: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (_: Key, __: { arg: Arguments }): Promise<removePositionResponse> => {
+    return removePosition(userId, options)
+  }
+}
+export const getRemovePositionMutationKey = (userId: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/${userId}`,
+  ] as const
+
+export type RemovePositionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof removePosition>>
+>
+export type RemovePositionMutationError =
+  | RemovePosition400
+  | RemovePosition401
+  | RemovePosition403
+  | RemovePosition404
+  | RemovePosition422
+  | RemovePosition500
+
+/**
+ * @summary Remover a posição de um membro da equipe
+ */
+export const useRemovePosition = <
+  TError =
+    | RemovePosition400
+    | RemovePosition401
+    | RemovePosition403
+    | RemovePosition404
+    | RemovePosition422
+    | RemovePosition500,
+>(
+  userId: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof removePosition>>,
+      TError,
+      Key,
+      Arguments,
+      Awaited<ReturnType<typeof removePosition>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getRemovePositionMutationKey(userId)
+  const swrFn = getRemovePositionMutationFetcher(userId, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
   return {
     swrKey,
