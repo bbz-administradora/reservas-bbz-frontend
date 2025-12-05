@@ -24,7 +24,7 @@ export default async function AdminUser() {
         </Text>
 
         <Button asChild>
-          <Link href="/admin/usuarios/gerentes-equipe">
+          <Link href="/equipe">
             <UsersIcon className="mr-2 h-4 w-4" />
             Gerentes de Equipe
           </Link>
