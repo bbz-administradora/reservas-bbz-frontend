@@ -1884,12 +1884,14 @@
                         "teamPosition": {
                           "type": "string",
                           "enum": [
-                            "manager",
+                            "director",
                             "supervisor",
-                            "member"
+                            "manager",
+                            "assistant_manager",
+                            "assistant"
                           ],
                           "nullable": true,
-                          "description": "Posição do usuário na equipe de atendimento. Pode ser manager, supervisor, member ou null se não faz parte da equipe. Campo obrigatório."
+                          "description": "Posição do usuário na equipe de atendimento. Pode ser director, supervisor, manager, assistant_manager, assistant ou null se não faz parte da equipe. Campo obrigatório."
                         }
                       },
                       "required": [
@@ -14312,6 +14314,348 @@
                   ],
                   "additionalProperties": false,
                   "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/private/team/organogram": {
+      "get": {
+        "operationId": "getOrganogram",
+        "summary": "Buscar o organograma completo da equipe",
+        "tags": [
+          "Team"
+        ],
+        "description": "Este endpoint retorna a árvore hierárquica completa da equipe de atendimento.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Qualquer usuário autenticado pode visualizar o organograma.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Estrutura da resposta**:\n- `tree`: Árvore hierárquica começando pelos diretores\n  - Cada nó possui `subordinates` com seus subordinados diretos\n- `stats`: Estatísticas com total e quantidade por posição\n\n**Hierarquia**:\n1. Director (nível 1) → nomeia Supervisors\n2. Supervisor (nível 2) → nomeia Managers\n3. Manager (nível 3) → nomeia Assistant Managers e Assistants\n4. Assistant Manager (nível 4) → nomeia Assistants\n5. Assistant (nível 5) → base da equipe\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resposta do endpoint de organograma da equipe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tree": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Identificador único da posição no formato UUID v4. Campo obrigatório."
+                          },
+                          "userId": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
+                          },
+                          "position": {
+                            "type": "string",
+                            "enum": [
+                              "director",
+                              "supervisor",
+                              "manager",
+                              "assistant_manager",
+                              "assistant"
+                            ],
+                            "description": "Tipo da posição na hierarquia. Valores: director, supervisor, manager, assistant_manager, assistant. Campo obrigatório."
+                          },
+                          "level": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 5,
+                            "description": "Nível hierárquico da posição (1=director até 5=assistant). Campo obrigatório."
+                          },
+                          "userName": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Nome do membro. Pode ser nulo se não definido."
+                          },
+                          "userEmail": {
+                            "type": "string",
+                            "format": "email",
+                            "description": "E-mail do membro. Campo obrigatório."
+                          },
+                          "subordinates": {
+                            "type": "array",
+                            "items": {},
+                            "description": "Lista de subordinados diretos deste membro."
+                          },
+                          "subordinatesCount": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade de subordinados diretos."
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "userId",
+                          "position",
+                          "level",
+                          "userName",
+                          "userEmail",
+                          "subordinates",
+                          "subordinatesCount"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes."
+                    },
+                    "stats": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Total de membros na equipe. Campo obrigatório."
+                        },
+                        "byPosition": {
+                          "type": "object",
+                          "properties": {
+                            "director": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "description": "Quantidade de diretores."
+                            },
+                            "supervisor": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "description": "Quantidade de supervisores."
+                            },
+                            "manager": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "description": "Quantidade de gerentes."
+                            },
+                            "assistant_manager": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "description": "Quantidade de subgerentes."
+                            },
+                            "assistant": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "description": "Quantidade de assistentes."
+                            }
+                          },
+                          "required": [
+                            "director",
+                            "supervisor",
+                            "manager",
+                            "assistant_manager",
+                            "assistant"
+                          ],
+                          "additionalProperties": false,
+                          "description": "Quantidade de membros por posição."
+                        }
+                      },
+                      "required": [
+                        "total",
+                        "byPosition"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Estatísticas gerais da equipe."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem de sucesso da operação. Campo obrigatório."
+                    }
+                  },
+                  "required": [
+                    "tree",
+                    "stats",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Resposta do endpoint de organograma da equipe."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "details": {
+                      "description": "Detalhes adicionais sobre o erro."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
                 }
               }
             }

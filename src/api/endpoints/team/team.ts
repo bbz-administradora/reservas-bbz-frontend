@@ -20,6 +20,11 @@ import type {
   CreatePosition422,
   CreatePosition500,
   CreatePositionBody,
+  GetOrganogram200,
+  GetOrganogram400,
+  GetOrganogram401,
+  GetOrganogram403,
+  GetOrganogram500,
   GetPosition200,
   GetPosition400,
   GetPosition401,
@@ -513,6 +518,95 @@ export const useRemovePosition = <
   const swrFn = getRemovePositionMutationFetcher(userId, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint retorna a árvore hierárquica completa da equipe de atendimento.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Qualquer usuário autenticado pode visualizar o organograma.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+**Estrutura da resposta**:
+- `tree`: Árvore hierárquica começando pelos diretores
+  - Cada nó possui `subordinates` com seus subordinados diretos
+- `stats`: Estatísticas com total e quantidade por posição
+
+**Hierarquia**:
+1. Director (nível 1) → nomeia Supervisors
+2. Supervisor (nível 2) → nomeia Managers
+3. Manager (nível 3) → nomeia Assistant Managers e Assistants
+4. Assistant Manager (nível 4) → nomeia Assistants
+5. Assistant (nível 5) → base da equipe
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Buscar o organograma completo da equipe
+ */
+export type getOrganogramResponse = {
+  data: GetOrganogram200
+  status: number
+  headers: Headers
+}
+
+export const getGetOrganogramUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/organogram`
+}
+
+export const getOrganogram = async (
+  options?: RequestInit,
+): Promise<getOrganogramResponse> => {
+  return customFetch<Promise<getOrganogramResponse>>(getGetOrganogramUrl(), {
+    ...options,
+    method: 'GET',
+  })
+}
+
+export const getGetOrganogramKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/organogram`] as const
+
+export type GetOrganogramQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getOrganogram>>
+>
+export type GetOrganogramQueryError =
+  | GetOrganogram400
+  | GetOrganogram401
+  | GetOrganogram403
+  | GetOrganogram500
+
+/**
+ * @summary Buscar o organograma completo da equipe
+ */
+export const useGetOrganogram = <
+  TError =
+    | GetOrganogram400
+    | GetOrganogram401
+    | GetOrganogram403
+    | GetOrganogram500,
+>(options?: {
+  swr?: SWRConfiguration<Awaited<ReturnType<typeof getOrganogram>>, TError> & {
+    swrKey?: Key
+    enabled?: boolean
+  }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ?? (() => (isEnabled ? getGetOrganogramKey() : null))
+  const swrFn = () => getOrganogram(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
 
   return {
     swrKey,

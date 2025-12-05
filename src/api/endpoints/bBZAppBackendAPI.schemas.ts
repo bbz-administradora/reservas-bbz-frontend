@@ -8,6 +8,258 @@
 /**
  * Código de status HTTP 500.
  */
+export type GetOrganogram500StatusCode =
+  (typeof GetOrganogram500StatusCode)[keyof typeof GetOrganogram500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetOrganogram500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetOrganogram500Name =
+  (typeof GetOrganogram500Name)[keyof typeof GetOrganogram500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetOrganogram500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type GetOrganogram500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetOrganogram500Name
+  /** Código de status HTTP 500. */
+  status_code: GetOrganogram500StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type GetOrganogram403StatusCode =
+  (typeof GetOrganogram403StatusCode)[keyof typeof GetOrganogram403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetOrganogram403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetOrganogram403Name =
+  (typeof GetOrganogram403Name)[keyof typeof GetOrganogram403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetOrganogram403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type GetOrganogram403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetOrganogram403Name
+  /** Código de status HTTP 403. */
+  status_code: GetOrganogram403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type GetOrganogram401StatusCode =
+  (typeof GetOrganogram401StatusCode)[keyof typeof GetOrganogram401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetOrganogram401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetOrganogram401Name =
+  (typeof GetOrganogram401Name)[keyof typeof GetOrganogram401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetOrganogram401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type GetOrganogram401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetOrganogram401Name
+  /** Código de status HTTP 401. */
+  status_code: GetOrganogram401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type GetOrganogram400StatusCode =
+  (typeof GetOrganogram400StatusCode)[keyof typeof GetOrganogram400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetOrganogram400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetOrganogram400Name =
+  (typeof GetOrganogram400Name)[keyof typeof GetOrganogram400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetOrganogram400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type GetOrganogram400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Detalhes adicionais sobre o erro. */
+  details?: unknown
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetOrganogram400Name
+  /** Código de status HTTP 400. */
+  status_code: GetOrganogram400StatusCode
+}
+
+/**
+ * Tipo da posição na hierarquia. Valores: director, supervisor, manager, assistant_manager, assistant. Campo obrigatório.
+ */
+export type GetOrganogram200TreeItemPosition =
+  (typeof GetOrganogram200TreeItemPosition)[keyof typeof GetOrganogram200TreeItemPosition]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetOrganogram200TreeItemPosition = {
+  director: 'director',
+  supervisor: 'supervisor',
+  manager: 'manager',
+  assistant_manager: 'assistant_manager',
+  assistant: 'assistant',
+} as const
+
+export type GetOrganogram200TreeItem = {
+  /** Identificador único da posição no formato UUID v4. Campo obrigatório. */
+  id: string
+  /**
+   * Nível hierárquico da posição (1=director até 5=assistant). Campo obrigatório.
+   * @minimum 1
+   * @maximum 5
+   */
+  level: number
+  /** Tipo da posição na hierarquia. Valores: director, supervisor, manager, assistant_manager, assistant. Campo obrigatório. */
+  position: GetOrganogram200TreeItemPosition
+  /** Lista de subordinados diretos deste membro. */
+  subordinates: unknown[]
+  /**
+   * Quantidade de subordinados diretos.
+   * @minimum 0
+   */
+  subordinatesCount: number
+  /** E-mail do membro. Campo obrigatório. */
+  userEmail: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  userId: string
+  /**
+   * Nome do membro. Pode ser nulo se não definido.
+   * @nullable
+   */
+  userName: string | null
+}
+
+/**
+ * Resposta do endpoint de organograma da equipe.
+ */
+export type GetOrganogram200 = {
+  /** Mensagem de sucesso da operação. Campo obrigatório. */
+  message: string
+  /** Estatísticas gerais da equipe. */
+  stats: GetOrganogram200Stats
+  /** Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes. */
+  tree: GetOrganogram200TreeItem[]
+}
+
+/**
+ * Quantidade de membros por posição.
+ */
+export type GetOrganogram200StatsByPosition = {
+  /**
+   * Quantidade de assistentes.
+   * @minimum 0
+   */
+  assistant: number
+  /**
+   * Quantidade de subgerentes.
+   * @minimum 0
+   */
+  assistant_manager: number
+  /**
+   * Quantidade de diretores.
+   * @minimum 0
+   */
+  director: number
+  /**
+   * Quantidade de gerentes.
+   * @minimum 0
+   */
+  manager: number
+  /**
+   * Quantidade de supervisores.
+   * @minimum 0
+   */
+  supervisor: number
+}
+
+/**
+ * Estatísticas gerais da equipe.
+ */
+export type GetOrganogram200Stats = {
+  /** Quantidade de membros por posição. */
+  byPosition: GetOrganogram200StatsByPosition
+  /**
+   * Total de membros na equipe. Campo obrigatório.
+   * @minimum 0
+   */
+  total: number
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type RemovePosition500StatusCode =
   (typeof RemovePosition500StatusCode)[keyof typeof RemovePosition500StatusCode]
 
@@ -1396,6 +1648,54 @@ export const ReservationGetDetail200ReservationStatus = {
 } as const
 
 /**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ReservationGetDetail200Reservation = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ReservationGetDetail200ReservationCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ReservationGetDetail200ReservationSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ReservationGetDetail200ReservationStatus
+  /** Informações do usuário que fez a reserva */
+  user: ReservationGetDetail200ReservationUser
+}
+
+/**
  * Tipo do espaço
  */
 export type ReservationGetDetail200ReservationSpaceType =
@@ -1444,54 +1744,6 @@ export type ReservationGetDetail200ReservationCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ReservationGetDetail200Reservation = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ReservationGetDetail200ReservationCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ReservationGetDetail200ReservationSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ReservationGetDetail200ReservationStatus
-  /** Informações do usuário que fez a reserva */
-  user: ReservationGetDetail200ReservationUser
-}
 
 /**
  * Código de status HTTP 500.
@@ -4152,6 +4404,11 @@ export type GetSpaceSlotAvailability200Space = {
   zone: string | null
 }
 
+export type GetSpaceSlotAvailability200 = {
+  slots: GetSpaceSlotAvailability200SlotsItem[]
+  space: GetSpaceSlotAvailability200Space
+}
+
 /**
  * Usuário que fez a pré-reserva (null quando não há pré-reserva)
  */
@@ -4185,11 +4442,6 @@ export type GetSpaceSlotAvailability200SlotsItem = {
   status: GetSpaceSlotAvailability200SlotsItemStatus
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
   user: GetSpaceSlotAvailability200SlotsItemUser
-}
-
-export type GetSpaceSlotAvailability200 = {
-  slots: GetSpaceSlotAvailability200SlotsItem[]
-  space: GetSpaceSlotAvailability200Space
 }
 
 export type GetSpaceSlotAvailabilityParams = {
@@ -6090,15 +6342,6 @@ export type ListSpaces400 = {
   status_code: ListSpaces400StatusCode
 }
 
-export type ListSpaces200SpacesItemType =
-  (typeof ListSpaces200SpacesItemType)[keyof typeof ListSpaces200SpacesItemType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListSpaces200SpacesItemType = {
-  room: 'room',
-  workstation: 'workstation',
-} as const
-
 export type ListSpaces200SpacesItem = {
   capacidade: number
   createdAt: string
@@ -6132,6 +6375,15 @@ export type ListSpaces200 = {
   totalCount: number
   totalPages: number
 }
+
+export type ListSpaces200SpacesItemType =
+  (typeof ListSpaces200SpacesItemType)[keyof typeof ListSpaces200SpacesItemType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaces200SpacesItemType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
 
 export type ListSpacesParams = {
   page?: string
@@ -8572,7 +8824,16 @@ export type UserMe400 = {
 }
 
 /**
- * Posição do usuário na equipe de atendimento. Pode ser manager, supervisor, member ou null se não faz parte da equipe. Campo obrigatório.
+ * Dados do usuário recuperados com sucesso
+ */
+export type UserMe200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  user: UserMe200User
+}
+
+/**
+ * Posição do usuário na equipe de atendimento. Pode ser director, supervisor, manager, assistant_manager, assistant ou null se não faz parte da equipe. Campo obrigatório.
  * @nullable
  */
 export type UserMe200UserTeamPosition =
@@ -8581,9 +8842,11 @@ export type UserMe200UserTeamPosition =
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserMe200UserTeamPosition = {
-  manager: 'manager',
+  director: 'director',
   supervisor: 'supervisor',
-  member: 'member',
+  manager: 'manager',
+  assistant_manager: 'assistant_manager',
+  assistant: 'assistant',
 } as const
 
 /**
@@ -8620,19 +8883,10 @@ export type UserMe200User = {
   /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
   role: UserMe200UserRole
   /**
-   * Posição do usuário na equipe de atendimento. Pode ser manager, supervisor, member ou null se não faz parte da equipe. Campo obrigatório.
+   * Posição do usuário na equipe de atendimento. Pode ser director, supervisor, manager, assistant_manager, assistant ou null se não faz parte da equipe. Campo obrigatório.
    * @nullable
    */
   teamPosition: UserMe200UserTeamPosition
-}
-
-/**
- * Dados do usuário recuperados com sucesso
- */
-export type UserMe200 = {
-  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
-  message: string
-  user: UserMe200User
 }
 
 /**
