@@ -86,7 +86,7 @@ export default function ManutencaoPage() {
             </p>
             <div className="bg-muted rounded-lg p-4">
               <p className="text-muted-foreground text-sm">
-                ⏱️ Previsão de retorno: <strong>10 minutos</strong>
+                ⏱️ Previsão de retorno: <strong>1 hora</strong>
               </p>
             </div>
           </div>
