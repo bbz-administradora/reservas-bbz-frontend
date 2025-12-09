@@ -79,8 +79,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -150,8 +150,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -268,30 +268,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -335,8 +313,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -506,8 +484,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -551,8 +529,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -596,8 +574,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -641,30 +619,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -708,8 +664,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -815,8 +771,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -860,8 +816,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -905,30 +861,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -972,8 +906,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1114,8 +1048,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1159,8 +1093,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1204,8 +1138,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1249,30 +1183,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1316,8 +1228,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1398,8 +1310,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1443,8 +1355,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1488,8 +1400,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1533,8 +1445,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1669,8 +1581,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1714,8 +1626,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1759,8 +1671,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1804,8 +1716,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1949,8 +1861,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -1994,8 +1906,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2039,8 +1951,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2084,8 +1996,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2285,8 +2197,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2330,8 +2242,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2375,8 +2287,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2420,8 +2332,8 @@
                       ],
                       "description": "Código de status HTTP 409."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2465,30 +2377,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2532,8 +2422,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2733,8 +2623,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2778,8 +2668,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2823,8 +2713,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2868,30 +2758,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -2935,8 +2803,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3033,8 +2901,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3078,8 +2946,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3123,8 +2991,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3168,8 +3036,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3213,8 +3081,8 @@
                       ],
                       "description": "Código de status HTTP 409."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3258,30 +3126,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3325,8 +3171,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3467,8 +3313,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3512,8 +3358,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3557,8 +3403,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3602,8 +3448,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3647,30 +3493,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3714,8 +3538,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3900,8 +3724,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3945,8 +3769,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -3990,8 +3814,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4035,8 +3859,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4080,8 +3904,8 @@
                       ],
                       "description": "Código de status HTTP 409."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4125,30 +3949,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4192,8 +3994,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4327,8 +4129,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4372,8 +4174,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4417,8 +4219,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4462,30 +4264,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4529,8 +4309,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4633,8 +4413,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4678,8 +4458,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4723,8 +4503,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4768,30 +4548,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -4835,8 +4593,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5085,8 +4843,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5130,8 +4888,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5175,8 +4933,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5220,8 +4978,8 @@
                       ],
                       "description": "Código de status HTTP 409."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5265,30 +5023,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5332,8 +5068,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5579,8 +5315,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5624,8 +5360,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5669,8 +5405,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5714,30 +5450,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5781,8 +5495,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5874,8 +5588,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5919,8 +5633,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -5964,8 +5678,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6009,8 +5723,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6054,30 +5768,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6121,8 +5813,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6298,8 +5990,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6343,8 +6035,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6388,8 +6080,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6433,8 +6125,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6478,30 +6170,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6545,8 +6215,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6796,8 +6466,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6841,8 +6511,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6886,8 +6556,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6931,8 +6601,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -6976,8 +6646,8 @@
                       ],
                       "description": "Código de status HTTP 409."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7021,30 +6691,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7088,8 +6736,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7226,8 +6874,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7271,8 +6919,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7316,8 +6964,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7361,8 +7009,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7406,30 +7054,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7473,8 +7099,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7573,8 +7199,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7618,8 +7244,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7663,8 +7289,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7708,8 +7334,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7753,30 +7379,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -7820,8 +7424,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8040,8 +7644,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8085,8 +7689,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8130,8 +7734,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8175,30 +7779,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8242,8 +7824,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8495,8 +8077,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8540,8 +8122,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8585,8 +8167,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8630,8 +8212,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8675,30 +8257,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8742,8 +8302,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8919,8 +8479,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -8964,8 +8524,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9009,8 +8569,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9054,8 +8614,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9099,8 +8659,8 @@
                       ],
                       "description": "Código de status HTTP 409."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9144,30 +8704,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9211,8 +8749,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9311,8 +8849,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9356,8 +8894,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9401,8 +8939,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9446,8 +8984,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9491,30 +9029,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9558,8 +9074,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9774,8 +9290,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9819,8 +9335,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9864,8 +9380,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9909,8 +9425,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9954,8 +9470,8 @@
                       ],
                       "description": "Código de status HTTP 409."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -9999,30 +9515,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10066,8 +9560,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10259,8 +9753,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10304,8 +9798,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10349,8 +9843,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10394,8 +9888,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10439,30 +9933,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10506,8 +9978,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10720,8 +10192,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10765,8 +10237,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10810,8 +10282,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10855,8 +10327,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10900,30 +10372,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -10967,8 +10417,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11362,8 +10812,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11407,8 +10857,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11452,8 +10902,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11497,8 +10947,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11542,30 +10992,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11609,8 +11037,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11709,8 +11137,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11754,8 +11182,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11799,8 +11227,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11844,8 +11272,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -11977,8 +11405,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12022,8 +11450,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12067,8 +11495,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12112,8 +11540,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12157,30 +11585,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12224,8 +11630,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12507,8 +11913,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12552,8 +11958,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12597,8 +12003,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12642,8 +12048,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12687,30 +12093,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12754,8 +12138,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12935,8 +12319,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -12980,8 +12364,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13025,8 +12409,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13070,8 +12454,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13115,8 +12499,8 @@
                       ],
                       "description": "Código de status HTTP 409."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13160,30 +12544,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13227,8 +12589,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13411,8 +12773,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13456,8 +12818,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13501,8 +12863,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13546,30 +12908,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13613,8 +12953,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13785,8 +13125,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13830,8 +13170,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13875,8 +13215,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13920,30 +13260,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -13987,8 +13305,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14100,8 +13418,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14145,8 +13463,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14190,8 +13508,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14235,8 +13553,8 @@
                       ],
                       "description": "Código de status HTTP 404."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14280,30 +13598,8 @@
                       ],
                       "description": "Código de status HTTP 422."
                     },
-                    "details": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "path": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Caminho para o campo com erro."
-                          },
-                          "message": {
-                            "type": "string",
-                            "description": "Mensagem de validação para o campo."
-                          }
-                        },
-                        "required": [
-                          "path",
-                          "message"
-                        ],
-                        "additionalProperties": false
-                      },
-                      "description": "Detalhes adicionais sobre os erros de validação."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14347,8 +13643,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14554,8 +13850,8 @@
                       ],
                       "description": "Código de status HTTP 400."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14599,8 +13895,8 @@
                       ],
                       "description": "Código de status HTTP 401."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14644,8 +13940,8 @@
                       ],
                       "description": "Código de status HTTP 403."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [
@@ -14689,8 +13985,8 @@
                       ],
                       "description": "Código de status HTTP 500."
                     },
-                    "details": {
-                      "description": "Detalhes adicionais sobre o erro."
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
                     }
                   },
                   "required": [

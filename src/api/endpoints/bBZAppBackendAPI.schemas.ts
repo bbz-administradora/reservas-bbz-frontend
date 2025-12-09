@@ -33,12 +33,12 @@ export const GetOrganogram500Name = {
 export type GetOrganogram500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: GetOrganogram500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: GetOrganogram500StatusCode
 }
@@ -71,12 +71,12 @@ export const GetOrganogram403Name = {
 export type GetOrganogram403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: GetOrganogram403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: GetOrganogram403StatusCode
 }
@@ -109,12 +109,12 @@ export const GetOrganogram401Name = {
 export type GetOrganogram401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: GetOrganogram401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: GetOrganogram401StatusCode
 }
@@ -147,12 +147,12 @@ export const GetOrganogram400Name = {
 export type GetOrganogram400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: GetOrganogram400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: GetOrganogram400StatusCode
 }
@@ -285,12 +285,12 @@ export const RemovePosition500Name = {
 export type RemovePosition500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: RemovePosition500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: RemovePosition500StatusCode
 }
@@ -317,25 +317,18 @@ export const RemovePosition422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type RemovePosition422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type RemovePosition422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: RemovePosition422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: RemovePosition422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: RemovePosition422StatusCode
 }
@@ -368,12 +361,12 @@ export const RemovePosition404Name = {
 export type RemovePosition404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: RemovePosition404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: RemovePosition404StatusCode
 }
@@ -406,12 +399,12 @@ export const RemovePosition403Name = {
 export type RemovePosition403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: RemovePosition403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: RemovePosition403StatusCode
 }
@@ -444,12 +437,12 @@ export const RemovePosition401Name = {
 export type RemovePosition401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: RemovePosition401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: RemovePosition401StatusCode
 }
@@ -482,12 +475,12 @@ export const RemovePosition400Name = {
 export type RemovePosition400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: RemovePosition400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: RemovePosition400StatusCode
 }
@@ -547,12 +540,12 @@ export const GetPosition500Name = {
 export type GetPosition500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: GetPosition500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: GetPosition500StatusCode
 }
@@ -579,25 +572,18 @@ export const GetPosition422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type GetPosition422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type GetPosition422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: GetPosition422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: GetPosition422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: GetPosition422StatusCode
 }
@@ -630,12 +616,12 @@ export const GetPosition403Name = {
 export type GetPosition403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: GetPosition403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: GetPosition403StatusCode
 }
@@ -668,12 +654,12 @@ export const GetPosition401Name = {
 export type GetPosition401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: GetPosition401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: GetPosition401StatusCode
 }
@@ -706,12 +692,12 @@ export const GetPosition400Name = {
 export type GetPosition400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: GetPosition400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: GetPosition400StatusCode
 }
@@ -812,12 +798,12 @@ export const ListPositions500Name = {
 export type ListPositions500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: ListPositions500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: ListPositions500StatusCode
 }
@@ -844,25 +830,18 @@ export const ListPositions422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ListPositions422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type ListPositions422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: ListPositions422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: ListPositions422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: ListPositions422StatusCode
 }
@@ -895,12 +874,12 @@ export const ListPositions403Name = {
 export type ListPositions403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: ListPositions403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: ListPositions403StatusCode
 }
@@ -933,12 +912,12 @@ export const ListPositions401Name = {
 export type ListPositions401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: ListPositions401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: ListPositions401StatusCode
 }
@@ -971,12 +950,12 @@ export const ListPositions400Name = {
 export type ListPositions400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: ListPositions400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: ListPositions400StatusCode
 }
@@ -1075,12 +1054,12 @@ export const CreatePosition500Name = {
 export type CreatePosition500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: CreatePosition500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: CreatePosition500StatusCode
 }
@@ -1107,25 +1086,18 @@ export const CreatePosition422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CreatePosition422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type CreatePosition422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: CreatePosition422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: CreatePosition422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: CreatePosition422StatusCode
 }
@@ -1158,12 +1130,12 @@ export const CreatePosition409Name = {
 export type CreatePosition409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
   name: CreatePosition409Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 409. */
   status_code: CreatePosition409StatusCode
 }
@@ -1196,12 +1168,12 @@ export const CreatePosition404Name = {
 export type CreatePosition404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: CreatePosition404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: CreatePosition404StatusCode
 }
@@ -1234,12 +1206,12 @@ export const CreatePosition403Name = {
 export type CreatePosition403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: CreatePosition403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: CreatePosition403StatusCode
 }
@@ -1272,12 +1244,12 @@ export const CreatePosition401Name = {
 export type CreatePosition401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: CreatePosition401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: CreatePosition401StatusCode
 }
@@ -1310,12 +1282,12 @@ export const CreatePosition400Name = {
 export type CreatePosition400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: CreatePosition400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: CreatePosition400StatusCode
 }
@@ -1405,12 +1377,12 @@ export const ReservationGetDetail500Name = {
 export type ReservationGetDetail500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationGetDetail500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: ReservationGetDetail500StatusCode
 }
@@ -1437,25 +1409,18 @@ export const ReservationGetDetail422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ReservationGetDetail422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type ReservationGetDetail422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: ReservationGetDetail422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationGetDetail422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: ReservationGetDetail422StatusCode
 }
@@ -1488,12 +1453,12 @@ export const ReservationGetDetail404Name = {
 export type ReservationGetDetail404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationGetDetail404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: ReservationGetDetail404StatusCode
 }
@@ -1526,12 +1491,12 @@ export const ReservationGetDetail403Name = {
 export type ReservationGetDetail403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationGetDetail403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: ReservationGetDetail403StatusCode
 }
@@ -1564,12 +1529,12 @@ export const ReservationGetDetail401Name = {
 export type ReservationGetDetail401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationGetDetail401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: ReservationGetDetail401StatusCode
 }
@@ -1602,24 +1567,14 @@ export const ReservationGetDetail400Name = {
 export type ReservationGetDetail400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationGetDetail400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: ReservationGetDetail400StatusCode
-}
-
-/**
- * Detalhes da reserva recuperados com sucesso.
- */
-export type ReservationGetDetail200 = {
-  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
-  message: string
-  /** Detalhes completos de uma reserva paginada */
-  reservation: ReservationGetDetail200Reservation
 }
 
 /**
@@ -1693,6 +1648,16 @@ export type ReservationGetDetail200Reservation = {
   status: ReservationGetDetail200ReservationStatus
   /** Informações do usuário que fez a reserva */
   user: ReservationGetDetail200ReservationUser
+}
+
+/**
+ * Detalhes da reserva recuperados com sucesso.
+ */
+export type ReservationGetDetail200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  /** Detalhes completos de uma reserva paginada */
+  reservation: ReservationGetDetail200Reservation
 }
 
 /**
@@ -1773,12 +1738,12 @@ export const ReservationCheckInOut500Name = {
 export type ReservationCheckInOut500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationCheckInOut500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: ReservationCheckInOut500StatusCode
 }
@@ -1805,25 +1770,18 @@ export const ReservationCheckInOut422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ReservationCheckInOut422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type ReservationCheckInOut422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: ReservationCheckInOut422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationCheckInOut422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: ReservationCheckInOut422StatusCode
 }
@@ -1856,12 +1814,12 @@ export const ReservationCheckInOut404Name = {
 export type ReservationCheckInOut404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationCheckInOut404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: ReservationCheckInOut404StatusCode
 }
@@ -1894,12 +1852,12 @@ export const ReservationCheckInOut403Name = {
 export type ReservationCheckInOut403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationCheckInOut403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: ReservationCheckInOut403StatusCode
 }
@@ -1932,12 +1890,12 @@ export const ReservationCheckInOut401Name = {
 export type ReservationCheckInOut401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationCheckInOut401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: ReservationCheckInOut401StatusCode
 }
@@ -1970,12 +1928,12 @@ export const ReservationCheckInOut400Name = {
 export type ReservationCheckInOut400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: ReservationCheckInOut400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: ReservationCheckInOut400StatusCode
 }
@@ -2051,12 +2009,12 @@ export const GetSpaceReservationStats500Name = {
 export type GetSpaceReservationStats500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceReservationStats500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: GetSpaceReservationStats500StatusCode
 }
@@ -2089,12 +2047,12 @@ export const GetSpaceReservationStats403Name = {
 export type GetSpaceReservationStats403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceReservationStats403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: GetSpaceReservationStats403StatusCode
 }
@@ -2127,12 +2085,12 @@ export const GetSpaceReservationStats401Name = {
 export type GetSpaceReservationStats401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceReservationStats401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: GetSpaceReservationStats401StatusCode
 }
@@ -2165,12 +2123,12 @@ export const GetSpaceReservationStats400Name = {
 export type GetSpaceReservationStats400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceReservationStats400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: GetSpaceReservationStats400StatusCode
 }
@@ -2222,12 +2180,12 @@ export const ListSpaceReservations500Name = {
 export type ListSpaceReservations500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceReservations500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: ListSpaceReservations500StatusCode
 }
@@ -2254,25 +2212,18 @@ export const ListSpaceReservations422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ListSpaceReservations422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type ListSpaceReservations422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: ListSpaceReservations422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceReservations422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: ListSpaceReservations422StatusCode
 }
@@ -2305,12 +2256,12 @@ export const ListSpaceReservations404Name = {
 export type ListSpaceReservations404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceReservations404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: ListSpaceReservations404StatusCode
 }
@@ -2343,12 +2294,12 @@ export const ListSpaceReservations403Name = {
 export type ListSpaceReservations403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceReservations403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: ListSpaceReservations403StatusCode
 }
@@ -2381,12 +2332,12 @@ export const ListSpaceReservations401Name = {
 export type ListSpaceReservations401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceReservations401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: ListSpaceReservations401StatusCode
 }
@@ -2419,12 +2370,12 @@ export const ListSpaceReservations400Name = {
 export type ListSpaceReservations400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceReservations400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: ListSpaceReservations400StatusCode
 }
@@ -2657,12 +2608,12 @@ export const CancelSpaceReservation500Name = {
 export type CancelSpaceReservation500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: CancelSpaceReservation500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: CancelSpaceReservation500StatusCode
 }
@@ -2689,25 +2640,18 @@ export const CancelSpaceReservation422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CancelSpaceReservation422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type CancelSpaceReservation422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: CancelSpaceReservation422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: CancelSpaceReservation422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: CancelSpaceReservation422StatusCode
 }
@@ -2740,12 +2684,12 @@ export const CancelSpaceReservation404Name = {
 export type CancelSpaceReservation404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: CancelSpaceReservation404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: CancelSpaceReservation404StatusCode
 }
@@ -2778,12 +2722,12 @@ export const CancelSpaceReservation403Name = {
 export type CancelSpaceReservation403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: CancelSpaceReservation403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: CancelSpaceReservation403StatusCode
 }
@@ -2816,12 +2760,12 @@ export const CancelSpaceReservation401Name = {
 export type CancelSpaceReservation401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: CancelSpaceReservation401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: CancelSpaceReservation401StatusCode
 }
@@ -2854,12 +2798,12 @@ export const CancelSpaceReservation400Name = {
 export type CancelSpaceReservation400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: CancelSpaceReservation400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: CancelSpaceReservation400StatusCode
 }
@@ -2956,12 +2900,12 @@ export const CloseSpaceReservation500Name = {
 export type CloseSpaceReservation500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: CloseSpaceReservation500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: CloseSpaceReservation500StatusCode
 }
@@ -2988,25 +2932,18 @@ export const CloseSpaceReservation422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CloseSpaceReservation422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type CloseSpaceReservation422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: CloseSpaceReservation422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: CloseSpaceReservation422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: CloseSpaceReservation422StatusCode
 }
@@ -3039,12 +2976,12 @@ export const CloseSpaceReservation404Name = {
 export type CloseSpaceReservation404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: CloseSpaceReservation404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: CloseSpaceReservation404StatusCode
 }
@@ -3077,12 +3014,12 @@ export const CloseSpaceReservation403Name = {
 export type CloseSpaceReservation403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: CloseSpaceReservation403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: CloseSpaceReservation403StatusCode
 }
@@ -3115,12 +3052,12 @@ export const CloseSpaceReservation401Name = {
 export type CloseSpaceReservation401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: CloseSpaceReservation401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: CloseSpaceReservation401StatusCode
 }
@@ -3153,12 +3090,12 @@ export const CloseSpaceReservation400Name = {
 export type CloseSpaceReservation400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: CloseSpaceReservation400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: CloseSpaceReservation400StatusCode
 }
@@ -3245,12 +3182,12 @@ export const CreateSpaceReservation500Name = {
 export type CreateSpaceReservation500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceReservation500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: CreateSpaceReservation500StatusCode
 }
@@ -3277,25 +3214,18 @@ export const CreateSpaceReservation422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CreateSpaceReservation422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type CreateSpaceReservation422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: CreateSpaceReservation422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceReservation422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: CreateSpaceReservation422StatusCode
 }
@@ -3328,12 +3258,12 @@ export const CreateSpaceReservation409Name = {
 export type CreateSpaceReservation409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceReservation409Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 409. */
   status_code: CreateSpaceReservation409StatusCode
 }
@@ -3366,12 +3296,12 @@ export const CreateSpaceReservation404Name = {
 export type CreateSpaceReservation404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceReservation404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: CreateSpaceReservation404StatusCode
 }
@@ -3404,12 +3334,12 @@ export const CreateSpaceReservation403Name = {
 export type CreateSpaceReservation403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceReservation403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: CreateSpaceReservation403StatusCode
 }
@@ -3442,12 +3372,12 @@ export const CreateSpaceReservation401Name = {
 export type CreateSpaceReservation401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceReservation401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: CreateSpaceReservation401StatusCode
 }
@@ -3480,12 +3410,12 @@ export const CreateSpaceReservation400Name = {
 export type CreateSpaceReservation400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceReservation400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: CreateSpaceReservation400StatusCode
 }
@@ -3576,12 +3506,12 @@ export const DeleteSpaceSlotPreReserve500Name = {
 export type DeleteSpaceSlotPreReserve500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpaceSlotPreReserve500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: DeleteSpaceSlotPreReserve500StatusCode
 }
@@ -3608,25 +3538,18 @@ export const DeleteSpaceSlotPreReserve422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type DeleteSpaceSlotPreReserve422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type DeleteSpaceSlotPreReserve422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: DeleteSpaceSlotPreReserve422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpaceSlotPreReserve422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: DeleteSpaceSlotPreReserve422StatusCode
 }
@@ -3659,12 +3582,12 @@ export const DeleteSpaceSlotPreReserve404Name = {
 export type DeleteSpaceSlotPreReserve404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpaceSlotPreReserve404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: DeleteSpaceSlotPreReserve404StatusCode
 }
@@ -3697,12 +3620,12 @@ export const DeleteSpaceSlotPreReserve403Name = {
 export type DeleteSpaceSlotPreReserve403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpaceSlotPreReserve403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: DeleteSpaceSlotPreReserve403StatusCode
 }
@@ -3735,12 +3658,12 @@ export const DeleteSpaceSlotPreReserve401Name = {
 export type DeleteSpaceSlotPreReserve401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpaceSlotPreReserve401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: DeleteSpaceSlotPreReserve401StatusCode
 }
@@ -3773,12 +3696,12 @@ export const DeleteSpaceSlotPreReserve400Name = {
 export type DeleteSpaceSlotPreReserve400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpaceSlotPreReserve400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: DeleteSpaceSlotPreReserve400StatusCode
 }
@@ -3818,12 +3741,12 @@ export const CreateSpaceSlotPreReserve500Name = {
 export type CreateSpaceSlotPreReserve500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceSlotPreReserve500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: CreateSpaceSlotPreReserve500StatusCode
 }
@@ -3850,25 +3773,18 @@ export const CreateSpaceSlotPreReserve422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CreateSpaceSlotPreReserve422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type CreateSpaceSlotPreReserve422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: CreateSpaceSlotPreReserve422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceSlotPreReserve422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: CreateSpaceSlotPreReserve422StatusCode
 }
@@ -3901,12 +3817,12 @@ export const CreateSpaceSlotPreReserve409Name = {
 export type CreateSpaceSlotPreReserve409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceSlotPreReserve409Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 409. */
   status_code: CreateSpaceSlotPreReserve409StatusCode
 }
@@ -3939,12 +3855,12 @@ export const CreateSpaceSlotPreReserve404Name = {
 export type CreateSpaceSlotPreReserve404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceSlotPreReserve404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: CreateSpaceSlotPreReserve404StatusCode
 }
@@ -3977,12 +3893,12 @@ export const CreateSpaceSlotPreReserve403Name = {
 export type CreateSpaceSlotPreReserve403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceSlotPreReserve403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: CreateSpaceSlotPreReserve403StatusCode
 }
@@ -4015,12 +3931,12 @@ export const CreateSpaceSlotPreReserve401Name = {
 export type CreateSpaceSlotPreReserve401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceSlotPreReserve401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: CreateSpaceSlotPreReserve401StatusCode
 }
@@ -4053,12 +3969,12 @@ export const CreateSpaceSlotPreReserve400Name = {
 export type CreateSpaceSlotPreReserve400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpaceSlotPreReserve400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: CreateSpaceSlotPreReserve400StatusCode
 }
@@ -4148,12 +4064,12 @@ export const GetSpaceSlotAvailability500Name = {
 export type GetSpaceSlotAvailability500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceSlotAvailability500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: GetSpaceSlotAvailability500StatusCode
 }
@@ -4180,25 +4096,18 @@ export const GetSpaceSlotAvailability422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type GetSpaceSlotAvailability422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type GetSpaceSlotAvailability422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: GetSpaceSlotAvailability422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceSlotAvailability422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: GetSpaceSlotAvailability422StatusCode
 }
@@ -4231,12 +4140,12 @@ export const GetSpaceSlotAvailability404Name = {
 export type GetSpaceSlotAvailability404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceSlotAvailability404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: GetSpaceSlotAvailability404StatusCode
 }
@@ -4269,12 +4178,12 @@ export const GetSpaceSlotAvailability403Name = {
 export type GetSpaceSlotAvailability403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceSlotAvailability403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: GetSpaceSlotAvailability403StatusCode
 }
@@ -4307,12 +4216,12 @@ export const GetSpaceSlotAvailability401Name = {
 export type GetSpaceSlotAvailability401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceSlotAvailability401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: GetSpaceSlotAvailability401StatusCode
 }
@@ -4345,12 +4254,12 @@ export const GetSpaceSlotAvailability400Name = {
 export type GetSpaceSlotAvailability400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpaceSlotAvailability400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: GetSpaceSlotAvailability400StatusCode
 }
@@ -4404,11 +4313,6 @@ export type GetSpaceSlotAvailability200Space = {
   zone: string | null
 }
 
-export type GetSpaceSlotAvailability200 = {
-  slots: GetSpaceSlotAvailability200SlotsItem[]
-  space: GetSpaceSlotAvailability200Space
-}
-
 /**
  * Usuário que fez a pré-reserva (null quando não há pré-reserva)
  */
@@ -4442,6 +4346,11 @@ export type GetSpaceSlotAvailability200SlotsItem = {
   status: GetSpaceSlotAvailability200SlotsItemStatus
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
   user: GetSpaceSlotAvailability200SlotsItemUser
+}
+
+export type GetSpaceSlotAvailability200 = {
+  slots: GetSpaceSlotAvailability200SlotsItem[]
+  space: GetSpaceSlotAvailability200Space
 }
 
 export type GetSpaceSlotAvailabilityParams = {
@@ -4483,12 +4392,12 @@ export const ListSpaceSlots500Name = {
 export type ListSpaceSlots500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceSlots500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: ListSpaceSlots500StatusCode
 }
@@ -4515,25 +4424,18 @@ export const ListSpaceSlots422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ListSpaceSlots422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type ListSpaceSlots422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: ListSpaceSlots422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceSlots422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: ListSpaceSlots422StatusCode
 }
@@ -4566,12 +4468,12 @@ export const ListSpaceSlots403Name = {
 export type ListSpaceSlots403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceSlots403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: ListSpaceSlots403StatusCode
 }
@@ -4604,12 +4506,12 @@ export const ListSpaceSlots401Name = {
 export type ListSpaceSlots401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceSlots401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: ListSpaceSlots401StatusCode
 }
@@ -4642,12 +4544,12 @@ export const ListSpaceSlots400Name = {
 export type ListSpaceSlots400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaceSlots400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: ListSpaceSlots400StatusCode
 }
@@ -4771,12 +4673,12 @@ export const SpaceQrcode500Name = {
 export type SpaceQrcode500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: SpaceQrcode500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: SpaceQrcode500StatusCode
 }
@@ -4803,25 +4705,18 @@ export const SpaceQrcode422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type SpaceQrcode422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type SpaceQrcode422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: SpaceQrcode422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: SpaceQrcode422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: SpaceQrcode422StatusCode
 }
@@ -4854,12 +4749,12 @@ export const SpaceQrcode404Name = {
 export type SpaceQrcode404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: SpaceQrcode404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: SpaceQrcode404StatusCode
 }
@@ -4892,12 +4787,12 @@ export const SpaceQrcode403Name = {
 export type SpaceQrcode403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: SpaceQrcode403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: SpaceQrcode403StatusCode
 }
@@ -4930,12 +4825,12 @@ export const SpaceQrcode401Name = {
 export type SpaceQrcode401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: SpaceQrcode401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: SpaceQrcode401StatusCode
 }
@@ -4968,12 +4863,12 @@ export const SpaceQrcode400Name = {
 export type SpaceQrcode400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: SpaceQrcode400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: SpaceQrcode400StatusCode
 }
@@ -5016,12 +4911,12 @@ export const OpenDoor500Name = {
 export type OpenDoor500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: OpenDoor500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: OpenDoor500StatusCode
 }
@@ -5048,25 +4943,18 @@ export const OpenDoor422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type OpenDoor422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type OpenDoor422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: OpenDoor422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: OpenDoor422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: OpenDoor422StatusCode
 }
@@ -5099,12 +4987,12 @@ export const OpenDoor404Name = {
 export type OpenDoor404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: OpenDoor404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: OpenDoor404StatusCode
 }
@@ -5137,12 +5025,12 @@ export const OpenDoor403Name = {
 export type OpenDoor403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: OpenDoor403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: OpenDoor403StatusCode
 }
@@ -5175,12 +5063,12 @@ export const OpenDoor401Name = {
 export type OpenDoor401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: OpenDoor401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: OpenDoor401StatusCode
 }
@@ -5213,12 +5101,12 @@ export const OpenDoor400Name = {
 export type OpenDoor400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: OpenDoor400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: OpenDoor400StatusCode
 }
@@ -5284,12 +5172,12 @@ export const UpdateSpace500Name = {
 export type UpdateSpace500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: UpdateSpace500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: UpdateSpace500StatusCode
 }
@@ -5316,25 +5204,18 @@ export const UpdateSpace422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type UpdateSpace422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type UpdateSpace422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: UpdateSpace422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: UpdateSpace422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: UpdateSpace422StatusCode
 }
@@ -5367,12 +5248,12 @@ export const UpdateSpace409Name = {
 export type UpdateSpace409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
   name: UpdateSpace409Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 409. */
   status_code: UpdateSpace409StatusCode
 }
@@ -5405,12 +5286,12 @@ export const UpdateSpace404Name = {
 export type UpdateSpace404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: UpdateSpace404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: UpdateSpace404StatusCode
 }
@@ -5443,12 +5324,12 @@ export const UpdateSpace403Name = {
 export type UpdateSpace403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: UpdateSpace403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: UpdateSpace403StatusCode
 }
@@ -5481,12 +5362,12 @@ export const UpdateSpace401Name = {
 export type UpdateSpace401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: UpdateSpace401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: UpdateSpace401StatusCode
 }
@@ -5519,12 +5400,12 @@ export const UpdateSpace400Name = {
 export type UpdateSpace400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: UpdateSpace400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: UpdateSpace400StatusCode
 }
@@ -5656,12 +5537,12 @@ export const GetSpace500Name = {
 export type GetSpace500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpace500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: GetSpace500StatusCode
 }
@@ -5688,25 +5569,18 @@ export const GetSpace422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type GetSpace422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type GetSpace422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: GetSpace422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpace422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: GetSpace422StatusCode
 }
@@ -5739,12 +5613,12 @@ export const GetSpace404Name = {
 export type GetSpace404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpace404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: GetSpace404StatusCode
 }
@@ -5777,12 +5651,12 @@ export const GetSpace403Name = {
 export type GetSpace403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpace403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: GetSpace403StatusCode
 }
@@ -5815,12 +5689,12 @@ export const GetSpace401Name = {
 export type GetSpace401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpace401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: GetSpace401StatusCode
 }
@@ -5853,12 +5727,12 @@ export const GetSpace400Name = {
 export type GetSpace400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: GetSpace400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: GetSpace400StatusCode
 }
@@ -5931,12 +5805,12 @@ export const DeleteSpace500Name = {
 export type DeleteSpace500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpace500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: DeleteSpace500StatusCode
 }
@@ -5963,25 +5837,18 @@ export const DeleteSpace422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type DeleteSpace422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type DeleteSpace422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: DeleteSpace422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpace422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: DeleteSpace422StatusCode
 }
@@ -6014,12 +5881,12 @@ export const DeleteSpace404Name = {
 export type DeleteSpace404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpace404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: DeleteSpace404StatusCode
 }
@@ -6052,12 +5919,12 @@ export const DeleteSpace403Name = {
 export type DeleteSpace403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpace403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: DeleteSpace403StatusCode
 }
@@ -6090,12 +5957,12 @@ export const DeleteSpace401Name = {
 export type DeleteSpace401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpace401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: DeleteSpace401StatusCode
 }
@@ -6128,12 +5995,12 @@ export const DeleteSpace400Name = {
 export type DeleteSpace400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteSpace400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: DeleteSpace400StatusCode
 }
@@ -6173,12 +6040,12 @@ export const ListSpaces500Name = {
 export type ListSpaces500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaces500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: ListSpaces500StatusCode
 }
@@ -6205,25 +6072,18 @@ export const ListSpaces422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type ListSpaces422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type ListSpaces422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: ListSpaces422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaces422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: ListSpaces422StatusCode
 }
@@ -6256,12 +6116,12 @@ export const ListSpaces403Name = {
 export type ListSpaces403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaces403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: ListSpaces403StatusCode
 }
@@ -6294,12 +6154,12 @@ export const ListSpaces401Name = {
 export type ListSpaces401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaces401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: ListSpaces401StatusCode
 }
@@ -6332,12 +6192,12 @@ export const ListSpaces400Name = {
 export type ListSpaces400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: ListSpaces400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: ListSpaces400StatusCode
 }
@@ -6424,12 +6284,12 @@ export const CreateSpace500Name = {
 export type CreateSpace500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpace500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: CreateSpace500StatusCode
 }
@@ -6456,25 +6316,18 @@ export const CreateSpace422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type CreateSpace422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type CreateSpace422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: CreateSpace422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpace422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: CreateSpace422StatusCode
 }
@@ -6507,12 +6360,12 @@ export const CreateSpace409Name = {
 export type CreateSpace409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpace409Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 409. */
   status_code: CreateSpace409StatusCode
 }
@@ -6545,12 +6398,12 @@ export const CreateSpace403Name = {
 export type CreateSpace403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpace403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: CreateSpace403StatusCode
 }
@@ -6583,12 +6436,12 @@ export const CreateSpace401Name = {
 export type CreateSpace401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpace401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: CreateSpace401StatusCode
 }
@@ -6621,12 +6474,12 @@ export const CreateSpace400Name = {
 export type CreateSpace400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: CreateSpace400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: CreateSpace400StatusCode
 }
@@ -6754,12 +6607,12 @@ export const DeleteImage500Name = {
 export type DeleteImage500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteImage500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: DeleteImage500StatusCode
 }
@@ -6786,25 +6639,18 @@ export const DeleteImage422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type DeleteImage422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type DeleteImage422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: DeleteImage422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteImage422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: DeleteImage422StatusCode
 }
@@ -6837,12 +6683,12 @@ export const DeleteImage403Name = {
 export type DeleteImage403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteImage403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: DeleteImage403StatusCode
 }
@@ -6875,12 +6721,12 @@ export const DeleteImage401Name = {
 export type DeleteImage401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteImage401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: DeleteImage401StatusCode
 }
@@ -6913,12 +6759,12 @@ export const DeleteImage400Name = {
 export type DeleteImage400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteImage400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: DeleteImage400StatusCode
 }
@@ -6966,12 +6812,12 @@ export const UploadImage500Name = {
 export type UploadImage500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: UploadImage500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: UploadImage500StatusCode
 }
@@ -6998,25 +6844,18 @@ export const UploadImage422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type UploadImage422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type UploadImage422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: UploadImage422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: UploadImage422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: UploadImage422StatusCode
 }
@@ -7049,12 +6888,12 @@ export const UploadImage403Name = {
 export type UploadImage403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: UploadImage403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: UploadImage403StatusCode
 }
@@ -7087,12 +6926,12 @@ export const UploadImage401Name = {
 export type UploadImage401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: UploadImage401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: UploadImage401StatusCode
 }
@@ -7125,12 +6964,12 @@ export const UploadImage400Name = {
 export type UploadImage400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: UploadImage400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: UploadImage400StatusCode
 }
@@ -7190,12 +7029,12 @@ export const UserUpdate500Name = {
 export type UserUpdate500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: UserUpdate500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: UserUpdate500StatusCode
 }
@@ -7222,25 +7061,18 @@ export const UserUpdate422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type UserUpdate422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type UserUpdate422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: UserUpdate422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: UserUpdate422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: UserUpdate422StatusCode
 }
@@ -7273,12 +7105,12 @@ export const UserUpdate409Name = {
 export type UserUpdate409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
   name: UserUpdate409Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 409. */
   status_code: UserUpdate409StatusCode
 }
@@ -7311,12 +7143,12 @@ export const UserUpdate404Name = {
 export type UserUpdate404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: UserUpdate404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: UserUpdate404StatusCode
 }
@@ -7349,12 +7181,12 @@ export const UserUpdate403Name = {
 export type UserUpdate403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: UserUpdate403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: UserUpdate403StatusCode
 }
@@ -7387,12 +7219,12 @@ export const UserUpdate401Name = {
 export type UserUpdate401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: UserUpdate401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: UserUpdate401StatusCode
 }
@@ -7425,12 +7257,12 @@ export const UserUpdate400Name = {
 export type UserUpdate400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: UserUpdate400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: UserUpdate400StatusCode
 }
@@ -7543,12 +7375,12 @@ export const UserGet500Name = {
 export type UserGet500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: UserGet500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: UserGet500StatusCode
 }
@@ -7575,25 +7407,18 @@ export const UserGet422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type UserGet422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type UserGet422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: UserGet422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: UserGet422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: UserGet422StatusCode
 }
@@ -7626,12 +7451,12 @@ export const UserGet404Name = {
 export type UserGet404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: UserGet404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: UserGet404StatusCode
 }
@@ -7664,12 +7489,12 @@ export const UserGet403Name = {
 export type UserGet403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: UserGet403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: UserGet403StatusCode
 }
@@ -7702,12 +7527,12 @@ export const UserGet401Name = {
 export type UserGet401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: UserGet401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: UserGet401StatusCode
 }
@@ -7740,12 +7565,12 @@ export const UserGet400Name = {
 export type UserGet400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: UserGet400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: UserGet400StatusCode
 }
@@ -7822,12 +7647,12 @@ export const DeleteUser500Name = {
 export type DeleteUser500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteUser500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: DeleteUser500StatusCode
 }
@@ -7854,25 +7679,18 @@ export const DeleteUser422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type DeleteUser422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type DeleteUser422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: DeleteUser422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteUser422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: DeleteUser422StatusCode
 }
@@ -7905,12 +7723,12 @@ export const DeleteUser409Name = {
 export type DeleteUser409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteUser409Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 409. */
   status_code: DeleteUser409StatusCode
 }
@@ -7943,12 +7761,12 @@ export const DeleteUser404Name = {
 export type DeleteUser404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteUser404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: DeleteUser404StatusCode
 }
@@ -7981,12 +7799,12 @@ export const DeleteUser403Name = {
 export type DeleteUser403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteUser403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: DeleteUser403StatusCode
 }
@@ -8019,12 +7837,12 @@ export const DeleteUser401Name = {
 export type DeleteUser401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteUser401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: DeleteUser401StatusCode
 }
@@ -8057,12 +7875,12 @@ export const DeleteUser400Name = {
 export type DeleteUser400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: DeleteUser400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: DeleteUser400StatusCode
 }
@@ -8103,12 +7921,12 @@ export const UserList500Name = {
 export type UserList500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: UserList500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: UserList500StatusCode
 }
@@ -8135,25 +7953,18 @@ export const UserList422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type UserList422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type UserList422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: UserList422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: UserList422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: UserList422StatusCode
 }
@@ -8186,12 +7997,12 @@ export const UserList403Name = {
 export type UserList403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: UserList403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: UserList403StatusCode
 }
@@ -8224,12 +8035,12 @@ export const UserList401Name = {
 export type UserList401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: UserList401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: UserList401StatusCode
 }
@@ -8262,12 +8073,12 @@ export const UserList400Name = {
 export type UserList400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: UserList400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: UserList400StatusCode
 }
@@ -8383,12 +8194,12 @@ export const UserCreate500Name = {
 export type UserCreate500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: UserCreate500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: UserCreate500StatusCode
 }
@@ -8415,25 +8226,18 @@ export const UserCreate422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type UserCreate422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type UserCreate422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: UserCreate422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: UserCreate422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: UserCreate422StatusCode
 }
@@ -8466,12 +8270,12 @@ export const UserCreate409Name = {
 export type UserCreate409 = {
   /** Ação recomendada para resolver o conflito. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que houve um conflito. */
   message: string
   /** Nome fixo do erro. */
   name: UserCreate409Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 409. */
   status_code: UserCreate409StatusCode
 }
@@ -8504,12 +8308,12 @@ export const UserCreate403Name = {
 export type UserCreate403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: UserCreate403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: UserCreate403StatusCode
 }
@@ -8542,12 +8346,12 @@ export const UserCreate401Name = {
 export type UserCreate401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: UserCreate401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: UserCreate401StatusCode
 }
@@ -8580,12 +8384,12 @@ export const UserCreate400Name = {
 export type UserCreate400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: UserCreate400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: UserCreate400StatusCode
 }
@@ -8702,12 +8506,12 @@ export const UserMe500Name = {
 export type UserMe500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: UserMe500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: UserMe500StatusCode
 }
@@ -8739,12 +8543,12 @@ export const UserMe403Name = {
 export type UserMe403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: UserMe403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: UserMe403StatusCode
 }
@@ -8776,12 +8580,12 @@ export const UserMe401Name = {
 export type UserMe401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: UserMe401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: UserMe401StatusCode
 }
@@ -8813,12 +8617,12 @@ export const UserMe400Name = {
 export type UserMe400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: UserMe400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: UserMe400StatusCode
 }
@@ -8917,12 +8721,12 @@ export const RefreshUserSession500Name = {
 export type RefreshUserSession500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: RefreshUserSession500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: RefreshUserSession500StatusCode
 }
@@ -8955,12 +8759,12 @@ export const RefreshUserSession403Name = {
 export type RefreshUserSession403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: RefreshUserSession403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: RefreshUserSession403StatusCode
 }
@@ -8993,12 +8797,12 @@ export const RefreshUserSession401Name = {
 export type RefreshUserSession401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: RefreshUserSession401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: RefreshUserSession401StatusCode
 }
@@ -9031,12 +8835,12 @@ export const RefreshUserSession400Name = {
 export type RefreshUserSession400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: RefreshUserSession400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: RefreshUserSession400StatusCode
 }
@@ -9111,12 +8915,12 @@ export const LogoutUser500Name = {
 export type LogoutUser500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: LogoutUser500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: LogoutUser500StatusCode
 }
@@ -9149,12 +8953,12 @@ export const LogoutUser403Name = {
 export type LogoutUser403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: LogoutUser403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: LogoutUser403StatusCode
 }
@@ -9187,12 +8991,12 @@ export const LogoutUser401Name = {
 export type LogoutUser401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: LogoutUser401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: LogoutUser401StatusCode
 }
@@ -9225,12 +9029,12 @@ export const LogoutUser400Name = {
 export type LogoutUser400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: LogoutUser400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: LogoutUser400StatusCode
 }
@@ -9270,12 +9074,12 @@ export const AuthResetPassword500Name = {
 export type AuthResetPassword500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: AuthResetPassword500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: AuthResetPassword500StatusCode
 }
@@ -9302,25 +9106,18 @@ export const AuthResetPassword422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type AuthResetPassword422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type AuthResetPassword422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: AuthResetPassword422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: AuthResetPassword422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: AuthResetPassword422StatusCode
 }
@@ -9353,12 +9150,12 @@ export const AuthResetPassword404Name = {
 export type AuthResetPassword404 = {
   /** Ação recomendada para o recurso não encontrado. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o recurso não foi encontrado. */
   message: string
   /** Nome fixo do erro. */
   name: AuthResetPassword404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 404. */
   status_code: AuthResetPassword404StatusCode
 }
@@ -9391,12 +9188,12 @@ export const AuthResetPassword403Name = {
 export type AuthResetPassword403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: AuthResetPassword403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: AuthResetPassword403StatusCode
 }
@@ -9429,12 +9226,12 @@ export const AuthResetPassword401Name = {
 export type AuthResetPassword401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: AuthResetPassword401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: AuthResetPassword401StatusCode
 }
@@ -9486,12 +9283,12 @@ export const AuthForgotPassword500Name = {
 export type AuthForgotPassword500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: AuthForgotPassword500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: AuthForgotPassword500StatusCode
 }
@@ -9518,25 +9315,18 @@ export const AuthForgotPassword422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type AuthForgotPassword422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type AuthForgotPassword422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: AuthForgotPassword422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: AuthForgotPassword422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: AuthForgotPassword422StatusCode
 }
@@ -9569,12 +9359,12 @@ export const AuthForgotPassword403Name = {
 export type AuthForgotPassword403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: AuthForgotPassword403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: AuthForgotPassword403StatusCode
 }
@@ -9607,12 +9397,12 @@ export const AuthForgotPassword400Name = {
 export type AuthForgotPassword400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: AuthForgotPassword400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: AuthForgotPassword400StatusCode
 }
@@ -9664,12 +9454,12 @@ export const AuthLoginCredential500Name = {
 export type AuthLoginCredential500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: AuthLoginCredential500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: AuthLoginCredential500StatusCode
 }
@@ -9696,25 +9486,18 @@ export const AuthLoginCredential422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type AuthLoginCredential422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type AuthLoginCredential422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: AuthLoginCredential422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: AuthLoginCredential422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: AuthLoginCredential422StatusCode
 }
@@ -9747,12 +9530,12 @@ export const AuthLoginCredential403Name = {
 export type AuthLoginCredential403 = {
   /** Ação recomendada para acessar o recurso. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando acesso proibido. */
   message: string
   /** Nome fixo do erro. */
   name: AuthLoginCredential403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 403. */
   status_code: AuthLoginCredential403StatusCode
 }
@@ -9785,12 +9568,12 @@ export const AuthLoginCredential401Name = {
 export type AuthLoginCredential401 = {
   /** Ação recomendada para a autenticação. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que o acesso não está autorizado. */
   message: string
   /** Nome fixo do erro. */
   name: AuthLoginCredential401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 401. */
   status_code: AuthLoginCredential401StatusCode
 }
@@ -9823,12 +9606,12 @@ export const AuthLoginCredential400Name = {
 export type AuthLoginCredential400 = {
   /** Ação recomendada para corrigir a requisição. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando que a requisição é inválida. */
   message: string
   /** Nome fixo do erro. */
   name: AuthLoginCredential400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 400. */
   status_code: AuthLoginCredential400StatusCode
 }
@@ -9920,12 +9703,12 @@ export const LoginUserGoogleCallback500Name = {
 export type LoginUserGoogleCallback500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: LoginUserGoogleCallback500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: LoginUserGoogleCallback500StatusCode
 }
@@ -9952,25 +9735,18 @@ export const LoginUserGoogleCallback422Name = {
   UnprocessableEntityError: 'UnprocessableEntityError',
 } as const
 
-export type LoginUserGoogleCallback422DetailsItem = {
-  /** Mensagem de validação para o campo. */
-  message: string
-  /** Caminho para o campo com erro. */
-  path: string[]
-}
-
 /**
  * Schema to represent Unprocessable Entity errors (HTTP 422)
  */
 export type LoginUserGoogleCallback422 = {
   /** Ação recomendada para corrigir os dados enviados. */
   action: string
-  /** Detalhes adicionais sobre os erros de validação. */
-  details?: LoginUserGoogleCallback422DetailsItem[]
   /** Mensagem indicando que a entidade não pôde ser processada. */
   message: string
   /** Nome fixo do erro. */
   name: LoginUserGoogleCallback422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 422. */
   status_code: LoginUserGoogleCallback422StatusCode
 }
@@ -10039,12 +9815,12 @@ export const LoginUserGoogle500Name = {
 export type LoginUserGoogle500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: LoginUserGoogle500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: LoginUserGoogle500StatusCode
 }
@@ -10090,12 +9866,12 @@ export const ServerHealthCheck500Name = {
 export type ServerHealthCheck500 = {
   /** Ação recomendada para lidar com o erro interno. */
   action: string
-  /** Detalhes adicionais sobre o erro. */
-  details?: unknown
   /** Mensagem indicando um erro interno no servidor. */
   message: string
   /** Nome fixo do erro. */
   name: ServerHealthCheck500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
   /** Código de status HTTP 500. */
   status_code: ServerHealthCheck500StatusCode
 }
