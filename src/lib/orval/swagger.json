@@ -1464,76 +1464,31 @@
         }
       }
     },
-    "/v1/private/auth/refresh/user/session": {
+    "/v1/private/auth/refresh-session": {
       "patch": {
         "operationId": "refreshUserSession",
-        "summary": "Atualizar sessão do usuário",
+        "summary": "Renova a sessão do usuário autenticado",
         "tags": [
           "Auth"
         ],
-        "description": "Este endpoint renova automaticamente a sessão de um usuário que já está autenticado, permitindo que ele permaneça conectado sem necessidade de fazer login novamente quando sua sessão atual estiver expirando.\n\n* **Segurança**: Protegido por autenticação JWT Refresh (token de atualização) e CSRF via cookie/header.\n* **Autorização**: Disponível para usuários autenticados com qualquer perfil.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Valida o token de atualização (refresh token) e confirma a validade do token CSRF\n  2. Verifica se a sessão existe no banco de dados e corresponde ao usuário autenticado\n  3. Gera novos tokens de autenticação e atualização\n  4. Atualiza a sessão existente no banco de dados\n  5. Retorna os dados atualizados do usuário e o ID da sessão renovada\n\n**Middlewares aplicados**:\n- `verifyJWTRefresh`: Valida o token de atualização JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "description": "Renova a sessão do usuário autenticado, gerando novos tokens de acesso e refresh.\n\n* **Segurança**: Protegido por JWT de refresh e CSRF.\n* **Rate Limit**: Limitado a undefined requisições por minuto por usuário autenticado (padrão global).\n* **Autorização**: Usuário autenticado.\n* **Validação**: Conta ativa e sem necessidade de reset de senha.\n\nSobre o sessionId:\n- O sessionId é extraído automaticamente do payload do JWT refresh token.\n- O backend valida se o sessionId no token corresponde a uma sessão ativa no banco de dados.\n- Não é necessário enviar o sessionId via header, pois ele já está contido no token JWT.\n- O sessionId é mantido no banco enquanto a sessão estiver ativa.\n",
         "security": [
           {
             "bearerAuth": []
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Sessão atualizada com sucesso",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "user": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "format": "uuid",
-                          "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
-                        },
-                        "name": {
-                          "type": "string",
-                          "description": "Nome completo do usuário. String. Campo obrigatório."
-                        },
-                        "email": {
-                          "type": "string",
-                          "format": "email",
-                          "description": "Email do usuário. Endereço de email válido. Campo obrigatório."
-                        },
-                        "role": {
-                          "type": "string",
-                          "enum": [
-                            "admin",
-                            "user",
-                            "dev"
-                          ],
-                          "description": "Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório."
-                        },
-                        "accountStatus": {
-                          "type": "boolean",
-                          "description": "Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório."
-                        },
-                        "cpf": {
-                          "type": "string",
-                          "nullable": true,
-                          "description": "CPF do usuário. String no formato de CPF brasileiro. Pode ser nulo. Campo opcional."
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "name",
-                        "email",
-                        "role",
-                        "accountStatus",
-                        "cpf"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "message": {
+                    "userId": {
                       "type": "string",
-                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
+                      "format": "uuid",
+                      "description": "Identificador único do usuário no formato UUID v4. Campo obrigatório."
                     },
                     "sessionId": {
                       "type": "string",
@@ -1542,8 +1497,7 @@
                     }
                   },
                   "required": [
-                    "user",
-                    "message",
+                    "userId",
                     "sessionId"
                   ],
                   "additionalProperties": false,

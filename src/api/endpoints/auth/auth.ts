@@ -42,7 +42,7 @@ import type {
   LogoutUser401,
   LogoutUser403,
   LogoutUser500,
-  RefreshUserSession201,
+  RefreshUserSession200,
   RefreshUserSession400,
   RefreshUserSession401,
   RefreshUserSession403,
@@ -602,31 +602,29 @@ export const useLogoutUser = <
   }
 }
 /**
- * Este endpoint renova automaticamente a sessão de um usuário que já está autenticado, permitindo que ele permaneça conectado sem necessidade de fazer login novamente quando sua sessão atual estiver expirando.
+ * Renova a sessão do usuário autenticado, gerando novos tokens de acesso e refresh.
 
-* **Segurança**: Protegido por autenticação JWT Refresh (token de atualização) e CSRF via cookie/header.
-* **Autorização**: Disponível para usuários autenticados com qualquer perfil.
-* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
-* **Processo**:
-  1. Valida o token de atualização (refresh token) e confirma a validade do token CSRF
-  2. Verifica se a sessão existe no banco de dados e corresponde ao usuário autenticado
-  3. Gera novos tokens de autenticação e atualização
-  4. Atualiza a sessão existente no banco de dados
-  5. Retorna os dados atualizados do usuário e o ID da sessão renovada
+* **Segurança**: Protegido por JWT de refresh e CSRF.
+* **Rate Limit**: Limitado a undefined requisições por minuto por usuário autenticado (padrão global).
+* **Autorização**: Usuário autenticado.
+* **Validação**: Conta ativa e sem necessidade de reset de senha.
 
-**Middlewares aplicados**:
-- `verifyJWTRefresh`: Valida o token de atualização JWT e extrai os dados do usuário autenticado
-- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
- * @summary Atualizar sessão do usuário
+Sobre o sessionId:
+- O sessionId é extraído automaticamente do payload do JWT refresh token.
+- O backend valida se o sessionId no token corresponde a uma sessão ativa no banco de dados.
+- Não é necessário enviar o sessionId via header, pois ele já está contido no token JWT.
+- O sessionId é mantido no banco enquanto a sessão estiver ativa.
+
+ * @summary Renova a sessão do usuário autenticado
  */
 export type refreshUserSessionResponse = {
-  data: RefreshUserSession201
+  data: RefreshUserSession200
   status: number
   headers: Headers
 }
 
 export const getRefreshUserSessionUrl = () => {
-  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/auth/refresh/user/session`
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/auth/refresh-session`
 }
 
 export const refreshUserSession = async (
@@ -653,7 +651,7 @@ export const getRefreshUserSessionMutationFetcher = (
 }
 export const getRefreshUserSessionMutationKey = () =>
   [
-    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/auth/refresh/user/session`,
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/auth/refresh-session`,
   ] as const
 
 export type RefreshUserSessionMutationResult = NonNullable<
@@ -666,7 +664,7 @@ export type RefreshUserSessionMutationError =
   | RefreshUserSession500
 
 /**
- * @summary Atualizar sessão do usuário
+ * @summary Renova a sessão do usuário autenticado
  */
 export const useRefreshUserSession = <
   TError =

@@ -202,18 +202,6 @@ export type GetOrganogram200TreeItem = {
 }
 
 /**
- * Resposta do endpoint de organograma da equipe.
- */
-export type GetOrganogram200 = {
-  /** Mensagem de sucesso da operação. Campo obrigatório. */
-  message: string
-  /** Estatísticas gerais da equipe. */
-  stats: GetOrganogram200Stats
-  /** Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes. */
-  tree: GetOrganogram200TreeItem[]
-}
-
-/**
  * Quantidade de membros por posição.
  */
 export type GetOrganogram200StatsByPosition = {
@@ -255,6 +243,18 @@ export type GetOrganogram200Stats = {
    * @minimum 0
    */
   total: number
+}
+
+/**
+ * Resposta do endpoint de organograma da equipe.
+ */
+export type GetOrganogram200 = {
+  /** Mensagem de sucesso da operação. Campo obrigatório. */
+  message: string
+  /** Estatísticas gerais da equipe. */
+  stats: GetOrganogram200Stats
+  /** Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes. */
+  tree: GetOrganogram200TreeItem[]
 }
 
 /**
@@ -2381,20 +2381,6 @@ export type ListSpaceReservations400 = {
 }
 
 /**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
-
-/**
  * Informações do usuário que fez a reserva
  */
 export type ListSpaceReservations200ReservationsItemUser = {
@@ -2418,6 +2404,70 @@ export const ListSpaceReservations200ReservationsItemStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
+
+/**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ListSpaceReservations200ReservationsItem = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /** Registros de check-in/check-out relacionados à reserva */
+  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ListSpaceReservations200ReservationsItemSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ListSpaceReservations200ReservationsItemStatus
+  /** Informações do usuário que fez a reserva */
+  user: ListSpaceReservations200ReservationsItemUser
+}
+
+/**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
 
 /**
  * Tipo do espaço
@@ -2497,56 +2547,6 @@ export type ListSpaceReservations200ReservationsItemCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ListSpaceReservations200ReservationsItem = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /** Registros de check-in/check-out relacionados à reserva */
-  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ListSpaceReservations200ReservationsItemSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ListSpaceReservations200ReservationsItemStatus
-  /** Informações do usuário que fez a reserva */
-  user: ListSpaceReservations200ReservationsItemUser
-}
 
 export type ListSpaceReservationsIncludeUserAsGuest =
   (typeof ListSpaceReservationsIncludeUserAsGuest)[keyof typeof ListSpaceReservationsIncludeUserAsGuest]
@@ -4313,6 +4313,11 @@ export type GetSpaceSlotAvailability200Space = {
   zone: string | null
 }
 
+export type GetSpaceSlotAvailability200 = {
+  slots: GetSpaceSlotAvailability200SlotsItem[]
+  space: GetSpaceSlotAvailability200Space
+}
+
 /**
  * Usuário que fez a pré-reserva (null quando não há pré-reserva)
  */
@@ -4346,11 +4351,6 @@ export type GetSpaceSlotAvailability200SlotsItem = {
   status: GetSpaceSlotAvailability200SlotsItemStatus
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
   user: GetSpaceSlotAvailability200SlotsItemUser
-}
-
-export type GetSpaceSlotAvailability200 = {
-  slots: GetSpaceSlotAvailability200SlotsItem[]
-  space: GetSpaceSlotAvailability200Space
 }
 
 export type GetSpaceSlotAvailabilityParams = {
@@ -6202,6 +6202,15 @@ export type ListSpaces400 = {
   status_code: ListSpaces400StatusCode
 }
 
+export type ListSpaces200SpacesItemType =
+  (typeof ListSpaces200SpacesItemType)[keyof typeof ListSpaces200SpacesItemType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaces200SpacesItemType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
 export type ListSpaces200SpacesItem = {
   capacidade: number
   createdAt: string
@@ -6235,15 +6244,6 @@ export type ListSpaces200 = {
   totalCount: number
   totalPages: number
 }
-
-export type ListSpaces200SpacesItemType =
-  (typeof ListSpaces200SpacesItemType)[keyof typeof ListSpaces200SpacesItemType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListSpaces200SpacesItemType = {
-  room: 'room',
-  workstation: 'workstation',
-} as const
 
 export type ListSpacesParams = {
   page?: string
@@ -8627,6 +8627,33 @@ export type UserMe400 = {
   status_code: UserMe400StatusCode
 }
 
+export type UserMe200User = {
+  /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
+  accountStatus: boolean
+  /**
+   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional.
+   * @nullable
+   * @pattern ^\d{11}$
+   */
+  cpf: string | null
+  /** Endereço de email do usuário. Email válido. Campo obrigatório. */
+  email: string
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  id: string
+  /**
+   * Nome completo do usuário. String de texto. Pode ser nulo. Campo obrigatório.
+   * @nullable
+   */
+  name: string | null
+  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
+  role: UserMe200UserRole
+  /**
+   * Posição do usuário na equipe de atendimento. Pode ser director, supervisor, manager, assistant_manager, assistant ou null se não faz parte da equipe. Campo obrigatório.
+   * @nullable
+   */
+  teamPosition: UserMe200UserTeamPosition
+}
+
 /**
  * Dados do usuário recuperados com sucesso
  */
@@ -8665,33 +8692,6 @@ export const UserMe200UserRole = {
   user: 'user',
   dev: 'dev',
 } as const
-
-export type UserMe200User = {
-  /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
-  accountStatus: boolean
-  /**
-   * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional.
-   * @nullable
-   * @pattern ^\d{11}$
-   */
-  cpf: string | null
-  /** Endereço de email do usuário. Email válido. Campo obrigatório. */
-  email: string
-  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
-  id: string
-  /**
-   * Nome completo do usuário. String de texto. Pode ser nulo. Campo obrigatório.
-   * @nullable
-   */
-  name: string | null
-  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
-  role: UserMe200UserRole
-  /**
-   * Posição do usuário na equipe de atendimento. Pode ser director, supervisor, manager, assistant_manager, assistant ou null se não faz parte da equipe. Campo obrigatório.
-   * @nullable
-   */
-  teamPosition: UserMe200UserTeamPosition
-}
 
 /**
  * Código de status HTTP 500.
@@ -8846,45 +8846,13 @@ export type RefreshUserSession400 = {
 }
 
 /**
- * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
- */
-export type RefreshUserSession201UserRole =
-  (typeof RefreshUserSession201UserRole)[keyof typeof RefreshUserSession201UserRole]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const RefreshUserSession201UserRole = {
-  admin: 'admin',
-  user: 'user',
-  dev: 'dev',
-} as const
-
-export type RefreshUserSession201User = {
-  /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
-  accountStatus: boolean
-  /**
-   * CPF do usuário. String no formato de CPF brasileiro. Pode ser nulo. Campo opcional.
-   * @nullable
-   */
-  cpf: string | null
-  /** Email do usuário. Endereço de email válido. Campo obrigatório. */
-  email: string
-  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
-  id: string
-  /** Nome completo do usuário. String. Campo obrigatório. */
-  name: string
-  /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
-  role: RefreshUserSession201UserRole
-}
-
-/**
  * Sessão atualizada com sucesso
  */
-export type RefreshUserSession201 = {
-  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
-  message: string
+export type RefreshUserSession200 = {
   /** Identificador único da sessão no formato UUID v4. Campo obrigatório. */
   sessionId: string
-  user: RefreshUserSession201User
+  /** Identificador único do usuário no formato UUID v4. Campo obrigatório. */
+  userId: string
 }
 
 /**

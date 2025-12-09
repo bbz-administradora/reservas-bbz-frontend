@@ -1,153 +1,69 @@
-import { webserver } from '@/infra/webserver'
 import {
-  getCookie,
-  getServerFormattedCookies,
-  updateHeadersWithSetCookie,
-} from '@/lib/cookie'
+  HTTP_STATUS_BAD_REQUEST,
+  handleTokenExpiration,
+  isCsrfTokenMissing,
+  isSessionTokenExpired,
+  parseResponse,
+  prepareHeaders,
+  redirectToLogin,
+  throwCustomError,
+} from './custom-fetch-utils'
 
 /**
- * `customFetch` to handle API requests with dynamic headers and credentials.
+ * Custom fetch wrapper para lidar com requisições à API com:
+ * - Headers dinâmicos (Content-Type, CSRF Token)
+ * - Refresh automático de token no cliente
+ * - Tratamento de erros customizado
+ * - Suporte a diferentes tipos de resposta (JSON, PDF, texto)
+ *
+ * @template T - Tipo de retorno esperado
+ * @param url - URL da requisição
+ * @param options - Opções do fetch (método, headers, body, etc.)
+ * @returns Promise com os dados, status e headers da resposta
+ *
+ * @throws {CustomError} - Lança erro customizado para status >= 400
  */
-export const customFetch = async <T>(
+export async function customFetch<T>(
   url: string,
   options: RequestInit = {},
 ): Promise<
   T extends Promise<infer U> ? U : { data: T; status: number; headers: Headers }
-> => {
-  const csrfToken = await getCookie('bbz-server-auth-csrf-token')
+> {
+  // Prepara os headers com Content-Type e CSRF Token quando necessário
+  const headers = await prepareHeaders(options, url)
 
-  // Clona os headers existentes ou cria um novo objeto
-  const startHeaders = new Headers(options.headers || {})
-
-  // Adiciona 'Content-Type' se houver um corpo e não estiver presente
-  if (options.body && !startHeaders.has('Content-Type')) {
-    if (!(options.body instanceof FormData)) {
-      startHeaders.set('Content-Type', 'application/json')
-    }
-  }
-
-  // Adiciona 'X-CSRF-Token' se o token CSRF estiver disponível
-  if (csrfToken) {
-    startHeaders.set('X-CSRF-Token', csrfToken)
-  }
-
-  const requestInit: RequestInit = {
+  // Executa a requisição inicial
+  const request = new Request(url, {
     ...options,
-    headers: startHeaders,
-    credentials: 'include', // Mantém 'credentials: include'
+    headers,
+    credentials: 'include',
+  })
+
+  const response = await fetch(request)
+  let parsedResponse = await parseResponse(response)
+
+  // Verifica se o CSRF token está ausente e redireciona para login (apenas no cliente)
+  if (isCsrfTokenMissing(parsedResponse.status, parsedResponse.data)) {
+    console.info('❌ CSRF token ausente. Redirecionando para login...')
+    redirectToLogin()
+    return parsedResponse as any // Nunca será alcançado devido ao redirect
   }
 
-  const request = new Request(url, requestInit)
-  let response = await fetch(request)
-
-  let status = response.status
-  let headers = response.headers
-  let contentType = headers.get('content-type')
-  let data: any
-
-  if (contentType?.includes('application/json')) {
-    data = await response.json()
-  } else if (contentType?.includes('application/pdf')) {
-    data = await response.blob()
-  } else {
-    data = await response.text()
+  // Verifica se o token expirou e tenta fazer refresh (apenas no cliente)
+  if (isSessionTokenExpired(parsedResponse.status, parsedResponse.data)) {
+    parsedResponse = await handleTokenExpiration(url, options, parsedResponse)
   }
 
-  // Middleware para lidar com 401 e tentar o refresh token
-  if (status === 401 && data?.message === 'Token inválido ou expirado.') {
-    // verify if the CSRF token is present
-    const csrfToken = await getCookie('bbz-server-auth-csrf-token')
-    if (!csrfToken) {
-      console.warn('❌ CSRF token is missing. Aborting refresh token.')
-
-      return { data, status, headers } as unknown as T extends Promise<infer U>
-        ? U
-        : { data: T; status: number; headers: Headers }
-    }
-
-    // Adiciona os cookies formatados apenas no servidor
-    const serverCookies = await getServerFormattedCookies()
-    const headersServer: Record<string, string> = {
-      'X-CSRF-Token': csrfToken,
-    }
-    if (serverCookies) {
-      headersServer['Cookie'] = serverCookies
-    }
-
-    const refreshResponse = await fetch(
-      `${webserver.hostApi}/v1/private/auth/refresh/user/session`,
-      {
-        method: 'PATCH',
-        headers: headersServer,
-        credentials: 'include',
-      },
-    )
-
-    if (refreshResponse.status === 201) {
-      // 📌 Reexecuta a requisição original após o refresh
-
-      const isServer = typeof window === 'undefined'
-
-      if (isServer) {
-        // Reexecuta a requisição original após o refresh, somente no servidor
-        const updatedHeaders = await updateHeadersWithSetCookie(
-          refreshResponse,
-          request.headers,
-        )
-
-        const updatedRequest = new Request(request.url, {
-          ...request,
-          headers: updatedHeaders,
-        })
-
-        response = await fetch(updatedRequest)
-      } else {
-        // Reexecuta a requisição original após o refresh, somente no cliente
-        const csrfToken = await getCookie('bbz-server-auth-csrf-token')
-
-        // Clona os headers existentes ou cria um novo objeto
-        const startHeaders = new Headers(options.headers || {})
-
-        // Adiciona 'Content-Type' se houver um corpo e não estiver presente
-        if (options.body && !startHeaders.has('Content-Type')) {
-          if (!(options.body instanceof FormData)) {
-            startHeaders.set('Content-Type', 'application/json')
-          }
-        }
-
-        // Adiciona 'X-CSRF-Token' se o token CSRF estiver disponível
-        if (csrfToken) {
-          startHeaders.set('X-CSRF-Token', csrfToken)
-        }
-
-        const requestInit: RequestInit = {
-          ...options,
-          headers: startHeaders,
-          credentials: 'include', // Mantém 'credentials: include'
-        }
-
-        const request = new Request(url, requestInit)
-        response = await fetch(request)
-      }
-
-      status = response.status
-      headers = response.headers
-
-      contentType = headers.get('content-type')
-
-      if (contentType?.includes('application/json')) {
-        data = await response.json()
-      } else if (contentType?.includes('application/pdf')) {
-        data = await response.blob()
-      } else {
-        data = await response.text()
-      }
-    } else {
-      console.error('Failed to refresh token. Logging out...')
-    }
+  // Lança erro para status codes de erro (>= 400)
+  if (parsedResponse.status >= HTTP_STATUS_BAD_REQUEST) {
+    throwCustomError(parsedResponse)
   }
 
-  return { data, status, headers } as unknown as T extends Promise<infer U>
+  return {
+    data: parsedResponse.data,
+    status: parsedResponse.status,
+    headers: parsedResponse.headers,
+  } as unknown as T extends Promise<infer U>
     ? U
     : { data: T; status: number; headers: Headers }
 }

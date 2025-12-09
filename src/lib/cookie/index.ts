@@ -1,8 +1,9 @@
+import { COOKIE_PREFIX } from '@/config'
 import * as cookie from 'cookie'
 
-const CSRF_COOKIE_NAME = 'bbz-server-auth-csrf-token'
-const SESSION_COOKIE_NAME = 'bbz-server-auth-session-token'
-const REFRESH_COOKIE_NAME = 'bbz-server-auth-refresh-token'
+export const CSRF_COOKIE_NAME = `${COOKIE_PREFIX}-csrf-token`
+export const SESSION_COOKIE_NAME = `${COOKIE_PREFIX}-session-token`
+export const REFRESH_COOKIE_NAME = `${COOKIE_PREFIX}-refresh-token`
 
 /**
  * Obtém o valor de um cookie pelo nome.
@@ -19,8 +20,9 @@ export async function getCookie(name: string): Promise<string | undefined> {
   }
 
   // Ambiente servidor: usa next/headers de forma assíncrona
-  const headers = await require('next/headers').headers()
-  const cookiesHeader = headers.get('cookie') || ''
+  const { headers } = await import('next/headers')
+  const headersList = await headers()
+  const cookiesHeader = headersList.get('cookie') || ''
   const parsedCookies = cookie.parse(cookiesHeader)
   return parsedCookies[name]
 }
@@ -121,7 +123,7 @@ export async function getHeadersServer(): Promise<Record<
   string
 > | null> {
   // Obter o cookie CSRF
-  const csrfToken = await getCookie('bbz-server-auth-csrf-token')
+  const csrfToken = await getCookie(CSRF_COOKIE_NAME)
   if (!csrfToken) {
     console.warn('CSRF token not found')
     return null
