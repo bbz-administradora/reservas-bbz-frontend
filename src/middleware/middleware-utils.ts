@@ -1,4 +1,3 @@
-import { COOKIE_PREFIX } from '@/config'
 import {
   CSRF_COOKIE_NAME,
   REFRESH_COOKIE_NAME,

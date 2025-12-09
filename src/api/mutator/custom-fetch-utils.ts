@@ -90,7 +90,9 @@ export async function prepareHeaders(
 /**
  * Faz o parsing da resposta baseado no Content-Type
  */
-export async function parseResponse(response: Response): Promise<ParsedResponse> {
+export async function parseResponse(
+  response: Response,
+): Promise<ParsedResponse> {
   const status = response.status
   const headers = response.headers
   const contentType = headers.get('content-type')
@@ -113,7 +115,8 @@ export async function parseResponse(response: Response): Promise<ParsedResponse>
  */
 export function isSessionTokenExpired(status: number, data: any): boolean {
   return (
-    status === HTTP_STATUS_UNAUTHORIZED && data?.message === TOKEN_EXPIRED_MESSAGE
+    status === HTTP_STATUS_UNAUTHORIZED &&
+    data?.message === TOKEN_EXPIRED_MESSAGE
   )
 }
 
