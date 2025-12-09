@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server'
 import {
   authRouteHandler,
   forceRefreshHandler,
+  maintenanceHandler,
   privateRouteHandler,
   tokenValidationHandler,
 } from './middleware/middleware-handlers'
@@ -57,6 +58,7 @@ export async function proxy(request: NextRequest) {
   // Handlers são executados em sequência,
   // parando quando algum retorna uma resposta
   const handlers: MiddlewareHandler[] = [
+    maintenanceHandler, // PRIMEIRO: Se em manutenção, redireciona todos e limpa cookies
     tokenValidationHandler, // IMPORTANTE: Deve vir antes dos handlers de autenticação
     forceRefreshHandler, // Force refresh quando ?force_refresh=true está presente
     privateRouteHandler,

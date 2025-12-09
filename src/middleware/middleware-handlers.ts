@@ -17,7 +17,47 @@ const AUTH_ROUTES = [
   '/redefinir-senha/:userId/:token',
 ]
 
-const PUBLIC_ROUTES = [...AUTH_ROUTES]
+// Rota de manutenção - precisa estar nas rotas públicas para não redirecionar para login
+const MAINTENANCE_ROUTES = ['/manutencao']
+
+const PUBLIC_ROUTES = [...AUTH_ROUTES, ...MAINTENANCE_ROUTES]
+
+/**
+ * Handler de modo de manutenção.
+ *
+ * Quando a variável de ambiente NEXT_PUBLIC_MAINTENANCE_MODE=true está ativa,
+ * redireciona TODOS os usuários para a página /manutencao e limpa os cookies.
+ *
+ * Uso:
+ * 1. Defina NEXT_PUBLIC_MAINTENANCE_MODE=true na Vercel/ambiente
+ * 2. Faça deploy
+ * 3. Aguarde todos os usuários serem redirecionados e terem cookies limpos
+ * 4. Remova a variável ou defina como false
+ * 5. Faça novo deploy
+ */
+export const maintenanceHandler: MiddlewareHandler = async (request) => {
+  const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true'
+
+  if (!isMaintenanceMode) {
+    return undefined
+  }
+
+  // Se já está na página de manutenção ou na API de clear-session, deixa passar
+  const pathname = request.nextUrl.pathname
+  if (pathname === '/manutencao' || pathname === '/api/clear-session') {
+    return undefined
+  }
+
+  console.info('🔧 Middleware - Modo manutenção ativo, redirecionando...')
+
+  // Redireciona para página de manutenção
+  const response = NextResponse.redirect(new URL('/manutencao', request.url))
+
+  // Limpa os cookies na resposta (os httpOnly serão limpos pela API route)
+  clearAuthCookies(response)
+
+  return response
+}
 
 /**
  * Handler que força o refresh do token quando o parâmetro ?force_refresh=true está presente.
