@@ -49,20 +49,33 @@ const POSITION_LABELS: Record<
 }
 
 // Mapa de quem pode NOMEAR cada posição
+// Admin/Dev podem nomear qualquer posição
+// Director pode nomear qualquer posição (exceto director)
+// Supervisor pode nomear manager, assistant_manager, assistant
+// Manager/Assistant Manager/Assistant NÃO podem nomear ninguém
 const CAN_NOMINATE: Record<
   PositionType,
   { roles: string[]; positions: PositionType[] }
 > = {
   director: { roles: ['admin', 'dev'], positions: [] },
-  supervisor: { roles: [], positions: ['director'] },
-  manager: { roles: [], positions: ['supervisor'] },
-  assistant_manager: { roles: [], positions: ['manager'] },
-  assistant: { roles: [], positions: ['manager', 'assistant_manager'] },
+  supervisor: { roles: ['admin', 'dev'], positions: ['director'] },
+  manager: { roles: ['admin', 'dev'], positions: ['director', 'supervisor'] },
+  assistant_manager: {
+    roles: ['admin', 'dev'],
+    positions: ['director', 'supervisor'],
+  },
+  assistant: {
+    roles: ['admin', 'dev'],
+    positions: ['director', 'supervisor'],
+  },
 }
 
 // Mapa de quem pode REMOVER cada posição
+// Segue a mesma lógica de quem pode nomear:
 // Admin/Dev podem remover qualquer um
-// Superior hierárquico pode remover inferior
+// Director pode remover qualquer um (exceto director)
+// Supervisor pode remover manager, assistant_manager, assistant
+// Manager/Assistant Manager/Assistant NÃO podem remover ninguém
 const CAN_REMOVE: Record<
   PositionType,
   { roles: string[]; positions: PositionType[] }
@@ -72,11 +85,11 @@ const CAN_REMOVE: Record<
   manager: { roles: ['admin', 'dev'], positions: ['director', 'supervisor'] },
   assistant_manager: {
     roles: ['admin', 'dev'],
-    positions: ['director', 'supervisor', 'manager'],
+    positions: ['director', 'supervisor'],
   },
   assistant: {
     roles: ['admin', 'dev'],
-    positions: ['director', 'supervisor', 'manager', 'assistant_manager'],
+    positions: ['director', 'supervisor'],
   },
 }
 
@@ -203,15 +216,15 @@ export default async function PositionPage({ params }: PositionPageProps) {
 function getPositionDescription(position: PositionType): string {
   const descriptions: Record<PositionType, string> = {
     director:
-      'Diretores são o topo da hierarquia da equipe de atendimento. Podem nomear Supervisores e têm acesso completo à gestão da equipe. Apenas Admin/Dev podem nomear Diretores.',
+      'Diretores são o topo da hierarquia da equipe de atendimento. Podem nomear Supervisores, Gerentes, Subgerentes e Assistentes. Apenas Admin/Dev podem nomear Diretores.',
     supervisor:
-      'Supervisores são nomeados pelo Diretor. Podem nomear Gerentes e acompanhar o trabalho das equipes sob sua supervisão.',
+      'Supervisores são nomeados pelo Diretor. Podem nomear Gerentes, Subgerentes e Assistentes, além de acompanhar o trabalho das equipes sob sua supervisão.',
     manager:
-      'Gerentes são nomeados pelos Supervisores. Podem nomear Subgerentes e Assistentes para auxiliar nas operações diárias.',
+      'Gerentes são nomeados pelos Diretores ou Supervisores. São responsáveis pela coordenação operacional das equipes.',
     assistant_manager:
-      'Subgerentes são nomeados pelos Gerentes. Auxiliam na coordenação das atividades, podem nomear Assistentes e substituir o Gerente quando necessário.',
+      'Subgerentes são nomeados pelos Diretores ou Supervisores. Auxiliam na coordenação das atividades e substituem o Gerente quando necessário.',
     assistant:
-      'Assistentes são nomeados pelos Gerentes ou Subgerentes. São responsáveis pelo atendimento direto e operações do dia a dia.',
+      'Assistentes são nomeados pelos Diretores ou Supervisores. São responsáveis pelo atendimento direto e operações do dia a dia.',
   }
   return descriptions[position]
 }

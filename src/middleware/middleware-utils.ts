@@ -13,6 +13,12 @@ import { MiddlewareHandler, ResponseModifier } from './middleware-types'
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3333'
 
 /**
+ * Domínio para cookies em produção.
+ * Variáveis NEXT_PUBLIC_* são substituídas no build time.
+ */
+const COOKIE_DOMAIN = process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined
+
+/**
  * Tipo para representar um cookie parseado com seus atributos
  */
 interface ParsedCookie {
@@ -20,6 +26,7 @@ interface ParsedCookie {
   value: string
   options: {
     path?: string
+    domain?: string
     httpOnly?: boolean
     secure?: boolean
     maxAge?: number
@@ -49,6 +56,8 @@ function parseCookieHeader(cookieStr: string): ParsedCookie {
       cookieOptions.secure = true
     } else if (part.startsWith('path=')) {
       cookieOptions.path = parts[i].split('=')[1]
+    } else if (part.startsWith('domain=')) {
+      cookieOptions.domain = parts[i].split('=')[1]
     } else if (part.startsWith('max-age=')) {
       cookieOptions.maxAge = parseInt(parts[i].split('=')[1])
     } else if (part.startsWith('samesite=')) {
@@ -161,6 +170,10 @@ export async function runHandlers(
  * Limpa todos os cookies de autenticação da resposta.
  * Usado quando detectamos um estado inconsistente dos cookies.
  *
+ * IMPORTANTE: Em produção, os cookies são setados com um domínio específico.
+ * Para deletar corretamente, precisamos especificar o mesmo domínio.
+ * Caso contrário, o cookie com domínio não será removido e ficará duplicado.
+ *
  * @param response - A resposta Next.js onde os cookies serão deletados
  */
 export function clearAuthCookies(response: NextResponse): void {
@@ -171,7 +184,18 @@ export function clearAuthCookies(response: NextResponse): void {
   ]
 
   for (const cookieName of cookiesToDelete) {
+    // Deleta cookie sem domínio (para desenvolvimento)
     response.cookies.delete(cookieName)
+
+    // Em produção, também deleta com o domínio específico
+    if (COOKIE_DOMAIN) {
+      response.cookies.delete({
+        name: cookieName,
+        domain: COOKIE_DOMAIN,
+        path: '/',
+      })
+    }
+
     console.info(`🗑️ Middleware - Cookie deletado: ${cookieName}`)
   }
 }
