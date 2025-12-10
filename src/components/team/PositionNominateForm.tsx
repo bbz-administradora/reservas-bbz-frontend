@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -36,15 +37,39 @@ const POSITION_LABELS: Record<PositionType, string> = {
   assistant: 'Assistente',
 }
 
-// Schema de validação
-const nominateSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'O email é obrigatório')
-    .email('Digite um email válido'),
-})
+// Posições que OBRIGATORIAMENTE precisam informar o chefe imediato
+const REQUIRES_SUPERVISOR: PositionType[] = [
+  'manager',
+  'assistant_manager',
+  'assistant',
+]
 
-type NominateFormData = z.infer<typeof nominateSchema>
+// Mapeamento de qual posição pode ser chefe de qual
+const ALLOWED_SUPERVISORS: Record<PositionType, PositionType[]> = {
+  director: [],
+  supervisor: ['director'],
+  manager: ['supervisor'],
+  assistant_manager: ['manager'],
+  assistant: ['manager', 'assistant_manager'],
+}
+
+// Função para criar o schema dinamicamente baseado na posição
+function createNominateSchema(position: PositionType) {
+  const requiresSupervisor = REQUIRES_SUPERVISOR.includes(position)
+
+  return z.object({
+    email: z
+      .string()
+      .min(1, 'O email é obrigatório')
+      .email('Digite um email válido'),
+    supervisorEmail: requiresSupervisor
+      ? z
+          .string()
+          .min(1, 'O email do chefe imediato é obrigatório')
+          .email('Digite um email válido para o chefe imediato')
+      : z.string().email('Digite um email válido').optional().or(z.literal('')),
+  })
+}
 
 interface PositionNominateFormProps {
   position: PositionType
@@ -57,11 +82,22 @@ export function PositionNominateForm({
 }: PositionNominateFormProps) {
   const router = useRouter()
   const label = POSITION_LABELS[position]
+  const requiresSupervisor = REQUIRES_SUPERVISOR.includes(position)
+  const allowedSupervisors = ALLOWED_SUPERVISORS[position]
+
+  // Gera o label do chefe imediato baseado nas posições permitidas
+  const supervisorLabel = allowedSupervisors
+    .map((p) => POSITION_LABELS[p])
+    .join(' ou ')
+
+  const nominateSchema = createNominateSchema(position)
+  type NominateFormData = z.infer<typeof nominateSchema>
 
   const form = useForm<NominateFormData>({
     resolver: zodResolver(nominateSchema),
     defaultValues: {
       email: '',
+      supervisorEmail: '',
     },
   })
 
@@ -89,7 +125,10 @@ export function PositionNominateForm({
   })
 
   async function onSubmit(data: NominateFormData) {
-    await createPosition({ email: data.email })
+    await createPosition({
+      email: data.email,
+      supervisorEmail: data.supervisorEmail || undefined,
+    })
   }
 
   return (
@@ -121,10 +160,45 @@ export function PositionNominateForm({
                       disabled={isMutating}
                     />
                   </FormControl>
+                  <FormDescription>
+                    Email da pessoa que será nomeada {label.toLowerCase()}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            {/* Campo de chefe imediato - exibido apenas para posições que precisam */}
+            {(requiresSupervisor || allowedSupervisors.length > 0) && (
+              <FormField
+                control={form.control}
+                name="supervisorEmail"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Email do chefe imediato
+                      {requiresSupervisor && (
+                        <span className="text-destructive ml-1">*</span>
+                      )}
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="chefe@exemplo.com"
+                        {...field}
+                        disabled={isMutating}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      {requiresSupervisor
+                        ? `Informe o email do ${supervisorLabel} que será o chefe imediato`
+                        : `Opcional: informe o email do ${supervisorLabel} para criar o vínculo`}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <Button type="submit" disabled={isMutating} className="w-full">
               {isMutating ? (

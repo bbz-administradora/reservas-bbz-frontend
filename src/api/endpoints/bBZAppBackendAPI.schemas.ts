@@ -1347,6 +1347,8 @@ export type CreatePositionBody = {
    * @maxLength 254
    */
   email: string
+  /** Email do chefe imediato do usuário que será nomeado. Obrigatório para: manager (email do supervisor), assistant_manager (email do gerente), assistant (email do gerente ou subgerente). Campo opcional para director e supervisor. */
+  supervisorEmail?: string
 }
 
 /**

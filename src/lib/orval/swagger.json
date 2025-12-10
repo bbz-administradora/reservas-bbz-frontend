@@ -12131,6 +12131,11 @@
                     "minLength": 3,
                     "maxLength": 254,
                     "description": "Email do usuário que será nomeado para a posição. Deve ser um email válido de um usuário cadastrado no sistema. Campo obrigatório."
+                  },
+                  "supervisorEmail": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email do chefe imediato do usuário que será nomeado. Obrigatório para: manager (email do supervisor), assistant_manager (email do gerente), assistant (email do gerente ou subgerente). Campo opcional para director e supervisor."
                   }
                 },
                 "required": [
