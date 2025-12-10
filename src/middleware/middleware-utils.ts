@@ -324,7 +324,7 @@ export async function refreshTokenInMiddleware(
           'X-CSRF-Token': csrfToken,
         },
         credentials: 'include',
-        body: JSON.stringify({}),
+        body: JSON.stringify({ logoutAllSessions: false }),
       },
     )
 

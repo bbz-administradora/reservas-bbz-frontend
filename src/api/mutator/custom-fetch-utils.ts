@@ -165,6 +165,7 @@ export async function attemptTokenRefresh(
       method: 'PATCH',
       headers: refreshHeaders,
       credentials: 'include',
+      body: JSON.stringify({ logoutAllSessions: false }),
     },
   )
 
