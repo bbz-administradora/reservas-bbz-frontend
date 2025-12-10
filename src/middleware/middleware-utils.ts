@@ -319,10 +319,12 @@ export async function refreshTokenInMiddleware(
       {
         method: 'PATCH',
         headers: {
+          'Content-Type': 'application/json',
           Cookie: `${REFRESH_COOKIE_NAME}=${refreshToken}; ${CSRF_COOKIE_NAME}=${csrfToken}`,
           'X-CSRF-Token': csrfToken,
         },
         credentials: 'include',
+        body: JSON.stringify({}),
       },
     )
 
