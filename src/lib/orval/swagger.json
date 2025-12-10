@@ -13621,6 +13621,376 @@
         }
       }
     },
+    "/v1/private/team/positions/{userId}/supervisor": {
+      "patch": {
+        "operationId": "updateSupervisor",
+        "summary": "Atualizar o supervisor de um membro da equipe",
+        "tags": [
+          "Team"
+        ],
+        "description": "Este endpoint permite atualizar (ou atribuir) o chefe imediato de um membro da equipe de atendimento.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Apenas usuários com role admin ou dev podem atualizar supervisores.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Regras de negócio**:\n1. Apenas admin/dev podem atualizar supervisores\n2. O usuário alvo deve ter uma posição na equipe\n3. O supervisor informado deve ter uma posição válida na hierarquia\n4. Director não pode ter supervisor (está no topo da hierarquia)\n5. Se o membro já tinha um supervisor, o vínculo anterior é removido\n\n**Hierarquia de supervisão**:\n- Supervisor → reporta ao Diretor\n- Gerente → reporta ao Supervisor\n- Subgerente → reporta ao Gerente\n- Assistente → reporta ao Gerente ou Subgerente\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "supervisorEmail": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email do usuário que será definido como chefe imediato (supervisor, gerente ou subgerente). Campo obrigatório."
+                  }
+                },
+                "required": [
+                  "supervisorEmail"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "description": "Identificador único do usuário que terá seu supervisor atualizado no formato UUID v4. Campo obrigatório."
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supervisor atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem informativa sobre o resultado da operação. Campo obrigatório."
+                    },
+                    "userId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Identificador único do usuário que teve seu supervisor atualizado. Campo obrigatório."
+                    },
+                    "supervisorUserId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Identificador único do usuário que foi definido como chefe imediato. Campo obrigatório."
+                    },
+                    "supervisorEmail": {
+                      "type": "string",
+                      "format": "email",
+                      "description": "Email do usuário que foi definido como chefe imediato. Campo obrigatório."
+                    },
+                    "supervisorName": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Nome do usuário que foi definido como chefe imediato."
+                    },
+                    "supervisorPosition": {
+                      "type": "string",
+                      "description": "Posição do chefe imediato na equipe (supervisor, manager, etc.). Campo obrigatório."
+                    }
+                  },
+                  "required": [
+                    "message",
+                    "userId",
+                    "supervisorUserId",
+                    "supervisorEmail",
+                    "supervisorName",
+                    "supervisorPosition"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Supervisor atualizado com sucesso"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Schema to represent Not Found errors (HTTP 404)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "NotFoundError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o recurso não foi encontrado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para o recurso não encontrado."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        404
+                      ],
+                      "description": "Código de status HTTP 404."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Not Found errors (HTTP 404)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/private/team/organogram": {
       "get": {
         "operationId": "getOrganogram",

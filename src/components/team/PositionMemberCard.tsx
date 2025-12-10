@@ -3,6 +3,7 @@
 import { useRemovePosition } from '@/api/endpoints/team/team'
 import { showToast } from '@/components/ShowToast'
 import { Text } from '@/components/Text'
+import { UpdateSupervisorDialog } from '@/components/team/UpdateSupervisorDialog'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,6 +21,14 @@ import { ptBR } from 'date-fns/locale'
 import { Loader2, Trash2, UserCog } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
+// Tipos de posição
+type PositionType =
+  | 'director'
+  | 'supervisor'
+  | 'manager'
+  | 'assistant_manager'
+  | 'assistant'
+
 interface PositionMemberCardProps {
   id: string
   userId: string
@@ -30,6 +39,8 @@ interface PositionMemberCardProps {
   assignedByEmail: string
   createdAt: string
   canRemove: boolean
+  canUpdateSupervisor?: boolean
+  position: PositionType
 }
 
 export function PositionMemberCard({
@@ -40,6 +51,8 @@ export function PositionMemberCard({
   assignedByEmail,
   createdAt,
   canRemove,
+  canUpdateSupervisor = false,
+  position,
 }: PositionMemberCardProps) {
   const router = useRouter()
 
@@ -107,43 +120,56 @@ export function PositionMemberCard({
         </div>
       </div>
 
-      {canRemove && (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-              disabled={isMutating}
-            >
-              {isMutating ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Trash2 className="h-4 w-4" />
-              )}
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Remover membro?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Tem certeza que deseja remover{' '}
-                <strong>{userName || userEmail}</strong> da equipe? Esta ação
-                não pode ser desfeita.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => removePosition({})}
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+      <div className="flex items-center gap-1">
+        {/* Botão de nomear superior */}
+        {canUpdateSupervisor && position !== 'director' && (
+          <UpdateSupervisorDialog
+            userId={userId}
+            userName={userName}
+            userEmail={userEmail}
+            position={position}
+          />
+        )}
+
+        {/* Botão de remover */}
+        {canRemove && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                disabled={isMutating}
               >
-                Remover
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
+                {isMutating ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Trash2 className="h-4 w-4" />
+                )}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Remover membro?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Tem certeza que deseja remover{' '}
+                  <strong>{userName || userEmail}</strong> da equipe? Esta ação
+                  não pode ser desfeita.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => removePosition({})}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Remover
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
+      </div>
     </div>
   )
 }

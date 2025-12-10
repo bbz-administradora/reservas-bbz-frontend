@@ -202,6 +202,18 @@ export type GetOrganogram200TreeItem = {
 }
 
 /**
+ * Resposta do endpoint de organograma da equipe.
+ */
+export type GetOrganogram200 = {
+  /** Mensagem de sucesso da operação. Campo obrigatório. */
+  message: string
+  /** Estatísticas gerais da equipe. */
+  stats: GetOrganogram200Stats
+  /** Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes. */
+  tree: GetOrganogram200TreeItem[]
+}
+
+/**
  * Quantidade de membros por posição.
  */
 export type GetOrganogram200StatsByPosition = {
@@ -246,15 +258,257 @@ export type GetOrganogram200Stats = {
 }
 
 /**
- * Resposta do endpoint de organograma da equipe.
+ * Código de status HTTP 500.
  */
-export type GetOrganogram200 = {
-  /** Mensagem de sucesso da operação. Campo obrigatório. */
+export type UpdateSupervisor500StatusCode =
+  (typeof UpdateSupervisor500StatusCode)[keyof typeof UpdateSupervisor500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateSupervisor500Name =
+  (typeof UpdateSupervisor500Name)[keyof typeof UpdateSupervisor500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type UpdateSupervisor500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
   message: string
-  /** Estatísticas gerais da equipe. */
-  stats: GetOrganogram200Stats
-  /** Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes. */
-  tree: GetOrganogram200TreeItem[]
+  /** Nome fixo do erro. */
+  name: UpdateSupervisor500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: UpdateSupervisor500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type UpdateSupervisor422StatusCode =
+  (typeof UpdateSupervisor422StatusCode)[keyof typeof UpdateSupervisor422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateSupervisor422Name =
+  (typeof UpdateSupervisor422Name)[keyof typeof UpdateSupervisor422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type UpdateSupervisor422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateSupervisor422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 422. */
+  status_code: UpdateSupervisor422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type UpdateSupervisor404StatusCode =
+  (typeof UpdateSupervisor404StatusCode)[keyof typeof UpdateSupervisor404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateSupervisor404Name =
+  (typeof UpdateSupervisor404Name)[keyof typeof UpdateSupervisor404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type UpdateSupervisor404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateSupervisor404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 404. */
+  status_code: UpdateSupervisor404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type UpdateSupervisor403StatusCode =
+  (typeof UpdateSupervisor403StatusCode)[keyof typeof UpdateSupervisor403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateSupervisor403Name =
+  (typeof UpdateSupervisor403Name)[keyof typeof UpdateSupervisor403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type UpdateSupervisor403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateSupervisor403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: UpdateSupervisor403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type UpdateSupervisor401StatusCode =
+  (typeof UpdateSupervisor401StatusCode)[keyof typeof UpdateSupervisor401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateSupervisor401Name =
+  (typeof UpdateSupervisor401Name)[keyof typeof UpdateSupervisor401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type UpdateSupervisor401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateSupervisor401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: UpdateSupervisor401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type UpdateSupervisor400StatusCode =
+  (typeof UpdateSupervisor400StatusCode)[keyof typeof UpdateSupervisor400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateSupervisor400Name =
+  (typeof UpdateSupervisor400Name)[keyof typeof UpdateSupervisor400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateSupervisor400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type UpdateSupervisor400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateSupervisor400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: UpdateSupervisor400StatusCode
+}
+
+/**
+ * Supervisor atualizado com sucesso
+ */
+export type UpdateSupervisor200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  /** Email do usuário que foi definido como chefe imediato. Campo obrigatório. */
+  supervisorEmail: string
+  /**
+   * Nome do usuário que foi definido como chefe imediato.
+   * @nullable
+   */
+  supervisorName: string | null
+  /** Posição do chefe imediato na equipe (supervisor, manager, etc.). Campo obrigatório. */
+  supervisorPosition: string
+  /** Identificador único do usuário que foi definido como chefe imediato. Campo obrigatório. */
+  supervisorUserId: string
+  /** Identificador único do usuário que teve seu supervisor atualizado. Campo obrigatório. */
+  userId: string
+}
+
+export type UpdateSupervisorBody = {
+  /** Email do usuário que será definido como chefe imediato (supervisor, gerente ou subgerente). Campo obrigatório. */
+  supervisorEmail: string
 }
 
 /**
@@ -4315,11 +4569,6 @@ export type GetSpaceSlotAvailability200Space = {
   zone: string | null
 }
 
-export type GetSpaceSlotAvailability200 = {
-  slots: GetSpaceSlotAvailability200SlotsItem[]
-  space: GetSpaceSlotAvailability200Space
-}
-
 /**
  * Usuário que fez a pré-reserva (null quando não há pré-reserva)
  */
@@ -4353,6 +4602,11 @@ export type GetSpaceSlotAvailability200SlotsItem = {
   status: GetSpaceSlotAvailability200SlotsItemStatus
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
   user: GetSpaceSlotAvailability200SlotsItemUser
+}
+
+export type GetSpaceSlotAvailability200 = {
+  slots: GetSpaceSlotAvailability200SlotsItem[]
+  space: GetSpaceSlotAvailability200Space
 }
 
 export type GetSpaceSlotAvailabilityParams = {
@@ -8629,6 +8883,36 @@ export type UserMe400 = {
   status_code: UserMe400StatusCode
 }
 
+/**
+ * Posição do usuário na equipe de atendimento. Pode ser director, supervisor, manager, assistant_manager, assistant ou null se não faz parte da equipe. Campo obrigatório.
+ * @nullable
+ */
+export type UserMe200UserTeamPosition =
+  | (typeof UserMe200UserTeamPosition)[keyof typeof UserMe200UserTeamPosition]
+  | null
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UserMe200UserTeamPosition = {
+  director: 'director',
+  supervisor: 'supervisor',
+  manager: 'manager',
+  assistant_manager: 'assistant_manager',
+  assistant: 'assistant',
+} as const
+
+/**
+ * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
+ */
+export type UserMe200UserRole =
+  (typeof UserMe200UserRole)[keyof typeof UserMe200UserRole]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UserMe200UserRole = {
+  admin: 'admin',
+  user: 'user',
+  dev: 'dev',
+} as const
+
 export type UserMe200User = {
   /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
@@ -8664,36 +8948,6 @@ export type UserMe200 = {
   message: string
   user: UserMe200User
 }
-
-/**
- * Posição do usuário na equipe de atendimento. Pode ser director, supervisor, manager, assistant_manager, assistant ou null se não faz parte da equipe. Campo obrigatório.
- * @nullable
- */
-export type UserMe200UserTeamPosition =
-  | (typeof UserMe200UserTeamPosition)[keyof typeof UserMe200UserTeamPosition]
-  | null
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserMe200UserTeamPosition = {
-  director: 'director',
-  supervisor: 'supervisor',
-  manager: 'manager',
-  assistant_manager: 'assistant_manager',
-  assistant: 'assistant',
-} as const
-
-/**
- * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
- */
-export type UserMe200UserRole =
-  (typeof UserMe200UserRole)[keyof typeof UserMe200UserRole]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserMe200UserRole = {
-  admin: 'admin',
-  user: 'user',
-  dev: 'dev',
-} as const
 
 /**
  * Código de status HTTP 500.

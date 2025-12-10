@@ -127,6 +127,9 @@ export default async function PositionPage({ params }: PositionPageProps) {
     removePermissions.roles.includes(user?.role || '') ||
     removePermissions.positions.includes(teamPosition as PositionType)
 
+  // Verificar se o usuário pode ATUALIZAR SUPERVISOR (apenas admin/dev)
+  const canUpdateSupervisor = ['admin', 'dev'].includes(user?.role || '')
+
   return (
     <div
       id="main"
@@ -178,6 +181,8 @@ export default async function PositionPage({ params }: PositionPageProps) {
               assignedByEmail={member.assignedByEmail}
               createdAt={member.createdAt}
               canRemove={canRemove}
+              canUpdateSupervisor={canUpdateSupervisor}
+              position={positionType}
             />
           ))
         ) : (

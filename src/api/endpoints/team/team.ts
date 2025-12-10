@@ -44,6 +44,14 @@ import type {
   RemovePosition404,
   RemovePosition422,
   RemovePosition500,
+  UpdateSupervisor200,
+  UpdateSupervisor400,
+  UpdateSupervisor401,
+  UpdateSupervisor403,
+  UpdateSupervisor404,
+  UpdateSupervisor422,
+  UpdateSupervisor500,
+  UpdateSupervisorBody,
 } from '../bBZAppBackendAPI.schemas'
 
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
@@ -516,6 +524,120 @@ export const useRemovePosition = <
 
   const swrKey = swrOptions?.swrKey ?? getRemovePositionMutationKey(userId)
   const swrFn = getRemovePositionMutationFetcher(userId, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite atualizar (ou atribuir) o chefe imediato de um membro da equipe de atendimento.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Apenas usuários com role admin ou dev podem atualizar supervisores.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+**Regras de negócio**:
+1. Apenas admin/dev podem atualizar supervisores
+2. O usuário alvo deve ter uma posição na equipe
+3. O supervisor informado deve ter uma posição válida na hierarquia
+4. Director não pode ter supervisor (está no topo da hierarquia)
+5. Se o membro já tinha um supervisor, o vínculo anterior é removido
+
+**Hierarquia de supervisão**:
+- Supervisor → reporta ao Diretor
+- Gerente → reporta ao Supervisor
+- Subgerente → reporta ao Gerente
+- Assistente → reporta ao Gerente ou Subgerente
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Atualizar o supervisor de um membro da equipe
+ */
+export type updateSupervisorResponse = {
+  data: UpdateSupervisor200
+  status: number
+  headers: Headers
+}
+
+export const getUpdateSupervisorUrl = (userId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/${userId}/supervisor`
+}
+
+export const updateSupervisor = async (
+  userId: string,
+  updateSupervisorBody: UpdateSupervisorBody,
+  options?: RequestInit,
+): Promise<updateSupervisorResponse> => {
+  return customFetch<Promise<updateSupervisorResponse>>(
+    getUpdateSupervisorUrl(userId),
+    {
+      ...options,
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(updateSupervisorBody),
+    },
+  )
+}
+
+export const getUpdateSupervisorMutationFetcher = (
+  userId: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: UpdateSupervisorBody },
+  ): Promise<updateSupervisorResponse> => {
+    return updateSupervisor(userId, arg, options)
+  }
+}
+export const getUpdateSupervisorMutationKey = (userId: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/positions/${userId}/supervisor`,
+  ] as const
+
+export type UpdateSupervisorMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateSupervisor>>
+>
+export type UpdateSupervisorMutationError =
+  | UpdateSupervisor400
+  | UpdateSupervisor401
+  | UpdateSupervisor403
+  | UpdateSupervisor404
+  | UpdateSupervisor422
+  | UpdateSupervisor500
+
+/**
+ * @summary Atualizar o supervisor de um membro da equipe
+ */
+export const useUpdateSupervisor = <
+  TError =
+    | UpdateSupervisor400
+    | UpdateSupervisor401
+    | UpdateSupervisor403
+    | UpdateSupervisor404
+    | UpdateSupervisor422
+    | UpdateSupervisor500,
+>(
+  userId: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof updateSupervisor>>,
+      TError,
+      Key,
+      UpdateSupervisorBody,
+      Awaited<ReturnType<typeof updateSupervisor>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getUpdateSupervisorMutationKey(userId)
+  const swrFn = getUpdateSupervisorMutationFetcher(userId, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
