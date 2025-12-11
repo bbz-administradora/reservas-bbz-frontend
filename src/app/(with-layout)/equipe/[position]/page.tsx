@@ -127,8 +127,15 @@ export default async function PositionPage({ params }: PositionPageProps) {
     removePermissions.roles.includes(user?.role || '') ||
     removePermissions.positions.includes(teamPosition as PositionType)
 
-  // Verificar se o usuário pode ATUALIZAR SUPERVISOR (apenas admin/dev)
-  const canUpdateSupervisor = ['admin', 'dev'].includes(user?.role || '')
+  // Verificar se o usuário pode ATUALIZAR SUPERVISOR
+  // Admin/Dev podem atualizar qualquer posição
+  // Director pode atualizar supervisor de qualquer posição (exceto director)
+  // Supervisor pode atualizar supervisor de manager, assistant_manager, assistant
+  const canUpdateSupervisor =
+    ['admin', 'dev'].includes(user?.role || '') ||
+    (teamPosition === 'director' && positionType !== 'director') ||
+    (teamPosition === 'supervisor' &&
+      ['manager', 'assistant_manager', 'assistant'].includes(positionType))
 
   return (
     <div

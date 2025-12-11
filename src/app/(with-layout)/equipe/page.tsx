@@ -51,6 +51,11 @@ export default async function TeamDashboardPage() {
   const teamPosition = rawTeamPosition as PositionType | null
 
   // Define quais posições o usuário pode gerenciar baseado na hierarquia
+  // Regras:
+  // - Admin/Dev: podem gerenciar todas as posições
+  // - Director: pode gerenciar supervisor, manager, assistant_manager, assistant
+  // - Supervisor: pode gerenciar manager, assistant_manager, assistant
+  // - Manager/Assistant Manager/Assistant: NÃO podem gerenciar ninguém
   const canManagePositions: PositionType[] = []
 
   if (user?.role === 'admin' || user?.role === 'dev') {
@@ -73,13 +78,8 @@ export default async function TeamDashboardPage() {
   } else if (teamPosition === 'supervisor') {
     // Supervisor pode gerenciar manager pra baixo
     canManagePositions.push('manager', 'assistant_manager', 'assistant')
-  } else if (teamPosition === 'manager') {
-    // Manager pode gerenciar assistant_manager e assistant
-    canManagePositions.push('assistant_manager', 'assistant')
-  } else if (teamPosition === 'assistant_manager') {
-    // Assistant Manager pode gerenciar apenas assistant
-    canManagePositions.push('assistant')
   }
+  // Manager, Assistant Manager e Assistant NÃO podem gerenciar ninguém
 
   // Buscar contagem de cada posição que o usuário pode gerenciar
   const positionCounts: Record<PositionType, number> = {
@@ -90,15 +90,20 @@ export default async function TeamDashboardPage() {
     assistant: 0,
   }
 
-  // Buscar contagens em paralelo
+  // Buscar contagens em paralelo (com tratamento de erro para não quebrar a página)
   const [_, organogram] = await Promise.all([
     Promise.all(
       canManagePositions.map(async (position) => {
-        const data = await fetchListPositionsInServer(position)
-        positionCounts[position] = data?.total || 0
+        try {
+          const data = await fetchListPositionsInServer(position)
+          positionCounts[position] = data?.total || 0
+        } catch {
+          // Se der erro ao buscar, mantém zero (não quebra a página)
+          positionCounts[position] = 0
+        }
       }),
     ),
-    fetchOrganogramInServer(),
+    fetchOrganogramInServer().catch(() => null),
   ])
 
   // Determinar o cargo do usuário para exibição
