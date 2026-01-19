@@ -54,7 +54,7 @@ export const reservationsTitlesColumns = {
   cancelledAt: 'Cancelado em',
 }
 
-// Função para formatar o intervalo de tempo
+// Função para formatar o intervalo de tempo da reserva
 const formatTimeRange = (slotStart: string, slotEnd: string) => {
   if (!slotStart || !slotEnd) return 'N/A'
 
