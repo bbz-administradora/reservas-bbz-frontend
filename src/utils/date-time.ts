@@ -1,4 +1,12 @@
-import { format, formatDistanceToNow, isValid, parse, parseISO } from 'date-fns'
+import {
+  addDays,
+  format,
+  formatDistanceToNow,
+  isValid,
+  parse,
+  parseISO,
+  startOfDay,
+} from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
 /**
@@ -80,5 +88,34 @@ export function getExpirationMessage(dateString?: string): string {
   } catch (error) {
     // Em caso de erro no parsing da data
     return 'Este código expirará automaticamente'
+  }
+}
+
+/**
+ * Calcula o intervalo do dia brasileiro (timezone BRT/BRST)
+ * Retorna startDate e endDate no formato ISO para uso em APIs
+ *
+ * O dia brasileiro vai de 00:00 BRT até 23:59:59 BRT
+ * Em UTC isso significa: 03:00 UTC até 02:59:59 UTC do dia seguinte
+ *
+ * @returns Objeto com startDate e endDate em formato ISO
+ */
+export function getBrazilianDayRange(): {
+  startDate: string
+  endDate: string
+} {
+  const now = new Date()
+
+  // Início do dia brasileiro: hoje às 03:00 UTC (00:00 BRT)
+  const startOfBrazilianDay = startOfDay(now)
+  startOfBrazilianDay.setUTCHours(3, 0, 0, 0)
+
+  // Fim do dia brasileiro: amanhã às 02:59:59.999 UTC (23:59:59 BRT)
+  const endOfBrazilianDay = addDays(startOfBrazilianDay, 1)
+  endOfBrazilianDay.setUTCHours(2, 59, 59, 999)
+
+  return {
+    startDate: startOfBrazilianDay.toISOString(),
+    endDate: endOfBrazilianDay.toISOString(),
   }
 }
