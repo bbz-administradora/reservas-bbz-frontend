@@ -20,31 +20,52 @@ export default async function SpaceCheckInOutPage(props: { params: Params }) {
     return redirect(`${webserver.host}/espacos`)
   }
 
-  const [space, userResponse] = await Promise.all([
-    fetchSpaceInServer(id),
-    fetchCurrentUserInServer(),
-  ])
+  try {
+    const [space, userResponse] = await Promise.all([
+      fetchSpaceInServer(id),
+      fetchCurrentUserInServer(),
+    ])
 
-  const { user } = userResponse
+    const { user } = userResponse
 
-  if (!space || !user) {
-    return redirect(`${webserver.host}/espacos`)
-  }
+    if (!space || !user) {
+      return redirect(`${webserver.host}/espacos`)
+    }
 
-  return (
-    <div
-      id="main"
-      className="wrapper flex flex-1 flex-col gap-5 pt-5 pb-28 lg:pb-10"
-    >
-      <div className="relative my-4 flex w-full items-center justify-center">
-        <Link href={`${webserver.host}/espacos`} className="absolute left-0">
-          <ChevronLeftIcon className="text-accent size-10" />
-        </Link>
-        <Text as="h1" variant={'title-22-32-700'}>
-          Check-in / Check-out
-        </Text>
+    return (
+      <div
+        id="main"
+        className="wrapper flex flex-1 flex-col gap-5 pt-5 pb-28 lg:pb-10"
+      >
+        <div className="relative my-4 flex w-full items-center justify-center">
+          <Link href={`${webserver.host}/espacos`} className="absolute left-0">
+            <ChevronLeftIcon className="text-accent size-10" />
+          </Link>
+          <Text as="h1" variant={'title-22-32-700'}>
+            Check-in / Check-out
+          </Text>
+        </div>
+        <SpaceCheckInOutClient spaceId={space.id} spaceName={space.name} />
       </div>
-      <SpaceCheckInOutClient spaceId={space.id} spaceName={space.name} />
-    </div>
-  )
+    )
+  } catch (error) {
+    // Se der qualquer erro (espaço não encontrado, usuário não autenticado, etc), renderiza com ID mesmo assim
+    // O componente cliente vai tratar os erros de API
+    return (
+      <div
+        id="main"
+        className="wrapper flex flex-1 flex-col gap-5 pt-5 pb-28 lg:pb-10"
+      >
+        <div className="relative my-4 flex w-full items-center justify-center">
+          <Link href={`${webserver.host}/espacos`} className="absolute left-0">
+            <ChevronLeftIcon className="text-accent size-10" />
+          </Link>
+          <Text as="h1" variant={'title-22-32-700'}>
+            Check-in / Check-out
+          </Text>
+        </div>
+        <SpaceCheckInOutClient spaceId={id} spaceName="Espaço" />
+      </div>
+    )
+  }
 }

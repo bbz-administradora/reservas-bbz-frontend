@@ -44,8 +44,71 @@ export function SpaceCheckInOutClient({
     fetchCheckInOut(spaceId)
   }, [spaceId, fetchCheckInOut])
 
+  function renderErrorFeedback(errorMessage: string) {
+    // Mapeia mensagens de erro conhecidas para feedbacks específicos
+    if (errorMessage.includes('Não há reservas para hoje neste espaço')) {
+      return (
+        <div className="mx-auto mt-8 flex max-w-lg flex-col items-center gap-4 text-center">
+          <CalendarX className="text-destructive size-16" />
+          <Text variant="title-22-32-700" className="text-destructive">
+            Nenhuma reserva para hoje
+          </Text>
+          <Text variant="title-18-24-500">
+            Ops! Não encontramos sua reserva ativa
+          </Text>
+          <Text variant="body-16-18-400">
+            Verifique se você tem uma reserva confirmada para hoje neste espaço.
+          </Text>
+        </div>
+      )
+    }
+
+    if (errorMessage.includes('Espaço não encontrado')) {
+      return (
+        <div className="mx-auto mt-8 flex max-w-lg flex-col items-center gap-4 text-center">
+          <MapPinOff className="text-destructive size-16" />
+          <Text variant="title-22-32-700" className="text-destructive">
+            Espaço não localizado
+          </Text>
+          <Text variant="title-18-24-500">QR Code inválido?</Text>
+          <Text variant="body-16-18-400">
+            Verifique se o QR Code é válido ou se o espaço ainda está
+            disponível.
+          </Text>
+        </div>
+      )
+    }
+
+    // Erro genérico para outros casos
+    return (
+      <div className="mx-auto mt-8 flex max-w-lg flex-col items-center gap-4 text-center">
+        <Bug className="text-destructive size-16" />
+        <Text variant="title-22-32-700" className="text-destructive">
+          Ops! Algo deu errado
+        </Text>
+        <Text variant="title-18-24-500">{errorMessage}</Text>
+        <Text variant="body-16-18-400">
+          Tente novamente ou entre em contato com o suporte se o problema
+          persistir.
+        </Text>
+      </div>
+    )
+  }
+
   function renderCheckInOutFeedback(message: string | undefined) {
-    if (isMutating || typeof data === 'undefined') {
+    // Se está carregando E não tem erro ainda, mostra loading
+    if (isMutating && !error) {
+      return <LoadingScreen />
+    }
+
+    // Se tem erro, trata o erro
+    if (error) {
+      const errorMessage = (error as any)?.message || 'Erro desconhecido'
+      return renderErrorFeedback(errorMessage)
+    }
+
+    // Se não está carregando e não tem dados, mostra loading também (estado inicial)
+    if (typeof data === 'undefined') {
       return <LoadingScreen />
     }
     switch (message) {
