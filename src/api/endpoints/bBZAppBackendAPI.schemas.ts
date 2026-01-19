@@ -2238,6 +2238,25 @@ export type ReservationCheckInOut200 = {
 }
 
 /**
+ * Tipo de operação a ser realizada: 'check-in' para entrada ou 'check-out' para saída. Campo obrigatório.
+ */
+export type ReservationCheckInOutBodyType =
+  (typeof ReservationCheckInOutBodyType)[keyof typeof ReservationCheckInOutBodyType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationCheckInOutBodyType = {
+  'check-in': 'check-in',
+  'check-out': 'check-out',
+} as const
+
+export type ReservationCheckInOutBody = {
+  /** Identificador único da reserva no formato UUID v4. Campo obrigatório. */
+  reservationId: string
+  /** Tipo de operação a ser realizada: 'check-in' para entrada ou 'check-out' para saída. Campo obrigatório. */
+  type: ReservationCheckInOutBodyType
+}
+
+/**
  * Código de status HTTP 500.
  */
 export type GetSpaceReservationStats500StatusCode =

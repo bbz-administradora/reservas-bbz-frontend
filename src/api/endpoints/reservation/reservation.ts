@@ -5,7 +5,7 @@
  * API documentation for BBZ App Backend
  * OpenAPI spec version: 1.0.0
  */
-import type { Arguments, Key, SWRConfiguration } from 'swr'
+import type { Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
 import type { SWRMutationConfiguration } from 'swr/mutation'
 import useSWRMutation from 'swr/mutation'
@@ -56,6 +56,7 @@ import type {
   ReservationCheckInOut404,
   ReservationCheckInOut422,
   ReservationCheckInOut500,
+  ReservationCheckInOutBody,
   ReservationGetDetail200,
   ReservationGetDetail400,
   ReservationGetDetail401,
@@ -704,19 +705,28 @@ export const useGetSpaceReservationStats = <
   }
 }
 /**
- * Endpoint para realizar check-in ou check-out em uma reserva existente.
+ * Endpoint para realizar check-in ou check-out em uma reserva específica.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
 * **Autorização**: Restrito a usuários com perfil 'admin', 'dev', 'user'.
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.
 * **Processo**:
-  1. Verifica se o espaço existe
-  2. Busca reservas do usuário para o espaço e dia atual
-  3. Determina automaticamente se deve realizar check-in ou check-out
-  4. Registra a operação na tabela space_check_in_out
-  5. Após o primeiro check-out, a reserva é automaticamente fechada/encerrada, liberando a sala
-  6. Atualiza o registro da reserva com a data e hora da operação
-  7. Retorna os detalhes da reserva atualizada
+  1. Recebe o ID da reserva e o tipo de operação ('check-in' ou 'check-out') no body
+  2. Verifica se o espaço existe
+  3. Busca a reserva específica pelo ID informado
+  4. Valida se a reserva pertence ao espaço
+  5. Valida se o usuário tem permissão (proprietário ou convidado)
+  6. Executa a operação solicitada (check-in ou check-out)
+  7. No check-out, a reserva é automaticamente fechada e os slots liberados
+  8. Retorna os detalhes da reserva atualizada
+
+**Regras de negócio**:
+- Check-in pode ser feito:
+  - Workstation: 15 minutos antes até 3 horas após o início da reserva
+  - Room: 15 minutos antes até 1 hora após o início da reserva
+- Check-out requer check-in prévio
+- Check-out deve ser feito no mesmo dia do check-in
+- Não é possível fazer múltiplos check-ins ou check-outs na mesma reserva
 
 **Middlewares aplicados**:
 - `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
@@ -735,6 +745,7 @@ export const getReservationCheckInOutUrl = (spaceId: string) => {
 
 export const reservationCheckInOut = async (
   spaceId: string,
+  reservationCheckInOutBody: ReservationCheckInOutBody,
   options?: RequestInit,
 ): Promise<reservationCheckInOutResponse> => {
   return customFetch<Promise<reservationCheckInOutResponse>>(
@@ -742,6 +753,8 @@ export const reservationCheckInOut = async (
     {
       ...options,
       method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(reservationCheckInOutBody),
     },
   )
 }
@@ -752,9 +765,9 @@ export const getReservationCheckInOutMutationFetcher = (
 ) => {
   return (
     _: Key,
-    __: { arg: Arguments },
+    { arg }: { arg: ReservationCheckInOutBody },
   ): Promise<reservationCheckInOutResponse> => {
-    return reservationCheckInOut(spaceId, options)
+    return reservationCheckInOut(spaceId, arg, options)
   }
 }
 export const getReservationCheckInOutMutationKey = (spaceId: string) =>
@@ -791,7 +804,7 @@ export const useReservationCheckInOut = <
       Awaited<ReturnType<typeof reservationCheckInOut>>,
       TError,
       Key,
-      Arguments,
+      ReservationCheckInOutBody,
       Awaited<ReturnType<typeof reservationCheckInOut>>
     > & { swrKey?: string }
     request?: SecondParameter<typeof customFetch>

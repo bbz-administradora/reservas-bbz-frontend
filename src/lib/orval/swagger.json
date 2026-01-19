@@ -11252,7 +11252,37 @@
         "tags": [
           "Reservation"
         ],
-        "description": "Endpoint para realizar check-in ou check-out em uma reserva existente.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin', 'dev', 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Verifica se o espaço existe\n  2. Busca reservas do usuário para o espaço e dia atual\n  3. Determina automaticamente se deve realizar check-in ou check-out\n  4. Registra a operação na tabela space_check_in_out\n  5. Após o primeiro check-out, a reserva é automaticamente fechada/encerrada, liberando a sala\n  6. Atualiza o registro da reserva com a data e hora da operação\n  7. Retorna os detalhes da reserva atualizada\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "description": "Endpoint para realizar check-in ou check-out em uma reserva específica.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin', 'dev', 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Recebe o ID da reserva e o tipo de operação ('check-in' ou 'check-out') no body\n  2. Verifica se o espaço existe\n  3. Busca a reserva específica pelo ID informado\n  4. Valida se a reserva pertence ao espaço\n  5. Valida se o usuário tem permissão (proprietário ou convidado)\n  6. Executa a operação solicitada (check-in ou check-out)\n  7. No check-out, a reserva é automaticamente fechada e os slots liberados\n  8. Retorna os detalhes da reserva atualizada\n\n**Regras de negócio**:\n- Check-in pode ser feito:\n  - Workstation: 15 minutos antes até 3 horas após o início da reserva\n  - Room: 15 minutos antes até 1 hora após o início da reserva\n- Check-out requer check-in prévio\n- Check-out deve ser feito no mesmo dia do check-in\n- Não é possível fazer múltiplos check-ins ou check-outs na mesma reserva\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reservationId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Identificador único da reserva no formato UUID v4. Campo obrigatório."
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "check-in",
+                      "check-out"
+                    ],
+                    "description": "Tipo de operação a ser realizada: 'check-in' para entrada ou 'check-out' para saída. Campo obrigatório."
+                  }
+                },
+                "required": [
+                  "reservationId",
+                  "type"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        },
         "parameters": [
           {
             "schema": {
