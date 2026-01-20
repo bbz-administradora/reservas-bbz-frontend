@@ -2853,6 +2853,14 @@ export type ListSpaceReservationsParams = {
    * Inclui reservas onde o usuário é convidado (email em bbz_collaborators ou external_guests)
    */
   includeUserAsGuest?: ListSpaceReservationsIncludeUserAsGuest
+  /**
+   * Data de início para filtrar reservas (formato ISO 8601, ex: 2024-01-01)
+   */
+  startDate?: string
+  /**
+   * Data de fim para filtrar reservas (formato ISO 8601, ex: 2024-01-31)
+   */
+  endDate?: string
 }
 
 /**

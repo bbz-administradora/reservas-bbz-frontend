@@ -21,7 +21,7 @@ import {
   MapPinOff,
   Users,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { LoadingScreen } from './LoaderLogoSpin'
 
 interface SpaceCheckInOutClientProps {
@@ -60,6 +60,8 @@ export function SpaceCheckInOutClient({
       spaceId,
       userId: user?.id,
       includeUserAsGuest: 'true',
+      startDate,
+      endDate,
       page: '1',
       pageSize: '100',
     },
@@ -70,25 +72,8 @@ export function SpaceCheckInOutClient({
     },
   )
 
-  // Filtrar reservas do dia brasileiro no lado do cliente
-  const reservations = (reservationsData?.data?.reservations || []).filter(
-    (reservation) => {
-      const slotStart = new Date(reservation.slotStart)
-      const dayStart = new Date(startDate)
-      const dayEnd = new Date(endDate)
-      return slotStart >= dayStart && slotStart <= dayEnd
-    },
-  )
-
-  // Console para debug
-  useEffect(() => {
-    if (reservationsData) {
-      console.log('📅 Todas as reservas:', reservationsData)
-      console.log('📅 Reservas do dia (filtradas):', reservations)
-      console.log('👤 Usuário:', user)
-      console.log('🕐 Intervalo:', { startDate, endDate })
-    }
-  }, [reservationsData, reservations, user, startDate, endDate])
+  // Usar reservas diretamente do backend (já filtradas por data)
+  const reservations = reservationsData?.data?.reservations || []
 
   // Handler para check-in/out
   async function handleCheckInOut(

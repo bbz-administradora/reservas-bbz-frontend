@@ -10449,6 +10449,24 @@
             "name": "includeUserAsGuest",
             "required": false,
             "description": "Inclui reservas onde o usuário é convidado (email em bbz_collaborators ou external_guests)"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "startDate",
+            "required": false,
+            "description": "Data de início para filtrar reservas (formato ISO 8601, ex: 2024-01-01)"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "endDate",
+            "required": false,
+            "description": "Data de fim para filtrar reservas (formato ISO 8601, ex: 2024-01-31)"
           }
         ],
         "security": [
