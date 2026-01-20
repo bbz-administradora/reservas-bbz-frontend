@@ -322,7 +322,7 @@ export function DataTableSpaceWorkstationSlots({
         ) {
           showToast({
             message:
-              'Não é possível reservar para a semana atual. Você só pode agendar para a próxima semana em diante. Faça suas reservas de segunda a quinta-feira.',
+              'Não é possível reservar para a semana atual. Você só pode agendar para a próxima semana em diante. Faça suas reservas de segunda a quinta-feira',
             variant: 'warning',
             duration: 6000,
           })
