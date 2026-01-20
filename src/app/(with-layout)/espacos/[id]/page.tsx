@@ -3,12 +3,13 @@ import { DataTableSpaceWorkstationSlots } from '@/components/data-table/space-sl
 import { InviteParticipantsForm } from '@/components/forms/InviteParticipantsForm'
 import { ImageGallery } from '@/components/ImageGallery'
 import { Text } from '@/components/Text'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { webserver } from '@/infra/webserver'
 import { fetchAvailableSpaceSlotsBySpace } from '@/services/spaceSlotService'
 import { fetchCurrentUserInServer } from '@/services/userService'
-import { ChevronLeftIcon, UserRoundIcon } from 'lucide-react'
+import { ChevronLeftIcon, InfoIcon, UserRoundIcon } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -132,6 +133,59 @@ export default async function SpaceDetailsAndReservation(props: {
           </Badge>
         ))}
       </div>
+
+      {/* Regras de reserva para estações de trabalho */}
+      {spaceData.space.type === 'workstation' && (
+        <Alert className="my-5 border-blue-200 bg-blue-50">
+          <InfoIcon className="h-4 w-4 text-blue-600" />
+          <AlertTitle className="font-semibold text-blue-900">
+            Regras de Reserva
+          </AlertTitle>
+          <AlertDescription className="text-blue-800">
+            <ul className="mt-2 list-inside list-disc space-y-1">
+              <li>
+                Você só pode fazer sua agenda da próxima semana até quinta-feira
+              </li>
+              <li>
+                Você só pode reservar no máximo até o sábado da próxima semana
+              </li>
+              <li>Não é possível fazer agenda na semana atual</li>
+            </ul>
+
+            {/* Regras específicas por cargo */}
+            {(user.teamPosition === 'manager' ||
+              user.teamPosition === 'assistant_manager' ||
+              user.teamPosition === 'assistant') && (
+              <>
+                <div className="mt-4 font-semibold">
+                  Regras específicas para seu cargo:
+                </div>
+                <ul className="mt-2 list-inside list-disc space-y-1">
+                  {user.teamPosition === 'manager' && (
+                    <li>
+                      Gerentes devem reservar exatamente 2 dias por semana no
+                      escritório
+                    </li>
+                  )}
+                  {(user.teamPosition === 'assistant_manager' ||
+                    user.teamPosition === 'assistant') && (
+                    <li>
+                      {user.teamPosition === 'assistant_manager'
+                        ? 'Subgerentes'
+                        : 'Assistentes'}{' '}
+                      devem reservar exatamente 3 dias por semana no escritório
+                    </li>
+                  )}
+                  <li>
+                    Você deve obrigatoriamente incluir uma segunda-feira OU uma
+                    sexta-feira em seus dias presenciais
+                  </li>
+                </ul>
+              </>
+            )}
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="container mx-auto pt-10">
         {spaceData.space.type === 'room' ? (
