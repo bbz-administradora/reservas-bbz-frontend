@@ -184,61 +184,247 @@ export function DataTableSpaceWorkstationSlots({
         mutate(swrKey)
         return true
       } else if (response.status === 400) {
-        // Verificar mensagens específicas de erros controlados
+        // Tratamento específico para cada tipo de erro de validação
+        const errorData = response.data as any
+        const errorMessage = errorData?.message || ''
+        const errorAction = errorData?.action || ''
+
+        // Log para debug (remover depois)
+        console.log('Erro 400:', { errorMessage, errorAction, errorData })
+
+        // Erro: Tentando reservar para a semana atual
         if (
-          response.data?.message?.includes(
-            'Não é possível reservar estações de trabalho com mais de 14 dias de antecedência',
+          errorMessage.includes(
+            'Não é possível reservar estações de trabalho na semana atual',
           )
         ) {
           showToast({
             message:
-              'Não é possível reservar estações de trabalho com mais de 14 dias de antecedência',
+              'Não é possível reservar para a semana atual. Você só pode agendar para a próxima semana em diante. Faça suas reservas de segunda a quinta-feira.',
             variant: 'warning',
-            duration: 5000,
+            duration: 6000,
           })
-        } else if (
-          response.data?.message?.includes(
-            'Não é possível fazer reservas para mais de',
-          )
+        }
+        // Erro: Tentando fazer reserva em um dia bloqueado (sexta-feira)
+        else if (
+          errorMessage.includes(
+            'Não é permitido realizar reservas de estações de trabalho',
+          ) &&
+          errorMessage.includes('sexta-feira')
         ) {
-          showToast({
-            message: 'Não é possível fazer reservas para datas muito distantes',
-            variant: 'warning',
-            duration: 5000,
-          })
-        } else if (
-          response.data?.message ===
-          'Não é possível pré-reservar para horários que já começaram'
-        ) {
-          showToast({
-            message: 'Não é possível reservar horários que já passaram',
-            variant: 'warning',
-            duration: 5000,
-          })
-        } else {
           showToast({
             message:
-              response.data?.message ||
-              `Erro ao criar reserva para ${period === 'morning' ? 'manhã' : 'tarde'}`,
+              'Hoje (sexta-feira) não é permitido fazer reservas. As reservas devem ser feitas de segunda a quinta-feira para a semana seguinte.',
+            variant: 'warning',
+            duration: 6000,
+          })
+        }
+        // Erro: Tentando reservar além do sábado da próxima semana
+        else if (
+          errorMessage.includes(
+            'Não é possível reservar estações de trabalho além do sábado da próxima semana',
+          )
+        ) {
+          const message = errorAction
+            ? `Data limite ultrapassada. ${errorAction}`
+            : 'Data limite ultrapassada. Você pode reservar no máximo até o sábado da próxima semana.'
+          showToast({
+            message,
+            variant: 'warning',
+            duration: 6000,
+          })
+        }
+        // Erro: Horário já passou
+        else if (
+          errorMessage.includes(
+            'Não é possível pré-reservar para horários que já começaram',
+          ) ||
+          errorMessage.includes('horários que já passaram')
+        ) {
+          showToast({
+            message:
+              'Horário indisponível. Não é possível reservar horários que já passaram.',
             variant: 'warning',
             duration: 5000,
           })
         }
+        // Erro: Horário passou há mais de 30 minutos
+        else if (
+          errorMessage.includes(
+            'Não é possível reservar horários que já passaram mais de 30 minutos',
+          )
+        ) {
+          showToast({
+            message:
+              'Horário expirado. Você pode reservar até 30 minutos após o início do horário.',
+            variant: 'warning',
+            duration: 5000,
+          })
+        }
+        // Erro genérico de 400 - usar a mensagem do servidor
+        else {
+          // Sempre priorizar a mensagem do servidor
+          const message = errorMessage || 'Não foi possível criar a reserva'
+          const fullMessage = errorAction
+            ? `${message}. ${errorAction}`
+            : message
+
+          showToast({
+            message: fullMessage,
+            variant: 'warning',
+            duration: 6000,
+          })
+        }
       } else if (response.status === 409) {
         showToast({
-          message: 'Este horário já está reservado ou pré-reservado',
+          message:
+            'Horário não disponível. Este horário já está reservado ou pré-reservado.',
           variant: 'warning',
+          duration: 4000,
+        })
+      } else {
+        // Erro desconhecido - log para debug
+        console.log('Erro desconhecido:', {
+          status: response.status,
+          data: response.data,
+        })
+
+        // Tentar extrair mensagem de erro de qualquer resposta
+        const errorData = response.data as any
+        const errorMessage = errorData?.message || errorData?.error || ''
+
+        showToast({
+          message:
+            errorMessage ||
+            `Erro ao criar reserva para ${period === 'morning' ? 'manhã' : 'tarde'}. Por favor, tente novamente.`,
+          variant: 'error',
           duration: 4000,
         })
       }
       return false
     } catch (error: any) {
       console.error(`Erro ao criar reserva para ${period}:`, error)
-      showToast({
-        message: `Erro ao criar reserva para ${period === 'morning' ? 'manhã' : 'tarde'}`,
-        variant: 'error',
-        duration: 3000,
-      })
+
+      // Verificar se é um CustomError do backend (BadRequestError, etc.)
+      if (error.name === 'CustomError' || error.name === 'BadRequestError') {
+        const errorMessage = error.message || ''
+        const errorDetails = error.details || {}
+        const errorAction = errorDetails.action || ''
+
+        // Log para debug
+        console.log('CustomError capturado:', { errorMessage, errorDetails })
+
+        // Erro: Tentando reservar para a semana atual
+        if (
+          errorMessage.includes(
+            'Não é possível reservar estações de trabalho na semana atual',
+          )
+        ) {
+          showToast({
+            message:
+              'Não é possível reservar para a semana atual. Você só pode agendar para a próxima semana em diante. Faça suas reservas de segunda a quinta-feira.',
+            variant: 'warning',
+            duration: 6000,
+          })
+        }
+        // Erro: Tentando fazer reserva em um dia bloqueado (sexta-feira)
+        else if (
+          errorMessage.includes(
+            'Não é permitido realizar reservas de estações de trabalho',
+          ) &&
+          errorMessage.includes('sexta-feira')
+        ) {
+          showToast({
+            message:
+              'Hoje (sexta-feira) não é permitido fazer reservas. As reservas devem ser feitas de segunda a quinta-feira para a semana seguinte.',
+            variant: 'warning',
+            duration: 6000,
+          })
+        }
+        // Erro: Tentando reservar além do sábado da próxima semana
+        else if (
+          errorMessage.includes(
+            'Não é possível reservar estações de trabalho além do sábado da próxima semana',
+          )
+        ) {
+          const message = errorAction
+            ? `Data limite ultrapassada. ${errorAction}`
+            : 'Data limite ultrapassada. Você pode reservar no máximo até o sábado da próxima semana.'
+          showToast({
+            message,
+            variant: 'warning',
+            duration: 6000,
+          })
+        }
+        // Erro: Horário já passou
+        else if (
+          errorMessage.includes(
+            'Não é possível pré-reservar para horários que já começaram',
+          ) ||
+          errorMessage.includes('horários que já passaram')
+        ) {
+          showToast({
+            message:
+              'Horário indisponível. Não é possível reservar horários que já passaram.',
+            variant: 'warning',
+            duration: 5000,
+          })
+        }
+        // Erro: Horário passou há mais de 30 minutos
+        else if (
+          errorMessage.includes(
+            'Não é possível reservar horários que já passaram mais de 30 minutos',
+          )
+        ) {
+          showToast({
+            message:
+              'Horário expirado. Você pode reservar até 30 minutos após o início do horário.',
+            variant: 'warning',
+            duration: 5000,
+          })
+        }
+        // Erro: Horário não disponível (409)
+        else if (
+          errorMessage.includes('já está reservado') ||
+          errorMessage.includes('já está pré-reservado')
+        ) {
+          showToast({
+            message:
+              'Horário não disponível. Este horário já está reservado ou pré-reservado.',
+            variant: 'warning',
+            duration: 4000,
+          })
+        }
+        // Erro genérico - usar a mensagem do servidor
+        else {
+          const message = errorMessage || 'Não foi possível criar a reserva'
+          const fullMessage = errorAction
+            ? `${message}. ${errorAction}`
+            : message
+
+          showToast({
+            message: fullMessage,
+            variant: 'warning',
+            duration: 6000,
+          })
+        }
+      }
+      // Verificar se é erro de rede
+      else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        showToast({
+          message: 'Erro de conexão. Verifique sua internet e tente novamente.',
+          variant: 'error',
+          duration: 5000,
+        })
+      }
+      // Erro genérico desconhecido
+      else {
+        showToast({
+          message: `Erro inesperado ao criar reserva para ${period === 'morning' ? 'manhã' : 'tarde'}. Por favor, tente novamente.`,
+          variant: 'error',
+          duration: 4000,
+        })
+      }
       return false
     }
   }
@@ -310,19 +496,33 @@ export function DataTableSpaceWorkstationSlots({
                               'afternoon',
                             )
 
-                            // Apenas mostrar mensagem de sucesso se ambas as reservas foram bem-sucedidas
-                            if (morningSuccess && afternoonSuccess) {
+                            // Mostrar mensagem apropriada conforme o resultado
+                            if (afternoonSuccess) {
                               showToast({
                                 message:
                                   'Dia inteiro pré-reservado com sucesso!',
                                 variant: 'success',
-                                duration: 3000,
+                                duration: 4000,
+                              })
+                            } else {
+                              // Apenas a tarde falhou (manhã foi criada)
+                              showToast({
+                                message:
+                                  'Apenas o período da manhã foi reservado. Não foi possível reservar a tarde.',
+                                variant: 'warning',
+                                duration: 5000,
                               })
                             }
-                            // Não mostramos uma mensagem de erro aqui porque já mostramos nos tratamentos específicos
                           }
+                          // Se morningSuccess for false, a mensagem de erro já foi mostrada pelo createReservation
                         } catch (error) {
                           console.error('Erro ao reservar dia inteiro:', error)
+                          showToast({
+                            message:
+                              'Erro inesperado ao reservar dia inteiro. Tente novamente.',
+                            variant: 'error',
+                            duration: 4000,
+                          })
                         }
                       }
                     }}
