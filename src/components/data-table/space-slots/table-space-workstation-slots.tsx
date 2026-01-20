@@ -428,8 +428,7 @@ export function DataTableSpaceWorkstationSlots({
       return false
     }
   }
-  // TODO: temos que preparar a api de pre reserva de slots para receber tempo maior que 1 hora "O horário de término
-  // deve ser exatamente 1 hora após o início"
+
   return (
     <div className={className}>
       <div className="flex flex-col items-center justify-start gap-5 lg:flex-row">
