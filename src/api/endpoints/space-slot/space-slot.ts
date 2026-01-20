@@ -208,6 +208,11 @@ export const useListSpaceSlots = <
   - As datas no formato YYYY-MM-DD são convertidas para o fuso horário adequado no processamento
   - São retornados apenas os slots que já estão ocupados (não mostra horários disponíveis)
   - Um slot em estado 'pre_reserved' tem prazo de expiração e pode se tornar disponível novamente se não for confirmado
+
+* **Limites de consulta por tipo de espaço**:
+  - **Salas de reunião (room)**: Período máximo de 7 dias corridos
+  - **Estações de trabalho (workstation)**: Período até o sábado da próxima semana (considerando semana de domingo a sábado)
+  - Exemplo para workstation: Se hoje é segunda (20/01), pode consultar até sábado (31/01)
  * @summary Visualizar disponibilidade detalhada de um espaço específico em um período
  */
 export type getSpaceSlotAvailabilityResponse = {
@@ -352,11 +357,17 @@ export const useGetSpaceSlotAvailability = <
 
 * **Notas**:
   - As datas devem estar no formato ISO com informação de timezone
-  - O slot reservado tem duração de 1 hora (entre slotStart e slotEnd)
+  - O slot reservado tem duração de 1 hora para salas de reunião ou 5 horas para workstations
   - Uma pré-reserva expira automaticamente após 5 minutos se não for confirmada
   - Um usuário não pode pré-reservar um slot já reservado ou pré-reservado
   - Não é possível pré-reservar slots para datas passadas
   - O ID do usuário que faz a pré-reserva é automaticamente capturado do token JWT
+
+* **Regras específicas para Workstations**:
+  - Workstations só podem ser reservadas até o sábado da próxima semana (considerando semana de domingo a sábado)
+  - Reservas de workstations não podem ser feitas às sextas-feiras (bloqueio de dia da semana)
+  - Duração do slot: 5 horas (das 8h às 13h, por exemplo)
+  - Exemplo: Se hoje é segunda-feira (20/01), pode-se reservar workstations até sábado (31/01)
  * @summary Criar pré-reserva de slot em um espaço
  */
 export type createSpaceSlotPreReserveResponse = {

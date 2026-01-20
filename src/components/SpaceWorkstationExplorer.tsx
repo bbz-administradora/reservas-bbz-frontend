@@ -5,8 +5,9 @@ import { useListSpaceSlots } from '@/api/endpoints/space-slot/space-slot'
 import { DatePickerWithButton } from '@/components/DatePickerWithButton'
 import { Text } from '@/components/Text'
 import { webserver } from '@/infra/webserver'
+import { getNextWeekLastDay } from '@/utils/date-time'
 import { cn } from '@/utils/mergeClassNames'
-import { addDays, format } from 'date-fns'
+import { format } from 'date-fns'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -17,14 +18,14 @@ interface SpaceWorkstationExplorerProps {
 export function SpaceWorkstationExplorer({
   className,
 }: SpaceWorkstationExplorerProps) {
-  // Função para garantir que a data esteja dentro do período permitido (hoje até hoje + 6 dias)
+  // Função para garantir que a data esteja dentro do período permitido (hoje até sábado da próxima semana)
   function ensureDateWithinAllowedRange(date: Date | undefined): Date {
     if (!date) return new Date()
 
     const today = new Date()
     today.setHours(0, 0, 0, 0)
 
-    const maxDate = addDays(today, 6) // Máximo: hoje + 6 dias (total de 7 dias)
+    const maxDate = getNextWeekLastDay() // Sábado da próxima semana
     maxDate.setHours(23, 59, 59, 999)
 
     // Se a data for anterior a hoje, retorna hoje
@@ -32,7 +33,7 @@ export function SpaceWorkstationExplorer({
       return today
     }
 
-    // Se a data for maior que o máximo permitido (hoje + 6), retorna o máximo
+    // Se a data for maior que o máximo permitido (sábado da próxima semana), retorna o máximo
     if (date > maxDate) {
       return maxDate
     }
@@ -120,11 +121,11 @@ export function SpaceWorkstationExplorer({
     return numA - numB
   })
 
-  // Para a URL, sempre usar hoje como startDate e hoje + 6 como endDate (fixo)
+  // Para a URL, sempre usar hoje como startDate e sábado da próxima semana como endDate
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const startDate = format(today, 'yyyy-MM-dd')
-  const endDate = format(addDays(today, 6), 'yyyy-MM-dd')
+  const endDate = format(getNextWeekLastDay(), 'yyyy-MM-dd')
 
   return (
     <div className={cn('flex w-full flex-col gap-6', className)}>
@@ -133,7 +134,7 @@ export function SpaceWorkstationExplorer({
         setDate={handleDateChange}
         className="mt-4 w-full lg:w-min"
         fromDate={new Date()} // Bloqueia datas passadas
-        toDate={addDays(new Date(), 6)} // Bloqueia datas além de hoje + 6 dias
+        toDate={getNextWeekLastDay()} // Bloqueia datas além do sábado da próxima semana
       />
 
       {sortedZones.length === 0 && (

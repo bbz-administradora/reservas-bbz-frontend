@@ -20,7 +20,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { addDays, format, parseISO } from 'date-fns'
+import { getNextWeekLastDay } from '@/utils/date-time'
+import { addDays, differenceInDays, format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -77,19 +78,24 @@ export function DataTableSpaceWorkstationSlots({
     }
   }, [liveSpaceData])
 
-  // Se não houver dados, garantir que temos 7 dias de slots
+  // Se não houver dados, garantir que temos todos os dias até o sábado da próxima semana
   const startDateObj = parseISO(startDate)
+  const endDateObj = parseISO(endDate)
   const slotData = spaceData?.slots || []
+
+  // Calcular quantos dias devemos mostrar (de hoje até o sábado da próxima semana)
+  const maxDate = getNextWeekLastDay()
+  const daysToShow = differenceInDays(maxDate, startDateObj) + 1 // +1 para incluir o último dia
 
   // Processar os dados em um formato adequado para nossa tabela
   let processedData = prepareWorkstationSlotTableData(slotData)
 
-  // Se não temos 7 dias de dados, preencher com dias vazios (todos disponíveis)
-  if (processedData.length < 7) {
+  // Se não temos todos os dias, preencher com dias vazios (todos disponíveis)
+  if (processedData.length < daysToShow) {
     const existingDates = new Set(processedData.map((row) => row.date))
 
-    // Adicionar dias faltantes até ter 7 dias
-    for (let i = 0; i < 7; i++) {
+    // Adicionar dias faltantes até o sábado da próxima semana
+    for (let i = 0; i < daysToShow; i++) {
       const currentDate = format(addDays(startDateObj, i), 'yyyy-MM-dd')
 
       if (!existingDates.has(currentDate)) {
@@ -106,8 +112,8 @@ export function DataTableSpaceWorkstationSlots({
     // Ordenar por data
     processedData.sort((a, b) => a.date.localeCompare(b.date))
 
-    // Limitar a 7 dias
-    processedData = processedData.slice(0, 7)
+    // Limitar aos dias calculados
+    processedData = processedData.slice(0, daysToShow)
   }
 
   // Função simplificada para renderizar o componente do cliente e criar pré-reserva

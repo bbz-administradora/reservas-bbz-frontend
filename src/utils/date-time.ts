@@ -1,5 +1,7 @@
 import {
   addDays,
+  addWeeks,
+  endOfWeek,
   format,
   formatDistanceToNow,
   isValid,
@@ -8,6 +10,32 @@ import {
   startOfDay,
 } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+
+/**
+ * Obtém o último dia (sábado) da próxima semana
+ *
+ * Esta função é usada para calcular o limite máximo de reserva de workstations.
+ * Workstations só podem ser reservadas até o sábado da próxima semana.
+ * Considera que a semana começa no domingo e termina no sábado.
+ *
+ * Exemplos:
+ * - Se hoje é segunda-feira (20/01/2026), retorna sábado (31/01/2026)
+ * - Se hoje é quinta-feira (23/01/2026), retorna sábado (31/01/2026)
+ * - Se hoje é sábado (25/01/2026), retorna sábado (31/01/2026)
+ * - Se hoje é domingo (26/01/2026), retorna sábado (07/02/2026)
+ *
+ * @param referenceDate - Data de referência (padrão: agora)
+ * @returns Data do último dia (sábado) da próxima semana, às 23:59:59.999
+ */
+export function getNextWeekLastDay(referenceDate: Date = new Date()): Date {
+  // Obtém o sábado da semana atual (considerando domingo como início da semana)
+  const currentWeekEnd = endOfWeek(referenceDate, { weekStartsOn: 0 })
+
+  // Como endOfWeek com weekStartsOn: 0 retorna o sábado, precisamos obter o sábado da próxima semana
+  const nextWeekEnd = addWeeks(currentWeekEnd, 1)
+
+  return nextWeekEnd
+}
 
 /**
  * Formata uma string de data para exibição no formato DD/MM/YYYY HH:MM
