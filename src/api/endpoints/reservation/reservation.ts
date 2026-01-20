@@ -87,6 +87,27 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   4. Verifica automaticamente se cada slot existe e está pré-reservado pelo mesmo usuário
   5. Cada slot deve estar dentro do período de pré-reserva (5 minutos)
 
+* **Regras de Negócio para Workstations**:
+
+  **1. Limites Semanais por Cargo**:
+  - Gerente: máximo de **2 dias por semana** (domingo a sábado)
+  - Subgerente: máximo de **3 dias por semana** (domingo a sábado)
+  - Assistente: máximo de **3 dias por semana** (domingo a sábado)
+  - Outros cargos: **sem limite** de dias
+  - Esta regra **NÃO se aplica a salas (rooms)**, apenas a workstations
+
+  **2. Segunda ou Sexta-Feira Obrigatória**:
+  - Quando Gerentes, Subgerentes ou Assistentes **completarem seu limite de dias**, devem incluir pelo menos **UMA segunda-feira OU sexta-feira**
+  - Exemplo válido (Gerente): segunda + terça = 2 dias ✅
+  - Exemplo inválido (Gerente): terça + quarta = 2 dias sem segunda/sexta ❌
+  - Esta validação só ocorre quando o usuário atinge o limite máximo do cargo
+  - Esta regra **NÃO se aplica a salas (rooms)**, apenas a workstations
+
+  **3. Uma Reserva de Workstation por Dia**:
+  - Não é permitido ter múltiplas reservas de workstation no mesmo dia
+  - Caso já exista uma reserva de workstation em determinada data, novas reservas para o mesmo dia serão bloqueadas
+  - Esta regra **NÃO se aplica a salas (rooms)**, apenas a workstations
+
 * **Fluxo de reserva**:
   1. O usuário faz uma ou mais pré-reservas (via endpoint de pré-reserva)
   2. O sistema reserva os slots por 5 minutos para o usuário

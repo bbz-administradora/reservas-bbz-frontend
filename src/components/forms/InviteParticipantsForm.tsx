@@ -82,51 +82,113 @@ export function InviteParticipantsForm({
     useCreateSpaceReservation({
       swr: {
         onSuccess: (response) => {
-          // Verificar se a resposta contém mensagem de sucesso
+          // Sucesso: status 201
           if (response.status === 201) {
             revalidateTags(['create-reservation'])
             return
-          } else if (response.status === 409) {
-            showToast({
-              message:
-                'A pré-reserva já expirou, por favor, faça uma nova pré-reserva.',
-              variant: 'warning',
-              duration: 4000,
-            })
-          } else if (
-            response.status === 400 &&
-            response.data &&
-            response.data.message &&
-            response.data.message.includes(
-              'Não é possível solicitar serviço de copeira com menos de 24 horas',
-            )
-          ) {
-            // Erro específico para serviço de copeira com menos de 24h
-            showToast({
-              message:
-                'Não é possível solicitar serviço de copeira com menos de 24 horas de antecedência. Por favor, remova esta opção ou escolha um horário futuro.',
-              variant: 'warning',
-              duration: 6000,
-            })
-            return false // Indica que houve um erro
-          } else {
-            console.error(
-              '💥 Erro ao confirmar a reserva',
-              response.data.message,
-            )
-            showToast({
-              message: 'Erro ao confirmar a reserva. Tente novamente.',
-              variant: 'error',
-              duration: 4000,
-            })
           }
         },
-        onError: (error) => {
-          console.error('💥 Erro ao criar reserva:', error)
+        onError: (error: any) => {
+          // Tratamento específico de erros baseado no status code
+          const status = error?.status || error?.status_code
+          const message = error?.message || 'Erro desconhecido'
+
+          console.error('💥 Erro ao criar reserva:', {
+            status,
+            message,
+            error,
+          })
+
+          // 409 - Conflito (pré-reserva expirada)
+          if (status === 409) {
+            showToast({
+              message:
+                'A pré-reserva já expirou. Por favor, faça uma nova pré-reserva.',
+              variant: 'warning',
+              duration: 5000,
+            })
+            return
+          }
+
+          // 400 - Bad Request (erros de validação de regras de negócio)
+          if (status === 400) {
+            // Limite de reservas semanais por cargo
+            if (message.includes('Limite de reservas semanais excedido')) {
+              showToast({
+                message: message,
+                variant: 'warning',
+                duration: 8000,
+              })
+              return
+            }
+
+            // Segunda/sexta-feira obrigatória
+            if (
+              message.includes(
+                'É obrigatório incluir uma segunda-feira ou sexta-feira',
+              )
+            ) {
+              showToast({
+                message:
+                  '⚠️ Segunda ou Sexta Obrigatória: Como Gerente, Subgerente ou Assistente, você deve incluir pelo menos uma SEGUNDA-FEIRA ou SEXTA-FEIRA em suas reservas semanais. Por favor, ajuste sua seleção de dias.',
+                variant: 'warning',
+                duration: 8000,
+              })
+              return
+            }
+
+            // Copeira com menos de 24h
+            if (
+              message.includes(
+                'Não é possível solicitar serviço de copeira com menos de 24 horas',
+              )
+            ) {
+              showToast({
+                message:
+                  'Não é possível solicitar serviço de copeira com menos de 24 horas de antecedência. Por favor, remova esta opção ou escolha um horário futuro.',
+                variant: 'warning',
+                duration: 6000,
+              })
+              return
+            }
+
+            // Outros erros 400 - mostrar a mensagem do backend
+            showToast({
+              message: message,
+              variant: 'error',
+              duration: 5000,
+            })
+            return
+          }
+
+          // 404 - Not Found (espaço ou usuário não encontrado)
+          if (status === 404) {
+            showToast({
+              message: message || 'Recurso não encontrado.',
+              variant: 'error',
+              duration: 5000,
+            })
+            return
+          }
+
+          // 422 - Validation Error (erro de validação Zod)
+          if (status === 422) {
+            showToast({
+              message:
+                message ||
+                'Dados inválidos. Verifique os campos e tente novamente.',
+              variant: 'error',
+              duration: 5000,
+            })
+            return
+          }
+
+          // Erro genérico para qualquer outro caso
           showToast({
-            message: 'Ops! Ocorreu um erro ao confirmar a reserva.',
+            message:
+              'Ops! Ocorreu um erro ao confirmar a reserva. Tente novamente.',
             variant: 'error',
-            duration: 4000,
+            duration: 5000,
           })
         },
       },
@@ -282,82 +344,77 @@ export function InviteParticipantsForm({
       externalGuests: externalParticipants,
       needsCopeira: formData.needsWaitress,
     }
-    const result = await createSpaceReservation(reservationData)
-    // Retorna true se a criação foi bem-sucedida (status 201)
-    return result.status === 201
+
+    try {
+      const result = await createSpaceReservation(reservationData)
+      // Retorna true se a criação foi bem-sucedida (status 201)
+      return result.status === 201
+    } catch (error) {
+      // Os erros já foram tratados no onError do hook
+      // Apenas retornamos false para indicar falha
+      return false
+    }
   }
 
   const onFormSubmit: SubmitHandler<FormData> = async (data) => {
     setIsSubmitting(true)
 
-    try {
-      // Forçar revalidação dos dados dos slots
-      await getSpaceSlotData()
+    // Forçar revalidação dos dados dos slots
+    await getSpaceSlotData()
 
-      // Verificar se temos os dados necessários
-      if (!spaceId || !spaceSlotData?.data || !user) {
-        showToast({
-          message:
-            'Não foi possível acessar os dados necessários. Tente novamente.',
-          variant: 'error',
-          duration: 5000,
-        })
-        setIsSubmitting(false)
-        return
-      }
-
-      // Obter slots pré-reservados do usuário
-      const userPreReservedSlots = getUserPreReservedSlots(
-        spaceSlotData,
-        user.id,
-      )
-
-      // Verificar se há slots para confirmar
-      if (userPreReservedSlots.length === 0) {
-        showToast({
-          message: 'Nenhuma pré-reserva encontrada para confirmar',
-          variant: 'warning',
-          duration: 5000,
-        })
-        setIsSubmitting(false)
-        return
-      }
-
-      // Enviar todos os slots em uma única chamada
-      const reservationCreated = await createReservationsForSlots(
-        userPreReservedSlots,
-        data,
-      )
-
-      // Se a reserva foi criada com sucesso, revalidar os dados e mostrar mensagem
-      if (reservationCreated) {
-        // Forçar revalidação dos dados após o sucesso
-        const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
-          startDate,
-          endDate,
-        })
-        mutate(swrKey)
-
-        // Limpar formulário após sucesso
-        resetFormState()
-
-        // Notificar o usuário do sucesso
-        showToast({
-          message: `Reserva${userPreReservedSlots.length > 1 ? 's' : ''} confirmada${userPreReservedSlots.length > 1 ? 's' : ''} com sucesso! Um e-mail será enviado com os detalhes.`,
-          variant: 'success',
-          duration: 5000,
-        })
-      }
-    } catch (error) {
-      console.error('❌ Erro ao processar as pré-reservas:', error)
+    // Verificar se temos os dados necessários
+    if (!spaceId || !spaceSlotData?.data || !user) {
       showToast({
-        message: 'Ocorreu um erro ao processar suas pré-reservas.',
+        message:
+          'Não foi possível acessar os dados necessários. Tente novamente.',
         variant: 'error',
         duration: 5000,
       })
-    } finally {
       setIsSubmitting(false)
+      return
     }
+
+    // Obter slots pré-reservados do usuário
+    const userPreReservedSlots = getUserPreReservedSlots(spaceSlotData, user.id)
+
+    // Verificar se há slots para confirmar
+    if (userPreReservedSlots.length === 0) {
+      showToast({
+        message: 'Nenhuma pré-reserva encontrada para confirmar',
+        variant: 'warning',
+        duration: 5000,
+      })
+      setIsSubmitting(false)
+      return
+    }
+
+    // Enviar todos os slots em uma única chamada
+    const reservationCreated = await createReservationsForSlots(
+      userPreReservedSlots,
+      data,
+    )
+
+    // Se a reserva foi criada com sucesso, revalidar os dados e mostrar mensagem
+    if (reservationCreated) {
+      // Forçar revalidação dos dados após o sucesso
+      const swrKey = getGetSpaceSlotAvailabilityKey(spaceId, {
+        startDate,
+        endDate,
+      })
+      mutate(swrKey)
+
+      // Limpar formulário após sucesso
+      resetFormState()
+
+      // Notificar o usuário do sucesso
+      showToast({
+        message: `Reserva${userPreReservedSlots.length > 1 ? 's' : ''} confirmada${userPreReservedSlots.length > 1 ? 's' : ''} com sucesso! Um e-mail será enviado com os detalhes.`,
+        variant: 'success',
+        duration: 5000,
+      })
+    }
+
+    setIsSubmitting(false)
   }
 
   return (
