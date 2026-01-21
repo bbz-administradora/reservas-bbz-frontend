@@ -9,6 +9,13 @@ import type { Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  WeeklyComplianceDetails200,
+  WeeklyComplianceDetails400,
+  WeeklyComplianceDetails401,
+  WeeklyComplianceDetails403,
+  WeeklyComplianceDetails422,
+  WeeklyComplianceDetails500,
+  WeeklyComplianceDetailsParams,
   WeeklyComplianceOverview200,
   WeeklyComplianceOverview400,
   WeeklyComplianceOverview401,
@@ -101,6 +108,129 @@ export const useWeeklyComplianceOverview = <
     swrOptions?.swrKey ??
     (() => (isEnabled ? getWeeklyComplianceOverviewKey() : null))
   const swrFn = () => weeklyComplianceOverview(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint retorna a lista detalhada de colaboradores com status de compliance de reservas semanais.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Apenas supervisores e diretores podem acessar.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+**Regra de negócio**:
+- Colaboradores (manager, assistant_manager, assistant) devem fazer reservas da próxima semana até quinta-feira
+- Gerentes: 2 dias/semana
+- Subgerentes e Assistentes: 3 dias/semana
+- Apenas workstations contam para compliance (não salas)
+
+**Retorno baseado no cargo**:
+- **Supervisor**: Lista membros da sua equipe com status de compliance
+- **Diretor**: Lista todos os colaboradores com status de compliance
+- Outros cargos recebem erro 403 (Forbidden)
+
+**Query params**:
+- `page`: Número da página (padrão: 1)
+- `pageSize`: Registros por página (padrão: 20)
+- `onlyNonCompliant`: Se true, retorna apenas não-compliant (padrão: false)
+- `supervisorName`: Filtrar por nome do supervisor (busca parcial)
+- `userName`: Filtrar por nome do colaborador (busca parcial)
+- `position`: Filtrar por cargo (manager, assistant_manager, assistant)
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Buscar detalhes de compliance de reservas semanais
+ */
+export type weeklyComplianceDetailsResponse = {
+  data: WeeklyComplianceDetails200
+  status: number
+  headers: Headers
+}
+
+export const getWeeklyComplianceDetailsUrl = (
+  params?: WeeklyComplianceDetailsParams,
+) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  return normalizedParams.size
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservations/weekly-compliance/details?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservations/weekly-compliance/details`
+}
+
+export const weeklyComplianceDetails = async (
+  params?: WeeklyComplianceDetailsParams,
+  options?: RequestInit,
+): Promise<weeklyComplianceDetailsResponse> => {
+  return customFetch<Promise<weeklyComplianceDetailsResponse>>(
+    getWeeklyComplianceDetailsUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getWeeklyComplianceDetailsKey = (
+  params?: WeeklyComplianceDetailsParams,
+) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservations/weekly-compliance/details`,
+    ...(params ? [params] : []),
+  ] as const
+
+export type WeeklyComplianceDetailsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof weeklyComplianceDetails>>
+>
+export type WeeklyComplianceDetailsQueryError =
+  | WeeklyComplianceDetails400
+  | WeeklyComplianceDetails401
+  | WeeklyComplianceDetails403
+  | WeeklyComplianceDetails422
+  | WeeklyComplianceDetails500
+
+/**
+ * @summary Buscar detalhes de compliance de reservas semanais
+ */
+export const useWeeklyComplianceDetails = <
+  TError =
+    | WeeklyComplianceDetails400
+    | WeeklyComplianceDetails401
+    | WeeklyComplianceDetails403
+    | WeeklyComplianceDetails422
+    | WeeklyComplianceDetails500,
+>(
+  params?: WeeklyComplianceDetailsParams,
+  options?: {
+    swr?: SWRConfiguration<
+      Awaited<ReturnType<typeof weeklyComplianceDetails>>,
+      TError
+    > & { swrKey?: Key; enabled?: boolean }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ??
+    (() => (isEnabled ? getWeeklyComplianceDetailsKey(params) : null))
+  const swrFn = () => weeklyComplianceDetails(params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,

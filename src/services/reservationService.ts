@@ -3,6 +3,8 @@ import {
   ListSpaceReservations200,
   ListSpaceReservationsParams,
   ReservationCheckInOut200,
+  WeeklyComplianceDetails200,
+  WeeklyComplianceDetailsParams,
   WeeklyComplianceOverview200,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { customFetch } from '@/api/mutator/custom-fetch'
@@ -130,6 +132,48 @@ export async function fetchWeeklyComplianceOverviewInServer(): Promise<WeeklyCom
   const url = getWeeklyComplianceOverviewUrl()
 
   const response = await customFetch<WeeklyComplianceOverview200>(url, {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+    headers,
+    next: {
+      tags: ['create-reservation', 'close-reservation', 'cancel-reservation'],
+    },
+  })
+
+  if (response.status === 200) {
+    return response.data
+  }
+
+  return null
+}
+
+export async function fetchWeeklyComplianceDetailsInServer(
+  params?: WeeklyComplianceDetailsParams,
+): Promise<WeeklyComplianceDetails200 | null> {
+  const headers = await getHeadersServer()
+  if (!headers) {
+    console.warn('CSRF token not found')
+    return null
+  }
+
+  const getWeeklyComplianceDetailsUrl = (
+    params?: WeeklyComplianceDetailsParams,
+  ) => {
+    const normalizedParams = new URLSearchParams()
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== undefined) {
+        normalizedParams.append(key, value === null ? 'null' : value.toString())
+      }
+    })
+    return normalizedParams.size
+      ? `${env.NEXT_PUBLIC_API_URL}/v1/private/reservations/weekly-compliance/details?${normalizedParams.toString()}`
+      : `${env.NEXT_PUBLIC_API_URL}/v1/private/reservations/weekly-compliance/details`
+  }
+
+  const url = getWeeklyComplianceDetailsUrl(params)
+
+  const response = await customFetch<WeeklyComplianceDetails200>(url, {
     method: 'GET',
     credentials: 'include',
     cache: 'no-store',

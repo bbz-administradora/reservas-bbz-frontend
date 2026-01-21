@@ -12524,6 +12524,502 @@
         }
       }
     },
+    "/v1/private/reservations/weekly-compliance/details": {
+      "get": {
+        "operationId": "weeklyComplianceDetails",
+        "summary": "Buscar detalhes de compliance de reservas semanais",
+        "tags": [
+          "Reservations"
+        ],
+        "description": "Este endpoint retorna a lista detalhada de colaboradores com status de compliance de reservas semanais.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Apenas supervisores e diretores podem acessar.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Regra de negócio**:\n- Colaboradores (manager, assistant_manager, assistant) devem fazer reservas da próxima semana até quinta-feira\n- Gerentes: 2 dias/semana\n- Subgerentes e Assistentes: 3 dias/semana\n- Apenas workstations contam para compliance (não salas)\n\n**Retorno baseado no cargo**:\n- **Supervisor**: Lista membros da sua equipe com status de compliance\n- **Diretor**: Lista todos os colaboradores com status de compliance\n- Outros cargos recebem erro 403 (Forbidden)\n\n**Query params**:\n- `page`: Número da página (padrão: 1)\n- `pageSize`: Registros por página (padrão: 20)\n- `onlyNonCompliant`: Se true, retorna apenas não-compliant (padrão: false)\n- `supervisorName`: Filtrar por nome do supervisor (busca parcial)\n- `userName`: Filtrar por nome do colaborador (busca parcial)\n- `position`: Filtrar por cargo (manager, assistant_manager, assistant)\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "default": "1"
+            },
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "Número da página. Campo opcional, padrão: 1."
+          },
+          {
+            "schema": {
+              "type": "string",
+              "default": "20"
+            },
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "description": "Tamanho da página. Campo opcional, padrão: 20."
+          },
+          {
+            "schema": {
+              "type": "string",
+              "default": "false"
+            },
+            "in": "query",
+            "name": "onlyNonCompliant",
+            "required": false,
+            "description": "Se true, retorna apenas membros não-compliant. Campo opcional, padrão: false."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "supervisorName",
+            "required": false,
+            "description": "Filtrar por nome do supervisor (busca parcial, case-insensitive). Campo opcional."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "userName",
+            "required": false,
+            "description": "Filtrar por nome do colaborador (busca parcial, case-insensitive). Campo opcional."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "position",
+            "required": false,
+            "description": "Filtrar por cargo do colaborador (manager, assistant_manager, assistant). Campo opcional."
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nextWeekStart": {
+                      "type": "string",
+                      "description": "Data de início da próxima semana útil no formato ISO 8601. Campo obrigatório."
+                    },
+                    "nextWeekEnd": {
+                      "type": "string",
+                      "description": "Data de fim da próxima semana útil no formato ISO 8601. Campo obrigatório."
+                    },
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "userId": {
+                            "type": "string",
+                            "description": "ID do usuário. Campo obrigatório."
+                          },
+                          "userName": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Nome do usuário. Campo obrigatório, pode ser nulo."
+                          },
+                          "userEmail": {
+                            "type": "string",
+                            "description": "Email do usuário. Campo obrigatório."
+                          },
+                          "position": {
+                            "type": "string",
+                            "description": "Cargo do colaborador. Campo obrigatório."
+                          },
+                          "supervisorName": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Nome do supervisor imediato. Campo obrigatório, pode ser nulo."
+                          },
+                          "requiredDays": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade de dias obrigatórios de reserva para este cargo. Campo obrigatório."
+                          },
+                          "reservedDays": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade de dias já reservados para a próxima semana. Campo obrigatório."
+                          },
+                          "missingDays": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade de dias que ainda faltam reservar. Campo obrigatório."
+                          },
+                          "isCompliant": {
+                            "type": "boolean",
+                            "description": "Indica se o colaborador cumpriu a exigência de reservas. Campo obrigatório."
+                          }
+                        },
+                        "required": [
+                          "userId",
+                          "userName",
+                          "userEmail",
+                          "position",
+                          "supervisorName",
+                          "requiredDays",
+                          "reservedDays",
+                          "missingDays",
+                          "isCompliant"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Lista de membros com dados de compliance. Campo obrigatório."
+                    },
+                    "supervisors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Nome do supervisor."
+                          },
+                          "count": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade de colaboradores sob este supervisor."
+                          },
+                          "compliantCount": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade de colaboradores em dia sob este supervisor."
+                          },
+                          "nonCompliantCount": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade de colaboradores pendentes sob este supervisor."
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "count",
+                          "compliantCount",
+                          "nonCompliantCount"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Lista de supervisores disponíveis para filtro (apenas para diretores). Campo obrigatório."
+                    },
+                    "positionStats": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "position": {
+                            "type": "string",
+                            "description": "Cargo do colaborador."
+                          },
+                          "label": {
+                            "type": "string",
+                            "description": "Label do cargo em português."
+                          },
+                          "count": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade total de colaboradores com este cargo."
+                          },
+                          "compliantCount": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade de colaboradores em dia com este cargo."
+                          },
+                          "nonCompliantCount": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Quantidade de colaboradores pendentes com este cargo."
+                          }
+                        },
+                        "required": [
+                          "position",
+                          "label",
+                          "count",
+                          "compliantCount",
+                          "nonCompliantCount"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Estatísticas de compliance agregadas por cargo. Campo obrigatório."
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Total de registros disponíveis. Campo obrigatório."
+                    },
+                    "compliantCount": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Total de colaboradores em dia. Campo obrigatório."
+                    },
+                    "nonCompliantCount": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Total de colaboradores pendentes. Campo obrigatório."
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Total de páginas disponíveis. Campo obrigatório."
+                    },
+                    "currentPage": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "description": "Página atual. Campo obrigatório."
+                    }
+                  },
+                  "required": [
+                    "nextWeekStart",
+                    "nextWeekEnd",
+                    "members",
+                    "supervisors",
+                    "positionStats",
+                    "totalCount",
+                    "compliantCount",
+                    "nonCompliantCount",
+                    "totalPages",
+                    "currentPage"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/private/team/positions/{position}": {
       "post": {
         "operationId": "createPosition",
