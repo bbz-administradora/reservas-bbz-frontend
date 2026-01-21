@@ -2,7 +2,11 @@ import { SpaceExplorerSection } from '@/components/SpaceExplorerSection'
 import { CardDecoration } from '@/components/svg/card-decoration'
 import { Text } from '@/components/Text'
 import { Separator } from '@/components/ui/separator'
-import { fetchSpaceReservationStatsInServer } from '@/services/reservationService'
+import { WeeklyComplianceCard } from '@/components/WeeklyComplianceCard'
+import {
+  fetchSpaceReservationStatsInServer,
+  fetchWeeklyComplianceOverviewInServer,
+} from '@/services/reservationService'
 import { fetchAvailableSpacesInServer } from '@/services/spaceSlotService'
 import { fetchCurrentUserInServer } from '@/services/userService'
 import { format, startOfDay } from 'date-fns'
@@ -31,6 +35,9 @@ export default async function SpacesHome() {
 
   // Buscar estatísticas de reservas do usuário
   const spaceReservationStats = await fetchSpaceReservationStatsInServer()
+
+  // Buscar dados de compliance semanal
+  const weeklyCompliance = await fetchWeeklyComplianceOverviewInServer()
 
   const { user } = await fetchCurrentUserInServer()
 
@@ -122,6 +129,9 @@ export default async function SpacesHome() {
               : 'Nenhuma reserva futura'}
           </Text>
         </div>
+
+        {/* Compliance Semanal - visível para todos os usuários */}
+        <WeeklyComplianceCard data={weeklyCompliance} />
 
         {/* Gestão de Equipe - visível para admin, dev e membros que podem gerenciar (exceto assistant) */}
         {(user?.role === 'admin' ||

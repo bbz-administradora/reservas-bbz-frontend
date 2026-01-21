@@ -3,6 +3,7 @@ import {
   ListSpaceReservations200,
   ListSpaceReservationsParams,
   ReservationCheckInOut200,
+  WeeklyComplianceOverview200,
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { customFetch } from '@/api/mutator/custom-fetch'
 import { env } from '@/infra/env'
@@ -113,4 +114,34 @@ export async function fetchReservationCheckInOutInServer(
   })
 
   return response.data
+}
+
+export async function fetchWeeklyComplianceOverviewInServer(): Promise<WeeklyComplianceOverview200 | null> {
+  const headers = await getHeadersServer()
+  if (!headers) {
+    console.warn('CSRF token not found')
+    return null
+  }
+
+  const getWeeklyComplianceOverviewUrl = () => {
+    return `${env.NEXT_PUBLIC_API_URL}/v1/private/reservations/weekly-compliance/overview`
+  }
+
+  const url = getWeeklyComplianceOverviewUrl()
+
+  const response = await customFetch<WeeklyComplianceOverview200>(url, {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+    headers,
+    next: {
+      tags: ['create-reservation', 'close-reservation', 'cancel-reservation'],
+    },
+  })
+
+  if (response.status === 200) {
+    return response.data
+  }
+
+  return null
 }

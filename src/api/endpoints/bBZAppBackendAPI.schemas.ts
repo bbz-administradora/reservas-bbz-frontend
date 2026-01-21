@@ -202,18 +202,6 @@ export type GetOrganogram200TreeItem = {
 }
 
 /**
- * Resposta do endpoint de organograma da equipe.
- */
-export type GetOrganogram200 = {
-  /** Mensagem de sucesso da operação. Campo obrigatório. */
-  message: string
-  /** Estatísticas gerais da equipe. */
-  stats: GetOrganogram200Stats
-  /** Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes. */
-  tree: GetOrganogram200TreeItem[]
-}
-
-/**
  * Quantidade de membros por posição.
  */
 export type GetOrganogram200StatsByPosition = {
@@ -255,6 +243,18 @@ export type GetOrganogram200Stats = {
    * @minimum 0
    */
   total: number
+}
+
+/**
+ * Resposta do endpoint de organograma da equipe.
+ */
+export type GetOrganogram200 = {
+  /** Mensagem de sucesso da operação. Campo obrigatório. */
+  message: string
+  /** Estatísticas gerais da equipe. */
+  stats: GetOrganogram200Stats
+  /** Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes. */
+  tree: GetOrganogram200TreeItem[]
 }
 
 /**
@@ -1214,21 +1214,6 @@ export type ListPositions400 = {
   status_code: ListPositions400StatusCode
 }
 
-/**
- * Tipo da posição. Campo obrigatório.
- */
-export type ListPositions200PositionsItemType =
-  (typeof ListPositions200PositionsItemType)[keyof typeof ListPositions200PositionsItemType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ListPositions200PositionsItemType = {
-  director: 'director',
-  supervisor: 'supervisor',
-  manager: 'manager',
-  assistant_manager: 'assistant_manager',
-  assistant: 'assistant',
-} as const
-
 export type ListPositions200PositionsItem = {
   /** Email de quem nomeou o membro. Campo obrigatório. */
   assignedByEmail: string
@@ -1279,6 +1264,21 @@ export type ListPositions200 = {
    */
   total: number
 }
+
+/**
+ * Tipo da posição. Campo obrigatório.
+ */
+export type ListPositions200PositionsItemType =
+  (typeof ListPositions200PositionsItemType)[keyof typeof ListPositions200PositionsItemType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListPositions200PositionsItemType = {
+  director: 'director',
+  supervisor: 'supervisor',
+  manager: 'manager',
+  assistant_manager: 'assistant_manager',
+  assistant: 'assistant',
+} as const
 
 /**
  * Código de status HTTP 500.
@@ -1608,6 +1608,286 @@ export type CreatePositionBody = {
 /**
  * Código de status HTTP 500.
  */
+export type WeeklyComplianceOverview500StatusCode =
+  (typeof WeeklyComplianceOverview500StatusCode)[keyof typeof WeeklyComplianceOverview500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type WeeklyComplianceOverview500Name =
+  (typeof WeeklyComplianceOverview500Name)[keyof typeof WeeklyComplianceOverview500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type WeeklyComplianceOverview500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: WeeklyComplianceOverview500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: WeeklyComplianceOverview500StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type WeeklyComplianceOverview403StatusCode =
+  (typeof WeeklyComplianceOverview403StatusCode)[keyof typeof WeeklyComplianceOverview403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type WeeklyComplianceOverview403Name =
+  (typeof WeeklyComplianceOverview403Name)[keyof typeof WeeklyComplianceOverview403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type WeeklyComplianceOverview403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: WeeklyComplianceOverview403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: WeeklyComplianceOverview403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type WeeklyComplianceOverview401StatusCode =
+  (typeof WeeklyComplianceOverview401StatusCode)[keyof typeof WeeklyComplianceOverview401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type WeeklyComplianceOverview401Name =
+  (typeof WeeklyComplianceOverview401Name)[keyof typeof WeeklyComplianceOverview401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type WeeklyComplianceOverview401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: WeeklyComplianceOverview401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: WeeklyComplianceOverview401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type WeeklyComplianceOverview400StatusCode =
+  (typeof WeeklyComplianceOverview400StatusCode)[keyof typeof WeeklyComplianceOverview400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type WeeklyComplianceOverview400Name =
+  (typeof WeeklyComplianceOverview400Name)[keyof typeof WeeklyComplianceOverview400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type WeeklyComplianceOverview400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: WeeklyComplianceOverview400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: WeeklyComplianceOverview400StatusCode
+}
+
+/**
+ * Tipo de usuário: diretor. Campo obrigatório.
+ */
+export type WeeklyComplianceOverview200AnyOfSixUserType =
+  (typeof WeeklyComplianceOverview200AnyOfSixUserType)[keyof typeof WeeklyComplianceOverview200AnyOfSixUserType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview200AnyOfSixUserType = {
+  director: 'director',
+} as const
+
+/**
+ * Resumo de compliance geral. Campo obrigatório.
+ */
+export type WeeklyComplianceOverview200AnyOfSixOverallSummary = {
+  /**
+   * Quantidade de colaboradores que cumpriram a regra. Campo obrigatório.
+   * @minimum 0
+   */
+  compliantMembers: number
+  /**
+   * Quantidade de colaboradores que não cumpriram a regra. Campo obrigatório.
+   * @minimum 0
+   */
+  nonCompliantMembers: number
+  /**
+   * Total de colaboradores que devem cumprir a regra. Campo obrigatório.
+   * @minimum 0
+   */
+  totalMembers: number
+}
+
+export type WeeklyComplianceOverview200AnyOfSix = {
+  /** Data de fim da próxima semana útil no formato ISO 8601. Campo obrigatório. */
+  nextWeekEnd: string
+  /** Data de início da próxima semana útil no formato ISO 8601. Campo obrigatório. */
+  nextWeekStart: string
+  /** Resumo de compliance geral. Campo obrigatório. */
+  overallSummary: WeeklyComplianceOverview200AnyOfSixOverallSummary
+  /** Tipo de usuário: diretor. Campo obrigatório. */
+  userType: WeeklyComplianceOverview200AnyOfSixUserType
+}
+
+/**
+ * Tipo de usuário: supervisor. Campo obrigatório.
+ */
+export type WeeklyComplianceOverview200AnyOfThreeUserType =
+  (typeof WeeklyComplianceOverview200AnyOfThreeUserType)[keyof typeof WeeklyComplianceOverview200AnyOfThreeUserType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview200AnyOfThreeUserType = {
+  supervisor: 'supervisor',
+} as const
+
+/**
+ * Resumo de compliance da equipe. Campo obrigatório.
+ */
+export type WeeklyComplianceOverview200AnyOfThreeTeamSummary = {
+  /**
+   * Quantidade de membros que cumpriram a regra. Campo obrigatório.
+   * @minimum 0
+   */
+  compliantMembers: number
+  /**
+   * Quantidade de membros que não cumpriram a regra. Campo obrigatório.
+   * @minimum 0
+   */
+  nonCompliantMembers: number
+  /**
+   * Total de membros da equipe que devem cumprir a regra. Campo obrigatório.
+   * @minimum 0
+   */
+  totalMembers: number
+}
+
+export type WeeklyComplianceOverview200AnyOfThree = {
+  /** Data de fim da próxima semana útil no formato ISO 8601. Campo obrigatório. */
+  nextWeekEnd: string
+  /** Data de início da próxima semana útil no formato ISO 8601. Campo obrigatório. */
+  nextWeekStart: string
+  /** Resumo de compliance da equipe. Campo obrigatório. */
+  teamSummary: WeeklyComplianceOverview200AnyOfThreeTeamSummary
+  /** Tipo de usuário: supervisor. Campo obrigatório. */
+  userType: WeeklyComplianceOverview200AnyOfThreeUserType
+}
+
+/**
+ * Tipo de usuário: colaborador. Campo obrigatório.
+ */
+export type WeeklyComplianceOverview200AnyOfUserType =
+  (typeof WeeklyComplianceOverview200AnyOfUserType)[keyof typeof WeeklyComplianceOverview200AnyOfUserType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceOverview200AnyOfUserType = {
+  employee: 'employee',
+} as const
+
+export type WeeklyComplianceOverview200AnyOf = {
+  /** Indica se o colaborador cumpriu a exigência de reservas. Campo obrigatório. */
+  isCompliant: boolean
+  /**
+   * Quantidade de dias que ainda faltam reservar. Campo obrigatório.
+   * @minimum 0
+   */
+  missingDays: number
+  /** Data de fim da próxima semana útil no formato ISO 8601. Campo obrigatório. */
+  nextWeekEnd: string
+  /** Data de início da próxima semana útil no formato ISO 8601. Campo obrigatório. */
+  nextWeekStart: string
+  /**
+   * Quantidade de dias obrigatórios de reserva para este cargo. Campo obrigatório.
+   * @minimum 0
+   */
+  requiredDays: number
+  /**
+   * Quantidade de dias já reservados para a próxima semana. Campo obrigatório.
+   * @minimum 0
+   */
+  reservedDays: number
+  /** Tipo de usuário: colaborador. Campo obrigatório. */
+  userType: WeeklyComplianceOverview200AnyOfUserType
+}
+
+export type WeeklyComplianceOverview200 =
+  | WeeklyComplianceOverview200AnyOf
+  | WeeklyComplianceOverview200AnyOfThree
+  | WeeklyComplianceOverview200AnyOfSix
+
+/**
+ * Código de status HTTP 500.
+ */
 export type ReservationGetDetail500StatusCode =
   (typeof ReservationGetDetail500StatusCode)[keyof typeof ReservationGetDetail500StatusCode]
 
@@ -1834,6 +2114,16 @@ export type ReservationGetDetail400 = {
 }
 
 /**
+ * Detalhes da reserva recuperados com sucesso.
+ */
+export type ReservationGetDetail200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  /** Detalhes completos de uma reserva paginada */
+  reservation: ReservationGetDetail200Reservation
+}
+
+/**
  * Informações do usuário que fez a reserva
  */
 export type ReservationGetDetail200ReservationUser = {
@@ -1857,64 +2147,6 @@ export const ReservationGetDetail200ReservationStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ReservationGetDetail200Reservation = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ReservationGetDetail200ReservationCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ReservationGetDetail200ReservationSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ReservationGetDetail200ReservationStatus
-  /** Informações do usuário que fez a reserva */
-  user: ReservationGetDetail200ReservationUser
-}
-
-/**
- * Detalhes da reserva recuperados com sucesso.
- */
-export type ReservationGetDetail200 = {
-  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
-  message: string
-  /** Detalhes completos de uma reserva paginada */
-  reservation: ReservationGetDetail200Reservation
-}
 
 /**
  * Tipo do espaço
@@ -1965,6 +2197,54 @@ export type ReservationGetDetail200ReservationCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
+
+/**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ReservationGetDetail200Reservation = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ReservationGetDetail200ReservationCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ReservationGetDetail200ReservationSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ReservationGetDetail200ReservationStatus
+  /** Informações do usuário que fez a reserva */
+  user: ReservationGetDetail200ReservationUser
+}
 
 /**
  * Código de status HTTP 500.
@@ -2656,6 +2936,20 @@ export type ListSpaceReservations400 = {
 }
 
 /**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
+
+/**
  * Informações do usuário que fez a reserva
  */
 export type ListSpaceReservations200ReservationsItemUser = {
@@ -2679,70 +2973,6 @@ export const ListSpaceReservations200ReservationsItemStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ListSpaceReservations200ReservationsItem = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /** Registros de check-in/check-out relacionados à reserva */
-  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ListSpaceReservations200ReservationsItemSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ListSpaceReservations200ReservationsItemStatus
-  /** Informações do usuário que fez a reserva */
-  user: ListSpaceReservations200ReservationsItemUser
-}
-
-/**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
 
 /**
  * Tipo do espaço
@@ -2822,6 +3052,56 @@ export type ListSpaceReservations200ReservationsItemCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
+
+/**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ListSpaceReservations200ReservationsItem = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /** Registros de check-in/check-out relacionados à reserva */
+  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ListSpaceReservations200ReservationsItemSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ListSpaceReservations200ReservationsItemStatus
+  /** Informações do usuário que fez a reserva */
+  user: ListSpaceReservations200ReservationsItemUser
+}
 
 export type ListSpaceReservationsIncludeUserAsGuest =
   (typeof ListSpaceReservationsIncludeUserAsGuest)[keyof typeof ListSpaceReservationsIncludeUserAsGuest]
@@ -4596,6 +4876,11 @@ export type GetSpaceSlotAvailability200Space = {
   zone: string | null
 }
 
+export type GetSpaceSlotAvailability200 = {
+  slots: GetSpaceSlotAvailability200SlotsItem[]
+  space: GetSpaceSlotAvailability200Space
+}
+
 /**
  * Usuário que fez a pré-reserva (null quando não há pré-reserva)
  */
@@ -4629,11 +4914,6 @@ export type GetSpaceSlotAvailability200SlotsItem = {
   status: GetSpaceSlotAvailability200SlotsItemStatus
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
   user: GetSpaceSlotAvailability200SlotsItemUser
-}
-
-export type GetSpaceSlotAvailability200 = {
-  slots: GetSpaceSlotAvailability200SlotsItem[]
-  space: GetSpaceSlotAvailability200Space
 }
 
 export type GetSpaceSlotAvailabilityParams = {
