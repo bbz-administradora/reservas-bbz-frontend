@@ -63,6 +63,7 @@ export default async function ComplianceEquipePage({
   searchParams: Promise<SearchParams>
 }) {
   // Validação de permissão: apenas supervisor, diretor, dev ou admin
+  // IMPORTANTE: Verificar permissão ANTES de chamar a API para evitar erros 403
   const { user } = await fetchCurrentUserInServer()
   const allowedRoles = ['dev', 'admin']
   const allowedPositions = ['supervisor', 'director']
@@ -86,6 +87,7 @@ export default async function ComplianceEquipePage({
     onlyNonCompliant,
   }
 
+  // Chamada da API só ocorre após verificação de permissão
   const data = await fetchWeeklyComplianceDetailsInServer(queryParams)
 
   // Se não há dados ou erro, mostrar mensagem de erro

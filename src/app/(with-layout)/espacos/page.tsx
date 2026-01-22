@@ -28,6 +28,9 @@ export default async function SpacesHome() {
   // Formatando no padrão ISO 8601 com o 'T' separador entre data e hora (requerido pelo backend)
   const today = format(start, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")
 
+  // Buscar usuário primeiro para verificar permissões
+  const { user } = await fetchCurrentUserInServer()
+
   const listAvailableSpaces = await fetchAvailableSpacesInServer({
     page: '1',
     pageSize: '9',
@@ -41,10 +44,17 @@ export default async function SpacesHome() {
   // Buscar dados de compliance semanal
   const weeklyCompliance = await fetchWeeklyComplianceOverviewInServer()
 
-  // Buscar indicadores de checkout antecipado (apenas para supervisores/diretores)
-  const earlyCheckoutIndicators = await fetchEarlyCheckoutIndicatorsInServer()
+  // Verificar se o usuário tem permissão para ver indicadores de checkout antecipado
+  const canViewEarlyCheckout =
+    user?.role === 'admin' ||
+    user?.role === 'dev' ||
+    user?.teamPosition === 'director' ||
+    user?.teamPosition === 'supervisor'
 
-  const { user } = await fetchCurrentUserInServer()
+  // Buscar indicadores de checkout antecipado (apenas para supervisores/diretores)
+  const earlyCheckoutIndicators = canViewEarlyCheckout
+    ? await fetchEarlyCheckoutIndicatorsInServer()
+    : null
 
   return (
     <div
