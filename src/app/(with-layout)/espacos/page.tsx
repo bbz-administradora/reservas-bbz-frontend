@@ -1,3 +1,4 @@
+import { CancelledReservationsCard } from '@/components/CancelledReservationsCard'
 import { EarlyCheckoutCard } from '@/components/EarlyCheckoutCard'
 import { SpaceExplorerSection } from '@/components/SpaceExplorerSection'
 import { CardDecoration } from '@/components/svg/card-decoration'
@@ -6,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { WeeklyComplianceCard } from '@/components/WeeklyComplianceCard'
 import { fetchEarlyCheckoutIndicatorsInServer } from '@/services/occurrenceService'
 import {
+  fetchCancelledReservationsOverviewInServer,
   fetchSpaceReservationStatsInServer,
   fetchWeeklyComplianceOverviewInServer,
 } from '@/services/reservationService'
@@ -44,16 +46,22 @@ export default async function SpacesHome() {
   // Buscar dados de compliance semanal
   const weeklyCompliance = await fetchWeeklyComplianceOverviewInServer()
 
-  // Verificar se o usuário tem permissão para ver indicadores de checkout antecipado
-  const canViewEarlyCheckout =
+  // Verificar se o usuário tem permissão para ver indicadores de compliance
+  // (admin, dev, supervisor, diretor)
+  const canViewComplianceIndicators =
     user?.role === 'admin' ||
     user?.role === 'dev' ||
     user?.teamPosition === 'director' ||
     user?.teamPosition === 'supervisor'
 
-  // Buscar indicadores de checkout antecipado (apenas para supervisores/diretores)
-  const earlyCheckoutIndicators = canViewEarlyCheckout
+  // Buscar indicadores de checkout antecipado (apenas para supervisores/diretores/admin/dev)
+  const earlyCheckoutIndicators = canViewComplianceIndicators
     ? await fetchEarlyCheckoutIndicatorsInServer()
+    : null
+
+  // Buscar indicadores de cancelamentos fora do prazo (apenas para supervisores/diretores/admin/dev)
+  const cancelledReservationsOverview = canViewComplianceIndicators
+    ? await fetchCancelledReservationsOverviewInServer()
     : null
 
   return (
@@ -179,12 +187,14 @@ export default async function SpacesHome() {
         {/* Compliance Semanal - visível para todos os usuários */}
         <WeeklyComplianceCard data={weeklyCompliance} />
 
-        {/* Checkout Antecipado - visível para supervisores e diretores */}
-        {(user?.role === 'admin' ||
-          user?.role === 'dev' ||
-          user?.teamPosition === 'director' ||
-          user?.teamPosition === 'supervisor') && (
+        {/* Checkout Antecipado - visível para supervisores, diretores, admin e dev */}
+        {canViewComplianceIndicators && (
           <EarlyCheckoutCard data={earlyCheckoutIndicators} />
+        )}
+
+        {/* Cancelamentos Fora do Prazo - visível para supervisores, diretores, admin e dev */}
+        {canViewComplianceIndicators && (
+          <CancelledReservationsCard data={cancelledReservationsOverview} />
         )}
       </div>
       <Separator className="bg-primary w-full" />
