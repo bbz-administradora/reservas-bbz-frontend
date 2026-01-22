@@ -9,6 +9,13 @@ import type { Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  CancelledReservationsList200,
+  CancelledReservationsList400,
+  CancelledReservationsList401,
+  CancelledReservationsList403,
+  CancelledReservationsList422,
+  CancelledReservationsList500,
+  CancelledReservationsListParams,
   CancelledReservationsOverview200,
   CancelledReservationsOverview400,
   CancelledReservationsOverview401,
@@ -352,6 +359,125 @@ export const useCancelledReservationsOverview = <
     swrOptions?.swrKey ??
     (() => (isEnabled ? getCancelledReservationsOverviewKey(params) : null))
   const swrFn = () => cancelledReservationsOverview(params, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint retorna uma lista paginada de cancelamentos de reservas de workstation efetuados após o prazo de planejamento.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Apenas supervisores e diretores podem acessar.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+**Regra de negócio**:
+- Colaboradores devem planejar reservas de workstation até quinta-feira da semana anterior
+- Cancelamentos feitos após esse prazo são listados neste endpoint
+- Supervisores: visualizam apenas cancelamentos da sua equipe
+- Diretores: visualizam todos os cancelamentos
+
+**Parâmetros opcionais**:
+- `page`: Número da página (default: 1)
+- `pageSize`: Itens por página (default: 10, max: 100)
+- `startDate`: Data inicial do período (default: início do mês atual)
+- `endDate`: Data final do período (default: momento atual)
+- `userName`: Filtro por nome do colaborador
+- `supervisorName`: Filtro por nome do supervisor
+- `position`: Filtro por cargo (manager, assistant_manager, assistant)
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Listar cancelamentos de reservas após o prazo de planejamento
+ */
+export type cancelledReservationsListResponse = {
+  data: CancelledReservationsList200
+  status: number
+  headers: Headers
+}
+
+export const getCancelledReservationsListUrl = (
+  params?: CancelledReservationsListParams,
+) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  return normalizedParams.size
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservations/cancelled/list?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservations/cancelled/list`
+}
+
+export const cancelledReservationsList = async (
+  params?: CancelledReservationsListParams,
+  options?: RequestInit,
+): Promise<cancelledReservationsListResponse> => {
+  return customFetch<Promise<cancelledReservationsListResponse>>(
+    getCancelledReservationsListUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getCancelledReservationsListKey = (
+  params?: CancelledReservationsListParams,
+) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservations/cancelled/list`,
+    ...(params ? [params] : []),
+  ] as const
+
+export type CancelledReservationsListQueryResult = NonNullable<
+  Awaited<ReturnType<typeof cancelledReservationsList>>
+>
+export type CancelledReservationsListQueryError =
+  | CancelledReservationsList400
+  | CancelledReservationsList401
+  | CancelledReservationsList403
+  | CancelledReservationsList422
+  | CancelledReservationsList500
+
+/**
+ * @summary Listar cancelamentos de reservas após o prazo de planejamento
+ */
+export const useCancelledReservationsList = <
+  TError =
+    | CancelledReservationsList400
+    | CancelledReservationsList401
+    | CancelledReservationsList403
+    | CancelledReservationsList422
+    | CancelledReservationsList500,
+>(
+  params?: CancelledReservationsListParams,
+  options?: {
+    swr?: SWRConfiguration<
+      Awaited<ReturnType<typeof cancelledReservationsList>>,
+      TError
+    > & { swrKey?: Key; enabled?: boolean }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ??
+    (() => (isEnabled ? getCancelledReservationsListKey(params) : null))
+  const swrFn = () => cancelledReservationsList(params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
