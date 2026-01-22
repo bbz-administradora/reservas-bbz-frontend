@@ -189,3 +189,166 @@ export async function fetchWeeklyComplianceDetailsInServer(
 
   return null
 }
+
+// ========================================
+// 📌 TIPOS - CANCELAMENTOS APÓS PRAZO
+// ========================================
+
+export interface CancelledReservationsOverviewResponse {
+  userType: 'supervisor' | 'director'
+  totalCancellations: number
+  periodStart: string
+  periodEnd: string
+}
+
+export interface CancelledReservationsOverviewParams {
+  startDate?: string
+  endDate?: string
+}
+
+export interface CancelledReservation {
+  id: string
+  userId: string
+  userName: string
+  userEmail: string
+  userPosition: 'manager' | 'assistant_manager' | 'assistant' | null
+  supervisorId: string | null
+  supervisorName: string | null
+  supervisorEmail: string | null
+  spaceId: string
+  spaceName: string
+  slotStart: string
+  slotEnd: string
+  closedAt: string
+  planningDeadline: string
+}
+
+export interface CancelledReservationsListResponse {
+  userType: 'supervisor' | 'director'
+  reservations: CancelledReservation[]
+  pagination: {
+    currentPage: number
+    pageSize: number
+    totalPages: number
+    totalCount: number
+  }
+  periodStart: string
+  periodEnd: string
+}
+
+export interface CancelledReservationsListParams {
+  page?: string
+  pageSize?: string
+  startDate?: string
+  endDate?: string
+  userName?: string
+  supervisorName?: string
+  position?: 'manager' | 'assistant_manager' | 'assistant'
+}
+
+// ========================================
+// 📌 FUNÇÕES - CANCELAMENTOS APÓS PRAZO
+// ========================================
+
+/**
+ * Busca o overview de cancelamentos após o prazo de planejamento (server-side).
+ *
+ * ⚠️ **Restrição de acesso**: Apenas supervisores e diretores podem acessar.
+ * Se o usuário não tiver permissão, retorna `null` silenciosamente.
+ */
+export async function fetchCancelledReservationsOverviewInServer(
+  params?: CancelledReservationsOverviewParams,
+): Promise<CancelledReservationsOverviewResponse | null> {
+  const headers = await getHeadersServer()
+  if (!headers) {
+    console.warn('CSRF token not found')
+    return null
+  }
+
+  function getCancelledReservationsOverviewUrl(
+    params?: CancelledReservationsOverviewParams,
+  ): string {
+    const normalizedParams = new URLSearchParams()
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        normalizedParams.append(key, value.toString())
+      }
+    })
+    const baseUrl = `${env.NEXT_PUBLIC_API_URL}/v1/private/reservations/cancelled/overview`
+    return normalizedParams.size
+      ? `${baseUrl}?${normalizedParams.toString()}`
+      : baseUrl
+  }
+
+  const url = getCancelledReservationsOverviewUrl(params)
+
+  const response = await customFetch<CancelledReservationsOverviewResponse>(
+    url,
+    {
+      method: 'GET',
+      credentials: 'include',
+      cache: 'no-store',
+      headers,
+      next: {
+        tags: ['close-reservation', 'cancel-reservation'],
+      },
+    },
+  )
+
+  if (response.status === 200) {
+    return response.data
+  }
+
+  // Retorna null para 403 (sem permissão) ou outros erros
+  return null
+}
+
+/**
+ * Busca a lista paginada de cancelamentos após o prazo de planejamento (server-side).
+ *
+ * ⚠️ **Restrição de acesso**: Apenas supervisores e diretores podem acessar.
+ * Se o usuário não tiver permissão, retorna `null` silenciosamente.
+ */
+export async function fetchCancelledReservationsListInServer(
+  params?: CancelledReservationsListParams,
+): Promise<CancelledReservationsListResponse | null> {
+  const headers = await getHeadersServer()
+  if (!headers) {
+    console.warn('CSRF token not found')
+    return null
+  }
+
+  function getCancelledReservationsListUrl(
+    params?: CancelledReservationsListParams,
+  ): string {
+    const normalizedParams = new URLSearchParams()
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        normalizedParams.append(key, value.toString())
+      }
+    })
+    const baseUrl = `${env.NEXT_PUBLIC_API_URL}/v1/private/reservations/cancelled/list`
+    return normalizedParams.size
+      ? `${baseUrl}?${normalizedParams.toString()}`
+      : baseUrl
+  }
+
+  const url = getCancelledReservationsListUrl(params)
+
+  const response = await customFetch<CancelledReservationsListResponse>(url, {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+    headers,
+    next: {
+      tags: ['close-reservation', 'cancel-reservation'],
+    },
+  })
+
+  if (response.status === 200) {
+    return response.data
+  }
+
+  // Retorna null para 403 (sem permissão) ou outros erros
+  return null
+}
