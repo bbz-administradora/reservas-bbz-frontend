@@ -13020,6 +13020,310 @@
         }
       }
     },
+    "/v1/private/reservations/cancelled/overview": {
+      "get": {
+        "operationId": "cancelledReservationsOverview",
+        "summary": "Buscar overview de cancelamentos de reservas após o prazo",
+        "tags": [
+          "Reservations"
+        ],
+        "description": "Este endpoint retorna um resumo de cancelamentos de reservas de workstation efetuados após o prazo de planejamento.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Apenas supervisores e diretores podem acessar.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Regra de negócio**:\n- Colaboradores devem planejar reservas de workstation até quinta-feira da semana anterior\n- Cancelamentos feitos após esse prazo são contabilizados neste indicador\n- Supervisores: visualizam apenas cancelamentos da sua equipe\n- Diretores: visualizam todos os cancelamentos\n\n**Parâmetros opcionais**:\n- `startDate`: Data inicial do período (default: início do mês atual)\n- `endDate`: Data final do período (default: momento atual)\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "in": "query",
+            "name": "startDate",
+            "required": false,
+            "description": "Data inicial do período de busca (ISO 8601). Se não informado, busca do início do mês atual."
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "in": "query",
+            "name": "endDate",
+            "required": false,
+            "description": "Data final do período de busca (ISO 8601). Se não informado, busca até o momento atual."
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userType": {
+                      "type": "string",
+                      "enum": [
+                        "supervisor",
+                        "director"
+                      ],
+                      "description": "Tipo de usuário que está consultando (supervisor ou diretor)."
+                    },
+                    "totalCancellations": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Total de cancelamentos após o prazo de planejamento."
+                    },
+                    "periodStart": {
+                      "type": "string",
+                      "description": "Data de início do período consultado (ISO 8601)."
+                    },
+                    "periodEnd": {
+                      "type": "string",
+                      "description": "Data de fim do período consultado (ISO 8601)."
+                    }
+                  },
+                  "required": [
+                    "userType",
+                    "totalCancellations",
+                    "periodStart",
+                    "periodEnd"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/private/team/positions/{position}": {
       "post": {
         "operationId": "createPosition",

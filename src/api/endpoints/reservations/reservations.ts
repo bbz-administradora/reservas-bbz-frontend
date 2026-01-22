@@ -9,6 +9,13 @@ import type { Key, SWRConfiguration } from 'swr'
 import useSwr from 'swr'
 import { customFetch } from '../../mutator/custom-fetch'
 import type {
+  CancelledReservationsOverview200,
+  CancelledReservationsOverview400,
+  CancelledReservationsOverview401,
+  CancelledReservationsOverview403,
+  CancelledReservationsOverview422,
+  CancelledReservationsOverview500,
+  CancelledReservationsOverviewParams,
   WeeklyComplianceDetails200,
   WeeklyComplianceDetails400,
   WeeklyComplianceDetails401,
@@ -231,6 +238,120 @@ export const useWeeklyComplianceDetails = <
     swrOptions?.swrKey ??
     (() => (isEnabled ? getWeeklyComplianceDetailsKey(params) : null))
   const swrFn = () => weeklyComplianceDetails(params, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint retorna um resumo de cancelamentos de reservas de workstation efetuados após o prazo de planejamento.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: Apenas supervisores e diretores podem acessar.
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+**Regra de negócio**:
+- Colaboradores devem planejar reservas de workstation até quinta-feira da semana anterior
+- Cancelamentos feitos após esse prazo são contabilizados neste indicador
+- Supervisores: visualizam apenas cancelamentos da sua equipe
+- Diretores: visualizam todos os cancelamentos
+
+**Parâmetros opcionais**:
+- `startDate`: Data inicial do período (default: início do mês atual)
+- `endDate`: Data final do período (default: momento atual)
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Buscar overview de cancelamentos de reservas após o prazo
+ */
+export type cancelledReservationsOverviewResponse = {
+  data: CancelledReservationsOverview200
+  status: number
+  headers: Headers
+}
+
+export const getCancelledReservationsOverviewUrl = (
+  params?: CancelledReservationsOverviewParams,
+) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  return normalizedParams.size
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservations/cancelled/overview?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservations/cancelled/overview`
+}
+
+export const cancelledReservationsOverview = async (
+  params?: CancelledReservationsOverviewParams,
+  options?: RequestInit,
+): Promise<cancelledReservationsOverviewResponse> => {
+  return customFetch<Promise<cancelledReservationsOverviewResponse>>(
+    getCancelledReservationsOverviewUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getCancelledReservationsOverviewKey = (
+  params?: CancelledReservationsOverviewParams,
+) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservations/cancelled/overview`,
+    ...(params ? [params] : []),
+  ] as const
+
+export type CancelledReservationsOverviewQueryResult = NonNullable<
+  Awaited<ReturnType<typeof cancelledReservationsOverview>>
+>
+export type CancelledReservationsOverviewQueryError =
+  | CancelledReservationsOverview400
+  | CancelledReservationsOverview401
+  | CancelledReservationsOverview403
+  | CancelledReservationsOverview422
+  | CancelledReservationsOverview500
+
+/**
+ * @summary Buscar overview de cancelamentos de reservas após o prazo
+ */
+export const useCancelledReservationsOverview = <
+  TError =
+    | CancelledReservationsOverview400
+    | CancelledReservationsOverview401
+    | CancelledReservationsOverview403
+    | CancelledReservationsOverview422
+    | CancelledReservationsOverview500,
+>(
+  params?: CancelledReservationsOverviewParams,
+  options?: {
+    swr?: SWRConfiguration<
+      Awaited<ReturnType<typeof cancelledReservationsOverview>>,
+      TError
+    > & { swrKey?: Key; enabled?: boolean }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ??
+    (() => (isEnabled ? getCancelledReservationsOverviewKey(params) : null))
+  const swrFn = () => cancelledReservationsOverview(params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,
