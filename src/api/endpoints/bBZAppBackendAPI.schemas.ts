@@ -8,6 +8,730 @@
 /**
  * Código de status HTTP 500.
  */
+export type JustifyEarlyCheckoutOccurrence500StatusCode =
+  (typeof JustifyEarlyCheckoutOccurrence500StatusCode)[keyof typeof JustifyEarlyCheckoutOccurrence500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type JustifyEarlyCheckoutOccurrence500Name =
+  (typeof JustifyEarlyCheckoutOccurrence500Name)[keyof typeof JustifyEarlyCheckoutOccurrence500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type JustifyEarlyCheckoutOccurrence500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: JustifyEarlyCheckoutOccurrence500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: JustifyEarlyCheckoutOccurrence500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type JustifyEarlyCheckoutOccurrence422StatusCode =
+  (typeof JustifyEarlyCheckoutOccurrence422StatusCode)[keyof typeof JustifyEarlyCheckoutOccurrence422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type JustifyEarlyCheckoutOccurrence422Name =
+  (typeof JustifyEarlyCheckoutOccurrence422Name)[keyof typeof JustifyEarlyCheckoutOccurrence422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type JustifyEarlyCheckoutOccurrence422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: JustifyEarlyCheckoutOccurrence422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 422. */
+  status_code: JustifyEarlyCheckoutOccurrence422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type JustifyEarlyCheckoutOccurrence404StatusCode =
+  (typeof JustifyEarlyCheckoutOccurrence404StatusCode)[keyof typeof JustifyEarlyCheckoutOccurrence404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type JustifyEarlyCheckoutOccurrence404Name =
+  (typeof JustifyEarlyCheckoutOccurrence404Name)[keyof typeof JustifyEarlyCheckoutOccurrence404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type JustifyEarlyCheckoutOccurrence404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: JustifyEarlyCheckoutOccurrence404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 404. */
+  status_code: JustifyEarlyCheckoutOccurrence404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type JustifyEarlyCheckoutOccurrence403StatusCode =
+  (typeof JustifyEarlyCheckoutOccurrence403StatusCode)[keyof typeof JustifyEarlyCheckoutOccurrence403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type JustifyEarlyCheckoutOccurrence403Name =
+  (typeof JustifyEarlyCheckoutOccurrence403Name)[keyof typeof JustifyEarlyCheckoutOccurrence403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type JustifyEarlyCheckoutOccurrence403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: JustifyEarlyCheckoutOccurrence403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: JustifyEarlyCheckoutOccurrence403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type JustifyEarlyCheckoutOccurrence401StatusCode =
+  (typeof JustifyEarlyCheckoutOccurrence401StatusCode)[keyof typeof JustifyEarlyCheckoutOccurrence401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type JustifyEarlyCheckoutOccurrence401Name =
+  (typeof JustifyEarlyCheckoutOccurrence401Name)[keyof typeof JustifyEarlyCheckoutOccurrence401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type JustifyEarlyCheckoutOccurrence401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: JustifyEarlyCheckoutOccurrence401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: JustifyEarlyCheckoutOccurrence401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type JustifyEarlyCheckoutOccurrence400StatusCode =
+  (typeof JustifyEarlyCheckoutOccurrence400StatusCode)[keyof typeof JustifyEarlyCheckoutOccurrence400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type JustifyEarlyCheckoutOccurrence400Name =
+  (typeof JustifyEarlyCheckoutOccurrence400Name)[keyof typeof JustifyEarlyCheckoutOccurrence400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type JustifyEarlyCheckoutOccurrence400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: JustifyEarlyCheckoutOccurrence400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: JustifyEarlyCheckoutOccurrence400StatusCode
+}
+
+/**
+ * Novo status da ocorrência
+ */
+export type JustifyEarlyCheckoutOccurrence200OccurrenceStatus =
+  (typeof JustifyEarlyCheckoutOccurrence200OccurrenceStatus)[keyof typeof JustifyEarlyCheckoutOccurrence200OccurrenceStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrence200OccurrenceStatus = {
+  pending: 'pending',
+  justified: 'justified',
+  dismissed: 'dismissed',
+} as const
+
+export type JustifyEarlyCheckoutOccurrence200Occurrence = {
+  /** ID do registro */
+  id: string
+  /**
+   * Texto da justificativa
+   * @nullable
+   */
+  justification: string | null
+  /**
+   * Data/hora da justificativa no formato ISO 8601
+   * @nullable
+   */
+  justifiedAt: string | null
+  /**
+   * Nome de quem justificou/descartou
+   * @nullable
+   */
+  justifiedByName: string | null
+  /** Novo status da ocorrência */
+  status: JustifyEarlyCheckoutOccurrence200OccurrenceStatus
+  /** ID do colaborador */
+  userId: string
+  /**
+   * Nome do colaborador
+   * @nullable
+   */
+  userName: string | null
+}
+
+export type JustifyEarlyCheckoutOccurrence200 = {
+  /** Mensagem de sucesso */
+  message: string
+  occurrence: JustifyEarlyCheckoutOccurrence200Occurrence
+}
+
+/**
+ * Ação a ser tomada: 'justified' (justificar) ou 'dismissed' (descartar)
+ */
+export type JustifyEarlyCheckoutOccurrenceBodyAction =
+  (typeof JustifyEarlyCheckoutOccurrenceBodyAction)[keyof typeof JustifyEarlyCheckoutOccurrenceBodyAction]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const JustifyEarlyCheckoutOccurrenceBodyAction = {
+  justified: 'justified',
+  dismissed: 'dismissed',
+} as const
+
+export type JustifyEarlyCheckoutOccurrenceBody = {
+  /** Ação a ser tomada: 'justified' (justificar) ou 'dismissed' (descartar) */
+  action: JustifyEarlyCheckoutOccurrenceBodyAction
+  /**
+   * Texto da justificativa (obrigatório quando action = 'justified')
+   * @minLength 10
+   * @maxLength 1000
+   */
+  justification?: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type ListEarlyCheckoutOccurrences500StatusCode =
+  (typeof ListEarlyCheckoutOccurrences500StatusCode)[keyof typeof ListEarlyCheckoutOccurrences500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListEarlyCheckoutOccurrences500Name =
+  (typeof ListEarlyCheckoutOccurrences500Name)[keyof typeof ListEarlyCheckoutOccurrences500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type ListEarlyCheckoutOccurrences500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListEarlyCheckoutOccurrences500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: ListEarlyCheckoutOccurrences500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type ListEarlyCheckoutOccurrences422StatusCode =
+  (typeof ListEarlyCheckoutOccurrences422StatusCode)[keyof typeof ListEarlyCheckoutOccurrences422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListEarlyCheckoutOccurrences422Name =
+  (typeof ListEarlyCheckoutOccurrences422Name)[keyof typeof ListEarlyCheckoutOccurrences422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type ListEarlyCheckoutOccurrences422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListEarlyCheckoutOccurrences422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 422. */
+  status_code: ListEarlyCheckoutOccurrences422StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type ListEarlyCheckoutOccurrences403StatusCode =
+  (typeof ListEarlyCheckoutOccurrences403StatusCode)[keyof typeof ListEarlyCheckoutOccurrences403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListEarlyCheckoutOccurrences403Name =
+  (typeof ListEarlyCheckoutOccurrences403Name)[keyof typeof ListEarlyCheckoutOccurrences403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type ListEarlyCheckoutOccurrences403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListEarlyCheckoutOccurrences403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: ListEarlyCheckoutOccurrences403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type ListEarlyCheckoutOccurrences401StatusCode =
+  (typeof ListEarlyCheckoutOccurrences401StatusCode)[keyof typeof ListEarlyCheckoutOccurrences401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListEarlyCheckoutOccurrences401Name =
+  (typeof ListEarlyCheckoutOccurrences401Name)[keyof typeof ListEarlyCheckoutOccurrences401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type ListEarlyCheckoutOccurrences401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListEarlyCheckoutOccurrences401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: ListEarlyCheckoutOccurrences401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type ListEarlyCheckoutOccurrences400StatusCode =
+  (typeof ListEarlyCheckoutOccurrences400StatusCode)[keyof typeof ListEarlyCheckoutOccurrences400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListEarlyCheckoutOccurrences400Name =
+  (typeof ListEarlyCheckoutOccurrences400Name)[keyof typeof ListEarlyCheckoutOccurrences400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type ListEarlyCheckoutOccurrences400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListEarlyCheckoutOccurrences400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: ListEarlyCheckoutOccurrences400StatusCode
+}
+
+/**
+ * Período consultado
+ */
+export type ListEarlyCheckoutOccurrences200Period = {
+  /** Data atual no formato ISO 8601 */
+  end: string
+  /**
+   * Data da ocorrência mais antiga (pendência mais antiga) no formato ISO 8601
+   * @nullable
+   */
+  start: string | null
+}
+
+/**
+ * Informações de paginação
+ */
+export type ListEarlyCheckoutOccurrences200Pagination = {
+  /**
+   * Página atual
+   * @minimum 1
+   */
+  page: number
+  /**
+   * Itens por página
+   * @minimum 1
+   */
+  pageSize: number
+  /**
+   * Total de itens
+   * @minimum 0
+   */
+  totalItems: number
+  /**
+   * Total de páginas
+   * @minimum 0
+   */
+  totalPages: number
+}
+
+/**
+ * Listagem de ocorrências de checkout antecipado
+ */
+export type ListEarlyCheckoutOccurrences200 = {
+  /** Indicadores/totalizadores das ocorrências */
+  indicators: ListEarlyCheckoutOccurrences200Indicators
+  /** Mensagem informativa sobre a operação */
+  message: string
+  /** Lista paginada de ocorrências */
+  occurrences: ListEarlyCheckoutOccurrences200OccurrencesItem[]
+  /** Informações de paginação */
+  pagination: ListEarlyCheckoutOccurrences200Pagination
+  /** Período consultado */
+  period: ListEarlyCheckoutOccurrences200Period
+}
+
+/**
+ * Status da ocorrência
+ */
+export type ListEarlyCheckoutOccurrences200OccurrencesItemStatus =
+  (typeof ListEarlyCheckoutOccurrences200OccurrencesItemStatus)[keyof typeof ListEarlyCheckoutOccurrences200OccurrencesItemStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences200OccurrencesItemStatus = {
+  pending: 'pending',
+  justified: 'justified',
+  dismissed: 'dismissed',
+} as const
+
+/**
+ * Cargo do colaborador na equipe
+ * @nullable
+ */
+export type ListEarlyCheckoutOccurrences200OccurrencesItemPosition =
+  | (typeof ListEarlyCheckoutOccurrences200OccurrencesItemPosition)[keyof typeof ListEarlyCheckoutOccurrences200OccurrencesItemPosition]
+  | null
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrences200OccurrencesItemPosition = {
+  director: 'director',
+  supervisor: 'supervisor',
+  manager: 'manager',
+  assistant_manager: 'assistant_manager',
+  assistant: 'assistant',
+} as const
+
+export type ListEarlyCheckoutOccurrences200OccurrencesItem = {
+  /** Data/hora do check-in no formato ISO 8601 */
+  checkInAt: string
+  /** Data/hora do checkout no formato ISO 8601 */
+  checkOutAt: string
+  /** ID único do registro de checkout no formato UUID v4 */
+  id: string
+  /**
+   * Texto da justificativa
+   * @nullable
+   */
+  justification: string | null
+  /**
+   * Data/hora da justificativa no formato ISO 8601
+   * @nullable
+   */
+  justifiedAt: string | null
+  /**
+   * Nome de quem justificou/desconsiderou
+   * @nullable
+   */
+  justifiedByName: string | null
+  /**
+   * Cargo do colaborador na equipe
+   * @nullable
+   */
+  position: ListEarlyCheckoutOccurrences200OccurrencesItemPosition
+  /** ID da reserva */
+  reservationId: string
+  /** ID do espaço (workstation) */
+  spaceId: string
+  /** Nome do espaço */
+  spaceName: string
+  /** Status da ocorrência */
+  status: ListEarlyCheckoutOccurrences200OccurrencesItemStatus
+  /**
+   * Email do supervisor direto
+   * @nullable
+   */
+  supervisorEmail: string | null
+  /**
+   * ID do supervisor direto
+   * @nullable
+   */
+  supervisorId: string | null
+  /**
+   * Nome do supervisor direto
+   * @nullable
+   */
+  supervisorName: string | null
+  /**
+   * URL do avatar do colaborador
+   * @nullable
+   */
+  userAvatar: string | null
+  /** Email do colaborador */
+  userEmail: string
+  /** ID do colaborador */
+  userId: string
+  /**
+   * Nome do colaborador
+   * @nullable
+   */
+  userName: string | null
+  /** Horas trabalhadas entre check-in e checkout */
+  workedHours: number
+}
+
+/**
+ * Indicadores/totalizadores das ocorrências
+ */
+export type ListEarlyCheckoutOccurrences200Indicators = {
+  /**
+   * Quantidade de ocorrências desconsideradas
+   * @minimum 0
+   */
+  dismissed: number
+  /**
+   * Quantidade de ocorrências justificadas
+   * @minimum 0
+   */
+  justified: number
+  /**
+   * Quantidade de ocorrências pendentes
+   * @minimum 0
+   */
+  pending: number
+  /**
+   * Total de ocorrências no período
+   * @minimum 0
+   */
+  total: number
+}
+
+export type ListEarlyCheckoutOccurrencesPosition =
+  (typeof ListEarlyCheckoutOccurrencesPosition)[keyof typeof ListEarlyCheckoutOccurrencesPosition]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrencesPosition = {
+  manager: 'manager',
+  assistant_manager: 'assistant_manager',
+  assistant: 'assistant',
+} as const
+
+export type ListEarlyCheckoutOccurrencesStatus =
+  (typeof ListEarlyCheckoutOccurrencesStatus)[keyof typeof ListEarlyCheckoutOccurrencesStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListEarlyCheckoutOccurrencesStatus = {
+  pending: 'pending',
+  justified: 'justified',
+  dismissed: 'dismissed',
+  all: 'all',
+} as const
+
+export type ListEarlyCheckoutOccurrencesPageSizeAllOf = unknown | string
+
+export type ListEarlyCheckoutOccurrencesPageAllOf = unknown | string
+
+export type ListEarlyCheckoutOccurrencesParams = {
+  /**
+   * Número da página para paginação. Default: 1
+   */
+  page?: ListEarlyCheckoutOccurrencesPageAllOf & number
+  /**
+   * Quantidade de itens por página. Default: 10. Máximo: 100
+   */
+  pageSize?: ListEarlyCheckoutOccurrencesPageSizeAllOf & number
+  /**
+   * Filtrar por status da ocorrência. Valores: 'pending', 'justified', 'dismissed', 'all'. Default: 'all'
+   */
+  status?: ListEarlyCheckoutOccurrencesStatus
+  /**
+   * Busca parcial por nome do supervisor do colaborador
+   */
+  supervisorName?: string
+  /**
+   * Busca parcial por nome do colaborador
+   */
+  userName?: string
+  /**
+   * Busca parcial por email do colaborador
+   */
+  userEmail?: string
+  /**
+   * Filtrar por cargo do colaborador. Valores: 'manager', 'assistant_manager', 'assistant'
+   */
+  position?: ListEarlyCheckoutOccurrencesPosition
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type GetOrganogram500StatusCode =
   (typeof GetOrganogram500StatusCode)[keyof typeof GetOrganogram500StatusCode]
 
@@ -2472,6 +3196,56 @@ export const ReservationGetDetail200ReservationStatus = {
 } as const
 
 /**
+ * Tipo do espaço
+ */
+export type ReservationGetDetail200ReservationSpaceType =
+  (typeof ReservationGetDetail200ReservationSpaceType)[keyof typeof ReservationGetDetail200ReservationSpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ReservationGetDetail200ReservationSpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+/**
+ * Informações básicas do espaço
+ */
+export type ReservationGetDetail200ReservationSpace = {
+  /**
+   * Andar do espaço
+   * @nullable
+   */
+  floor: string | null
+  /** Identificador único do espaço */
+  id: string
+  /** Nome do espaço */
+  name: string
+  /**
+   * Posição do espaço
+   * @nullable
+   */
+  position: string | null
+  /** Tipo do espaço */
+  type: ReservationGetDetail200ReservationSpaceType
+  /**
+   * Zona do espaço
+   * @nullable
+   */
+  zone: string | null
+}
+
+/**
+ * Usuário que cancelou a reserva (ou null)
+ * @nullable
+ */
+export type ReservationGetDetail200ReservationCancelledBy = {
+  /** ID do usuário que cancelou */
+  id: string
+  /** Nome do usuário que cancelou */
+  name: string
+} | null
+
+/**
  * Detalhes completos de uma reserva paginada
  */
 export type ReservationGetDetail200Reservation = {
@@ -2528,56 +3302,6 @@ export type ReservationGetDetail200 = {
   /** Detalhes completos de uma reserva paginada */
   reservation: ReservationGetDetail200Reservation
 }
-
-/**
- * Tipo do espaço
- */
-export type ReservationGetDetail200ReservationSpaceType =
-  (typeof ReservationGetDetail200ReservationSpaceType)[keyof typeof ReservationGetDetail200ReservationSpaceType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ReservationGetDetail200ReservationSpaceType = {
-  room: 'room',
-  workstation: 'workstation',
-} as const
-
-/**
- * Informações básicas do espaço
- */
-export type ReservationGetDetail200ReservationSpace = {
-  /**
-   * Andar do espaço
-   * @nullable
-   */
-  floor: string | null
-  /** Identificador único do espaço */
-  id: string
-  /** Nome do espaço */
-  name: string
-  /**
-   * Posição do espaço
-   * @nullable
-   */
-  position: string | null
-  /** Tipo do espaço */
-  type: ReservationGetDetail200ReservationSpaceType
-  /**
-   * Zona do espaço
-   * @nullable
-   */
-  zone: string | null
-}
-
-/**
- * Usuário que cancelou a reserva (ou null)
- * @nullable
- */
-export type ReservationGetDetail200ReservationCancelledBy = {
-  /** ID do usuário que cancelou */
-  id: string
-  /** Nome do usuário que cancelou */
-  name: string
-} | null
 
 /**
  * Código de status HTTP 500.
@@ -3269,20 +3993,6 @@ export type ListSpaceReservations400 = {
 }
 
 /**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
-
-/**
  * Informações do usuário que fez a reserva
  */
 export type ListSpaceReservations200ReservationsItemUser = {
@@ -3306,6 +4016,70 @@ export const ListSpaceReservations200ReservationsItemStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
+
+/**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ListSpaceReservations200ReservationsItem = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /** Registros de check-in/check-out relacionados à reserva */
+  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ListSpaceReservations200ReservationsItemSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ListSpaceReservations200ReservationsItemStatus
+  /** Informações do usuário que fez a reserva */
+  user: ListSpaceReservations200ReservationsItemUser
+}
+
+/**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
 
 /**
  * Tipo do espaço
@@ -3385,56 +4159,6 @@ export type ListSpaceReservations200ReservationsItemCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ListSpaceReservations200ReservationsItem = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /** Registros de check-in/check-out relacionados à reserva */
-  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ListSpaceReservations200ReservationsItemSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ListSpaceReservations200ReservationsItemStatus
-  /** Informações do usuário que fez a reserva */
-  user: ListSpaceReservations200ReservationsItemUser
-}
 
 export type ListSpaceReservationsIncludeUserAsGuest =
   (typeof ListSpaceReservationsIncludeUserAsGuest)[keyof typeof ListSpaceReservationsIncludeUserAsGuest]

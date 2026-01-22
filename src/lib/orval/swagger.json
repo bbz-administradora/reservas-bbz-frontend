@@ -15241,6 +15241,1007 @@
           }
         }
       }
+    },
+    "/v1/private/occurrences/early-checkout": {
+      "get": {
+        "operationId": "listEarlyCheckoutOccurrences",
+        "summary": "Listar ocorrências de checkout antecipado",
+        "tags": [
+          "Occurrences"
+        ],
+        "description": "Este endpoint retorna a lista de ocorrências de checkout antecipado em workstations.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Baseada na role do sistema E na position do team:\n  - Admin/Dev (roles do sistema) → podem ver todas as ocorrências\n  - Director (position no team) → pode ver todas as ocorrências\n  - Supervisor (position no team) → pode ver apenas ocorrências da sua equipe\n  - Demais usuários → não têm acesso\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Regras de negócio**:\n- Sempre busca da pendência mais antiga até hoje (sem filtro de data)\n- Retorna indicadores totalizadores (total, pendentes, justificadas, desconsideradas)\n- Retorna período consultado (data mais antiga de pendência até hoje)\n- Lista paginada de ocorrências com dados do colaborador e supervisor\n\n**Filtros disponíveis**:\n- `status`: 'pending', 'justified', 'dismissed', 'all'\n- `supervisorName`: Busca parcial por nome do supervisor\n- `userName`: Busca parcial por nome do colaborador\n- `userEmail`: Busca parcial por email do colaborador\n- `position`: 'manager', 'assistant_manager', 'assistant'\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "parameters": [
+          {
+            "schema": {
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "not": {}
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "default": "1"
+                },
+                {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              ]
+            },
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "Número da página para paginação. Default: 1"
+          },
+          {
+            "schema": {
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "not": {}
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "default": "10"
+                },
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 100
+                }
+              ]
+            },
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "description": "Quantidade de itens por página. Default: 10. Máximo: 100"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "justified",
+                "dismissed",
+                "all"
+              ],
+              "default": "all"
+            },
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "description": "Filtrar por status da ocorrência. Valores: 'pending', 'justified', 'dismissed', 'all'. Default: 'all'"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "supervisorName",
+            "required": false,
+            "description": "Busca parcial por nome do supervisor do colaborador"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "userName",
+            "required": false,
+            "description": "Busca parcial por nome do colaborador"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "userEmail",
+            "required": false,
+            "description": "Busca parcial por email do colaborador"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "manager",
+                "assistant_manager",
+                "assistant"
+              ]
+            },
+            "in": "query",
+            "name": "position",
+            "required": false,
+            "description": "Filtrar por cargo do colaborador. Valores: 'manager', 'assistant_manager', 'assistant'"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listagem de ocorrências de checkout antecipado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "period": {
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Data da ocorrência mais antiga (pendência mais antiga) no formato ISO 8601"
+                        },
+                        "end": {
+                          "type": "string",
+                          "description": "Data atual no formato ISO 8601"
+                        }
+                      },
+                      "required": [
+                        "start",
+                        "end"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Período consultado"
+                    },
+                    "indicators": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Total de ocorrências no período"
+                        },
+                        "pending": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Quantidade de ocorrências pendentes"
+                        },
+                        "justified": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Quantidade de ocorrências justificadas"
+                        },
+                        "dismissed": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Quantidade de ocorrências desconsideradas"
+                        }
+                      },
+                      "required": [
+                        "total",
+                        "pending",
+                        "justified",
+                        "dismissed"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Indicadores/totalizadores das ocorrências"
+                    },
+                    "occurrences": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "ID único do registro de checkout no formato UUID v4"
+                          },
+                          "userId": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "ID do colaborador"
+                          },
+                          "userName": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Nome do colaborador"
+                          },
+                          "userEmail": {
+                            "type": "string",
+                            "format": "email",
+                            "description": "Email do colaborador"
+                          },
+                          "userAvatar": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "URL do avatar do colaborador"
+                          },
+                          "position": {
+                            "type": "string",
+                            "enum": [
+                              "director",
+                              "supervisor",
+                              "manager",
+                              "assistant_manager",
+                              "assistant"
+                            ],
+                            "nullable": true,
+                            "description": "Cargo do colaborador na equipe"
+                          },
+                          "supervisorId": {
+                            "type": "string",
+                            "format": "uuid",
+                            "nullable": true,
+                            "description": "ID do supervisor direto"
+                          },
+                          "supervisorName": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Nome do supervisor direto"
+                          },
+                          "supervisorEmail": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Email do supervisor direto"
+                          },
+                          "checkInAt": {
+                            "type": "string",
+                            "description": "Data/hora do check-in no formato ISO 8601"
+                          },
+                          "checkOutAt": {
+                            "type": "string",
+                            "description": "Data/hora do checkout no formato ISO 8601"
+                          },
+                          "workedHours": {
+                            "type": "number",
+                            "description": "Horas trabalhadas entre check-in e checkout"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "pending",
+                              "justified",
+                              "dismissed"
+                            ],
+                            "description": "Status da ocorrência"
+                          },
+                          "justification": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Texto da justificativa"
+                          },
+                          "justifiedByName": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Nome de quem justificou/desconsiderou"
+                          },
+                          "justifiedAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Data/hora da justificativa no formato ISO 8601"
+                          },
+                          "spaceId": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "ID do espaço (workstation)"
+                          },
+                          "spaceName": {
+                            "type": "string",
+                            "description": "Nome do espaço"
+                          },
+                          "reservationId": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "ID da reserva"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "userId",
+                          "userName",
+                          "userEmail",
+                          "userAvatar",
+                          "position",
+                          "supervisorId",
+                          "supervisorName",
+                          "supervisorEmail",
+                          "checkInAt",
+                          "checkOutAt",
+                          "workedHours",
+                          "status",
+                          "justification",
+                          "justifiedByName",
+                          "justifiedAt",
+                          "spaceId",
+                          "spaceName",
+                          "reservationId"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Lista paginada de ocorrências"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Página atual"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "description": "Itens por página"
+                        },
+                        "totalItems": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Total de itens"
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Total de páginas"
+                        }
+                      },
+                      "required": [
+                        "page",
+                        "pageSize",
+                        "totalItems",
+                        "totalPages"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Informações de paginação"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem informativa sobre a operação"
+                    }
+                  },
+                  "required": [
+                    "period",
+                    "indicators",
+                    "occurrences",
+                    "pagination",
+                    "message"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Listagem de ocorrências de checkout antecipado"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/private/occurrences/early-checkout/{id}/justify": {
+      "post": {
+        "operationId": "justifyEarlyCheckoutOccurrence",
+        "summary": "Justificar ou descartar ocorrência de checkout antecipado",
+        "tags": [
+          "Occurrences"
+        ],
+        "description": "Este endpoint permite justificar ou descartar uma ocorrência de checkout antecipado.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Baseada na role do sistema E na position do team:\n  - Admin/Dev (roles do sistema) → podem justificar qualquer ocorrência\n  - Director (position no team) → pode justificar qualquer ocorrência\n  - Supervisor (position no team) → pode justificar apenas ocorrências da sua equipe\n  - Demais usuários → não têm permissão\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Regras de negócio**:\n- A ocorrência deve existir e estar com status 'pending'\n- Quando action = 'justified', o campo justification é obrigatório (mínimo 10 caracteres)\n- Quando action = 'dismissed', a justificativa é opcional\n\n**Ações disponíveis**:\n- `justified`: Justifica a ocorrência com um texto explicativo\n- `dismissed`: Descarta a ocorrência (erro de registro, por exemplo)\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "justified",
+                      "dismissed"
+                    ],
+                    "description": "Ação a ser tomada: 'justified' (justificar) ou 'dismissed' (descartar)"
+                  },
+                  "justification": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 1000,
+                    "description": "Texto da justificativa (obrigatório quando action = 'justified')"
+                  }
+                },
+                "required": [
+                  "action"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID do registro de checkout antecipado (UUID)"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "occurrence": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "ID do registro"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "ID do colaborador"
+                        },
+                        "userName": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Nome do colaborador"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "pending",
+                            "justified",
+                            "dismissed"
+                          ],
+                          "description": "Novo status da ocorrência"
+                        },
+                        "justification": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Texto da justificativa"
+                        },
+                        "justifiedByName": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Nome de quem justificou/descartou"
+                        },
+                        "justifiedAt": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Data/hora da justificativa no formato ISO 8601"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "userId",
+                        "userName",
+                        "status",
+                        "justification",
+                        "justifiedByName",
+                        "justifiedAt"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem de sucesso"
+                    }
+                  },
+                  "required": [
+                    "occurrence",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Schema to represent Bad Request errors (HTTP 400)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "BadRequestError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a requisição é inválida."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir a requisição."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        400
+                      ],
+                      "description": "Código de status HTTP 400."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Bad Request errors (HTTP 400)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Schema to represent Unauthorized errors (HTTP 401)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnauthorizedError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o acesso não está autorizado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para a autenticação."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        401
+                      ],
+                      "description": "Código de status HTTP 401."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unauthorized errors (HTTP 401)"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Schema to represent Forbidden errors (HTTP 403)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "ForbiddenError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando acesso proibido."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para acessar o recurso."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        403
+                      ],
+                      "description": "Código de status HTTP 403."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Forbidden errors (HTTP 403)"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Schema to represent Not Found errors (HTTP 404)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "NotFoundError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que o recurso não foi encontrado."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para o recurso não encontrado."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        404
+                      ],
+                      "description": "Código de status HTTP 404."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Not Found errors (HTTP 404)"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema to represent Unprocessable Entity errors (HTTP 422)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "UnprocessableEntityError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando que a entidade não pôde ser processada."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para corrigir os dados enviados."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        422
+                      ],
+                      "description": "Código de status HTTP 422."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Unprocessable Entity errors (HTTP 422)"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Schema to represent Internal Server errors (HTTP 500)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "InternalServerError"
+                      ],
+                      "description": "Nome fixo do erro."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem indicando um erro interno no servidor."
+                    },
+                    "action": {
+                      "type": "string",
+                      "description": "Ação recomendada para lidar com o erro interno."
+                    },
+                    "status_code": {
+                      "type": "number",
+                      "enum": [
+                        500
+                      ],
+                      "description": "Código de status HTTP 500."
+                    },
+                    "payload": {
+                      "description": "Dados públicos não sensíveis enviados ao cliente."
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "message",
+                    "action",
+                    "status_code"
+                  ],
+                  "additionalProperties": false,
+                  "description": "Schema to represent Internal Server errors (HTTP 500)"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "servers": [

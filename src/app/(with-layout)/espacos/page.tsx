@@ -1,8 +1,10 @@
+import { EarlyCheckoutCard } from '@/components/EarlyCheckoutCard'
 import { SpaceExplorerSection } from '@/components/SpaceExplorerSection'
 import { CardDecoration } from '@/components/svg/card-decoration'
 import { Text } from '@/components/Text'
 import { Separator } from '@/components/ui/separator'
 import { WeeklyComplianceCard } from '@/components/WeeklyComplianceCard'
+import { fetchEarlyCheckoutIndicatorsInServer } from '@/services/occurrenceService'
 import {
   fetchSpaceReservationStatsInServer,
   fetchWeeklyComplianceOverviewInServer,
@@ -38,6 +40,9 @@ export default async function SpacesHome() {
 
   // Buscar dados de compliance semanal
   const weeklyCompliance = await fetchWeeklyComplianceOverviewInServer()
+
+  // Buscar indicadores de checkout antecipado (apenas para supervisores/diretores)
+  const earlyCheckoutIndicators = await fetchEarlyCheckoutIndicatorsInServer()
 
   const { user } = await fetchCurrentUserInServer()
 
@@ -130,9 +135,6 @@ export default async function SpacesHome() {
           </Text>
         </div>
 
-        {/* Compliance Semanal - visível para todos os usuários */}
-        <WeeklyComplianceCard data={weeklyCompliance} />
-
         {/* Gestão de Equipe - visível para admin, dev e membros que podem gerenciar (exceto assistant) */}
         {(user?.role === 'admin' ||
           user?.role === 'dev' ||
@@ -162,6 +164,17 @@ export default async function SpacesHome() {
                   : 'Membro da Equipe'}
             </Text>
           </Link>
+        )}
+
+        {/* Compliance Semanal - visível para todos os usuários */}
+        <WeeklyComplianceCard data={weeklyCompliance} />
+
+        {/* Checkout Antecipado - visível para supervisores e diretores */}
+        {(user?.role === 'admin' ||
+          user?.role === 'dev' ||
+          user?.teamPosition === 'director' ||
+          user?.teamPosition === 'supervisor') && (
+          <EarlyCheckoutCard data={earlyCheckoutIndicators} />
         )}
       </div>
       <Separator className="bg-primary w-full" />
