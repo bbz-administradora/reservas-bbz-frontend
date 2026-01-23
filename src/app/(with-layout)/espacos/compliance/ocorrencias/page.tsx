@@ -50,6 +50,7 @@ import {
   Clock,
   FileText,
   Search,
+  User,
   XCircle,
 } from 'lucide-react'
 import Link from 'next/link'
@@ -427,6 +428,7 @@ export default function OcorrenciasPage() {
               <TableRow>
                 <TableHead>Colaborador</TableHead>
                 <TableHead>Cargo</TableHead>
+                <TableHead>Supervisor</TableHead>
                 <TableHead>Data</TableHead>
                 <TableHead className="text-center">Horas Trabalhadas</TableHead>
                 <TableHead className="text-center">Status</TableHead>
@@ -436,7 +438,7 @@ export default function OcorrenciasPage() {
             <TableBody>
               {occurrences.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center">
+                  <TableCell colSpan={7} className="h-24 text-center">
                     <div className="flex flex-col items-center gap-2">
                       <CheckCircle2 className="h-8 w-8 text-green-500" />
                       <Text variant="body-16-18-400">
@@ -466,6 +468,16 @@ export default function OcorrenciasPage() {
                           occurrence.position ||
                           '-'}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <User className="text-muted-foreground h-4 w-4" />
+                        <span>
+                          {transformTextIntoCapitalizedWords(
+                            occurrence.supervisorName,
+                          ) || '-'}
+                        </span>
+                      </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-col">
@@ -581,16 +593,31 @@ export default function OcorrenciasPage() {
                     </div>
                   </div>
 
-                  <div>
-                    <Text
-                      variant="label-14-16-400"
-                      className="text-muted-foreground"
-                    >
-                      Data do Checkout
-                    </Text>
-                    <Text variant="body-16-18-400">
-                      {formatDate(occurrence.checkOutAt)}
-                    </Text>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Text
+                        variant="label-14-16-400"
+                        className="text-muted-foreground"
+                      >
+                        Supervisor
+                      </Text>
+                      <Text variant="body-16-18-400">
+                        {transformTextIntoCapitalizedWords(
+                          occurrence.supervisorName,
+                        ) || '-'}
+                      </Text>
+                    </div>
+                    <div>
+                      <Text
+                        variant="label-14-16-400"
+                        className="text-muted-foreground"
+                      >
+                        Data do Checkout
+                      </Text>
+                      <Text variant="body-16-18-400">
+                        {formatDate(occurrence.checkOutAt)}
+                      </Text>
+                    </div>
                   </div>
 
                   {/* Ação */}

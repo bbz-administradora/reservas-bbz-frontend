@@ -1,5 +1,6 @@
 'use client'
 
+import { customFetch } from '@/api/mutator/custom-fetch'
 import { Text } from '@/components/Text'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -87,14 +88,13 @@ export function JustifyModal({
     setIsSubmitting(true)
 
     try {
-      const response = await fetch(
+      const response = await customFetch<{
+        data: { message: string }
+        status: number
+      }>(
         `${env.NEXT_PUBLIC_API_URL}/v1/private/occurrences/early-checkout/${occurrence.id}/justify`,
         {
           method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify({
             action,
             justification:
@@ -103,7 +103,7 @@ export function JustifyModal({
         },
       )
 
-      if (response.ok) {
+      if (response.status >= 200 && response.status < 300) {
         toast.success(
           action === 'justified'
             ? 'Ocorrência justificada com sucesso!'
@@ -113,8 +113,8 @@ export function JustifyModal({
         onSuccess()
         router.refresh()
       } else {
-        const errorData = await response.json().catch(() => ({}))
-        toast.error(errorData.message || 'Erro ao processar solicitação')
+        const errorData = response.data as { message?: string }
+        toast.error(errorData?.message || 'Erro ao processar solicitação')
       }
     } catch (error) {
       console.error('Erro ao justificar:', error)
