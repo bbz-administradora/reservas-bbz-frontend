@@ -35,6 +35,11 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
   EarlyCheckoutListResponse,
   EarlyCheckoutOccurrence,
   fetchEarlyCheckoutOccurrencesInServer,
@@ -508,9 +513,31 @@ export default function OcorrenciasPage() {
                         >
                           Justificar
                         </Button>
+                      ) : occurrence.justification ? (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className="text-muted-foreground inline-block max-w-[150px] cursor-help truncate text-sm">
+                              {occurrence.justification.length > 20
+                                ? `${occurrence.justification.slice(0, 20)}...`
+                                : occurrence.justification}
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent
+                            side="top"
+                            className="max-w-[300px] text-wrap"
+                          >
+                            <p className="mb-1 font-medium">
+                              Por:{' '}
+                              {occurrence.justifiedByName || 'Não informado'}
+                            </p>
+                            <p>{occurrence.justification}</p>
+                          </TooltipContent>
+                        </Tooltip>
                       ) : (
                         <span className="text-muted-foreground text-sm">
-                          {occurrence.justifiedByName || '-'}
+                          {occurrence.status === 'dismissed'
+                            ? 'Desconsiderada'
+                            : '-'}
                         </span>
                       )}
                     </TableCell>
@@ -621,7 +648,7 @@ export default function OcorrenciasPage() {
                   </div>
 
                   {/* Ação */}
-                  {occurrence.status === 'pending' && (
+                  {occurrence.status === 'pending' ? (
                     <Button
                       variant="outline"
                       className="w-full"
@@ -629,7 +656,32 @@ export default function OcorrenciasPage() {
                     >
                       Justificar Ocorrência
                     </Button>
-                  )}
+                  ) : occurrence.justification ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="cursor-help rounded-lg border bg-white/50 p-3">
+                          <Text
+                            variant="label-14-16-400"
+                            className="text-muted-foreground"
+                          >
+                            Justificativa por{' '}
+                            {occurrence.justifiedByName || 'Não informado'}
+                          </Text>
+                          <Text variant="body-16-18-400" className="truncate">
+                            {occurrence.justification.length > 40
+                              ? `${occurrence.justification.slice(0, 40)}...`
+                              : occurrence.justification}
+                          </Text>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        side="top"
+                        className="max-w-[280px] text-wrap"
+                      >
+                        <p>{occurrence.justification}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : null}
                 </div>
               </CardContent>
             </Card>
