@@ -193,15 +193,9 @@ export function SpaceCheckInOutClient({
   }
 
   // Filtrar reservas que podem aparecer na tela de check-in/check-out
-  // Mostra: ativa (reserved), realizada, incompleta, checkout-pendente
+  // Mostra apenas reservas ativas (reserved) que ainda podem fazer check-in/check-out
   // NÃO mostra: encerrada (closed) e cancelada (cancelled)
-  const activeReservations = reservations.filter(
-    (r) =>
-      r.status === 'reserved' ||
-      r.status === 'realized' ||
-      r.status === 'incomplete' ||
-      r.status === 'checkout-pending',
-  )
+  const activeReservations = reservations.filter((r) => r.status === 'reserved')
 
   // Função para determinar status da reserva baseado em checkInOuts
   function getReservationStatus(reservation: any) {
