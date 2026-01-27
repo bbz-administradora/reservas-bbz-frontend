@@ -1,4 +1,7 @@
-import { WeeklyComplianceDetailsParams } from '@/api/endpoints/bBZAppBackendAPI.schemas'
+import {
+  WeeklyComplianceDetailsParams,
+  WeeklyComplianceDetailsWeek,
+} from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { Text } from '@/components/Text'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -83,7 +86,7 @@ export default async function ComplianceEquipePage({
   const page = params.page || '1'
   const pageSize = params.pageSize || '10'
   const onlyNonCompliant = params.onlyNonCompliant || 'false'
-  const week = params.week || 'next'
+  const week = (params.week || 'next') as WeeklyComplianceDetailsWeek
 
   const queryParams: WeeklyComplianceDetailsParams = {
     page,
