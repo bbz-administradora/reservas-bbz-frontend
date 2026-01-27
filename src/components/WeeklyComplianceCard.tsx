@@ -136,13 +136,9 @@ export function WeeklyComplianceCard({ data }: WeeklyComplianceCardProps) {
         >
           {compliantMembers} de {totalMembers} membros
         </Text>
-        {nonCompliantMembers > 0 && (
-          <Button variant="outline" size="sm" className="mt-2" asChild>
-            <Link href="/espacos/compliance/equipe">
-              Ver detalhes da equipe
-            </Link>
-          </Button>
-        )}
+        <Button variant="outline" size="sm" className="mt-2" asChild>
+          <Link href="/espacos/compliance/equipe">Ver detalhes da equipe</Link>
+        </Button>
       </div>
     )
   }
@@ -191,11 +187,9 @@ export function WeeklyComplianceCard({ data }: WeeklyComplianceCardProps) {
         >
           {compliantMembers} de {totalMembers} colaboradores
         </Text>
-        {nonCompliantMembers > 0 && (
-          <Button variant="outline" size="sm" className="mt-2" asChild>
-            <Link href="/espacos/compliance/geral">Ver detalhes gerais</Link>
-          </Button>
-        )}
+        <Button variant="outline" size="sm" className="mt-2" asChild>
+          <Link href="/espacos/compliance/geral">Ver detalhes gerais</Link>
+        </Button>
       </div>
     )
   }

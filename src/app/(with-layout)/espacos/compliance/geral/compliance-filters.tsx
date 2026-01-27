@@ -26,6 +26,7 @@ interface ComplianceFiltersProps {
   currentUserName?: string
   currentPosition?: string
   onlyNonCompliant: string
+  week: string
 }
 
 const positionOptions = [
@@ -41,6 +42,7 @@ export function ComplianceFilters({
   currentUserName,
   currentPosition,
   onlyNonCompliant,
+  week,
 }: ComplianceFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -58,6 +60,11 @@ export function ComplianceFilters({
       // Mantém onlyNonCompliant
       if (onlyNonCompliant === 'true') {
         params.set('onlyNonCompliant', 'true')
+      }
+
+      // Mantém week
+      if (week === 'current') {
+        params.set('week', 'current')
       }
 
       // Valores atuais
@@ -83,7 +90,7 @@ export function ComplianceFilters({
 
       return `/espacos/compliance/geral?${params.toString()}`
     },
-    [searchParams, onlyNonCompliant],
+    [searchParams, onlyNonCompliant, week],
   )
 
   function handleSupervisorClick(supervisorName: string) {
@@ -113,8 +120,9 @@ export function ComplianceFilters({
   function handleClearFilters() {
     setSearchValue('')
     startTransition(() => {
+      const weekParam = week === 'current' ? '&week=current' : ''
       router.push(
-        `/espacos/compliance/geral?page=1&pageSize=10${onlyNonCompliant === 'true' ? '&onlyNonCompliant=true' : ''}`,
+        `/espacos/compliance/geral?page=1&pageSize=10${onlyNonCompliant === 'true' ? '&onlyNonCompliant=true' : ''}${weekParam}`,
       )
     })
   }

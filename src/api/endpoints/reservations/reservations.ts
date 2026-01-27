@@ -156,6 +156,7 @@ export const useWeeklyComplianceOverview = <
 - `page`: Número da página (padrão: 1)
 - `pageSize`: Registros por página (padrão: 20)
 - `onlyNonCompliant`: Se true, retorna apenas não-compliant (padrão: false)
+- `week`: Qual semana consultar: "next" para próxima semana (padrão), "current" para semana vigente
 - `supervisorName`: Filtrar por nome do supervisor (busca parcial)
 - `userName`: Filtrar por nome do colaborador (busca parcial)
 - `position`: Filtrar por cargo (manager, assistant_manager, assistant)

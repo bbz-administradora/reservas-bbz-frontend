@@ -534,22 +534,6 @@ export type ListEarlyCheckoutOccurrences200Pagination = {
 }
 
 /**
- * Listagem de ocorrências de checkout antecipado
- */
-export type ListEarlyCheckoutOccurrences200 = {
-  /** Indicadores/totalizadores das ocorrências */
-  indicators: ListEarlyCheckoutOccurrences200Indicators
-  /** Mensagem informativa sobre a operação */
-  message: string
-  /** Lista paginada de ocorrências */
-  occurrences: ListEarlyCheckoutOccurrences200OccurrencesItem[]
-  /** Informações de paginação */
-  pagination: ListEarlyCheckoutOccurrences200Pagination
-  /** Período consultado */
-  period: ListEarlyCheckoutOccurrences200Period
-}
-
-/**
  * Status da ocorrência
  */
 export type ListEarlyCheckoutOccurrences200OccurrencesItemStatus =
@@ -671,6 +655,22 @@ export type ListEarlyCheckoutOccurrences200Indicators = {
    * @minimum 0
    */
   total: number
+}
+
+/**
+ * Listagem de ocorrências de checkout antecipado
+ */
+export type ListEarlyCheckoutOccurrences200 = {
+  /** Indicadores/totalizadores das ocorrências */
+  indicators: ListEarlyCheckoutOccurrences200Indicators
+  /** Mensagem informativa sobre a operação */
+  message: string
+  /** Lista paginada de ocorrências */
+  occurrences: ListEarlyCheckoutOccurrences200OccurrencesItem[]
+  /** Informações de paginação */
+  pagination: ListEarlyCheckoutOccurrences200Pagination
+  /** Período consultado */
+  period: ListEarlyCheckoutOccurrences200Period
 }
 
 export type ListEarlyCheckoutOccurrencesPosition =
@@ -3183,6 +3183,15 @@ export type WeeklyComplianceDetails200 = {
   totalPages: number
 }
 
+export type WeeklyComplianceDetailsWeek =
+  (typeof WeeklyComplianceDetailsWeek)[keyof typeof WeeklyComplianceDetailsWeek]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const WeeklyComplianceDetailsWeek = {
+  next: 'next',
+  current: 'current',
+} as const
+
 export type WeeklyComplianceDetailsParams = {
   /**
    * Número da página. Campo opcional, padrão: 1.
@@ -3196,6 +3205,10 @@ export type WeeklyComplianceDetailsParams = {
    * Se true, retorna apenas membros não-compliant. Campo opcional, padrão: false.
    */
   onlyNonCompliant?: string
+  /**
+   * Qual semana consultar: "next" para próxima semana (padrão), "current" para semana vigente. Campo opcional.
+   */
+  week?: WeeklyComplianceDetailsWeek
   /**
    * Filtrar por nome do supervisor (busca parcial, case-insensitive). Campo opcional.
    */

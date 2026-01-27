@@ -12531,7 +12531,7 @@
         "tags": [
           "Reservations"
         ],
-        "description": "Este endpoint retorna a lista detalhada de colaboradores com status de compliance de reservas semanais.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Apenas supervisores e diretores podem acessar.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Regra de negócio**:\n- Colaboradores (manager, assistant_manager, assistant) devem fazer reservas da próxima semana até quinta-feira\n- Gerentes: 2 dias/semana\n- Subgerentes e Assistentes: 3 dias/semana\n- Apenas workstations contam para compliance (não salas)\n\n**Retorno baseado no cargo**:\n- **Supervisor**: Lista membros da sua equipe com status de compliance\n- **Diretor**: Lista todos os colaboradores com status de compliance\n- Outros cargos recebem erro 403 (Forbidden)\n\n**Query params**:\n- `page`: Número da página (padrão: 1)\n- `pageSize`: Registros por página (padrão: 20)\n- `onlyNonCompliant`: Se true, retorna apenas não-compliant (padrão: false)\n- `supervisorName`: Filtrar por nome do supervisor (busca parcial)\n- `userName`: Filtrar por nome do colaborador (busca parcial)\n- `position`: Filtrar por cargo (manager, assistant_manager, assistant)\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "description": "Este endpoint retorna a lista detalhada de colaboradores com status de compliance de reservas semanais.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Apenas supervisores e diretores podem acessar.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Regra de negócio**:\n- Colaboradores (manager, assistant_manager, assistant) devem fazer reservas da próxima semana até quinta-feira\n- Gerentes: 2 dias/semana\n- Subgerentes e Assistentes: 3 dias/semana\n- Apenas workstations contam para compliance (não salas)\n\n**Retorno baseado no cargo**:\n- **Supervisor**: Lista membros da sua equipe com status de compliance\n- **Diretor**: Lista todos os colaboradores com status de compliance\n- Outros cargos recebem erro 403 (Forbidden)\n\n**Query params**:\n- `page`: Número da página (padrão: 1)\n- `pageSize`: Registros por página (padrão: 20)\n- `onlyNonCompliant`: Se true, retorna apenas não-compliant (padrão: false)\n- `week`: Qual semana consultar: \"next\" para próxima semana (padrão), \"current\" para semana vigente\n- `supervisorName`: Filtrar por nome do supervisor (busca parcial)\n- `userName`: Filtrar por nome do colaborador (busca parcial)\n- `position`: Filtrar por cargo (manager, assistant_manager, assistant)\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "parameters": [
           {
             "schema": {
@@ -12562,6 +12562,20 @@
             "name": "onlyNonCompliant",
             "required": false,
             "description": "Se true, retorna apenas membros não-compliant. Campo opcional, padrão: false."
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "next",
+                "current"
+              ],
+              "default": "next"
+            },
+            "in": "query",
+            "name": "week",
+            "required": false,
+            "description": "Qual semana consultar: \"next\" para próxima semana (padrão), \"current\" para semana vigente. Campo opcional."
           },
           {
             "schema": {

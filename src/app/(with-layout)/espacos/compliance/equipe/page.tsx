@@ -33,6 +33,8 @@ import { ptBR } from 'date-fns/locale'
 import {
   AlertCircle,
   ArrowLeft,
+  Calendar,
+  CalendarDays,
   CheckCircle2,
   Mail,
   User,
@@ -55,6 +57,7 @@ interface SearchParams {
   page?: string
   pageSize?: string
   onlyNonCompliant?: string
+  week?: string
 }
 
 export default async function ComplianceEquipePage({
@@ -80,11 +83,13 @@ export default async function ComplianceEquipePage({
   const page = params.page || '1'
   const pageSize = params.pageSize || '10'
   const onlyNonCompliant = params.onlyNonCompliant || 'false'
+  const week = params.week || 'next'
 
   const queryParams: WeeklyComplianceDetailsParams = {
     page,
     pageSize,
     onlyNonCompliant,
+    week,
   }
 
   // Chamada da API só ocorre após verificação de permissão
@@ -150,8 +155,14 @@ export default async function ComplianceEquipePage({
     if (onlyNonCompliant === 'true') {
       params.set('onlyNonCompliant', 'true')
     }
+    if (week === 'current') {
+      params.set('week', 'current')
+    }
     return `/espacos/compliance/equipe?${params.toString()}`
   }
+
+  // Título dinâmico baseado na semana selecionada
+  const weekLabel = week === 'current' ? 'Semana Vigente' : 'Próxima Semana'
 
   // Determinar se é o próprio supervisor ou admin/dev visualizando
   const isSupervisor = user?.teamPosition === 'supervisor'
@@ -166,19 +177,45 @@ export default async function ComplianceEquipePage({
     >
       {/* Header */}
       <div className="mt-10 flex w-full max-w-6xl flex-col gap-4">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" asChild>
-            <Link href="/espacos">
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-          </Button>
-          <div>
-            <Text variant="headline-24-45-700" className="text-primary">
-              Compliance da Equipe
-            </Text>
-            <Text variant="body-16-18-400" className="text-muted-foreground">
-              Período: {weekStart} - {weekEnd}
-            </Text>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button variant="outline" size="icon" asChild>
+              <Link href="/espacos">
+                <ArrowLeft className="h-4 w-4" />
+              </Link>
+            </Button>
+            <div>
+              <Text variant="headline-24-45-700" className="text-primary">
+                Compliance da Equipe
+              </Text>
+              <Text variant="body-16-18-400" className="text-muted-foreground">
+                {weekLabel}: {weekStart} - {weekEnd}
+              </Text>
+            </div>
+          </div>
+
+          {/* Toggle de Semana */}
+          <div className="flex gap-2">
+            <Button
+              variant={week === 'next' ? 'default' : 'outline'}
+              size="sm"
+              asChild
+            >
+              <Link href="/espacos/compliance/equipe?page=1&pageSize=10">
+                <CalendarDays className="mr-2 h-4 w-4" />
+                Próxima Semana
+              </Link>
+            </Button>
+            <Button
+              variant={week === 'current' ? 'default' : 'outline'}
+              size="sm"
+              asChild
+            >
+              <Link href="/espacos/compliance/equipe?page=1&pageSize=10&week=current">
+                <Calendar className="mr-2 h-4 w-4" />
+                Semana Vigente
+              </Link>
+            </Button>
           </div>
         </div>
 
@@ -247,7 +284,9 @@ export default async function ComplianceEquipePage({
             size="sm"
             asChild
           >
-            <Link href="/espacos/compliance/equipe?page=1&pageSize=10&onlyNonCompliant=false">
+            <Link
+              href={`/espacos/compliance/equipe?page=1&pageSize=10&onlyNonCompliant=false${week === 'current' ? '&week=current' : ''}`}
+            >
               Todos
             </Link>
           </Button>
@@ -256,7 +295,9 @@ export default async function ComplianceEquipePage({
             size="sm"
             asChild
           >
-            <Link href="/espacos/compliance/equipe?page=1&pageSize=10&onlyNonCompliant=true">
+            <Link
+              href={`/espacos/compliance/equipe?page=1&pageSize=10&onlyNonCompliant=true${week === 'current' ? '&week=current' : ''}`}
+            >
               Apenas Pendentes
             </Link>
           </Button>
