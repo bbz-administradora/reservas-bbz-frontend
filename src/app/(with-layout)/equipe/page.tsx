@@ -1,4 +1,5 @@
 import { CardDecoration } from '@/components/svg/card-decoration'
+import { ExportOrganogramButtons } from '@/components/team/ExportOrganogramButtons'
 import { TeamOrganogram } from '@/components/team/TeamOrganogram'
 import { Text } from '@/components/Text'
 import {
@@ -266,9 +267,12 @@ export default async function TeamDashboardPage() {
       {/* Organograma da equipe */}
       {organogram && (
         <div className="mt-8 w-full max-w-6xl">
-          <Text variant="title-18-24-700" className="text-primary mb-4">
-            Organograma da Equipe
-          </Text>
+          <div className="mb-4 flex items-center justify-between">
+            <Text variant="title-18-24-700" className="text-primary">
+              Organograma da Equipe
+            </Text>
+            <ExportOrganogramButtons tree={organogram.tree} />
+          </div>
           <TeamOrganogram tree={organogram.tree} stats={organogram.stats} />
         </div>
       )}
