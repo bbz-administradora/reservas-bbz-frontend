@@ -82,11 +82,11 @@ export function EarlyCheckoutCard({ data }: EarlyCheckoutCardProps) {
       >
         {periodText}
       </Text>
-      {hasPending && (
-        <Button variant="outline" size="sm" className="mt-2" asChild>
-          <Link href="/espacos/compliance/ocorrencias">Ver ocorrências</Link>
-        </Button>
-      )}
+      <Button variant="outline" size="sm" className="mt-2" asChild>
+        <Link href="/espacos/compliance/ocorrencias">
+          {hasPending ? 'Ver ocorrências' : 'Ver detalhes'}
+        </Link>
+      </Button>
     </div>
   )
 }

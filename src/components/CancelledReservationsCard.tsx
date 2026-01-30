@@ -89,11 +89,9 @@ export function CancelledReservationsCard({
       >
         {periodText}
       </Text>
-      {hasCancellations && (
-        <Button variant="outline" size="sm" className="mt-2" asChild>
-          <Link href="/espacos/compliance/cancelamentos">Ver detalhes</Link>
-        </Button>
-      )}
+      <Button variant="outline" size="sm" className="mt-2" asChild>
+        <Link href="/espacos/compliance/cancelamentos">Ver detalhes</Link>
+      </Button>
     </div>
   )
 }
