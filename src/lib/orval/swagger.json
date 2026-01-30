@@ -4383,6 +4383,12 @@
                     "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
                     "nullable": true,
                     "description": "Data de fim do afastamento (YYYY-MM-DD) ou null para remover"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "nullable": true,
+                    "description": "Motivo/justificativa do afastamento (férias, licença médica, etc.)"
                   }
                 },
                 "required": [
@@ -4444,6 +4450,10 @@
                         "absenceEndDate": {
                           "type": "string",
                           "nullable": true
+                        },
+                        "absenceReason": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -4451,7 +4461,8 @@
                         "name",
                         "email",
                         "absenceStartDate",
-                        "absenceEndDate"
+                        "absenceEndDate",
+                        "absenceReason"
                       ],
                       "additionalProperties": false
                     }
@@ -4829,6 +4840,10 @@
                           "absenceEndDate": {
                             "type": "string"
                           },
+                          "absenceReason": {
+                            "type": "string",
+                            "nullable": true
+                          },
                           "isActive": {
                             "type": "boolean",
                             "description": "Se o afastamento está ativo (data atual dentro do período)"
@@ -4842,6 +4857,7 @@
                           "supervisorName",
                           "absenceStartDate",
                           "absenceEndDate",
+                          "absenceReason",
                           "isActive"
                         ],
                         "additionalProperties": false

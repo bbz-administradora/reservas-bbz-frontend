@@ -9625,6 +9625,8 @@ export const ListUserAbsences200AbsencesItemPosition = {
 
 export type ListUserAbsences200AbsencesItem = {
   absenceEndDate: string
+  /** @nullable */
+  absenceReason: string | null
   absenceStartDate: string
   /** Se o afastamento está ativo (data atual dentro do período) */
   isActive: boolean
@@ -9893,6 +9895,8 @@ export type SetUserAbsence200User = {
   /** @nullable */
   absenceEndDate: string | null
   /** @nullable */
+  absenceReason: string | null
+  /** @nullable */
   absenceStartDate: string | null
   email: string
   id: string
@@ -9912,6 +9916,12 @@ export type SetUserAbsenceBody = {
    * @pattern ^\d{4}-\d{2}-\d{2}$
    */
   endDate: string | null
+  /**
+   * Motivo/justificativa do afastamento (férias, licença médica, etc.)
+   * @maxLength 500
+   * @nullable
+   */
+  reason?: string | null
   /**
    * Data de início do afastamento (YYYY-MM-DD) ou null para remover
    * @nullable

@@ -46,6 +46,16 @@ const POSITION_LABELS: Record<string, string> = {
   assistant: 'Assistente',
 }
 
+// Sugestões rápidas de motivos de afastamento
+const ABSENCE_REASON_SUGGESTIONS = [
+  'Férias',
+  'Licença Médica',
+  'Licença Maternidade',
+  'Licença Paternidade',
+  'Afastamento',
+  'Outros',
+]
+
 interface AbsenceItem {
   userId: string
   userName: string | null
@@ -54,6 +64,7 @@ interface AbsenceItem {
   supervisorName: string | null
   absenceStartDate: string
   absenceEndDate: string
+  absenceReason?: string | null
   isActive: boolean
 }
 
@@ -73,6 +84,7 @@ export function AfastamentosClient({
     useState<GetTeamMembers200MembersItem | null>(null)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [reason, setReason] = useState('')
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [editingAbsence, setEditingAbsence] = useState<AbsenceItem | null>(null)
@@ -99,6 +111,7 @@ export function AfastamentosClient({
     setSelectedMember(member)
     setStartDate('')
     setEndDate('')
+    setReason('')
     setEditingAbsence(null)
     setIsDialogOpen(true)
     setSearchQuery('')
@@ -117,6 +130,7 @@ export function AfastamentosClient({
     setSelectedMember(member)
     setStartDate(absence.absenceStartDate)
     setEndDate(absence.absenceEndDate)
+    setReason(absence.absenceReason || '')
     setEditingAbsence(absence)
     setIsDialogOpen(true)
   }
@@ -148,7 +162,7 @@ export function AfastamentosClient({
         `${env.NEXT_PUBLIC_API_URL}/v1/private/user/${selectedMember.userId}/absence`,
         {
           method: 'PUT',
-          body: JSON.stringify({ startDate, endDate }),
+          body: JSON.stringify({ startDate, endDate, reason: reason || null }),
         },
       )
 
@@ -179,6 +193,7 @@ export function AfastamentosClient({
         supervisorName: null,
         absenceStartDate: startDate,
         absenceEndDate: endDate,
+        absenceReason: reason || null,
         isActive,
       }
 
@@ -234,7 +249,11 @@ export function AfastamentosClient({
         `${env.NEXT_PUBLIC_API_URL}/v1/private/user/${absence.userId}/absence`,
         {
           method: 'PUT',
-          body: JSON.stringify({ startDate: null, endDate: null }),
+          body: JSON.stringify({
+            startDate: null,
+            endDate: null,
+            reason: null,
+          }),
         },
       )
 
@@ -333,6 +352,7 @@ export function AfastamentosClient({
               <TableHead>Colaborador</TableHead>
               <TableHead>Cargo</TableHead>
               <TableHead>Período</TableHead>
+              <TableHead>Motivo</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
@@ -341,7 +361,7 @@ export function AfastamentosClient({
             {absences.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={5}
+                  colSpan={6}
                   className="text-muted-foreground py-8 text-center"
                 >
                   Nenhum afastamento registrado
@@ -386,6 +406,11 @@ export function AfastamentosClient({
                         )}
                       </span>
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-muted-foreground text-sm">
+                      {absence.absenceReason || '-'}
+                    </span>
                   </TableCell>
                   <TableCell>
                     {absence.isActive ? (
@@ -461,6 +486,33 @@ export function AfastamentosClient({
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
               />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="reason">Motivo</Label>
+              <Input
+                id="reason"
+                type="text"
+                placeholder="Ex: Férias, Licença Médica..."
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                maxLength={500}
+              />
+              <div className="flex flex-wrap gap-2 pt-1">
+                {ABSENCE_REASON_SUGGESTIONS.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    onClick={() => setReason(suggestion)}
+                    className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                      reason === suggestion
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'bg-muted hover:bg-muted/80 border-muted-foreground/20'
+                    }`}
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
