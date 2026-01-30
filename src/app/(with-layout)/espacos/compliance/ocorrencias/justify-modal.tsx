@@ -21,7 +21,8 @@ import { ptBR } from 'date-fns/locale'
 import { AlertTriangle, Clock, Loader2, User } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { toast } from 'sonner'
+
+import { showToast } from '@/components/ShowToast'
 
 // Mapeamento de cargos para labels em português
 const positionLabels: Record<string, string> = {
@@ -81,7 +82,10 @@ export function JustifyModal({
     if (!occurrence) return
 
     if (action === 'justified' && !justification.trim()) {
-      toast.error('Digite uma justificativa')
+      showToast({
+        message: 'Digite uma justificativa',
+        variant: 'error',
+      })
       return
     }
 
@@ -104,21 +108,29 @@ export function JustifyModal({
       )
 
       if (response.status >= 200 && response.status < 300) {
-        toast.success(
-          action === 'justified'
-            ? 'Ocorrência justificada com sucesso!'
-            : 'Ocorrência desconsiderada com sucesso!',
-        )
+        showToast({
+          message:
+            action === 'justified'
+              ? 'Ocorrência justificada com sucesso!'
+              : 'Ocorrência desconsiderada com sucesso!',
+          variant: 'success',
+        })
         setJustification('')
         onSuccess()
         router.refresh()
       } else {
         const errorData = response.data as { message?: string }
-        toast.error(errorData?.message || 'Erro ao processar solicitação')
+        showToast({
+          message: errorData?.message || 'Erro ao processar solicitação',
+          variant: 'error',
+        })
       }
     } catch (error) {
       console.error('Erro ao justificar:', error)
-      toast.error('Erro ao processar solicitação')
+      showToast({
+        message: 'Erro ao processar solicitação',
+        variant: 'error',
+      })
     } finally {
       setIsSubmitting(false)
     }

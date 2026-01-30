@@ -9,7 +9,8 @@ import { endOfWeek, format, isAfter } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Calendar, Loader2, Search, Shield, Users } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { toast } from 'sonner'
+
+import { showToast } from '@/components/ShowToast'
 
 // Mapa de posições para labels em português
 const POSITION_LABELS: Record<string, string> = {
@@ -92,16 +93,23 @@ export function LiberarRegrasClient({
         )
 
         const displayName = member.name || member.email
-        toast.success(
-          active
+        showToast({
+          message: active
             ? `Exceção concedida para ${displayName} até ${formattedDate}`
             : `Exceção revogada para ${displayName}`,
-        )
+          variant: 'success',
+        })
       } else {
-        toast.error('Erro ao atualizar exceção. Tente novamente.')
+        showToast({
+          message: 'Erro ao atualizar exceção. Tente novamente.',
+          variant: 'error',
+        })
       }
     } catch {
-      toast.error('Erro de conexão. Tente novamente mais tarde.')
+      showToast({
+        message: 'Erro de conexão. Tente novamente mais tarde.',
+        variant: 'error',
+      })
     } finally {
       setLoadingMemberIds((prev) => {
         const next = new Set(prev)
