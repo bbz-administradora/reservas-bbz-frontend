@@ -1,3 +1,4 @@
+import { AbsenceAlert } from '@/components/AbsenceAlert'
 import { CancelledReservationsCard } from '@/components/CancelledReservationsCard'
 import { EarlyCheckoutCard } from '@/components/EarlyCheckoutCard'
 import { SpaceExplorerSection } from '@/components/SpaceExplorerSection'
@@ -69,6 +70,12 @@ export default async function SpacesHome() {
       id="main"
       className="wrapper flex flex-1 flex-col items-center gap-5 pt-5 pb-28 lg:pb-10"
     >
+      {/* Alerta de afastamento - exibido apenas se o usuário está afastado */}
+      <AbsenceAlert
+        absenceStartDate={user?.absenceStartDate ?? null}
+        absenceEndDate={user?.absenceEndDate ?? null}
+      />
+
       {/* Card de informações */}
       <div className="mt-10 mb-5 grid w-full max-w-6xl grid-cols-2 gap-2.5 md:gap-4 lg:grid-cols-4">
         {/* nome e email */}

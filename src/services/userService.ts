@@ -6,6 +6,8 @@
  */
 
 import type {
+  ListUserAbsences200,
+  ListUserAbsencesParams,
   UserList200,
   UserListParams,
   UserMe200User,
@@ -161,6 +163,61 @@ export async function fetchListUsersInServer(
     cache: 'no-store',
     headers,
     next: { tags: ['delete-user', 'update-user', 'create-user'] },
+  })
+
+  if (response.status === 200) {
+    return response.data
+  }
+
+  return null
+}
+
+/**
+ * fetchUserAbsencesInServer
+ *
+ * Lista todos os usuários com afastamento definido no servidor.
+ *
+ * Fluxo:
+ * 1) Chama getHeadersServer() para obter cabeçalhos de autenticação.
+ * 2) Se getHeadersServer() retornar null, encerra retornando null.
+ * 3) Executa a request com parâmetros de paginação e filtros.
+ * 4) Se status === 200, retorna ListUserAbsences200.
+ *    Caso contrário, retorna null.
+ *
+ * @param {ListUserAbsencesParams} [params] Parâmetros de paginação/filtros.
+ * @returns {Promise<ListUserAbsences200 | null>} Objeto com dados ou null.
+ */
+export async function fetchUserAbsencesInServer(
+  params?: ListUserAbsencesParams,
+): Promise<ListUserAbsences200 | null> {
+  const headers = await getHeadersServer()
+  if (!headers) {
+    console.warn('CSRF token not found')
+    return null
+  }
+
+  const getListAbsencesUrl = (params?: ListUserAbsencesParams) => {
+    const normalizedParams = new URLSearchParams()
+
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== undefined) {
+        normalizedParams.append(key, value === null ? 'null' : value.toString())
+      }
+    })
+
+    return normalizedParams.size
+      ? `${webserver.hostApi}/v1/private/user/absences?${normalizedParams.toString()}`
+      : `${webserver.hostApi}/v1/private/user/absences`
+  }
+
+  const url = getListAbsencesUrl(params)
+
+  const response = await customFetch<ListUserAbsences200>(url, {
+    method: 'GET',
+    credentials: 'include',
+    cache: 'no-store',
+    headers,
+    next: { tags: ['user-absence'] },
   })
 
   if (response.status === 200) {

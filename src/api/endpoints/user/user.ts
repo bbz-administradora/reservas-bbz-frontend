@@ -27,6 +27,21 @@ import type {
   GrantBookingException422,
   GrantBookingException500,
   GrantBookingExceptionBody,
+  ListUserAbsences200,
+  ListUserAbsences400,
+  ListUserAbsences401,
+  ListUserAbsences403,
+  ListUserAbsences422,
+  ListUserAbsences500,
+  ListUserAbsencesParams,
+  SetUserAbsence200,
+  SetUserAbsence400,
+  SetUserAbsence401,
+  SetUserAbsence403,
+  SetUserAbsence404,
+  SetUserAbsence422,
+  SetUserAbsence500,
+  SetUserAbsenceBody,
   UserCreate201,
   UserCreate400,
   UserCreate401,
@@ -739,6 +754,219 @@ export const useGrantBookingException = <
   const swrFn = getGrantBookingExceptionMutationFetcher(userId, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite definir ou remover o período de afastamento de um usuário (férias, licença, etc.).
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: 
+  - Admin/Dev: Pode definir para qualquer usuário
+  - Diretor: Pode definir para qualquer usuário
+  - Supervisor: Apenas para membros da própria equipe
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+**Efeitos do afastamento**:
+- Usuário não pode fazer novas reservas de WORKSTATION durante o período
+- Usuário é REMOVIDO de todos os indicadores de compliance:
+  - Compliance semanal (não conta como não-compliant)
+  - Checkout antecipado (ocorrências não aparecem)
+  - Cancelamentos fora do prazo (não conta nos indicadores)
+- Ao logar, usuário vê alerta informando o afastamento
+
+**Comportamento**:
+- Enviar startDate e endDate: Define o período de afastamento
+- Enviar startDate e endDate como null: Remove o afastamento
+ * @summary Definir ou remover afastamento de usuário
+ */
+export type setUserAbsenceResponse = {
+  data: SetUserAbsence200
+  status: number
+  headers: Headers
+}
+
+export const getSetUserAbsenceUrl = (userId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${userId}/absence`
+}
+
+export const setUserAbsence = async (
+  userId: string,
+  setUserAbsenceBody: SetUserAbsenceBody,
+  options?: RequestInit,
+): Promise<setUserAbsenceResponse> => {
+  return customFetch<Promise<setUserAbsenceResponse>>(
+    getSetUserAbsenceUrl(userId),
+    {
+      ...options,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(setUserAbsenceBody),
+    },
+  )
+}
+
+export const getSetUserAbsenceMutationFetcher = (
+  userId: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: SetUserAbsenceBody },
+  ): Promise<setUserAbsenceResponse> => {
+    return setUserAbsence(userId, arg, options)
+  }
+}
+export const getSetUserAbsenceMutationKey = (userId: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${userId}/absence`,
+  ] as const
+
+export type SetUserAbsenceMutationResult = NonNullable<
+  Awaited<ReturnType<typeof setUserAbsence>>
+>
+export type SetUserAbsenceMutationError =
+  | SetUserAbsence400
+  | SetUserAbsence401
+  | SetUserAbsence403
+  | SetUserAbsence404
+  | SetUserAbsence422
+  | SetUserAbsence500
+
+/**
+ * @summary Definir ou remover afastamento de usuário
+ */
+export const useSetUserAbsence = <
+  TError =
+    | SetUserAbsence400
+    | SetUserAbsence401
+    | SetUserAbsence403
+    | SetUserAbsence404
+    | SetUserAbsence422
+    | SetUserAbsence500,
+>(
+  userId: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof setUserAbsence>>,
+      TError,
+      Key,
+      SetUserAbsenceBody,
+      Awaited<ReturnType<typeof setUserAbsence>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getSetUserAbsenceMutationKey(userId)
+  const swrFn = getSetUserAbsenceMutationFetcher(userId, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint lista todos os usuários com afastamento definido.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: 
+  - Admin/Dev: Veem todos os afastamentos
+  - Diretor: Vê todos os afastamentos
+  - Supervisor: Vê apenas afastamentos da própria equipe
+* **Paginação**: Suporta paginação via query params (page, pageSize)
+* **Filtros**: 
+  - includeExpired: Se true, inclui afastamentos já expirados (padrão: false)
+ * @summary Listar usuários afastados
+ */
+export type listUserAbsencesResponse = {
+  data: ListUserAbsences200
+  status: number
+  headers: Headers
+}
+
+export const getListUserAbsencesUrl = (params?: ListUserAbsencesParams) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  return normalizedParams.size
+    ? `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/absences?${normalizedParams.toString()}`
+    : `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/absences`
+}
+
+export const listUserAbsences = async (
+  params?: ListUserAbsencesParams,
+  options?: RequestInit,
+): Promise<listUserAbsencesResponse> => {
+  return customFetch<Promise<listUserAbsencesResponse>>(
+    getListUserAbsencesUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getListUserAbsencesKey = (params?: ListUserAbsencesParams) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/absences`,
+    ...(params ? [params] : []),
+  ] as const
+
+export type ListUserAbsencesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listUserAbsences>>
+>
+export type ListUserAbsencesQueryError =
+  | ListUserAbsences400
+  | ListUserAbsences401
+  | ListUserAbsences403
+  | ListUserAbsences422
+  | ListUserAbsences500
+
+/**
+ * @summary Listar usuários afastados
+ */
+export const useListUserAbsences = <
+  TError =
+    | ListUserAbsences400
+    | ListUserAbsences401
+    | ListUserAbsences403
+    | ListUserAbsences422
+    | ListUserAbsences500,
+>(
+  params?: ListUserAbsencesParams,
+  options?: {
+    swr?: SWRConfiguration<
+      Awaited<ReturnType<typeof listUserAbsences>>,
+      TError
+    > & { swrKey?: Key; enabled?: boolean }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ??
+    (() => (isEnabled ? getListUserAbsencesKey(params) : null))
+  const swrFn = () => listUserAbsences(params, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
 
   return {
     swrKey,

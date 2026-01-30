@@ -200,6 +200,31 @@ export default async function TeamDashboardPage() {
           </Link>
         )}
 
+        {/* Card Afastamentos - visível para admin, dev, director e supervisor */}
+        {(user?.role === 'admin' ||
+          user?.role === 'dev' ||
+          teamPosition === 'director' ||
+          teamPosition === 'supervisor') && (
+          <Link
+            href="/equipe/afastamentos"
+            className="flex flex-col items-center gap-2.5 rounded-lg bg-orange-500 p-6 shadow-xl transition-colors hover:bg-orange-600"
+          >
+            <div className="relative flex items-center justify-center">
+              <CardDecoration className="absolute bottom-[-15px] left-[-15px] text-white/20" />
+              <UserMinus size={48} className="z-10 text-white" />
+            </div>
+            <Text
+              variant="title-18-24-700"
+              className="mt-4 text-center text-white"
+            >
+              Afastamentos
+            </Text>
+            <Text variant="title-14-16-500" className="text-white/80">
+              Férias e Licenças
+            </Text>
+          </Link>
+        )}
+
         {canManagePositions.map((position) => {
           const Icon = POSITION_ICONS[position]
           const labels = POSITION_LABELS[position]
