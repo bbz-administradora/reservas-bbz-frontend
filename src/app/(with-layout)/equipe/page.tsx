@@ -6,7 +6,14 @@ import {
   fetchOrganogramInServer,
 } from '@/services/positionService'
 import { fetchCurrentUserInServer } from '@/services/userService'
-import { Crown, ShieldCheck, UserCog, UserMinus, Users } from 'lucide-react'
+import {
+  Crown,
+  ShieldCheck,
+  ShieldPlus,
+  UserCog,
+  UserMinus,
+  Users,
+} from 'lucide-react'
 import Link from 'next/link'
 
 // Mapa de ícones por posição
@@ -133,6 +140,34 @@ export default async function TeamDashboardPage() {
 
       {/* Grid de cards de posições */}
       <div className="mt-5 grid w-full max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Card Liberar Regras - visível para admin, dev, director e supervisor */}
+        {(user?.role === 'admin' ||
+          user?.role === 'dev' ||
+          teamPosition === 'director' ||
+          teamPosition === 'supervisor') && (
+          <Link
+            href="/equipe/liberar-regras"
+            className="bg-accent hover:bg-accent/90 flex flex-col items-center gap-2.5 rounded-lg p-6 shadow-xl transition-colors"
+          >
+            <div className="relative flex items-center justify-center">
+              <CardDecoration className="text-primary/20 absolute bottom-[-15px] left-[-15px]" />
+              <ShieldPlus size={48} className="text-accent-foreground z-10" />
+            </div>
+            <Text
+              variant="title-18-24-700"
+              className="text-accent-foreground mt-4 text-center"
+            >
+              Liberar Regras
+            </Text>
+            <Text
+              variant="title-14-16-500"
+              className="text-accent-foreground/80"
+            >
+              Exceções de Reserva
+            </Text>
+          </Link>
+        )}
+
         {canManagePositions.map((position) => {
           const Icon = POSITION_ICONS[position]
           const labels = POSITION_LABELS[position]

@@ -31,6 +31,12 @@ import type {
   GetPosition403,
   GetPosition422,
   GetPosition500,
+  GetTeamMembers200,
+  GetTeamMembers400,
+  GetTeamMembers401,
+  GetTeamMembers403,
+  GetTeamMembers404,
+  GetTeamMembers500,
   ListPositions200,
   ListPositions400,
   ListPositions401,
@@ -723,6 +729,94 @@ export const useGetOrganogram = <
   const swrKey =
     swrOptions?.swrKey ?? (() => (isEnabled ? getGetOrganogramKey() : null))
   const swrFn = () => getOrganogram(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint retorna a lista de membros da equipe que o usuário logado pode gerenciar.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**:
+  - Admin/Dev: Vê todos os usuários com posição em time
+  - Diretor: Vê todos os usuários com posição em time
+  - Supervisor: Vê apenas subordinados da própria equipe
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+**Dados retornados**:
+- ID, nome, email e posição de cada membro
+- Status da exceção de prazo (bookingExceptionUntil)
+
+**Uso principal**: Tela de "Liberar Regras de Reserva"
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Listar membros da equipe para gestão
+ */
+export type getTeamMembersResponse = {
+  data: GetTeamMembers200
+  status: number
+  headers: Headers
+}
+
+export const getGetTeamMembersUrl = () => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/members`
+}
+
+export const getTeamMembers = async (
+  options?: RequestInit,
+): Promise<getTeamMembersResponse> => {
+  return customFetch<Promise<getTeamMembersResponse>>(getGetTeamMembersUrl(), {
+    ...options,
+    method: 'GET',
+  })
+}
+
+export const getGetTeamMembersKey = () =>
+  [`${process.env.NEXT_PUBLIC_API_URL}/v1/private/team/members`] as const
+
+export type GetTeamMembersQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTeamMembers>>
+>
+export type GetTeamMembersQueryError =
+  | GetTeamMembers400
+  | GetTeamMembers401
+  | GetTeamMembers403
+  | GetTeamMembers404
+  | GetTeamMembers500
+
+/**
+ * @summary Listar membros da equipe para gestão
+ */
+export const useGetTeamMembers = <
+  TError =
+    | GetTeamMembers400
+    | GetTeamMembers401
+    | GetTeamMembers403
+    | GetTeamMembers404
+    | GetTeamMembers500,
+>(options?: {
+  swr?: SWRConfiguration<Awaited<ReturnType<typeof getTeamMembers>>, TError> & {
+    swrKey?: Key
+    enabled?: boolean
+  }
+  request?: SecondParameter<typeof customFetch>
+}) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey =
+    swrOptions?.swrKey ?? (() => (isEnabled ? getGetTeamMembersKey() : null))
+  const swrFn = () => getTeamMembers(requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
     swrKey,

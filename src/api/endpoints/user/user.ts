@@ -19,6 +19,14 @@ import type {
   DeleteUser409,
   DeleteUser422,
   DeleteUser500,
+  GrantBookingException200,
+  GrantBookingException400,
+  GrantBookingException401,
+  GrantBookingException403,
+  GrantBookingException404,
+  GrantBookingException422,
+  GrantBookingException500,
+  GrantBookingExceptionBody,
   UserCreate201,
   UserCreate400,
   UserCreate401,
@@ -613,6 +621,122 @@ export const useUserUpdate = <
 
   const swrKey = swrOptions?.swrKey ?? getUserUpdateMutationKey(id)
   const swrFn = getUserUpdateMutationFetcher(id, requestOptions)
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Este endpoint permite conceder ou revogar uma exceção temporária de prazo para reservas de um colaborador.
+
+* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
+* **Autorização**: 
+  - Admin/Dev: Pode conceder para qualquer usuário com posição em time
+  - Diretor: Pode conceder para qualquer usuário com posição em time  
+  - Supervisor: Apenas para membros da própria equipe
+* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
+
+**O que a exceção libera (semana vigente)**:
+- Fazer reserva na sexta-feira
+- Fazer reserva na semana atual
+- Ignora limite de dias (2-3 por cargo)
+- Ignora segunda/sexta obrigatória
+- MANTÉM validação de uma reserva de workstation por dia
+
+**Comportamento**:
+- `active: true`: Seta exceção até sábado da semana (23:59:59)
+- `active: false`: Remove a exceção (seta NULL)
+
+**Middlewares aplicados**:
+- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado
+- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa
+ * @summary Conceder ou revogar exceção de prazo para reservas
+ */
+export type grantBookingExceptionResponse = {
+  data: GrantBookingException200
+  status: number
+  headers: Headers
+}
+
+export const getGrantBookingExceptionUrl = (userId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${userId}/booking-exception`
+}
+
+export const grantBookingException = async (
+  userId: string,
+  grantBookingExceptionBody: GrantBookingExceptionBody,
+  options?: RequestInit,
+): Promise<grantBookingExceptionResponse> => {
+  return customFetch<Promise<grantBookingExceptionResponse>>(
+    getGrantBookingExceptionUrl(userId),
+    {
+      ...options,
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+      body: JSON.stringify(grantBookingExceptionBody),
+    },
+  )
+}
+
+export const getGrantBookingExceptionMutationFetcher = (
+  userId: string,
+  options?: SecondParameter<typeof customFetch>,
+) => {
+  return (
+    _: Key,
+    { arg }: { arg: GrantBookingExceptionBody },
+  ): Promise<grantBookingExceptionResponse> => {
+    return grantBookingException(userId, arg, options)
+  }
+}
+export const getGrantBookingExceptionMutationKey = (userId: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/${userId}/booking-exception`,
+  ] as const
+
+export type GrantBookingExceptionMutationResult = NonNullable<
+  Awaited<ReturnType<typeof grantBookingException>>
+>
+export type GrantBookingExceptionMutationError =
+  | GrantBookingException400
+  | GrantBookingException401
+  | GrantBookingException403
+  | GrantBookingException404
+  | GrantBookingException422
+  | GrantBookingException500
+
+/**
+ * @summary Conceder ou revogar exceção de prazo para reservas
+ */
+export const useGrantBookingException = <
+  TError =
+    | GrantBookingException400
+    | GrantBookingException401
+    | GrantBookingException403
+    | GrantBookingException404
+    | GrantBookingException422
+    | GrantBookingException500,
+>(
+  userId: string,
+  options?: {
+    swr?: SWRMutationConfiguration<
+      Awaited<ReturnType<typeof grantBookingException>>,
+      TError,
+      Key,
+      GrantBookingExceptionBody,
+      Awaited<ReturnType<typeof grantBookingException>>
+    > & { swrKey?: string }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const swrKey =
+    swrOptions?.swrKey ?? getGrantBookingExceptionMutationKey(userId)
+  const swrFn = getGrantBookingExceptionMutationFetcher(userId, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 

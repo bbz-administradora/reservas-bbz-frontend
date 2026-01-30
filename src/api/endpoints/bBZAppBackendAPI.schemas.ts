@@ -732,6 +732,241 @@ export type ListEarlyCheckoutOccurrencesParams = {
 /**
  * Código de status HTTP 500.
  */
+export type GetTeamMembers500StatusCode =
+  (typeof GetTeamMembers500StatusCode)[keyof typeof GetTeamMembers500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetTeamMembers500Name =
+  (typeof GetTeamMembers500Name)[keyof typeof GetTeamMembers500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type GetTeamMembers500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetTeamMembers500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: GetTeamMembers500StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type GetTeamMembers404StatusCode =
+  (typeof GetTeamMembers404StatusCode)[keyof typeof GetTeamMembers404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetTeamMembers404Name =
+  (typeof GetTeamMembers404Name)[keyof typeof GetTeamMembers404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type GetTeamMembers404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetTeamMembers404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 404. */
+  status_code: GetTeamMembers404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type GetTeamMembers403StatusCode =
+  (typeof GetTeamMembers403StatusCode)[keyof typeof GetTeamMembers403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetTeamMembers403Name =
+  (typeof GetTeamMembers403Name)[keyof typeof GetTeamMembers403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type GetTeamMembers403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetTeamMembers403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: GetTeamMembers403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type GetTeamMembers401StatusCode =
+  (typeof GetTeamMembers401StatusCode)[keyof typeof GetTeamMembers401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetTeamMembers401Name =
+  (typeof GetTeamMembers401Name)[keyof typeof GetTeamMembers401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type GetTeamMembers401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetTeamMembers401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: GetTeamMembers401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type GetTeamMembers400StatusCode =
+  (typeof GetTeamMembers400StatusCode)[keyof typeof GetTeamMembers400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GetTeamMembers400Name =
+  (typeof GetTeamMembers400Name)[keyof typeof GetTeamMembers400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type GetTeamMembers400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GetTeamMembers400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: GetTeamMembers400StatusCode
+}
+
+/**
+ * Posição na hierarquia
+ */
+export type GetTeamMembers200MembersItemPosition =
+  (typeof GetTeamMembers200MembersItemPosition)[keyof typeof GetTeamMembers200MembersItemPosition]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetTeamMembers200MembersItemPosition = {
+  director: 'director',
+  supervisor: 'supervisor',
+  manager: 'manager',
+  assistant_manager: 'assistant_manager',
+  assistant: 'assistant',
+} as const
+
+export type GetTeamMembers200MembersItem = {
+  /**
+   * Data/hora limite da exceção. NULL se não há exceção.
+   * @nullable
+   */
+  bookingExceptionUntil: string | null
+  /** Email do usuário */
+  email: string
+  /**
+   * Nome do usuário
+   * @nullable
+   */
+  name: string | null
+  /** Posição na hierarquia */
+  position: GetTeamMembers200MembersItemPosition
+  /** ID do usuário */
+  userId: string
+}
+
+/**
+ * Lista de membros da equipe
+ */
+export type GetTeamMembers200 = {
+  members: GetTeamMembers200MembersItem[]
+  /** Mensagem informativa */
+  message: string
+  /** Total de membros */
+  total: number
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type GetOrganogram500StatusCode =
   (typeof GetOrganogram500StatusCode)[keyof typeof GetOrganogram500StatusCode]
 
@@ -3767,6 +4002,54 @@ export const ReservationGetDetail200ReservationStatus = {
 } as const
 
 /**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ReservationGetDetail200Reservation = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ReservationGetDetail200ReservationCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ReservationGetDetail200ReservationSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ReservationGetDetail200ReservationStatus
+  /** Informações do usuário que fez a reserva */
+  user: ReservationGetDetail200ReservationUser
+}
+
+/**
  * Tipo do espaço
  */
 export type ReservationGetDetail200ReservationSpaceType =
@@ -3815,54 +4098,6 @@ export type ReservationGetDetail200ReservationCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ReservationGetDetail200Reservation = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ReservationGetDetail200ReservationCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ReservationGetDetail200ReservationSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ReservationGetDetail200ReservationStatus
-  /** Informações do usuário que fez a reserva */
-  user: ReservationGetDetail200ReservationUser
-}
 
 /**
  * Código de status HTTP 500.
@@ -4593,6 +4828,33 @@ export const ListSpaceReservations200ReservationsItemStatus = {
 } as const
 
 /**
+ * Informações básicas do espaço
+ */
+export type ListSpaceReservations200ReservationsItemSpace = {
+  /**
+   * Andar do espaço
+   * @nullable
+   */
+  floor: string | null
+  /** Identificador único do espaço */
+  id: string
+  /** Nome do espaço */
+  name: string
+  /**
+   * Posição do espaço
+   * @nullable
+   */
+  position: string | null
+  /** Tipo do espaço */
+  type: ListSpaceReservations200ReservationsItemSpaceType
+  /**
+   * Zona do espaço
+   * @nullable
+   */
+  zone: string | null
+}
+
+/**
  * Detalhes completos de uma reserva paginada
  */
 export type ListSpaceReservations200ReservationsItem = {
@@ -4653,33 +4915,6 @@ export const ListSpaceReservations200ReservationsItemSpaceType = {
   room: 'room',
   workstation: 'workstation',
 } as const
-
-/**
- * Informações básicas do espaço
- */
-export type ListSpaceReservations200ReservationsItemSpace = {
-  /**
-   * Andar do espaço
-   * @nullable
-   */
-  floor: string | null
-  /** Identificador único do espaço */
-  id: string
-  /** Nome do espaço */
-  name: string
-  /**
-   * Posição do espaço
-   * @nullable
-   */
-  position: string | null
-  /** Tipo do espaço */
-  type: ListSpaceReservations200ReservationsItemSpaceType
-  /**
-   * Zona do espaço
-   * @nullable
-   */
-  zone: string | null
-}
 
 /**
  * Tipo do registro (check-in ou check-out)
@@ -6494,11 +6729,6 @@ export type GetSpaceSlotAvailability200Space = {
   zone: string | null
 }
 
-export type GetSpaceSlotAvailability200 = {
-  slots: GetSpaceSlotAvailability200SlotsItem[]
-  space: GetSpaceSlotAvailability200Space
-}
-
 /**
  * Usuário que fez a pré-reserva (null quando não há pré-reserva)
  */
@@ -6532,6 +6762,11 @@ export type GetSpaceSlotAvailability200SlotsItem = {
   status: GetSpaceSlotAvailability200SlotsItemStatus
   /** Usuário que fez a pré-reserva (null quando não há pré-reserva) */
   user: GetSpaceSlotAvailability200SlotsItemUser
+}
+
+export type GetSpaceSlotAvailability200 = {
+  slots: GetSpaceSlotAvailability200SlotsItem[]
+  space: GetSpaceSlotAvailability200Space
 }
 
 export type GetSpaceSlotAvailabilityParams = {
@@ -9185,6 +9420,265 @@ export type UploadImageParams = {
 /**
  * Código de status HTTP 500.
  */
+export type GrantBookingException500StatusCode =
+  (typeof GrantBookingException500StatusCode)[keyof typeof GrantBookingException500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GrantBookingException500Name =
+  (typeof GrantBookingException500Name)[keyof typeof GrantBookingException500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type GrantBookingException500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GrantBookingException500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: GrantBookingException500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type GrantBookingException422StatusCode =
+  (typeof GrantBookingException422StatusCode)[keyof typeof GrantBookingException422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GrantBookingException422Name =
+  (typeof GrantBookingException422Name)[keyof typeof GrantBookingException422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type GrantBookingException422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GrantBookingException422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 422. */
+  status_code: GrantBookingException422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type GrantBookingException404StatusCode =
+  (typeof GrantBookingException404StatusCode)[keyof typeof GrantBookingException404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GrantBookingException404Name =
+  (typeof GrantBookingException404Name)[keyof typeof GrantBookingException404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type GrantBookingException404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GrantBookingException404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 404. */
+  status_code: GrantBookingException404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type GrantBookingException403StatusCode =
+  (typeof GrantBookingException403StatusCode)[keyof typeof GrantBookingException403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GrantBookingException403Name =
+  (typeof GrantBookingException403Name)[keyof typeof GrantBookingException403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type GrantBookingException403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GrantBookingException403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: GrantBookingException403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type GrantBookingException401StatusCode =
+  (typeof GrantBookingException401StatusCode)[keyof typeof GrantBookingException401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GrantBookingException401Name =
+  (typeof GrantBookingException401Name)[keyof typeof GrantBookingException401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type GrantBookingException401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GrantBookingException401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: GrantBookingException401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type GrantBookingException400StatusCode =
+  (typeof GrantBookingException400StatusCode)[keyof typeof GrantBookingException400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type GrantBookingException400Name =
+  (typeof GrantBookingException400Name)[keyof typeof GrantBookingException400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GrantBookingException400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type GrantBookingException400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: GrantBookingException400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: GrantBookingException400StatusCode
+}
+
+export type GrantBookingException200User = {
+  /**
+   * Data/hora limite da exceção em formato ISO. NULL se não há exceção ativa.
+   * @nullable
+   */
+  bookingExceptionUntil: string | null
+  /** Email do usuário. */
+  email: string
+  /** Identificador único do usuário. */
+  id: string
+  /**
+   * Nome do usuário.
+   * @nullable
+   */
+  name: string | null
+}
+
+/**
+ * Detalhes do usuário com a exceção atualizada
+ */
+export type GrantBookingException200 = {
+  /** Mensagem informativa sobre o resultado da operação. */
+  message: string
+  user: GrantBookingException200User
+}
+
+export type GrantBookingExceptionBody = {
+  /** Indica se a exceção de prazo está ativa. true = ativa até sábado da semana, false = remove a exceção. */
+  active: boolean
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type UserUpdate500StatusCode =
   (typeof UserUpdate500StatusCode)[keyof typeof UserUpdate500StatusCode]
 
@@ -10841,6 +11335,11 @@ export const UserMe200UserRole = {
 export type UserMe200User = {
   /** Indica se a conta do usuário está ativa. Valor booleano. Campo obrigatório. */
   accountStatus: boolean
+  /**
+   * Data/hora limite da exceção de regras de reserva em formato ISO. NULL se não há exceção ativa. Campo obrigatório.
+   * @nullable
+   */
+  bookingExceptionUntil: string | null
   /**
    * CPF do usuário para identificação fiscal. Deve conter 11 dígitos numéricos sem pontuação. Pode ser nulo. Campo opcional.
    * @nullable
