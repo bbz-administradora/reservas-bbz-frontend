@@ -7,6 +7,7 @@ import {
 } from '@/services/positionService'
 import { fetchCurrentUserInServer } from '@/services/userService'
 import {
+  CalendarSearch,
   Crown,
   ShieldCheck,
   ShieldPlus,
@@ -164,6 +165,37 @@ export default async function TeamDashboardPage() {
               className="text-accent-foreground/80"
             >
               Exceções de Reserva
+            </Text>
+          </Link>
+        )}
+
+        {/* Card Ver Reservas da Equipe - visível para admin, dev, director e supervisor */}
+        {(user?.role === 'admin' ||
+          user?.role === 'dev' ||
+          teamPosition === 'director' ||
+          teamPosition === 'supervisor') && (
+          <Link
+            href="/equipe/reservas"
+            className="bg-primary hover:bg-primary/90 flex flex-col items-center gap-2.5 rounded-lg p-6 shadow-xl transition-colors"
+          >
+            <div className="relative flex items-center justify-center">
+              <CardDecoration className="text-primary-foreground/20 absolute bottom-[-15px] left-[-15px]" />
+              <CalendarSearch
+                size={48}
+                className="text-primary-foreground z-10"
+              />
+            </div>
+            <Text
+              variant="title-18-24-700"
+              className="text-primary-foreground mt-4 text-center"
+            >
+              Reservas da Equipe
+            </Text>
+            <Text
+              variant="title-14-16-500"
+              className="text-primary-foreground/80"
+            >
+              Ver Agendamentos
             </Text>
           </Link>
         )}

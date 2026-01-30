@@ -18,7 +18,6 @@ import {
   CalendarCheck2Icon,
   CalendarClockIcon,
   DoorOpenIcon,
-  ShieldCheckIcon,
   UserRoundIcon,
   UsersIcon,
 } from 'lucide-react'
@@ -181,37 +180,6 @@ export default async function SpacesHome() {
                 : user?.role === 'dev'
                   ? 'Desenvolvedor'
                   : 'Membro da Equipe'}
-            </Text>
-          </Link>
-        )}
-
-        {/* Liberar Regras - visível para admin, dev, diretor e supervisor */}
-        {(user?.role === 'admin' ||
-          user?.role === 'dev' ||
-          user?.teamPosition === 'director' ||
-          user?.teamPosition === 'supervisor') && (
-          <Link
-            href="/equipe/liberar-regras"
-            className="bg-accent hover:bg-accent/90 flex flex-col items-center gap-2.5 rounded-lg p-5 shadow-xl transition-colors"
-          >
-            <div className="relative flex items-center justify-center">
-              <CardDecoration className="text-primary absolute bottom-[-15px] left-[-15px]" />
-              <ShieldCheckIcon
-                size={56}
-                className="text-accent-foreground z-10"
-              />
-            </div>
-            <Text
-              variant="title-16-18-500"
-              className="text-accent-foreground mt-4 text-center break-words"
-            >
-              Liberar Regras
-            </Text>
-            <Text
-              variant="title-18-24-700"
-              className="text-accent-foreground text-center break-words"
-            >
-              Exceções de Reserva
             </Text>
           </Link>
         )}
