@@ -95,6 +95,7 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   - Assistente: máximo de **3 dias por semana** (domingo a sábado)
   - Outros cargos: **sem limite** de dias
   - Esta regra **NÃO se aplica a salas (rooms)**, apenas a workstations
+  - **BYPASS**: Usuários em Posto Avançado são completamente isentos desta regra
 
   **2. Segunda ou Sexta-Feira Obrigatória**:
   - Quando Gerentes, Subgerentes ou Assistentes **completarem seu limite de dias**, devem incluir pelo menos **UMA segunda-feira OU sexta-feira**
@@ -102,6 +103,7 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1]
   - Exemplo inválido (Gerente): terça + quarta = 2 dias sem segunda/sexta ❌
   - Esta validação só ocorre quando o usuário atinge o limite máximo do cargo
   - Esta regra **NÃO se aplica a salas (rooms)**, apenas a workstations
+  - **BYPASS**: Usuários em Posto Avançado são completamente isentos desta regra
 
   **3. Uma Reserva de Workstation por Dia**:
   - Não é permitido ter múltiplas reservas de workstation no mesmo dia

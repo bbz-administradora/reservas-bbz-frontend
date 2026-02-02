@@ -8,6 +8,1037 @@
 /**
  * Código de status HTTP 500.
  */
+export type DeleteOutpost500StatusCode =
+  (typeof DeleteOutpost500StatusCode)[keyof typeof DeleteOutpost500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteOutpost500Name =
+  (typeof DeleteOutpost500Name)[keyof typeof DeleteOutpost500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type DeleteOutpost500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteOutpost500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: DeleteOutpost500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type DeleteOutpost422StatusCode =
+  (typeof DeleteOutpost422StatusCode)[keyof typeof DeleteOutpost422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteOutpost422Name =
+  (typeof DeleteOutpost422Name)[keyof typeof DeleteOutpost422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type DeleteOutpost422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteOutpost422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 422. */
+  status_code: DeleteOutpost422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type DeleteOutpost404StatusCode =
+  (typeof DeleteOutpost404StatusCode)[keyof typeof DeleteOutpost404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteOutpost404Name =
+  (typeof DeleteOutpost404Name)[keyof typeof DeleteOutpost404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type DeleteOutpost404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteOutpost404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 404. */
+  status_code: DeleteOutpost404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type DeleteOutpost403StatusCode =
+  (typeof DeleteOutpost403StatusCode)[keyof typeof DeleteOutpost403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteOutpost403Name =
+  (typeof DeleteOutpost403Name)[keyof typeof DeleteOutpost403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type DeleteOutpost403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteOutpost403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: DeleteOutpost403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type DeleteOutpost401StatusCode =
+  (typeof DeleteOutpost401StatusCode)[keyof typeof DeleteOutpost401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteOutpost401Name =
+  (typeof DeleteOutpost401Name)[keyof typeof DeleteOutpost401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type DeleteOutpost401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteOutpost401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: DeleteOutpost401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type DeleteOutpost400StatusCode =
+  (typeof DeleteOutpost400StatusCode)[keyof typeof DeleteOutpost400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type DeleteOutpost400Name =
+  (typeof DeleteOutpost400Name)[keyof typeof DeleteOutpost400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const DeleteOutpost400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type DeleteOutpost400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: DeleteOutpost400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: DeleteOutpost400StatusCode
+}
+
+export type DeleteOutpost200Outpost = {
+  clientAddress: string
+  clientName: string
+  createdAt: string
+  createdBy: string
+  /**
+   * Data fim (YYYY-MM-DD) ou null
+   * @nullable
+   */
+  endDate: string | null
+  id: string
+  /** Data de início (YYYY-MM-DD) */
+  startDate: string
+  updatedAt: string
+  userId: string
+  /** Dias da semana [0-6] */
+  weekdays: number[]
+}
+
+export type DeleteOutpost200 = {
+  message: string
+  outpost: DeleteOutpost200Outpost
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type UpdateOutpost500StatusCode =
+  (typeof UpdateOutpost500StatusCode)[keyof typeof UpdateOutpost500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateOutpost500Name =
+  (typeof UpdateOutpost500Name)[keyof typeof UpdateOutpost500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type UpdateOutpost500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateOutpost500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: UpdateOutpost500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type UpdateOutpost422StatusCode =
+  (typeof UpdateOutpost422StatusCode)[keyof typeof UpdateOutpost422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateOutpost422Name =
+  (typeof UpdateOutpost422Name)[keyof typeof UpdateOutpost422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type UpdateOutpost422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateOutpost422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 422. */
+  status_code: UpdateOutpost422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type UpdateOutpost404StatusCode =
+  (typeof UpdateOutpost404StatusCode)[keyof typeof UpdateOutpost404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateOutpost404Name =
+  (typeof UpdateOutpost404Name)[keyof typeof UpdateOutpost404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type UpdateOutpost404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateOutpost404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 404. */
+  status_code: UpdateOutpost404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type UpdateOutpost403StatusCode =
+  (typeof UpdateOutpost403StatusCode)[keyof typeof UpdateOutpost403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateOutpost403Name =
+  (typeof UpdateOutpost403Name)[keyof typeof UpdateOutpost403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type UpdateOutpost403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateOutpost403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: UpdateOutpost403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type UpdateOutpost401StatusCode =
+  (typeof UpdateOutpost401StatusCode)[keyof typeof UpdateOutpost401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateOutpost401Name =
+  (typeof UpdateOutpost401Name)[keyof typeof UpdateOutpost401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type UpdateOutpost401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateOutpost401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: UpdateOutpost401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type UpdateOutpost400StatusCode =
+  (typeof UpdateOutpost400StatusCode)[keyof typeof UpdateOutpost400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type UpdateOutpost400Name =
+  (typeof UpdateOutpost400Name)[keyof typeof UpdateOutpost400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UpdateOutpost400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type UpdateOutpost400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: UpdateOutpost400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: UpdateOutpost400StatusCode
+}
+
+export type UpdateOutpost200Outpost = {
+  clientAddress: string
+  clientName: string
+  createdAt: string
+  createdBy: string
+  /**
+   * Data fim (YYYY-MM-DD) ou null
+   * @nullable
+   */
+  endDate: string | null
+  id: string
+  /** Data de início (YYYY-MM-DD) */
+  startDate: string
+  updatedAt: string
+  userId: string
+  /** Dias da semana [0-6] */
+  weekdays: number[]
+}
+
+export type UpdateOutpost200 = {
+  message: string
+  outpost: UpdateOutpost200Outpost
+}
+
+export type UpdateOutpostBody = {
+  /** @minLength 5 */
+  clientAddress?: string
+  /**
+   * @minLength 2
+   * @maxLength 255
+   */
+  clientName?: string
+  /**
+   * @nullable
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  endDate?: string | null
+  /** @minItems 1 */
+  weekdays?: number[]
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type ListOutposts500StatusCode =
+  (typeof ListOutposts500StatusCode)[keyof typeof ListOutposts500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListOutposts500Name =
+  (typeof ListOutposts500Name)[keyof typeof ListOutposts500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type ListOutposts500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListOutposts500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: ListOutposts500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type ListOutposts422StatusCode =
+  (typeof ListOutposts422StatusCode)[keyof typeof ListOutposts422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListOutposts422Name =
+  (typeof ListOutposts422Name)[keyof typeof ListOutposts422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type ListOutposts422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListOutposts422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 422. */
+  status_code: ListOutposts422StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type ListOutposts403StatusCode =
+  (typeof ListOutposts403StatusCode)[keyof typeof ListOutposts403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListOutposts403Name =
+  (typeof ListOutposts403Name)[keyof typeof ListOutposts403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type ListOutposts403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListOutposts403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: ListOutposts403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type ListOutposts401StatusCode =
+  (typeof ListOutposts401StatusCode)[keyof typeof ListOutposts401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListOutposts401Name =
+  (typeof ListOutposts401Name)[keyof typeof ListOutposts401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type ListOutposts401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListOutposts401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: ListOutposts401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type ListOutposts400StatusCode =
+  (typeof ListOutposts400StatusCode)[keyof typeof ListOutposts400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListOutposts400Name =
+  (typeof ListOutposts400Name)[keyof typeof ListOutposts400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutposts400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type ListOutposts400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListOutposts400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: ListOutposts400StatusCode
+}
+
+export type ListOutposts200OutpostsItem = {
+  clientAddress: string
+  clientName: string
+  createdAt: string
+  createdBy: string
+  /**
+   * Data fim (YYYY-MM-DD) ou null
+   * @nullable
+   */
+  endDate: string | null
+  id: string
+  /** Data de início (YYYY-MM-DD) */
+  startDate: string
+  updatedAt: string
+  userEmail: string
+  userId: string
+  /** @nullable */
+  userName: string | null
+  /** @nullable */
+  userPosition: string | null
+  /** Dias da semana [0-6] */
+  weekdays: number[]
+}
+
+export type ListOutposts200 = {
+  currentPage: number
+  outposts: ListOutposts200OutpostsItem[]
+  totalCount: number
+  totalPages: number
+}
+
+export type ListOutpostsStatus =
+  (typeof ListOutpostsStatus)[keyof typeof ListOutpostsStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListOutpostsStatus = {
+  active: 'active',
+  ended: 'ended',
+  all: 'all',
+} as const
+
+export type ListOutpostsParams = {
+  page?: number
+  limit?: number
+  status?: ListOutpostsStatus
+  search?: string
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type CreateOutpost500StatusCode =
+  (typeof CreateOutpost500StatusCode)[keyof typeof CreateOutpost500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateOutpost500Name =
+  (typeof CreateOutpost500Name)[keyof typeof CreateOutpost500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type CreateOutpost500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateOutpost500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: CreateOutpost500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type CreateOutpost422StatusCode =
+  (typeof CreateOutpost422StatusCode)[keyof typeof CreateOutpost422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateOutpost422Name =
+  (typeof CreateOutpost422Name)[keyof typeof CreateOutpost422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type CreateOutpost422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateOutpost422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 422. */
+  status_code: CreateOutpost422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type CreateOutpost404StatusCode =
+  (typeof CreateOutpost404StatusCode)[keyof typeof CreateOutpost404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateOutpost404Name =
+  (typeof CreateOutpost404Name)[keyof typeof CreateOutpost404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type CreateOutpost404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateOutpost404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 404. */
+  status_code: CreateOutpost404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type CreateOutpost403StatusCode =
+  (typeof CreateOutpost403StatusCode)[keyof typeof CreateOutpost403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateOutpost403Name =
+  (typeof CreateOutpost403Name)[keyof typeof CreateOutpost403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type CreateOutpost403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateOutpost403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: CreateOutpost403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type CreateOutpost401StatusCode =
+  (typeof CreateOutpost401StatusCode)[keyof typeof CreateOutpost401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateOutpost401Name =
+  (typeof CreateOutpost401Name)[keyof typeof CreateOutpost401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type CreateOutpost401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateOutpost401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: CreateOutpost401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type CreateOutpost400StatusCode =
+  (typeof CreateOutpost400StatusCode)[keyof typeof CreateOutpost400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CreateOutpost400Name =
+  (typeof CreateOutpost400Name)[keyof typeof CreateOutpost400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateOutpost400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type CreateOutpost400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CreateOutpost400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: CreateOutpost400StatusCode
+}
+
+export type CreateOutpost201Outpost = {
+  clientAddress: string
+  clientName: string
+  createdAt: string
+  createdBy: string
+  /**
+   * Data fim (YYYY-MM-DD) ou null
+   * @nullable
+   */
+  endDate: string | null
+  id: string
+  /** Data de início (YYYY-MM-DD) */
+  startDate: string
+  updatedAt: string
+  userId: string
+  /** Dias da semana [0-6] */
+  weekdays: number[]
+}
+
+export type CreateOutpost201 = {
+  message: string
+  outpost: CreateOutpost201Outpost
+}
+
+export type CreateOutpostBody = {
+  /** @minLength 5 */
+  clientAddress: string
+  /**
+   * @minLength 2
+   * @maxLength 255
+   */
+  clientName: string
+  /**
+   * @nullable
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  endDate?: string | null
+  /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+  startDate: string
+  userId: string
+  /** @minItems 1 */
+  weekdays: number[]
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type JustifyEarlyCheckoutOccurrence500StatusCode =
   (typeof JustifyEarlyCheckoutOccurrence500StatusCode)[keyof typeof JustifyEarlyCheckoutOccurrence500StatusCode]
 
@@ -3653,6 +4684,11 @@ export type WeeklyComplianceOverview200AnyOfSix = {
   userType: WeeklyComplianceOverview200AnyOfSixUserType
 }
 
+export type WeeklyComplianceOverview200 =
+  | WeeklyComplianceOverview200AnyOf
+  | WeeklyComplianceOverview200AnyOfThree
+  | WeeklyComplianceOverview200AnyOfSix
+
 /**
  * Tipo de usuário: supervisor. Campo obrigatório.
  */
@@ -3732,11 +4768,6 @@ export type WeeklyComplianceOverview200AnyOf = {
   /** Tipo de usuário: colaborador. Campo obrigatório. */
   userType: WeeklyComplianceOverview200AnyOfUserType
 }
-
-export type WeeklyComplianceOverview200 =
-  | WeeklyComplianceOverview200AnyOf
-  | WeeklyComplianceOverview200AnyOfThree
-  | WeeklyComplianceOverview200AnyOfSix
 
 /**
  * Código de status HTTP 500.
@@ -4789,6 +5820,20 @@ export type ListSpaceReservations400 = {
 }
 
 /**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
+
+/**
  * Informações do usuário que fez a reserva
  */
 export type ListSpaceReservations200ReservationsItemUser = {
@@ -4940,20 +5985,6 @@ export type ListSpaceReservations200ReservationsItem = {
   status: ListSpaceReservations200ReservationsItemStatus
   /** Informações do usuário que fez a reserva */
   user: ListSpaceReservations200ReservationsItemUser
-}
-
-/**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
 }
 
 export type ListSpaceReservationsIncludeUserAsGuest =
@@ -5836,12 +6867,6 @@ export type CreateSpaceReservation400 = {
   status_code: CreateSpaceReservation400StatusCode
 }
 
-export type CreateSpaceReservation201 = {
-  /** Mensagem de sucesso */
-  message: string
-  reservations: CreateSpaceReservation201ReservationsItem[]
-}
-
 /**
  * Status atual da reserva
  */
@@ -5876,6 +6901,12 @@ export type CreateSpaceReservation201ReservationsItem = {
   status: CreateSpaceReservation201ReservationsItemStatus
   /** Identificador único do usuário que fez a reserva */
   userId: string
+}
+
+export type CreateSpaceReservation201 = {
+  /** Mensagem de sucesso */
+  message: string
+  reservations: CreateSpaceReservation201ReservationsItem[]
 }
 
 export type CreateSpaceReservationBody = {
@@ -11816,6 +12847,15 @@ export type UserMe400 = {
 }
 
 /**
+ * Dados do usuário recuperados com sucesso
+ */
+export type UserMe200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  user: UserMe200User
+}
+
+/**
  * Posição do usuário na equipe de atendimento. Pode ser director, supervisor, manager, assistant_manager, assistant ou null se não faz parte da equipe. Campo obrigatório.
  * @nullable
  */
@@ -11885,15 +12925,6 @@ export type UserMe200User = {
    * @nullable
    */
   teamPosition: UserMe200UserTeamPosition
-}
-
-/**
- * Dados do usuário recuperados com sucesso
- */
-export type UserMe200 = {
-  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
-  message: string
-  user: UserMe200User
 }
 
 /**

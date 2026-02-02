@@ -81,3 +81,36 @@ export async function fetchTeamMembersInServer(): Promise<GetTeamMembers200 | nu
 
   return null
 }
+
+/**
+ * fetchTeamMembersForOutpostsInServer
+ *
+ * Obtém a lista completa de membros do time para postos avançados.
+ * Inclui todos os membros (incluindo supervisores e diretores).
+ *
+ * @returns {Promise<GetTeamMembers200 | null>} Dados dos membros ou null
+ */
+export async function fetchTeamMembersForOutpostsInServer(): Promise<GetTeamMembers200 | null> {
+  const headers = await getHeadersServer()
+  if (!headers) {
+    console.warn('CSRF token not found')
+    return null
+  }
+
+  const response = await customFetch<GetTeamMembers200>(
+    `${webserver.hostApi}/v1/private/team/members`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      cache: 'no-store',
+      headers,
+      next: { tags: ['team-members'] },
+    },
+  )
+
+  if (response.status === 200) {
+    return response.data
+  }
+
+  return null
+}
