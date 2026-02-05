@@ -6,6 +6,7 @@ import type {
 } from '@/api/endpoints/bBZAppBackendAPI.schemas'
 import { listSpaceReservations } from '@/api/endpoints/reservation/reservation'
 import { DataTableReservations } from '@/components/data-table/reservations/table-reservations'
+import { Text } from '@/components/Text'
 import { Input } from '@/components/ui/input'
 import { addWeeks, endOfWeek, format, startOfWeek } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -112,9 +113,11 @@ export function ReservasEquipeClient({
 
       {/* Info Card */}
       <div className="bg-muted/50 flex items-start gap-3 rounded-lg border p-4">
-        <Calendar className="text-primary mt-0.5 size-5 shrink-0" />
+        <Calendar className="text-primary mt-0.5 size-7 shrink-0" />
         <div className="space-y-1">
-          <p className="font-medium">Período exibido: {formattedPeriod}</p>
+          <Text variant="title-18-24-700">
+            Período exibido: {formattedPeriod}
+          </Text>
           <p className="text-muted-foreground text-sm">
             Mostrando reservas do início da semana atual até o final da próxima
             semana.
