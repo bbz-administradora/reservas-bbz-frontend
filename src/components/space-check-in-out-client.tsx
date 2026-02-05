@@ -42,6 +42,9 @@ export function SpaceCheckInOutClient({
     string | null
   >(null)
 
+  // Estado para rastrear se o check-out foi concluído com sucesso
+  const [checkOutCompleted, setCheckOutCompleted] = useState(false)
+
   // Hook para realizar check-in/out
   const { trigger: performCheckInOut, isMutating: isPerformingCheckInOut } =
     useReservationCheckInOut(spaceId)
@@ -93,6 +96,11 @@ export function SpaceCheckInOutClient({
         message: result.data.message || 'Operação realizada com sucesso!',
         variant: 'success',
       })
+
+      // Se foi check-out, marcar como concluído antes de revalidar
+      if (type === 'check-out') {
+        setCheckOutCompleted(true)
+      }
 
       // Revalidar lista de reservas
       await revalidateReservations()
@@ -228,18 +236,36 @@ export function SpaceCheckInOutClient({
       >{`Sala ${spaceName}`}</Text>
 
       {activeReservations.length === 0 ? (
-        <div className="mx-auto mt-8 flex max-w-lg flex-col items-center gap-4 text-center">
-          <CalendarX className="text-destructive size-16" />
-          <Text variant="title-22-32-700" className="text-destructive">
-            Nenhuma reserva para hoje
-          </Text>
-          <Text variant="title-18-24-500">
-            Ops! Não encontramos sua reserva ativa
-          </Text>
-          <Text variant="body-16-18-400">
-            Verifique se você tem uma reserva confirmada para hoje neste espaço.
-          </Text>
-        </div>
+        checkOutCompleted ? (
+          // Tela de sucesso após check-out
+          <div className="mx-auto mt-8 flex max-w-lg flex-col items-center gap-4 text-center">
+            <CheckCircle className="size-16 text-green-600" />
+            <Text variant="title-22-32-700" className="text-green-600">
+              Check-out realizado!
+            </Text>
+            <Text variant="title-18-24-500">
+              Obrigado por usar nosso espaço
+            </Text>
+            <Text variant="body-16-18-400">
+              Sua jornada foi registrada com sucesso. Tenha um ótimo dia!
+            </Text>
+          </div>
+        ) : (
+          // Tela de nenhuma reserva
+          <div className="mx-auto mt-8 flex max-w-lg flex-col items-center gap-4 text-center">
+            <CalendarX className="text-destructive size-16" />
+            <Text variant="title-22-32-700" className="text-destructive">
+              Nenhuma reserva para hoje
+            </Text>
+            <Text variant="title-18-24-500">
+              Ops! Não encontramos sua reserva ativa
+            </Text>
+            <Text variant="body-16-18-400">
+              Verifique se você tem uma reserva confirmada para hoje neste
+              espaço.
+            </Text>
+          </div>
+        )
       ) : (
         <div className="w-full max-w-2xl space-y-4">
           <Text variant="body-16-18-400" className="text-center">
