@@ -36,6 +36,7 @@ export function SpaceCheckInOutClient({
   // Buscar dados do usuário logado
   const { data: userData, isLoading: isLoadingUser } = useUserMe()
   const user = userData?.data?.user
+  const userId = user?.id
 
   // Estado para controlar qual reserva está processando
   const [processingReservationId, setProcessingReservationId] = useState<
@@ -52,6 +53,9 @@ export function SpaceCheckInOutClient({
   // Calcular intervalo do dia brasileiro
   const { startDate, endDate } = getBrazilianDayRange()
 
+  // Só habilita a busca quando tivermos userId definido
+  const shouldFetchReservations = !!userId
+
   // Buscar reservas do dia deste espaço para este usuário
   const {
     data: reservationsData,
@@ -59,18 +63,20 @@ export function SpaceCheckInOutClient({
     isLoading: isLoadingReservations,
     mutate: revalidateReservations,
   } = useListSpaceReservations(
-    {
-      spaceId,
-      userId: user?.id,
-      includeUserAsGuest: 'true',
-      startDate,
-      endDate,
-      page: '1',
-      pageSize: '100',
-    },
+    shouldFetchReservations
+      ? {
+          spaceId,
+          userId,
+          includeUserAsGuest: 'true',
+          startDate,
+          endDate,
+          page: '1',
+          pageSize: '100',
+        }
+      : undefined, // Não passa params enquanto não tiver userId
     {
       swr: {
-        enabled: !!user?.id, // Só busca quando tiver userId
+        enabled: shouldFetchReservations,
       },
     },
   )
@@ -171,8 +177,8 @@ export function SpaceCheckInOutClient({
     )
   }
 
-  // Loading
-  const isLoading = isLoadingUser || isLoadingReservations
+  // Loading - inclui quando ainda não temos userId
+  const isLoading = isLoadingUser || !userId || isLoadingReservations
   if (isLoading) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
