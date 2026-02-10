@@ -32,6 +32,10 @@ export default async function Layout({
   // Verifica se o usuário está autenticado e tem a função de admin
   const isAdmin = ['admin', 'dev'].includes(user?.role ?? '')
 
+  // Verifica se o usuário pode ver reservas da equipe (admin, dev ou supervisor)
+  const canViewTeamReservations =
+    isAdmin || user?.teamPosition === 'supervisor'
+
   return (
     <div className="flex flex-1 flex-col">
       {/* Header */}
@@ -116,21 +120,25 @@ export default async function Layout({
                   </Button>
                 </Link>
 
-                <Link
-                  href={`${webserver.host}/admin/reservas`}
-                  title="Ir para a página administrativa de reservas"
-                  className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  <Button
-                    tabIndex={-1}
-                    variant="ghost"
-                    size="icon"
-                    className="lg:cursor-pointer"
-                  >
-                    <CalendarDaysIcon className="size-5" />
-                  </Button>
-                </Link>
               </>
+            )}
+
+            {/* Link de reservas para admin, dev ou supervisor */}
+            {canViewTeamReservations && (
+              <Link
+                href={`${webserver.host}/admin/reservas`}
+                title="Ir para a página de reservas da equipe"
+                className="ring-offset-primary focus-visible:ring-accent cursor-pointer rounded-md focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                <Button
+                  tabIndex={-1}
+                  variant="ghost"
+                  size="icon"
+                  className="lg:cursor-pointer"
+                >
+                  <CalendarDaysIcon className="size-5" />
+                </Button>
+              </Link>
             )}
 
             {/* Criar botão de logout */}
@@ -180,14 +188,18 @@ export default async function Layout({
                 <DoorOpenIcon className="size-6" />
               </BottomTabButton>
 
-              <BottomTabButton
-                label="Adm Reservas"
-                href={`${webserver.host}/admin/reservas`}
-                className="hidden md:flex"
-              >
-                <CalendarDaysIcon className="size-6" />
-              </BottomTabButton>
             </>
+          )}
+
+          {/* Link de reservas para admin, dev ou supervisor */}
+          {canViewTeamReservations && (
+            <BottomTabButton
+              label="Reservas Equipe"
+              href={`${webserver.host}/admin/reservas`}
+              className="hidden md:flex"
+            >
+              <CalendarDaysIcon className="size-6" />
+            </BottomTabButton>
           )}
 
           <LogoutButton variant="bottom-bar" />

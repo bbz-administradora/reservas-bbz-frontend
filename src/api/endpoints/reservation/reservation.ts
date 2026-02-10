@@ -531,6 +531,7 @@ export const useCancelSpaceReservation = <
   - As reservas são ordenadas da mais recente para a mais antiga
   - Cada reserva agora contém um array spaceSlotIds com os IDs dos slots reservados
   - Cada reserva inclui um array checkInOuts com todos os registros de check-in e check-out relacionados
+  - Com teamOnly=true, retorna apenas reservas dos subordinados do usuário autenticado (para supervisores)
  * @summary Listar reservas de espaço
  */
 export type listSpaceReservationsResponse = {

@@ -5987,6 +5987,15 @@ export type ListSpaceReservations200ReservationsItem = {
   user: ListSpaceReservations200ReservationsItemUser
 }
 
+export type ListSpaceReservationsTeamOnly =
+  (typeof ListSpaceReservationsTeamOnly)[keyof typeof ListSpaceReservationsTeamOnly]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListSpaceReservationsTeamOnly = {
+  true: 'true',
+  false: 'false',
+} as const
+
 export type ListSpaceReservationsIncludeUserAsGuest =
   (typeof ListSpaceReservationsIncludeUserAsGuest)[keyof typeof ListSpaceReservationsIncludeUserAsGuest]
 
@@ -6025,6 +6034,10 @@ export type ListSpaceReservationsParams = {
    * Data de fim para filtrar reservas (formato ISO 8601, ex: 2024-01-31)
    */
   endDate?: string
+  /**
+   * Se true, retorna apenas reservas dos subordinados do usuário autenticado (para supervisores)
+   */
+  teamOnly?: ListSpaceReservationsTeamOnly
 }
 
 /**
