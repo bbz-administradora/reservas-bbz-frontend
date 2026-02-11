@@ -1,5 +1,4 @@
 import {
-  addDays,
   addWeeks,
   endOfWeek,
   format,
@@ -7,7 +6,6 @@ import {
   isValid,
   parse,
   parseISO,
-  startOfDay,
 } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
@@ -126,6 +124,10 @@ export function getExpirationMessage(dateString?: string): string {
  * O dia brasileiro vai de 00:00 BRT até 23:59:59 BRT
  * Em UTC isso significa: 03:00 UTC até 02:59:59 UTC do dia seguinte
  *
+ * IMPORTANTE: Esta função calcula o dia brasileiro usando UTC absoluto,
+ * sem depender do timezone local do ambiente (browser ou servidor SSR).
+ * Isso evita bugs quando o SSR do Next.js roda em UTC e o browser está em BRT.
+ *
  * @returns Objeto com startDate e endDate em formato ISO
  */
 export function getBrazilianDayRange(): {
@@ -134,13 +136,22 @@ export function getBrazilianDayRange(): {
 } {
   const now = new Date()
 
-  // Início do dia brasileiro: hoje às 03:00 UTC (00:00 BRT)
-  const startOfBrazilianDay = startOfDay(now)
-  startOfBrazilianDay.setUTCHours(3, 0, 0, 0)
+  // Calcula a hora atual no Brasil (UTC-3) sem depender do timezone local
+  const BRAZIL_OFFSET_MS = -3 * 60 * 60 * 1000 // -3h em milissegundos
+  const brazilTime = new Date(now.getTime() + BRAZIL_OFFSET_MS)
 
-  // Fim do dia brasileiro: amanhã às 02:59:59.999 UTC (23:59:59 BRT)
-  const endOfBrazilianDay = addDays(startOfBrazilianDay, 1)
-  endOfBrazilianDay.setUTCHours(2, 59, 59, 999)
+  // Extrai o dia brasileiro usando componentes UTC do brazilTime
+  const year = brazilTime.getUTCFullYear()
+  const month = brazilTime.getUTCMonth()
+  const day = brazilTime.getUTCDate()
+
+  // Início do dia brasileiro: YYYY-MM-DDT03:00:00.000Z (00:00 BRT)
+  const startOfBrazilianDay = new Date(Date.UTC(year, month, day, 3, 0, 0, 0))
+
+  // Fim do dia brasileiro: dia seguinte às 02:59:59.999Z (23:59:59.999 BRT)
+  const endOfBrazilianDay = new Date(
+    Date.UTC(year, month, day + 1, 2, 59, 59, 999),
+  )
 
   return {
     startDate: startOfBrazilianDay.toISOString(),
