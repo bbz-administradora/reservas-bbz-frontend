@@ -56,30 +56,36 @@ export function SpaceCheckInOutClient({
   // Só habilita a busca quando tivermos userId definido
   const shouldFetchReservations = !!userId
 
+  // Parâmetros só são definidos quando temos userId válido
+  const reservationParams = shouldFetchReservations
+    ? {
+        spaceId,
+        userId,
+        includeUserAsGuest: 'true' as const,
+        startDate,
+        endDate,
+        page: '1',
+        pageSize: '100',
+      }
+    : undefined
+
   // Buscar reservas do dia deste espaço para este usuário
+  // IMPORTANTE: A key do SWR deve ser null quando não temos userId
+  // para evitar qualquer requisição com parâmetros incompletos
   const {
     data: reservationsData,
     error: reservationsError,
     isLoading: isLoadingReservations,
     mutate: revalidateReservations,
-  } = useListSpaceReservations(
-    shouldFetchReservations
-      ? {
-          spaceId,
-          userId,
-          includeUserAsGuest: 'true',
-          startDate,
-          endDate,
-          page: '1',
-          pageSize: '100',
-        }
-      : undefined, // Não passa params enquanto não tiver userId
-    {
-      swr: {
-        enabled: shouldFetchReservations,
-      },
+  } = useListSpaceReservations(reservationParams, {
+    swr: {
+      enabled: shouldFetchReservations,
+      // Força revalidação ao montar para evitar cache stale
+      revalidateOnMount: true,
+      // Não deduplica requisições para garantir dados frescos
+      dedupingInterval: 0,
     },
-  )
+  })
 
   // Usar reservas diretamente do backend (já filtradas por data)
   const reservations = reservationsData?.data?.reservations || []
@@ -209,7 +215,11 @@ export function SpaceCheckInOutClient({
   // Filtrar reservas que podem aparecer na tela de check-in/check-out
   // Mostra apenas reservas ativas (reserved) que ainda podem fazer check-in/check-out
   // NÃO mostra: encerrada (closed) e cancelada (cancelled)
-  const activeReservations = reservations.filter((r) => r.status === 'reserved')
+  // IMPORTANTE: Filtro defensivo por spaceId para evitar mostrar reservas de outros espaços
+  // em caso de problemas de cache ou request incorreta
+  const activeReservations = reservations.filter(
+    (r) => r.status === 'reserved' && r.space.id === spaceId,
+  )
 
   // Função para determinar status da reserva baseado em checkInOuts
   function getReservationStatus(reservation: any) {
