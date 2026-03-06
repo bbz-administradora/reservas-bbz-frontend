@@ -41,6 +41,13 @@ import type {
   GetSpaceReservationStats401,
   GetSpaceReservationStats403,
   GetSpaceReservationStats500,
+  ListCheckInOutReservations200,
+  ListCheckInOutReservations400,
+  ListCheckInOutReservations401,
+  ListCheckInOutReservations403,
+  ListCheckInOutReservations404,
+  ListCheckInOutReservations422,
+  ListCheckInOutReservations500,
   ListSpaceReservations200,
   ListSpaceReservations400,
   ListSpaceReservations401,
@@ -841,6 +848,100 @@ export const useReservationCheckInOut = <
   const swrFn = getReservationCheckInOutMutationFetcher(spaceId, requestOptions)
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query,
+  }
+}
+/**
+ * Endpoint dedicado para a tela de check-in/check-out.
+
+Retorna apenas as reservas do dia atual (horário de Brasília) do usuário autenticado
+no espaço informado. O userId e o cálculo da data são feitos no servidor, eliminando
+qualquer possibilidade de erro no client.
+
+* **Segurança**: Protegido por autenticação JWT e CSRF.
+* **Filtros aplicados no servidor**:
+  - Espaço informado via parâmetro
+  - Usuário autenticado (JWT) — como dono ou convidado
+  - Apenas reservas com status 'reserved'
+  - Apenas reservas do dia atual (BRT)
+ * @summary Listar reservas do dia para check-in/check-out
+ */
+export type listCheckInOutReservationsResponse = {
+  data: ListCheckInOutReservations200
+  status: number
+  headers: Headers
+}
+
+export const getListCheckInOutReservationsUrl = (spaceId: string) => {
+  return `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/check-in-out-list/${spaceId}`
+}
+
+export const listCheckInOutReservations = async (
+  spaceId: string,
+  options?: RequestInit,
+): Promise<listCheckInOutReservationsResponse> => {
+  return customFetch<Promise<listCheckInOutReservationsResponse>>(
+    getListCheckInOutReservationsUrl(spaceId),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getListCheckInOutReservationsKey = (spaceId: string) =>
+  [
+    `${process.env.NEXT_PUBLIC_API_URL}/v1/private/reservation/check-in-out-list/${spaceId}`,
+  ] as const
+
+export type ListCheckInOutReservationsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof listCheckInOutReservations>>
+>
+export type ListCheckInOutReservationsQueryError =
+  | ListCheckInOutReservations400
+  | ListCheckInOutReservations401
+  | ListCheckInOutReservations403
+  | ListCheckInOutReservations404
+  | ListCheckInOutReservations422
+  | ListCheckInOutReservations500
+
+/**
+ * @summary Listar reservas do dia para check-in/check-out
+ */
+export const useListCheckInOutReservations = <
+  TError =
+    | ListCheckInOutReservations400
+    | ListCheckInOutReservations401
+    | ListCheckInOutReservations403
+    | ListCheckInOutReservations404
+    | ListCheckInOutReservations422
+    | ListCheckInOutReservations500,
+>(
+  spaceId: string,
+  options?: {
+    swr?: SWRConfiguration<
+      Awaited<ReturnType<typeof listCheckInOutReservations>>,
+      TError
+    > & { swrKey?: Key; enabled?: boolean }
+    request?: SecondParameter<typeof customFetch>
+  },
+) => {
+  const { swr: swrOptions, request: requestOptions } = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false && !!spaceId
+  const swrKey =
+    swrOptions?.swrKey ??
+    (() => (isEnabled ? getListCheckInOutReservationsKey(spaceId) : null))
+  const swrFn = () => listCheckInOutReservations(spaceId, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(
+    swrKey,
+    swrFn,
+    swrOptions,
+  )
 
   return {
     swrKey,

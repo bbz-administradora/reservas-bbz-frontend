@@ -2192,18 +2192,6 @@ export type GetOrganogram200TreeItem = {
 }
 
 /**
- * Resposta do endpoint de organograma da equipe.
- */
-export type GetOrganogram200 = {
-  /** Mensagem de sucesso da operação. Campo obrigatório. */
-  message: string
-  /** Estatísticas gerais da equipe. */
-  stats: GetOrganogram200Stats
-  /** Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes. */
-  tree: GetOrganogram200TreeItem[]
-}
-
-/**
  * Quantidade de membros por posição.
  */
 export type GetOrganogram200StatsByPosition = {
@@ -2245,6 +2233,18 @@ export type GetOrganogram200Stats = {
    * @minimum 0
    */
   total: number
+}
+
+/**
+ * Resposta do endpoint de organograma da equipe.
+ */
+export type GetOrganogram200 = {
+  /** Mensagem de sucesso da operação. Campo obrigatório. */
+  message: string
+  /** Estatísticas gerais da equipe. */
+  stats: GetOrganogram200Stats
+  /** Árvore hierárquica da equipe. Começa pelos diretores e desce até os assistentes. */
+  tree: GetOrganogram200TreeItem[]
 }
 
 /**
@@ -5033,6 +5033,54 @@ export const ReservationGetDetail200ReservationStatus = {
 } as const
 
 /**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ReservationGetDetail200Reservation = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ReservationGetDetail200ReservationCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ReservationGetDetail200ReservationSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ReservationGetDetail200ReservationStatus
+  /** Informações do usuário que fez a reserva */
+  user: ReservationGetDetail200ReservationUser
+}
+
+/**
  * Tipo do espaço
  */
 export type ReservationGetDetail200ReservationSpaceType =
@@ -5083,51 +5131,283 @@ export type ReservationGetDetail200ReservationCancelledBy = {
 } | null
 
 /**
- * Detalhes completos de uma reserva paginada
+ * Código de status HTTP 500.
  */
-export type ReservationGetDetail200Reservation = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ReservationGetDetail200ReservationCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
+export type ListCheckInOutReservations500StatusCode =
+  (typeof ListCheckInOutReservations500StatusCode)[keyof typeof ListCheckInOutReservations500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListCheckInOutReservations500Name =
+  (typeof ListCheckInOutReservations500Name)[keyof typeof ListCheckInOutReservations500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type ListCheckInOutReservations500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListCheckInOutReservations500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: ListCheckInOutReservations500StatusCode
+}
+
+/**
+ * Código de status HTTP 422.
+ */
+export type ListCheckInOutReservations422StatusCode =
+  (typeof ListCheckInOutReservations422StatusCode)[keyof typeof ListCheckInOutReservations422StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations422StatusCode = {
+  NUMBER_422: 422,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListCheckInOutReservations422Name =
+  (typeof ListCheckInOutReservations422Name)[keyof typeof ListCheckInOutReservations422Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations422Name = {
+  UnprocessableEntityError: 'UnprocessableEntityError',
+} as const
+
+/**
+ * Schema to represent Unprocessable Entity errors (HTTP 422)
+ */
+export type ListCheckInOutReservations422 = {
+  /** Ação recomendada para corrigir os dados enviados. */
+  action: string
+  /** Mensagem indicando que a entidade não pôde ser processada. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListCheckInOutReservations422Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 422. */
+  status_code: ListCheckInOutReservations422StatusCode
+}
+
+/**
+ * Código de status HTTP 404.
+ */
+export type ListCheckInOutReservations404StatusCode =
+  (typeof ListCheckInOutReservations404StatusCode)[keyof typeof ListCheckInOutReservations404StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations404StatusCode = {
+  NUMBER_404: 404,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListCheckInOutReservations404Name =
+  (typeof ListCheckInOutReservations404Name)[keyof typeof ListCheckInOutReservations404Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations404Name = {
+  NotFoundError: 'NotFoundError',
+} as const
+
+/**
+ * Schema to represent Not Found errors (HTTP 404)
+ */
+export type ListCheckInOutReservations404 = {
+  /** Ação recomendada para o recurso não encontrado. */
+  action: string
+  /** Mensagem indicando que o recurso não foi encontrado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListCheckInOutReservations404Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 404. */
+  status_code: ListCheckInOutReservations404StatusCode
+}
+
+/**
+ * Código de status HTTP 403.
+ */
+export type ListCheckInOutReservations403StatusCode =
+  (typeof ListCheckInOutReservations403StatusCode)[keyof typeof ListCheckInOutReservations403StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations403StatusCode = {
+  NUMBER_403: 403,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListCheckInOutReservations403Name =
+  (typeof ListCheckInOutReservations403Name)[keyof typeof ListCheckInOutReservations403Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations403Name = {
+  ForbiddenError: 'ForbiddenError',
+} as const
+
+/**
+ * Schema to represent Forbidden errors (HTTP 403)
+ */
+export type ListCheckInOutReservations403 = {
+  /** Ação recomendada para acessar o recurso. */
+  action: string
+  /** Mensagem indicando acesso proibido. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListCheckInOutReservations403Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 403. */
+  status_code: ListCheckInOutReservations403StatusCode
+}
+
+/**
+ * Código de status HTTP 401.
+ */
+export type ListCheckInOutReservations401StatusCode =
+  (typeof ListCheckInOutReservations401StatusCode)[keyof typeof ListCheckInOutReservations401StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations401StatusCode = {
+  NUMBER_401: 401,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListCheckInOutReservations401Name =
+  (typeof ListCheckInOutReservations401Name)[keyof typeof ListCheckInOutReservations401Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations401Name = {
+  UnauthorizedError: 'UnauthorizedError',
+} as const
+
+/**
+ * Schema to represent Unauthorized errors (HTTP 401)
+ */
+export type ListCheckInOutReservations401 = {
+  /** Ação recomendada para a autenticação. */
+  action: string
+  /** Mensagem indicando que o acesso não está autorizado. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListCheckInOutReservations401Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 401. */
+  status_code: ListCheckInOutReservations401StatusCode
+}
+
+/**
+ * Código de status HTTP 400.
+ */
+export type ListCheckInOutReservations400StatusCode =
+  (typeof ListCheckInOutReservations400StatusCode)[keyof typeof ListCheckInOutReservations400StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations400StatusCode = {
+  NUMBER_400: 400,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type ListCheckInOutReservations400Name =
+  (typeof ListCheckInOutReservations400Name)[keyof typeof ListCheckInOutReservations400Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations400Name = {
+  BadRequestError: 'BadRequestError',
+} as const
+
+/**
+ * Schema to represent Bad Request errors (HTTP 400)
+ */
+export type ListCheckInOutReservations400 = {
+  /** Ação recomendada para corrigir a requisição. */
+  action: string
+  /** Mensagem indicando que a requisição é inválida. */
+  message: string
+  /** Nome fixo do erro. */
+  name: ListCheckInOutReservations400Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 400. */
+  status_code: ListCheckInOutReservations400StatusCode
+}
+
+export type ListCheckInOutReservations200SpaceType =
+  (typeof ListCheckInOutReservations200SpaceType)[keyof typeof ListCheckInOutReservations200SpaceType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations200SpaceType = {
+  room: 'room',
+  workstation: 'workstation',
+} as const
+
+export type ListCheckInOutReservations200 = {
+  reservations: ListCheckInOutReservations200ReservationsItem[]
+  spaceName: string
+  spaceType: ListCheckInOutReservations200SpaceType
+}
+
+export type ListCheckInOutReservations200ReservationsItemStatus =
+  (typeof ListCheckInOutReservations200ReservationsItemStatus)[keyof typeof ListCheckInOutReservations200ReservationsItemStatus]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations200ReservationsItemStatus = {
+  reserved: 'reserved',
+  cancelled: 'cancelled',
+  closed: 'closed',
+} as const
+
+export type ListCheckInOutReservations200ReservationsItem = {
+  checkInOuts: ListCheckInOutReservations200ReservationsItemCheckInOutsItem[]
   id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
+  isOwner: boolean
   slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
   slotStart: string
-  /** Informações básicas do espaço */
-  space: ReservationGetDetail200ReservationSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ReservationGetDetail200ReservationStatus
-  /** Informações do usuário que fez a reserva */
-  user: ReservationGetDetail200ReservationUser
+  status: ListCheckInOutReservations200ReservationsItemStatus
+}
+
+export type ListCheckInOutReservations200ReservationsItemCheckInOutsItemType =
+  (typeof ListCheckInOutReservations200ReservationsItemCheckInOutsItemType)[keyof typeof ListCheckInOutReservations200ReservationsItemCheckInOutsItemType]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ListCheckInOutReservations200ReservationsItemCheckInOutsItemType =
+  {
+    'check-in': 'check-in',
+    'check-out': 'check-out',
+  } as const
+
+export type ListCheckInOutReservations200ReservationsItemCheckInOutsItem = {
+  createdAt: string
+  id: string
+  type: ListCheckInOutReservations200ReservationsItemCheckInOutsItemType
+  userId: string
+  userName: string
 }
 
 /**
