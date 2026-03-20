@@ -8,6 +8,120 @@
 /**
  * Código de status HTTP 500.
  */
+export type CatracaCatraEvent500StatusCode =
+  (typeof CatracaCatraEvent500StatusCode)[keyof typeof CatracaCatraEvent500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CatracaCatraEvent500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CatracaCatraEvent500Name =
+  (typeof CatracaCatraEvent500Name)[keyof typeof CatracaCatraEvent500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CatracaCatraEvent500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type CatracaCatraEvent500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CatracaCatraEvent500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: CatracaCatraEvent500StatusCode
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type CatracaDeviceIsAlive500StatusCode =
+  (typeof CatracaDeviceIsAlive500StatusCode)[keyof typeof CatracaDeviceIsAlive500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CatracaDeviceIsAlive500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CatracaDeviceIsAlive500Name =
+  (typeof CatracaDeviceIsAlive500Name)[keyof typeof CatracaDeviceIsAlive500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CatracaDeviceIsAlive500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type CatracaDeviceIsAlive500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CatracaDeviceIsAlive500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: CatracaDeviceIsAlive500StatusCode
+}
+
+/**
+ * Código de status HTTP 500.
+ */
+export type CatracaDao500StatusCode =
+  (typeof CatracaDao500StatusCode)[keyof typeof CatracaDao500StatusCode]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CatracaDao500StatusCode = {
+  NUMBER_500: 500,
+} as const
+
+/**
+ * Nome fixo do erro.
+ */
+export type CatracaDao500Name =
+  (typeof CatracaDao500Name)[keyof typeof CatracaDao500Name]
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CatracaDao500Name = {
+  InternalServerError: 'InternalServerError',
+} as const
+
+/**
+ * Schema to represent Internal Server errors (HTTP 500)
+ */
+export type CatracaDao500 = {
+  /** Ação recomendada para lidar com o erro interno. */
+  action: string
+  /** Mensagem indicando um erro interno no servidor. */
+  message: string
+  /** Nome fixo do erro. */
+  name: CatracaDao500Name
+  /** Dados públicos não sensíveis enviados ao cliente. */
+  payload?: unknown
+  /** Código de status HTTP 500. */
+  status_code: CatracaDao500StatusCode
+}
+
+/**
+ * Código de status HTTP 500.
+ */
 export type DeleteOutpost500StatusCode =
   (typeof DeleteOutpost500StatusCode)[keyof typeof DeleteOutpost500StatusCode]
 
@@ -1565,22 +1679,6 @@ export type ListEarlyCheckoutOccurrences200Pagination = {
 }
 
 /**
- * Listagem de ocorrências de checkout antecipado
- */
-export type ListEarlyCheckoutOccurrences200 = {
-  /** Indicadores/totalizadores das ocorrências */
-  indicators: ListEarlyCheckoutOccurrences200Indicators
-  /** Mensagem informativa sobre a operação */
-  message: string
-  /** Lista paginada de ocorrências */
-  occurrences: ListEarlyCheckoutOccurrences200OccurrencesItem[]
-  /** Informações de paginação */
-  pagination: ListEarlyCheckoutOccurrences200Pagination
-  /** Período consultado */
-  period: ListEarlyCheckoutOccurrences200Period
-}
-
-/**
  * Status da ocorrência
  */
 export type ListEarlyCheckoutOccurrences200OccurrencesItemStatus =
@@ -1702,6 +1800,22 @@ export type ListEarlyCheckoutOccurrences200Indicators = {
    * @minimum 0
    */
   total: number
+}
+
+/**
+ * Listagem de ocorrências de checkout antecipado
+ */
+export type ListEarlyCheckoutOccurrences200 = {
+  /** Indicadores/totalizadores das ocorrências */
+  indicators: ListEarlyCheckoutOccurrences200Indicators
+  /** Mensagem informativa sobre a operação */
+  message: string
+  /** Lista paginada de ocorrências */
+  occurrences: ListEarlyCheckoutOccurrences200OccurrencesItem[]
+  /** Informações de paginação */
+  pagination: ListEarlyCheckoutOccurrences200Pagination
+  /** Período consultado */
+  period: ListEarlyCheckoutOccurrences200Period
 }
 
 export type ListEarlyCheckoutOccurrencesPosition =
@@ -4641,6 +4755,11 @@ export type WeeklyComplianceOverview400 = {
   status_code: WeeklyComplianceOverview400StatusCode
 }
 
+export type WeeklyComplianceOverview200 =
+  | WeeklyComplianceOverview200AnyOf
+  | WeeklyComplianceOverview200AnyOfThree
+  | WeeklyComplianceOverview200AnyOfSix
+
 /**
  * Tipo de usuário: diretor. Campo obrigatório.
  */
@@ -4683,11 +4802,6 @@ export type WeeklyComplianceOverview200AnyOfSix = {
   /** Tipo de usuário: diretor. Campo obrigatório. */
   userType: WeeklyComplianceOverview200AnyOfSixUserType
 }
-
-export type WeeklyComplianceOverview200 =
-  | WeeklyComplianceOverview200AnyOf
-  | WeeklyComplianceOverview200AnyOfThree
-  | WeeklyComplianceOverview200AnyOfSix
 
 /**
  * Tipo de usuário: supervisor. Campo obrigatório.
@@ -4998,16 +5112,6 @@ export type ReservationGetDetail400 = {
 }
 
 /**
- * Detalhes da reserva recuperados com sucesso.
- */
-export type ReservationGetDetail200 = {
-  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
-  message: string
-  /** Detalhes completos de uma reserva paginada */
-  reservation: ReservationGetDetail200Reservation
-}
-
-/**
  * Informações do usuário que fez a reserva
  */
 export type ReservationGetDetail200ReservationUser = {
@@ -5031,54 +5135,6 @@ export const ReservationGetDetail200ReservationStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ReservationGetDetail200Reservation = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ReservationGetDetail200ReservationCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ReservationGetDetail200ReservationSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ReservationGetDetail200ReservationStatus
-  /** Informações do usuário que fez a reserva */
-  user: ReservationGetDetail200ReservationUser
-}
 
 /**
  * Tipo do espaço
@@ -5129,6 +5185,64 @@ export type ReservationGetDetail200ReservationCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
+
+/**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ReservationGetDetail200Reservation = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ReservationGetDetail200ReservationCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ReservationGetDetail200ReservationSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ReservationGetDetail200ReservationStatus
+  /** Informações do usuário que fez a reserva */
+  user: ReservationGetDetail200ReservationUser
+}
+
+/**
+ * Detalhes da reserva recuperados com sucesso.
+ */
+export type ReservationGetDetail200 = {
+  /** Mensagem informativa sobre o resultado da operação. Campo obrigatório. */
+  message: string
+  /** Detalhes completos de uma reserva paginada */
+  reservation: ReservationGetDetail200Reservation
+}
 
 /**
  * Código de status HTTP 500.
@@ -6100,20 +6214,6 @@ export type ListSpaceReservations400 = {
 }
 
 /**
- * Resposta paginada contendo reservas de espaço
- */
-export type ListSpaceReservations200 = {
-  /** Número da página atual */
-  currentPage: number
-  /** Lista de reservas encontradas na página atual */
-  reservations: ListSpaceReservations200ReservationsItem[]
-  /** Número total de reservas encontradas para o filtro */
-  totalCount: number
-  /** Número total de páginas disponíveis */
-  totalPages: number
-}
-
-/**
  * Informações do usuário que fez a reserva
  */
 export type ListSpaceReservations200ReservationsItemUser = {
@@ -6137,6 +6237,70 @@ export const ListSpaceReservations200ReservationsItemStatus = {
   cancelled: 'cancelled',
   closed: 'closed',
 } as const
+
+/**
+ * Detalhes completos de uma reserva paginada
+ */
+export type ListSpaceReservations200ReservationsItem = {
+  /** Lista de colaboradores da BBZ participantes */
+  bbzCollaborators: string[]
+  /**
+   * Data/hora do cancelamento (ou null)
+   * @nullable
+   */
+  cancelledAt: string | null
+  /**
+   * Usuário que cancelou a reserva (ou null)
+   * @nullable
+   */
+  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
+  /**
+   * Motivo do cancelamento (ou null)
+   * @nullable
+   */
+  cancelReason: string | null
+  /** Registros de check-in/check-out relacionados à reserva */
+  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
+  /**
+   * Data/hora do fechamento da reserva (ou null)
+   * @nullable
+   */
+  closedAt: string | null
+  /** Data/hora de criação da reserva */
+  createdAt: string
+  /** Lista de convidados externos participantes */
+  externalGuests: string[]
+  /** Identificador único da reserva */
+  id: string
+  /** Indica se a reserva necessita de serviço de copeira */
+  needsCopeira: boolean
+  /** Horário de término do slot no formato ISO com timezone do usuário */
+  slotEnd: string
+  /** Horário de início do slot no formato ISO com timezone do usuário */
+  slotStart: string
+  /** Informações básicas do espaço */
+  space: ListSpaceReservations200ReservationsItemSpace
+  /** Array de identificadores únicos dos slots de tempo reservados */
+  spaceSlotIds: string[]
+  /** Status atual da reserva */
+  status: ListSpaceReservations200ReservationsItemStatus
+  /** Informações do usuário que fez a reserva */
+  user: ListSpaceReservations200ReservationsItemUser
+}
+
+/**
+ * Resposta paginada contendo reservas de espaço
+ */
+export type ListSpaceReservations200 = {
+  /** Número da página atual */
+  currentPage: number
+  /** Lista de reservas encontradas na página atual */
+  reservations: ListSpaceReservations200ReservationsItem[]
+  /** Número total de reservas encontradas para o filtro */
+  totalCount: number
+  /** Número total de páginas disponíveis */
+  totalPages: number
+}
 
 /**
  * Tipo do espaço
@@ -6216,56 +6380,6 @@ export type ListSpaceReservations200ReservationsItemCancelledBy = {
   /** Nome do usuário que cancelou */
   name: string
 } | null
-
-/**
- * Detalhes completos de uma reserva paginada
- */
-export type ListSpaceReservations200ReservationsItem = {
-  /** Lista de colaboradores da BBZ participantes */
-  bbzCollaborators: string[]
-  /**
-   * Data/hora do cancelamento (ou null)
-   * @nullable
-   */
-  cancelledAt: string | null
-  /**
-   * Usuário que cancelou a reserva (ou null)
-   * @nullable
-   */
-  cancelledBy: ListSpaceReservations200ReservationsItemCancelledBy
-  /**
-   * Motivo do cancelamento (ou null)
-   * @nullable
-   */
-  cancelReason: string | null
-  /** Registros de check-in/check-out relacionados à reserva */
-  checkInOuts: ListSpaceReservations200ReservationsItemCheckInOutsItem[]
-  /**
-   * Data/hora do fechamento da reserva (ou null)
-   * @nullable
-   */
-  closedAt: string | null
-  /** Data/hora de criação da reserva */
-  createdAt: string
-  /** Lista de convidados externos participantes */
-  externalGuests: string[]
-  /** Identificador único da reserva */
-  id: string
-  /** Indica se a reserva necessita de serviço de copeira */
-  needsCopeira: boolean
-  /** Horário de término do slot no formato ISO com timezone do usuário */
-  slotEnd: string
-  /** Horário de início do slot no formato ISO com timezone do usuário */
-  slotStart: string
-  /** Informações básicas do espaço */
-  space: ListSpaceReservations200ReservationsItemSpace
-  /** Array de identificadores únicos dos slots de tempo reservados */
-  spaceSlotIds: string[]
-  /** Status atual da reserva */
-  status: ListSpaceReservations200ReservationsItemStatus
-  /** Informações do usuário que fez a reserva */
-  user: ListSpaceReservations200ReservationsItemUser
-}
 
 export type ListSpaceReservationsTeamOnly =
   (typeof ListSpaceReservationsTeamOnly)[keyof typeof ListSpaceReservationsTeamOnly]
@@ -12088,6 +12202,15 @@ export type UserGet400 = {
 }
 
 /**
+ * Detalhes do usuário recuperados com sucesso
+ */
+export type UserGet200 = {
+  /** Mensagem informativa sobre o resultado da operação de consulta do usuário. Campo obrigatório. */
+  message: string
+  user: UserGet200User
+}
+
+/**
  * Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório.
  */
 export type UserGet200UserRole =
@@ -12120,15 +12243,6 @@ export type UserGet200User = {
   name: string | null
   /** Função do usuário no sistema. Aceita apenas: admin, user ou dev. Campo obrigatório. */
   role: UserGet200UserRole
-}
-
-/**
- * Detalhes do usuário recuperados com sucesso
- */
-export type UserGet200 = {
-  /** Mensagem informativa sobre o resultado da operação de consulta do usuário. Campo obrigatório. */
-  message: string
-  user: UserGet200User
 }
 
 /**
