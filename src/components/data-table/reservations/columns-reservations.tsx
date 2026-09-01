@@ -12,6 +12,7 @@ import { DataTableColumnHeader } from '@/components/data-table/data-table-column
 import { DoorCodeDialog } from '@/components/DoorCodeDialog'
 import { showToast } from '@/components/ShowToast'
 import { Button } from '@/components/ui/button'
+import { CustomError } from '@/lib/error'
 import { cn } from '@/utils/mergeClassNames'
 import { transformTextIntoCapitalizedWords } from '@/utils/textUtils'
 import { ColumnDef } from '@tanstack/react-table'
@@ -741,57 +742,27 @@ export const columnsReservations = (
         useCloseSpaceReservation({
           swr: {
             onSuccess: (response) => {
-              switch (response.status) {
-                case 200: {
-                  showToast({
-                    message: 'Reserva encerrada com sucesso.',
-                    duration: 5000,
-                    variant: 'success',
-                  })
-
-                  revalidateTags(['close-reservation'])
-                  break
-                }
-                case 400: {
-                  // Verificar se é o erro específico de workstation com menos de 24h
-                  if (
-                    response.data?.message?.includes(
-                      'Workstations só podem ser fechadas com 24h de antecedência',
-                    )
-                  ) {
-                    showToast({
-                      message:
-                        'Workstations só podem ser fechadas com 24 horas de antecedência',
-                      duration: 5000,
-                      variant: 'warning',
-                    })
-                  } else {
-                    // Outros erros 400
-                    showToast({
-                      message:
-                        'Ops... Falha ao encerrar reserva, tente novamente.',
-                      duration: 5000,
-                      variant: 'error',
-                    })
-                  }
-                  break
-                }
-                default: {
-                  showToast({
-                    message:
-                      'Ops... Falha ao encerrar reserva, tente novamente.',
-                    duration: 5000,
-                    variant: 'error',
-                  })
-                  break
-                }
-              }
-            },
-            onError: () => {
               showToast({
-                message: 'Ops... Falha ao encerrar reserva, tente novamente.',
+                message: 'Reserva encerrada com sucesso.',
                 duration: 5000,
-                variant: 'error',
+                variant: 'success',
+              })
+
+              revalidateTags(['close-reservation'])
+            },
+            onError: (error) => {
+              const isWorkstationDeadlineError =
+                error instanceof CustomError &&
+                error.message.includes(
+                  'Workstations só podem ser fechadas com 24h de antecedência',
+                )
+
+              showToast({
+                message: isWorkstationDeadlineError
+                  ? 'Workstations só podem ser fechadas com 24 horas de antecedência'
+                  : 'Ops... Falha ao encerrar reserva, tente novamente.',
+                duration: 5000,
+                variant: isWorkstationDeadlineError ? 'warning' : 'error',
               })
             },
           },

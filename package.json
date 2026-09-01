@@ -6,7 +6,7 @@
     "dev": "npm run generate:api && next dev --port 3001",
     "build": "next build",
     "start": "next start --port 3001",
-    "lint": "next lint",
+    "lint": "eslint .",
     "generate:api": "orval --config ./src/lib/orval/orval.config.ts"
   },
   "engines": {
@@ -58,7 +58,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.3.1",
+    "eslint-config-next": "^16.3.2",
     "eslint-config-prettier": "^10.1.2",
     "orval": "^7.3.0",
     "postcss": "^8.5.3",

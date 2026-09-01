@@ -6,8 +6,8 @@
     "version": "1.0.0",
     "contact": {
       "name": "Support",
-      "email": "livioalvarenga@gmail.com",
-      "url": "https://github.com/LivioAlvarenga"
+      "email": "asq@bbz.com.br",
+      "url": "https://github.com/bbz-gestao-reservas"
     }
   },
   "components": {
@@ -28,7 +28,7 @@
         "tags": [
           "Infra"
         ],
-        "description": "This endpoint performs a simple health check on the server. When a GET request is made to '/v1/public/infra/server/health', the server responds with a 200 status code and a message indicating that it is healthy and operational.\n\nThis endpoint is primarily used for monitoring and testing purposes, such as verifying that the API server is running and responsive. It provides a minimal response structure containing a single message field, making it an ideal solution for automated health checks and system monitoring.",
+        "description": "This endpoint performs a health check on the server. When a GET request is made to '/v1/public/infra/server/health', the server responds with a 200 status code and a message indicating that it is healthy and operational. It is intended for deployment and uptime monitoring.",
         "responses": {
           "200": {
             "description": "Server health check",
@@ -341,6 +341,7 @@
         ],
         "description": "Endpoint para autenticação de usuários com email e senha.\n\n* **Segurança**: Endpoint público, não requer autenticação prévia.\n* **Processo**:\n  1. Valida os dados de entrada (email e senha)\n  2. Verifica se o usuário existe e se a senha está correta\n  3. Cria uma sessão para o usuário e retorna os dados do usuário autenticado\n\n**Dados de entrada**:\n- Email do usuário (obrigatório)\n- Senha do usuário (obrigatório)\n\n**Resposta**:\n- Dados do usuário autenticado\n- Mensagem de confirmação",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -381,8 +382,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -692,6 +692,7 @@
         ],
         "description": "Este endpoint permite ao usuário solicitar a redefinição de senha, enviando um email com instruções para criação de uma nova senha.\n\n* **Segurança**: Endpoint público, não requer autenticação. Implementa verificações para impedir abuso.\n* **Processo**:\n  1. Valida o email fornecido\n  2. Verifica se existe um usuário com o email informado\n  3. Verifica se a conta do usuário está ativa\n  4. Gera um token de redefinição de senha temporário\n  5. Envia um email com instruções e link para redefinição\n  6. Retorna confirmação de envio\n\n**Processo detalhado**:\n- O email contém um link que direciona o usuário para a página de redefinição de senha\n- O token gerado é válido por 24 horas\n- O sistema verifica a validade do token quando o usuário acessa o link de redefinição\n- O email inclui tanto um botão de ação quanto o link em texto plano para maior acessibilidade",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -711,8 +712,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -934,6 +934,7 @@
         ],
         "description": "Redefine a senha do usuário utilizando um token de verificação enviado previamente por e-mail.\n\n* **Segurança**: Acesso público, sem autenticação JWT.\n* **Processo**:\n  1. Verifica se o token de redefinição de senha é válido e não expirou\n  2. Verifica se o usuário existe e está ativo\n  3. Atualiza a senha do usuário\n  4. Invalida o token utilizado para evitar reuso\n  5. Retorna confirmação de sucesso com status 200 (OK), pois estamos atualizando recursos existentes\n\n**Uso comum**: Página de redefinição de senha após o usuário clicar no link recebido por e-mail.",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -966,8 +967,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "parameters": [
           {
@@ -1471,7 +1471,7 @@
         "tags": [
           "Auth"
         ],
-        "description": "Renova a sessão do usuário autenticado, gerando novos tokens de acesso e refresh.\n\n* **Segurança**: Protegido por JWT de refresh e CSRF.\n* **Rate Limit**: Limitado a undefined requisições por minuto por usuário autenticado (padrão global).\n* **Autorização**: Usuário autenticado.\n* **Validação**: Conta ativa e sem necessidade de reset de senha.\n\nSobre o sessionId:\n- O sessionId é extraído automaticamente do payload do JWT refresh token.\n- O backend valida se o sessionId no token corresponde a uma sessão ativa no banco de dados.\n- Não é necessário enviar o sessionId via header, pois ele já está contido no token JWT.\n- O sessionId é mantido no banco enquanto a sessão estiver ativa.\n",
+        "description": "Renova a sessão do usuário autenticado, gerando novos tokens de acesso e refresh.\n\n* **Segurança**: Protegido por JWT de refresh e CSRF.\n* **Autorização**: Usuário autenticado.\n* **Validação**: Conta ativa e sem necessidade de reset de senha.\n\nSobre o sessionId:\n- O sessionId é extraído automaticamente do payload do JWT refresh token.\n- O backend valida se o sessionId no token corresponde a uma sessão ativa no banco de dados.\n- Não é necessário enviar o sessionId via header, pois ele já está contido no token JWT.\n- O sessionId é mantido no banco enquanto a sessão estiver ativa.\n",
         "security": [
           {
             "bearerAuth": []
@@ -1996,6 +1996,7 @@
         ],
         "description": "Este endpoint permite criar um novo usuário no sistema com as seguintes características:\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Verifica se já existe um usuário com o email fornecido\n  2. Cria o registro de usuário com nome, email, cpf e perfil definido\n  3. Configura uma conta Google associada ao usuário\n  4. Retorna o usuário criado com seu ID e perfil, incluindo status da conta\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -2062,8 +2063,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "security": [
           {
@@ -3536,6 +3536,7 @@
         ],
         "description": "Este endpoint permite atualizar parcialmente os dados de um usuário específico por meio de um PATCH.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Atualização parcial**: Implementa o conceito de PATCH, atualizando apenas os campos enviados na requisição.\n* **Processo**:\n  1. Valida o ID do usuário a ser atualizado\n  2. Verifica se o usuário existe no banco de dados\n  3. Aplica apenas as alterações enviadas no corpo da requisição\n  4. Retorna o usuário com os dados atualizados\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -3994,6 +3995,7 @@
         ],
         "description": "Este endpoint permite conceder ou revogar uma exceção temporária de prazo para reservas de um colaborador.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: \n  - Admin/Dev: Pode conceder para qualquer usuário com posição em time\n  - Diretor: Pode conceder para qualquer usuário com posição em time  \n  - Supervisor: Apenas para membros da própria equipe\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**O que a exceção libera (semana vigente)**:\n- Fazer reserva na sexta-feira\n- Fazer reserva na semana atual\n- Ignora limite de dias (2-3 por cargo)\n- Ignora segunda/sexta obrigatória\n- MANTÉM validação de uma reserva de workstation por dia\n\n**Comportamento**:\n- `active: true`: Seta exceção até sábado da semana (23:59:59)\n- `active: false`: Remove a exceção (seta NULL)\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -4010,8 +4012,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "parameters": [
           {
@@ -4367,6 +4368,7 @@
         ],
         "description": "Este endpoint permite definir ou remover o período de afastamento de um usuário (férias, licença, etc.).\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: \n  - Admin/Dev: Pode definir para qualquer usuário\n  - Diretor: Pode definir para qualquer usuário\n  - Supervisor: Apenas para membros da própria equipe\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Efeitos do afastamento**:\n- Usuário não pode fazer novas reservas de WORKSTATION durante o período\n- Usuário é REMOVIDO de todos os indicadores de compliance:\n  - Compliance semanal (não conta como não-compliant)\n  - Checkout antecipado (ocorrências não aparecem)\n  - Cancelamentos fora do prazo (não conta nos indicadores)\n- Ao logar, usuário vê alerta informando o afastamento\n\n**Comportamento**:\n- Enviar startDate e endDate: Define o período de afastamento\n- Enviar startDate e endDate como null: Remove o afastamento",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -4398,8 +4400,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "parameters": [
           {
@@ -5125,6 +5126,7 @@
         ],
         "description": "Este endpoint permite que usuários autenticados façam upload de uma imagem para o armazenamento. A imagem deve ser enviada usando multipart/form-data com o campo \"file\".\n\n        ## Parâmetros de consulta:\n        - group (obrigatório): O grupo do ativo (ex: \"avatar\", \"logo\", \"produto\"). Indica o tipo ou categoria da imagem.\n        - subtitle (opcional): Subtítulo para o ativo (ex: \"perfil\", \"og\", \"bebida\"). Quando fornecido, será concatenado com o grupo para formar o nome do arquivo.\n        - folder (opcional): Pasta personalizada para armazenar a imagem. Se não fornecido, o arquivo será armazenado diretamente na pasta images.\n\n        ## Como funciona:\n        1. O sistema recebe a imagem via upload multipart/form-data\n        2. Realiza validação de autenticação e permissões do usuário\n        3. Processa os parâmetros de consulta (group, subtitle, folder)\n        4. Gera um nome de arquivo único com timestamp\n        5. Faz upload para o bucket S3 com a estrutura de pastas adequada\n        6. Retorna o caminho completo da imagem salva\n\n        ## Estrutura do caminho do arquivo:\n        - Com folder: images/<folder>/<group>-<subtitle>-<timestamp>.webp\n        - Sem folder: images/<group>-<subtitle>-<timestamp>.webp\n\n        Onde:\n        - folder: pasta personalizada (opcional)\n        - group: categoria obrigatória da imagem\n        - subtitle: subtipo opcional da imagem\n        - timestamp: gerado no momento do upload em formato compacto (sem caracteres especiais)\n\n        ## Exemplos de uso:\n        POST /v1/private/image/s3/upload?folder=salas&group=sala&subtitle=presidencia\n        POST /v1/private/image/s3/upload?group=produto\n\n        ## Observações:\n        - Todas as imagens são convertidas para o formato WebP para otimização\n        - Este endpoint trata apenas o upload e retorna o caminho do arquivo\n        - A atualização do banco de dados com o novo caminho da imagem (ex: mudar o avatar do usuário) deve ser tratada por outro endpoint\n        - Requer autenticação via token JWT no header Authorization",
         "requestBody": {
+          "required": true,
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -5140,8 +5142,7 @@
                 }
               }
             }
-          },
-          "required": true
+          }
         },
         "parameters": [
           {
@@ -5440,6 +5441,7 @@
         ],
         "description": "Este endpoint permite que usuários autenticados excluam uma imagem do armazenamento. O caminho completo da imagem deve ser enviado no corpo da requisição.\n\n        ## Como funciona:\n        1. O sistema recebe o caminho da imagem a ser excluída via corpo da requisição\n        2. Realiza validação de autenticação e permissões do usuário\n        3. Localiza a imagem no bucket S3 pelo caminho fornecido\n        4. Remove o arquivo do armazenamento\n        5. Retorna uma confirmação de sucesso\n\n        ## Estrutura do corpo da requisição:\n        ```json\n        {\n          \"imagePath\": \"images/grupo-subtitulo-timestamp.webp\"\n        }\n        ```\n\n        ## Exemplos de uso:\n        DELETE /v1/private/image/s3/delete\n        Body: { \"imagePath\": \"images/espacos/sala-presidencia-20250512123045.webp\" }\n\n        DELETE /v1/private/image/s3/delete\n        Body: { \"imagePath\": \"images/produto-bebida-20250512123045.webp\" }\n\n        ## Observações:\n        - O caminho da imagem (imagePath) deve ser o caminho completo retornado pelo endpoint de upload\n        - Dependendo de como o arquivo foi criado, o caminho pode incluir ou não uma pasta intermediária\n        - Este endpoint apenas exclui o arquivo físico do armazenamento\n        - A atualização de referências no banco de dados deve ser feita por endpoints específicos\n        - Requer autenticação via token JWT no header Authorization\n        - Não é possível desfazer esta operação depois de confirmada",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -5458,7 +5460,6 @@
               }
             }
           },
-          "required": true,
           "description": "Payload to delete an image"
         },
         "security": [
@@ -5724,6 +5725,7 @@
         ],
         "description": "Este endpoint permite criar um novo espaço no sistema com as seguintes características:\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo de criação**:\n  1. Cria o registro de espaço com os dados fornecidos\n  2. Retorna o espaço criado com seus dados completos\n* **Resposta**: Retorna o espaço criado com seu ID e status\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -5798,8 +5800,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "security": [
           {
@@ -7344,6 +7345,7 @@
         ],
         "description": "Este endpoint permite atualizar parcialmente os dados de um espaço específico por meio de um PATCH.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin' ou 'dev'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Atualização parcial**: Implementa o conceito de PATCH, atualizando apenas os campos enviados na requisição.\n* **Processo**:\n  1. Valida o ID do espaço a ser atualizado\n  2. Verifica se o espaço existe no banco de dados\n  3. Aplica apenas as alterações enviadas no corpo da requisição\n  4. Retorna o espaço com os dados atualizados\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserRole`: Restringe acesso aos perfis 'admin' e 'dev'\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -9433,6 +9435,7 @@
         ],
         "description": "Este endpoint permite que um usuário crie uma pré-reserva de um slot (horário) em um espaço específico.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Cria uma pré-reserva para um slot (combinação de espaço e horário específico)\n  2. Define o status como 'pre_reserved'\n  3. Associa o usuário atual à pré-reserva\n  4. Define um tempo limite de 5 minutos para confirmação da reserva\n  5. Verifica automaticamente se o espaço existe e está ativo\n  6. Impede pré-reservas de slots já reservados ou pré-reservados\n  7. Impede pré-reservas para datas passadas\n\n* **Fluxo de reserva**:\n  1. O usuário faz uma pré-reserva (este endpoint)\n  2. O sistema reserva o slot por 5 minutos para o usuário\n  3. O usuário deve confirmar a reserva em até 5 minutos\n  4. Caso contrário, o slot fica disponível novamente após o tempo limite\n\n* **Parâmetros no corpo**:\n  - spaceId (obrigatório): Identificador UUID do espaço\n  - slotStart (obrigatório): Data e hora de início no formato ISO com timezone (ex: 2023-08-15T14:30:00-03:00)\n  - slotEnd (obrigatório): Data e hora de término no formato ISO com timezone (ex: 2023-08-15T15:30:00-03:00)\n  - status (opcional): Status da reserva, padrão 'pre_reserved'\n\n* **Exemplo de uso**:\n  - Requisição básica: `POST /v1/private/space-slot/pre-reserve` com body:\n  ```json\n  {\n    \"spaceId\": \"a1b2c3d4-e5f6-7890-abcd-1234567890ab\",\n    \"slotStart\": \"2023-08-15T14:30:00-03:00\",\n    \"slotEnd\": \"2023-08-15T15:30:00-03:00\"\n  }\n  ```\n\n* **Formato da resposta**:\n  - slot: Objeto com todas as informações do slot pré-reservado\n  - message: Mensagem informativa de sucesso\n\n* **Notas**:\n  - As datas devem estar no formato ISO com informação de timezone\n  - O slot reservado tem duração de 1 hora para salas de reunião ou 5 horas para workstations\n  - Uma pré-reserva expira automaticamente após 5 minutos se não for confirmada\n  - Um usuário não pode pré-reservar um slot já reservado ou pré-reservado\n  - Não é possível pré-reservar slots para datas passadas\n  - O ID do usuário que faz a pré-reserva é automaticamente capturado do token JWT\n\n* **Regras específicas para Workstations**:\n  - Workstations só podem ser reservadas até o sábado da próxima semana (considerando semana de domingo a sábado)\n  - Reservas de workstations não podem ser feitas às sextas-feiras (bloqueio de dia da semana)\n  - Duração do slot: 5 horas (das 8h às 13h, por exemplo)\n  - Exemplo: Se hoje é segunda-feira (20/01), pode-se reservar workstations até sábado (31/01)",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -9470,8 +9473,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "security": [
           {
@@ -10205,6 +10207,7 @@
         ],
         "description": "Este endpoint permite que um usuário crie uma reserva de espaço a partir de slots pré-reservados.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Novo modelo de reservas**:\n  - Cada reserva agora possui somente uma linha na tabela independente de quantos slots estejam associados a ela\n  - Slots sequenciais (ex: de 08:00 até às 12:00) serão considerados uma única reserva\n  - Todos os IDs dos slots são armazenados em um array JSONB na reserva\n\n* **Funcionalidade**:\n  1. Converte um conjunto de pré-reservas (slots) em uma única reserva confirmada\n  2. Registra os detalhes adicionais da reserva (colaboradores, convidados externos, etc.)\n  3. Associa o usuário atual à reserva\n  4. Verifica automaticamente se cada slot existe e está pré-reservado pelo mesmo usuário\n  5. Cada slot deve estar dentro do período de pré-reserva (5 minutos)\n\n* **Regras de Negócio para Workstations**:\n\n  **1. Limites Semanais por Cargo**:\n  - Gerente: máximo de **2 dias por semana** (domingo a sábado)\n  - Subgerente: máximo de **3 dias por semana** (domingo a sábado)\n  - Assistente: máximo de **3 dias por semana** (domingo a sábado)\n  - Outros cargos: **sem limite** de dias\n  - Esta regra **NÃO se aplica a salas (rooms)**, apenas a workstations\n  - **BYPASS**: Usuários em Posto Avançado são completamente isentos desta regra\n\n  **2. Segunda ou Sexta-Feira Obrigatória**:\n  - Quando Gerentes, Subgerentes ou Assistentes **completarem seu limite de dias**, devem incluir pelo menos **UMA segunda-feira OU sexta-feira**\n  - Exemplo válido (Gerente): segunda + terça = 2 dias ✅\n  - Exemplo inválido (Gerente): terça + quarta = 2 dias sem segunda/sexta ❌\n  - Esta validação só ocorre quando o usuário atinge o limite máximo do cargo\n  - Esta regra **NÃO se aplica a salas (rooms)**, apenas a workstations\n  - **BYPASS**: Usuários em Posto Avançado são completamente isentos desta regra\n\n  **3. Uma Reserva de Workstation por Dia**:\n  - Não é permitido ter múltiplas reservas de workstation no mesmo dia\n  - Caso já exista uma reserva de workstation em determinada data, novas reservas para o mesmo dia serão bloqueadas\n  - Esta regra **NÃO se aplica a salas (rooms)**, apenas a workstations\n\n* **Fluxo de reserva**:\n  1. O usuário faz uma ou mais pré-reservas (via endpoint de pré-reserva)\n  2. O sistema reserva os slots por 5 minutos para o usuário\n  3. O usuário confirma a reserva com este endpoint, fornecendo detalhes adicionais\n  4. O sistema confirma a reserva e atualiza o status dos slots para 'reserved'\n\n* **Parâmetros no corpo**:\n  - spaceId (obrigatório): Identificador UUID do espaço\n  - spaceSlotIds (obrigatório): Lista de identificadores UUID dos slots pré-reservados\n  - bbzCollaborators (opcional): Lista de colaboradores da BBZ que participarão da reunião\n  - externalGuests (opcional): Lista de convidados externos que participarão da reunião\n  - needsCopeira (opcional): Indica se a reserva necessita de serviço de copeira (padrão: false)\n\n* **Exemplo de uso**:\n  - Requisição básica: `POST /v1/private/reservation` com body:\n  ```json\n  {\n    \"spaceId\": \"a1b2c3d4-e5f6-7890-abcd-1234567890ab\",\n    \"spaceSlotIds\": [\"b2c3d4e5-f6a7-8901-bcde-2345678901cd\", \"c3d4e5f6-a789-0123-cdef-3456789012de\"],\n    \"bbzCollaborators\": [\"João Silva\", \"Maria Oliveira\"],\n    \"externalGuests\": [\"Carlos Santos - Empresa XYZ\"],\n    \"needsCopeira\": true\n  }\n  ```\n\n* **Formato da resposta**:\n  - reservations: Array de objetos com todas as informações das reservas criadas\n  - message: Mensagem informativa de sucesso\n\n* **Notas**:\n  - O ID do usuário que faz a reserva é automaticamente capturado do token JWT\n  - As reservas só podem ser criadas a partir de slots que já estejam pré-reservados pelo mesmo usuário\n  - Cada pré-reserva deve estar dentro do período válido de 5 minutos\n  - O status das reservas criadas será definido como 'reserved'\n  - Mesmo que sejam fornecidos múltiplos slots, será criada apenas UMA reserva contendo todos esses slots\n  - O slot_range armazenará o intervalo completo da reserva (hora inicial até hora final)",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -10253,8 +10256,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "security": [
           {
@@ -10691,6 +10693,7 @@
         ],
         "description": "Este endpoint permite que um usuário feche uma reserva de espaço que ele criou.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível a usuários com perfil 'admin', 'dev' ou 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Fecha uma reserva existente no status 'reserved'\n  2. Atualiza o status para 'closed'\n  3. Registra a data e hora de fechamento\n  4. Remove os slots de espaço associados (se ainda existirem)\n\n* **Regras de negócio**:\n  1. Apenas o criador da reserva pode fechá-la\n  2. A reserva deve estar no status 'reserved' (não pode estar já fechada ou cancelada)\n  3. O fechamento é definitivo e não pode ser desfeito\n  4. Os slots de espaço associados serão excluídos se ainda existirem (podem ter sido removidos por um job agendado)\n\n* **Parâmetros da requisição**:\n  - id (opcional): Identificador UUID da reserva a ser fechada\n  - spaceSlotIds (opcional): Array de identificadores UUID dos slots associados à reserva\n\n* **Exemplo de uso**:\n  - Requisição básica: `PATCH /v1/private/reservation/close` com corpo JSON `{ \"id\": \"a1b2c3d4-e5f6-7890-abcd-1234567890ab\" }`\n  - Alternativa: `PATCH /v1/private/reservation/close` com corpo JSON `{ \"spaceSlotIds\": [\"a1b2c3d4-e5f6-7890-abcd-1234567890ab\"] }`\n\n* **Formato da resposta**:\n  - reservation: Objeto com todas as informações da reserva fechada\n  - message: Mensagem informativa de sucesso\n\n* **Notas**:\n  - O ID do usuário que fecha a reserva é automaticamente capturado do token JWT\n  - O status da reserva será atualizado para 'closed'\n  - A data e hora de fechamento (closedAt) serão registradas automaticamente\n  - Os slots de espaço serão excluídos apenas se ainda existirem no sistema",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -11109,6 +11112,7 @@
         ],
         "description": "Este endpoint permite que um administrador ou desenvolvedor cancele uma reserva de espaço.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Acessível APENAS a usuários com perfil 'admin' ou 'dev'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n\n* **Funcionalidade**:\n  1. Cancela uma reserva existente no status 'reserved'\n  2. Atualiza o status para 'cancelled'\n  3. Registra a data e hora de cancelamento\n  4. Armazena o motivo do cancelamento\n  5. Registra o usuário que realizou o cancelamento\n  6. Remove os slots de espaço associados (se ainda existirem)\n\n* **Regras de negócio**:\n  1. Apenas usuários administradores ou desenvolvedores podem cancelar reservas\n  2. A reserva deve estar no status 'reserved' (não pode estar já fechada ou cancelada)\n  3. Um motivo de cancelamento deve ser fornecido\n  4. O cancelamento é definitivo e não pode ser desfeito\n  5. Os slots de espaço associados serão excluídos se ainda existirem (podem ter sido removidos por um job agendado)\n\n* **Parâmetros da requisição**:\n  - id (opcional): Identificador UUID da reserva a ser cancelada\n  - spaceSlotIds (opcional): Array de identificadores UUID dos slots associados à reserva\n  - cancelReason (obrigatório): Motivo do cancelamento (3 a 500 caracteres)\n\n* **Exemplo de uso**:\n  - Requisição usando ID: `PATCH /v1/private/reservation/cancel` com corpo JSON:\n  ```json\n  {\n    \"id\": \"a1b2c3d4-e5f6-7890-abcd-1234567890ab\",\n    \"cancelReason\": \"Espaço em manutenção emergencial\"\n  }\n  ```\n  - Alternativa: `PATCH /v1/private/reservation/cancel` com corpo JSON:\n  ```json\n  {\n    \"spaceSlotIds\": [\"a1b2c3d4-e5f6-7890-abcd-1234567890ab\"],\n    \"cancelReason\": \"Espaço em manutenção emergencial\"\n  }\n  ```\n\n* **Formato da resposta**:\n  - reservation: Objeto com todas as informações da reserva cancelada\n  - message: Mensagem informativa de sucesso\n\n* **Notas**:\n  - O ID do usuário que cancela a reserva é automaticamente capturado do token JWT\n  - O status da reserva será atualizado para 'cancelled'\n  - A data e hora de cancelamento (cancelledAt) serão registradas automaticamente\n  - Os slots de espaço serão excluídos apenas se ainda existirem no sistema",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -11142,7 +11146,6 @@
               }
             }
           },
-          "required": true,
           "description": "Corpo da requisição para cancelar uma reserva"
         },
         "security": [
@@ -12434,6 +12437,7 @@
         ],
         "description": "Endpoint para realizar check-in ou check-out em uma reserva específica.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Restrito a usuários com perfil 'admin', 'dev', 'user'.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa e não requer reset de senha.\n* **Processo**:\n  1. Recebe o ID da reserva e o tipo de operação ('check-in' ou 'check-out') no body\n  2. Verifica se o espaço existe\n  3. Busca a reserva específica pelo ID informado\n  4. Valida se a reserva pertence ao espaço\n  5. Valida se o usuário tem permissão (proprietário ou convidado)\n  6. Executa a operação solicitada (check-in ou check-out)\n  7. No check-out, a reserva é automaticamente fechada e os slots liberados\n  8. Retorna os detalhes da reserva atualizada\n\n**Regras de negócio**:\n- Check-in pode ser feito:\n  - Workstation: 15 minutos antes até 3 horas após o início da reserva\n  - Room: 15 minutos antes até 1 hora após o início da reserva\n- Check-out requer check-in prévio\n- Check-out deve ser feito no mesmo dia do check-in\n- Não é possível fazer múltiplos check-ins ou check-outs na mesma reserva\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -12460,8 +12464,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "parameters": [
           {
@@ -15386,6 +15389,7 @@
         ],
         "description": "Este endpoint permite nomear um usuário para uma posição na equipe de atendimento.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Baseada na hierarquia da equipe:\n  - Admin/Dev → pode nomear Director\n  - Director → pode nomear Supervisor\n  - Supervisor → pode nomear Manager\n  - Manager → pode nomear Assistant Manager e Assistant\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Posições disponíveis**:\n- `director`: Diretor (nível 1) - Apenas 1\n- `supervisor`: Supervisor (nível 2) - Máximo 7\n- `manager`: Gerente (nível 3) - Máximo 56\n- `assistant_manager`: Subgerente (nível 4) - Máximo 20\n- `assistant`: Assistente (nível 5) - Máximo 54\n\n**Regras de negócio**:\n1. Verificação de permissão baseada na hierarquia\n2. O usuário deve existir no sistema (busca por email)\n3. O usuário deve ter conta ativa\n4. O usuário não pode ter perfil 'dev'\n5. O usuário não pode já possuir uma posição na equipe\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -15410,8 +15414,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "parameters": [
           {
@@ -16896,6 +16899,7 @@
         ],
         "description": "Este endpoint permite atualizar (ou atribuir) o chefe imediato de um membro da equipe de atendimento.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Apenas usuários com role admin ou dev podem atualizar supervisores.\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Regras de negócio**:\n1. Apenas admin/dev podem atualizar supervisores\n2. O usuário alvo deve ter uma posição na equipe\n3. O supervisor informado deve ter uma posição válida na hierarquia\n4. Director não pode ter supervisor (está no topo da hierarquia)\n5. Se o membro já tinha um supervisor, o vínculo anterior é removido\n\n**Hierarquia de supervisão**:\n- Supervisor → reporta ao Diretor\n- Gerente → reporta ao Supervisor\n- Subgerente → reporta ao Gerente\n- Assistente → reporta ao Gerente ou Subgerente\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -16913,8 +16917,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "parameters": [
           {
@@ -18521,6 +18524,7 @@
         ],
         "description": "Este endpoint permite justificar ou descartar uma ocorrência de checkout antecipado.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: Baseada na role do sistema E na position do team:\n  - Admin/Dev (roles do sistema) → podem justificar qualquer ocorrência\n  - Director (position no team) → pode justificar qualquer ocorrência\n  - Supervisor (position no team) → pode justificar apenas ocorrências da sua equipe\n  - Demais usuários → não têm permissão\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Regras de negócio**:\n- A ocorrência deve existir e estar com status 'pending'\n- Quando action = 'justified', o campo justification é obrigatório (mínimo 10 caracteres)\n- Quando action = 'dismissed', a justificativa é opcional\n\n**Ações disponíveis**:\n- `justified`: Justifica a ocorrência com um texto explicativo\n- `dismissed`: Descarta a ocorrência (erro de registro, por exemplo)\n",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -18547,8 +18551,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "parameters": [
           {
@@ -18925,6 +18928,7 @@
         ],
         "description": "\nCria um novo posto avançado para um membro da equipe.\n\n**Permissões:**\n- Admin/Dev: pode criar para qualquer usuário\n- Diretor: pode criar para qualquer usuário\n- Supervisor: pode criar apenas para membros da própria equipe\n\n**Campos:**\n- userId: ID do usuário que será colocado em posto avançado\n- clientName: Nome do cliente/posto\n- clientAddress: Endereço completo do cliente\n- startDate: Data de início (YYYY-MM-DD)\n- endDate: Data fim opcional (YYYY-MM-DD)\n- weekdays: Array de dias da semana [0-6] (0=Dom, 6=Sáb)\n        ",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -18972,8 +18976,7 @@
                 "additionalProperties": false
               }
             }
-          },
-          "required": true
+          }
         },
         "security": [
           {
@@ -19734,6 +19737,7 @@
         ],
         "description": "\nAtualiza um posto avançado existente.\n\n**Permissões:**\n- Admin/Dev: pode atualizar qualquer posto\n- Diretor: pode atualizar qualquer posto\n- Supervisor: pode atualizar apenas postos de membros da própria equipe\n\n**Campos editáveis:**\n- clientName: Nome do cliente/posto\n- clientAddress: Endereço completo do cliente\n- endDate: Data fim (YYYY-MM-DD) ou null\n- weekdays: Array de dias da semana [0-6]\n\n**Campos NÃO editáveis:**\n- userId (membro)\n- startDate (data de início)\n        ",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -20688,12 +20692,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3333",
+      "url": "http://localhost:3334",
       "description": "Development server"
-    },
-    {
-      "url": "api.bbz.com.br:3333",
-      "description": "Production"
     }
   ],
   "tags": [
@@ -20732,6 +20732,6 @@
   ],
   "externalDocs": {
     "description": "Repository of project",
-    "url": "https://github.com/LivioAlvarenga/bbz-app-backend"
+    "url": "https://github.com/bbz-gestao-reservas/bbz-app-backend"
   }
 }

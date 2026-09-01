@@ -11,7 +11,7 @@ export const env = createEnv({
     NEXT_PUBLIC_ADM_WEB_HOST: z.string(),
     NEXT_PUBLIC_BUCKET: z.string(),
     NEXT_PUBLIC_API_URL: z.string(),
-    NEXT_PUBLIC_API_PORT: z.coerce.number().default(3333),
+    NEXT_PUBLIC_API_PORT: z.coerce.number().default(3334),
     NEXT_PUBLIC_MAINTENANCE_MODE: z.string().optional(),
     NEXT_PUBLIC_COOKIE_DOMAIN: z.string(),
   },

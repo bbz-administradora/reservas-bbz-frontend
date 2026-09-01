@@ -9,6 +9,10 @@ import {
   throwCustomError,
 } from './custom-fetch-utils'
 
+type CustomFetchResponse<T> = T extends { data: unknown; status: number }
+  ? T
+  : { data: T; status: number; headers: Headers }
+
 /**
  * Custom fetch wrapper para lidar com requisições à API com:
  * - Headers dinâmicos (Content-Type, CSRF Token)
@@ -26,9 +30,7 @@ import {
 export async function customFetch<T>(
   url: string,
   options: RequestInit = {},
-): Promise<
-  T extends Promise<infer U> ? U : { data: T; status: number; headers: Headers }
-> {
+): Promise<CustomFetchResponse<T>> {
   // Prepara os headers com Content-Type e CSRF Token quando necessário
   const headers = await prepareHeaders(options, url)
 
@@ -63,7 +65,5 @@ export async function customFetch<T>(
     data: parsedResponse.data,
     status: parsedResponse.status,
     headers: parsedResponse.headers,
-  } as unknown as T extends Promise<infer U>
-    ? U
-    : { data: T; status: number; headers: Headers }
+  } as CustomFetchResponse<T>
 }

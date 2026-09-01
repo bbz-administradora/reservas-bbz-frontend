@@ -57,7 +57,7 @@ export default function NotFound() {
             className="text-primary text-[16px] leading-[24px] font-bold tracking-[0.15px] transition-all hover:underline lg:text-[18px]"
             href={`${webserver.host}/espacos`}
           >
-            gestao.bbz.com.br
+            app-sistema-reserva.bbz.com.br
           </Link>
         </div>
       </div>

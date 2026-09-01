@@ -52,6 +52,9 @@ export default (async () => {
         client: 'swr',
         httpClient: 'fetch',
         override: {
+          fetch: {
+            forceSuccessResponse: true,
+          },
           mutator: {
             path: '../../api/mutator/custom-fetch.ts',
             name: 'customFetch',

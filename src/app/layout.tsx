@@ -62,9 +62,9 @@ export const metadata: Metadata = {
   verification: {
     google: '', // Adicione o código de verificação do Google, se necessário
   },
-  metadataBase: new URL('https://gestao.bbz.com.br/'),
+  metadataBase: new URL('https://app-sistema-reserva.bbz.com.br/'),
   alternates: {
-    canonical: 'https://gestao.bbz.com.br/',
+    canonical: 'https://app-sistema-reserva.bbz.com.br/',
   },
   category: 'Sistema de Reserva de Espaços Corporativas',
 }
