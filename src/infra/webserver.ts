@@ -11,7 +11,7 @@ const isProduction = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
 
 // Define o host da aplicação com base nas condições verificadas anteriormente. Se estiver em produção, usa NEXT_PUBLIC_ADM_WEB_HOST com https. Se estiver em ambiente serverless (Preview Vercel), usa NEXT_PUBLIC_VERCEL_URL com https. Caso contrário, usa NEXT_PUBLIC_ADM_WEB_HOST com http (development).
 const host = isProduction
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
+  ? `https://${env.NEXT_PUBLIC_ADM_WEB_HOST}`
   : isServerlessRuntime
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : `http://${process.env.NEXT_PUBLIC_ADM_WEB_HOST}`

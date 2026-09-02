@@ -58,7 +58,7 @@ O contrato está em `.env.example`; `.env` contém somente a configuração loca
 
 | Variável                            | Uso                                                                         |
 | ----------------------------------- | --------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_ADM_WEB_HOST`          | Host local do frontend; a URL pública de produção vem do Vercel.            |
+| `NEXT_PUBLIC_ADM_WEB_HOST`          | Host do frontend: `localhost:3001` local e domínio público em produção.     |
 | `NEXT_PUBLIC_BUCKET`                | Base pública para imagens no S3.                                            |
 | `NEXT_PUBLIC_API_URL`               | URL absoluta da API; em produção, `https://api-sistema-reserva.bbz.com.br`. |
 | `NEXT_PUBLIC_API_PORT`              | Porta local da API usada pelo app e pelo Orval.                             |
@@ -113,7 +113,7 @@ As regras devem ser alteradas primeiro no backend. O frontend apresenta e anteci
 
 ## Produção
 
-O frontend é publicado no Vercel e recebe o domínio `app-sistema-reserva.bbz.com.br`. O projeto precisa das variáveis do `.env.example`, com `NEXT_PUBLIC_API_URL=https://api-sistema-reserva.bbz.com.br` e `NEXT_PUBLIC_COOKIE_DOMAIN=.bbz.com.br`.
+O frontend é publicado no Vercel e recebe o domínio `app-sistema-reserva.bbz.com.br`. O projeto precisa das variáveis do `.env.example`, com `NEXT_PUBLIC_ADM_WEB_HOST=app-sistema-reserva.bbz.com.br`, `NEXT_PUBLIC_API_URL=https://api-sistema-reserva.bbz.com.br` e `NEXT_PUBLIC_COOKIE_DOMAIN=.bbz.com.br`.
 
 O backend deve liberar `https://app-sistema-reserva.bbz.com.br` no CORS. O Google Cloud deve manter `https://app-sistema-reserva.bbz.com.br` como origem autorizada e `https://api-sistema-reserva.bbz.com.br/v1/public/auth/login/google/callback` como redirect URI. Domínios legados podem coexistir durante a migração, mas devem ser removidos após a virada.
 
