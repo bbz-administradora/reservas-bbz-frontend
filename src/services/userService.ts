@@ -69,7 +69,6 @@ export interface CurrentUser {
 export async function fetchCurrentUserInServer(): Promise<CurrentUser> {
   const headers = await getHeadersServer()
   if (!headers) {
-    console.warn('CSRF token not found')
     return { user: null, isAuthenticated: false, teamPosition: null }
   }
 

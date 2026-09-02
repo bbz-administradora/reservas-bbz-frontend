@@ -125,7 +125,6 @@ export async function getHeadersServer(): Promise<Record<
   // Obter o cookie CSRF
   const csrfToken = await getCookie(CSRF_COOKIE_NAME)
   if (!csrfToken) {
-    console.warn('CSRF token not found')
     return null
   }
 
