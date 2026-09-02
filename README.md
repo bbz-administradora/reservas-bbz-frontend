@@ -58,7 +58,7 @@ O contrato está em `.env.example`; `.env` contém somente a configuração loca
 
 | Variável                            | Uso                                                                         |
 | ----------------------------------- | --------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_ADM_WEB_HOST`          | Host do frontend: `localhost:3001` local e domínio público em produção.     |
+| `NEXT_PUBLIC_ADM_WEB_HOST`          | Origem do frontend; aceita hostname ou URL absoluta.                        |
 | `NEXT_PUBLIC_BUCKET`                | Base pública para imagens no S3.                                            |
 | `NEXT_PUBLIC_API_URL`               | URL absoluta da API; em produção, `https://api-sistema-reserva.bbz.com.br`. |
 | `NEXT_PUBLIC_API_PORT`              | Porta local da API usada pelo app e pelo Orval.                             |

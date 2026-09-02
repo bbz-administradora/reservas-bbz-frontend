@@ -9,12 +9,20 @@ const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build'
 // Verifica se a variável de ambiente NEXT_PUBLIC_VERCEL_ENV é igual a 'production'. Indica se a aplicação está rodando em ambiente de produção.
 const isProduction = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
 
+function resolveOrigin(value: string, protocol: 'http' | 'https') {
+  const url = /^https?:\/\//i.test(value) ? value : `${protocol}://${value}`
+  return new URL(url).origin
+}
+
 // Define o host da aplicação com base nas condições verificadas anteriormente. Se estiver em produção, usa NEXT_PUBLIC_ADM_WEB_HOST com https. Se estiver em ambiente serverless (Preview Vercel), usa NEXT_PUBLIC_VERCEL_URL com https. Caso contrário, usa NEXT_PUBLIC_ADM_WEB_HOST com http (development).
 const host = isProduction
-  ? `https://${env.NEXT_PUBLIC_ADM_WEB_HOST}`
+  ? resolveOrigin(env.NEXT_PUBLIC_ADM_WEB_HOST, 'https')
   : isServerlessRuntime
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : `http://${process.env.NEXT_PUBLIC_ADM_WEB_HOST}`
+    ? resolveOrigin(
+        process.env.NEXT_PUBLIC_VERCEL_URL ?? env.NEXT_PUBLIC_ADM_WEB_HOST,
+        'https',
+      )
+    : resolveOrigin(env.NEXT_PUBLIC_ADM_WEB_HOST, 'http')
 
 const hostApi = isProduction
   ? env.NEXT_PUBLIC_API_URL
