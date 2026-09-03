@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { LogoBbz } from '@/components/svg/logo-bbz'
+import { Construction } from 'lucide-react'
+import { useEffect } from 'react'
 
 /**
  * Página de manutenção.
@@ -11,8 +13,6 @@ import { useEffect, useState } from 'react'
  * 2. Mostra uma mensagem amigável ao usuário
  */
 export default function ManutencaoPage() {
-  const [cleaned, setCleaned] = useState(false)
-
   useEffect(() => {
     async function clearSession() {
       try {
@@ -29,11 +29,8 @@ export default function ManutencaoPage() {
         } catch {
           // Ignora erros de storage
         }
-
-        setCleaned(true)
       } catch (error) {
         console.error('Erro ao limpar sessão:', error)
-        setCleaned(true) // Continua mesmo com erro
       }
     }
 
@@ -41,57 +38,28 @@ export default function ManutencaoPage() {
   }, [])
 
   return (
-    <div className="bg-background flex min-h-screen items-center justify-center p-4">
-      <div className="max-w-md text-center">
-        <div className="mb-6">
-          <svg
-            className="text-primary mx-auto h-16 w-16"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
-        </div>
+    <main className="bg-background flex min-h-screen items-center justify-center px-6 py-12">
+      <div className="flex w-full max-w-lg flex-col items-center text-center">
+        <LogoBbz className="mb-10 w-24" />
+        <Construction
+          className="text-primary mb-6 size-12"
+          aria-hidden="true"
+        />
 
         <h1 className="text-foreground mb-4 text-2xl font-bold">
-          Sistema em Manutenção
+          Sistema em implementação
         </h1>
 
-        {!cleaned ? (
-          <div>
-            <p className="text-muted-foreground mb-4">
-              Preparando atualização...
-            </p>
-            <div className="border-primary mx-auto h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
-          </div>
-        ) : (
-          <div>
-            <p className="text-muted-foreground mb-4">
-              Estamos realizando uma atualização de segurança no sistema.
-            </p>
-            <p className="text-muted-foreground mb-6">
-              Por favor, aguarde alguns minutos e tente novamente.
-            </p>
-            <div className="bg-muted rounded-lg p-4">
-              <p className="text-muted-foreground text-sm">
-                ⏱️ Previsão de retorno: <strong>1 hora</strong>
-              </p>
-            </div>
-          </div>
-        )}
+        <p className="text-muted-foreground max-w-md text-base">
+          Esta página está temporariamente em manutenção enquanto concluímos a
+          implantação do sistema.
+        </p>
+
+        <p className="text-foreground mt-8 text-sm">
+          Previsão de liberação
+          <strong className="mt-1 block text-lg">15 de setembro de 2026</strong>
+        </p>
       </div>
-    </div>
+    </main>
   )
 }
