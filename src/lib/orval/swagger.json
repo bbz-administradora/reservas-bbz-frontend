@@ -6,8 +6,8 @@
     "version": "1.0.0",
     "contact": {
       "name": "Support",
-      "email": "asq@bbz.com.br",
-      "url": "https://github.com/bbz-gestao-reservas"
+      "email": "mgs@bbz.com.br",
+      "url": "https://github.com/bbz-administradora/Matheus-bbz"
     }
   },
   "components": {
@@ -3993,7 +3993,7 @@
         "tags": [
           "User"
         ],
-        "description": "Este endpoint permite conceder ou revogar uma exceção temporária de prazo para reservas de um colaborador.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: \n  - Admin/Dev: Pode conceder para qualquer usuário com posição em time\n  - Diretor: Pode conceder para qualquer usuário com posição em time  \n  - Supervisor: Apenas para membros da própria equipe\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**O que a exceção libera (semana vigente)**:\n- Fazer reserva na sexta-feira\n- Fazer reserva na semana atual\n- Ignora limite de dias (2-3 por cargo)\n- Ignora segunda/sexta obrigatória\n- MANTÉM validação de uma reserva de workstation por dia\n\n**Comportamento**:\n- `active: true`: Seta exceção até sábado da semana (23:59:59)\n- `active: false`: Remove a exceção (seta NULL)\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
+        "description": "Este endpoint permite conceder ou revogar uma exceção temporária de prazo para reservas de um colaborador.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**:\n  - Admin/Dev: Pode conceder para qualquer usuário com posição em time\n  - Diretor: Pode conceder para qualquer usuário com posição em time\n  - Supervisor: Apenas para membros da própria equipe\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**O que a exceção libera (semana vigente)**:\n- Fazer reserva na sexta-feira\n- Fazer reserva na semana atual\n- Ignora limite de dias (2-3 por cargo)\n- Ignora segunda/sexta obrigatória\n- MANTÉM validação de uma reserva de workstation por dia\n\n**Comportamento**:\n- `active: true`: Seta exceção até sábado da semana (23:59:59)\n- `active: false`: Remove a exceção (seta NULL)\n\n**Middlewares aplicados**:\n- `verifyJWT`: Valida o token JWT e extrai os dados do usuário autenticado\n- `validateUserAccount`: Verifica se a conta do usuário autenticado está ativa",
         "requestBody": {
           "required": true,
           "content": {
@@ -4366,7 +4366,7 @@
         "tags": [
           "User"
         ],
-        "description": "Este endpoint permite definir ou remover o período de afastamento de um usuário (férias, licença, etc.).\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: \n  - Admin/Dev: Pode definir para qualquer usuário\n  - Diretor: Pode definir para qualquer usuário\n  - Supervisor: Apenas para membros da própria equipe\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Efeitos do afastamento**:\n- Usuário não pode fazer novas reservas de WORKSTATION durante o período\n- Usuário é REMOVIDO de todos os indicadores de compliance:\n  - Compliance semanal (não conta como não-compliant)\n  - Checkout antecipado (ocorrências não aparecem)\n  - Cancelamentos fora do prazo (não conta nos indicadores)\n- Ao logar, usuário vê alerta informando o afastamento\n\n**Comportamento**:\n- Enviar startDate e endDate: Define o período de afastamento\n- Enviar startDate e endDate como null: Remove o afastamento",
+        "description": "Este endpoint permite definir ou remover o período de afastamento de um usuário (férias, licença, etc.).\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**:\n  - Admin/Dev: Pode definir para qualquer usuário\n  - Diretor: Pode definir para qualquer usuário\n  - Supervisor: Apenas para membros da própria equipe\n* **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.\n\n**Efeitos do afastamento**:\n- Usuário não pode fazer novas reservas de WORKSTATION durante o período\n- Usuário é REMOVIDO de todos os indicadores de compliance:\n  - Compliance semanal (não conta como não-compliant)\n  - Checkout antecipado (ocorrências não aparecem)\n  - Cancelamentos fora do prazo (não conta nos indicadores)\n- Ao logar, usuário vê alerta informando o afastamento\n\n**Comportamento**:\n- Enviar startDate e endDate: Define o período de afastamento\n- Enviar startDate e endDate como null: Remove o afastamento",
         "requestBody": {
           "required": true,
           "content": {
@@ -4757,7 +4757,7 @@
         "tags": [
           "User"
         ],
-        "description": "Este endpoint lista todos os usuários com afastamento definido.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**: \n  - Admin/Dev: Veem todos os afastamentos\n  - Diretor: Vê todos os afastamentos\n  - Supervisor: Vê apenas afastamentos da própria equipe\n* **Paginação**: Suporta paginação via query params (page, pageSize)\n* **Filtros**: \n  - includeExpired: Se true, inclui afastamentos já expirados (padrão: false)",
+        "description": "Este endpoint lista todos os usuários com afastamento definido.\n\n* **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.\n* **Autorização**:\n  - Admin/Dev: Veem todos os afastamentos\n  - Diretor: Vê todos os afastamentos\n  - Supervisor: Vê apenas afastamentos da própria equipe\n* **Paginação**: Suporta paginação via query params (page, pageSize)\n* **Filtros**:\n  - includeExpired: Se true, inclui afastamentos já expirados (padrão: false)",
         "parameters": [
           {
             "schema": {
@@ -20692,7 +20692,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3334",
+      "url": "http://localhost:5000",
       "description": "Development server"
     }
   ],
@@ -20732,6 +20732,6 @@
   ],
   "externalDocs": {
     "description": "Repository of project",
-    "url": "https://github.com/bbz-gestao-reservas/bbz-app-backend"
+    "url": "https://github.com/bbz-administradora/reservas-bbz-backend"
   }
 }

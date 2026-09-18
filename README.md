@@ -7,8 +7,8 @@ Aplicação web interna para reserva e gestão de espaços da BBZ. O projeto cob
 | Componente | Desenvolvimento                 | Produção                                          |
 | ---------- | ------------------------------- | ------------------------------------------------- |
 | Frontend   | `http://localhost:3001`         | `https://app-sistema-reserva.bbz.com.br` (Vercel) |
-| Backend    | `http://localhost:3334`         | `https://api-sistema-reserva.bbz.com.br` (Render) |
-| Swagger    | `http://localhost:3334/docs`    | `https://api-sistema-reserva.bbz.com.br/docs`     |
+| Backend    | `http://localhost:5000`         | `https://api-sistema-reserva.bbz.com.br` (Render) |
+| Swagger    | `http://localhost:5000/docs`    | `https://api-sistema-reserva.bbz.com.br/docs`     |
 | Banco      | PostgreSQL 16 via backend local | Supabase via backend                              |
 | E-mail     | Ethereal via backend            | Brevo via backend                                 |
 | Imagens    | AWS S3                          | AWS S3                                            |
@@ -70,7 +70,7 @@ Variáveis `NEXT_PUBLIC_*` são incorporadas no build. Toda alteração no Verce
 
 ## Operação local
 
-Requisitos: Node.js 22, npm e o backend local saudável em `localhost:3334`.
+Requisitos: Node.js 22, npm e o backend local saudável em `localhost:5000`.
 
 ```bash
 npm install

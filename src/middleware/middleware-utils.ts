@@ -10,7 +10,7 @@ import { MiddlewareHandler, ResponseModifier } from './middleware-types'
  * URL da API obtida diretamente de process.env (funciona no Edge Runtime).
  * Variáveis NEXT_PUBLIC_* são substituídas no build time.
  */
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3334'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
 
 /**
  * Domínio para cookies em produção.

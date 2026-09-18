@@ -882,9 +882,9 @@ export const useUserUpdate = <
  * Este endpoint permite conceder ou revogar uma exceção temporária de prazo para reservas de um colaborador.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**: 
+* **Autorização**:
   - Admin/Dev: Pode conceder para qualquer usuário com posição em time
-  - Diretor: Pode conceder para qualquer usuário com posição em time  
+  - Diretor: Pode conceder para qualquer usuário com posição em time
   - Supervisor: Apenas para membros da própria equipe
 * **Validação de conta**: Verifica se a conta do usuário autenticado está ativa.
 
@@ -1039,7 +1039,7 @@ export const useGrantBookingException = <
  * Este endpoint permite definir ou remover o período de afastamento de um usuário (férias, licença, etc.).
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**: 
+* **Autorização**:
   - Admin/Dev: Pode definir para qualquer usuário
   - Diretor: Pode definir para qualquer usuário
   - Supervisor: Apenas para membros da própria equipe
@@ -1191,12 +1191,12 @@ export const useSetUserAbsence = <
  * Este endpoint lista todos os usuários com afastamento definido.
 
 * **Segurança**: Protegido por autenticação JWT (token de sessão) e CSRF via cookie/header.
-* **Autorização**: 
+* **Autorização**:
   - Admin/Dev: Veem todos os afastamentos
   - Diretor: Vê todos os afastamentos
   - Supervisor: Vê apenas afastamentos da própria equipe
 * **Paginação**: Suporta paginação via query params (page, pageSize)
-* **Filtros**: 
+* **Filtros**:
   - includeExpired: Se true, inclui afastamentos já expirados (padrão: false)
  * @summary Listar usuários afastados
  */
