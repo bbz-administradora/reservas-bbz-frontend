@@ -14,19 +14,14 @@ function resolveOrigin(value: string, protocol: 'http' | 'https') {
   return new URL(url).origin
 }
 
-// Define o host da aplicação com base nas condições verificadas anteriormente. Se estiver em produção, usa NEXT_PUBLIC_ADM_WEB_HOST com https. Se estiver em ambiente serverless (Preview Vercel), usa NEXT_PUBLIC_VERCEL_URL com https. Caso contrário, usa NEXT_PUBLIC_ADM_WEB_HOST com http (development).
-const host = isProduction
-  ? resolveOrigin(env.NEXT_PUBLIC_ADM_WEB_HOST, 'https')
-  : isServerlessRuntime
-    ? resolveOrigin(
-        process.env.NEXT_PUBLIC_VERCEL_URL ?? env.NEXT_PUBLIC_ADM_WEB_HOST,
-        'https',
-      )
-    : resolveOrigin(env.NEXT_PUBLIC_ADM_WEB_HOST, 'http')
+// Define o host da aplicação a partir de NEXT_PUBLIC_ADM_WEB_HOST, com https em ambiente serverless (Vercel, produção ou preview) e http no desenvolvimento local. Não usa NEXT_PUBLIC_VERCEL_URL: é a URL *.vercel.app do deploy, onde os cookies de sessão (domínio .bbz.com.br) não existem.
+const host = resolveOrigin(
+  env.NEXT_PUBLIC_ADM_WEB_HOST,
+  isServerlessRuntime ? 'https' : 'http',
+)
 
-const hostApi = isProduction
-  ? env.NEXT_PUBLIC_API_URL
-  : `http://localhost:${env.NEXT_PUBLIC_API_PORT}`
+// Mesma origem que os endpoints gerados pelo Orval usam. O custom-fetch só repassa cookies e CSRF quando a URL começa com este valor, então os dois precisam coincidir em todos os ambientes.
+const hostApi = env.NEXT_PUBLIC_API_URL
 
 // Cria um objeto com as configurações de ambiente e congela para torná-lo imutável.
 const webserver = Object.freeze({
